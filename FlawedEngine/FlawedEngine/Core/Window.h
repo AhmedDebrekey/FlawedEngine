@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdio.h>
-
 namespace FlawedEngine
 {
 
@@ -32,6 +30,10 @@ namespace FlawedEngine
 		
 		void UpdateViewPort(uint32_t Width, uint32_t Height);
 		struct sWindowSize GetWindowSize();
+
+	#ifdef OPENGL
+		GLFWwindow* GetWindow() { return mWindow; }
+	#endif
 
 	private:
 	#ifdef OPENGL 

@@ -1,15 +1,7 @@
-#include <iostream>
-
-#include "Core/Window.h"
+#include "Core/Engine.h"
 
 int main()
 {
-	FlawedEngine::cWindow& EngineWindow = FlawedEngine::cWindow::get();
-	EngineWindow.Init();
-	EngineWindow.CreateWindow();
-
-	while (!EngineWindow.ShouldClose())
-	{
-		EngineWindow.Update();
-	}
+	std::unique_ptr<FlawedEngine::cEngine> Engine = std::make_unique<FlawedEngine::cEngine>();
+	Engine->Run();
 }

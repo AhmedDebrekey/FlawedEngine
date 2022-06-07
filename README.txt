@@ -28,3 +28,7 @@ C++, not the best but I have most of the intermediat-advanced C++ knowledge.
 OpenGL on the other hand I'm not so good with, (game engine might be a bad choice
 of project), but I have read most of the LearnOpenGL.com and I have some books
 about game engines in general.
+
+DISCLAIMER:
+////I am not the best with github and git in general that's why my project files
+////looks so terrible.
