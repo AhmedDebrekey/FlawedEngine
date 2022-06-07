@@ -1,0 +1,3 @@
+﻿  Window.cpp
+C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\Window.cpp(56): warning C4715: 'FlawedEngine::cWindow::CreateWindow': not all control paths return a value
+  FlawedEngine.vcxproj -> C:\Dev\FlawedEngine\FlawedEngine\x64\Debug\FlawedEngine.exe
