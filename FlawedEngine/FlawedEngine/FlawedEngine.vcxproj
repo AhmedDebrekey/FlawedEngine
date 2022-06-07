@@ -151,10 +151,15 @@
     <ClCompile Include="Core\Window.cpp" />
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="glad.c" />
+    <ClCompile Include="Core\Scene.cpp" />
+    <ClCompile Include="Core\BasicModel\Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Engine.h" />
+    <ClInclude Include="Core\Entity.h" />
     <ClInclude Include="Core\Window.h" />
+    <ClInclude Include="Core\Scene.h" />
+    <ClInclude Include="Core\BasicModel\Triangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
