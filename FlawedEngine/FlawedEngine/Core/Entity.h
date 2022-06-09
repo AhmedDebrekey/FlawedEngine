@@ -1,16 +1,47 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 namespace FlawedEngine
 {
+	typedef unsigned int uint32_t;
+#define MAX_BONE_INFLUENCE 4
+	struct vec3//temp
+	{
+		float x, y, z;
+	};
+	struct vec2//temp
+	{
+		float x, y;
+	};
+
+	struct sVertex
+	{
+		vec3 Postion;
+		vec3 Normal;
+		vec2 TexCoords;
+
+		vec3 Tangent;
+		vec3 BiTangent;
+
+		int mBoneIDs[MAX_BONE_INFLUENCE];
+		float mWeights[MAX_BONE_INFLUENCE];
+	};
+
+	struct sTexture
+	{
+		uint32_t ID;
+		std::string Type;
+		std::string Path;
+	};
+
 	class cEntity
 	{
 	public:
-		float Postition, Rotation, Scale; //TODO: Give appropriate type later...
+		vec3 Postition, Rotation, Scale; 
 
 		virtual void Render() = 0;
-
 		virtual ~cEntity() = 0;
 
 		struct sMaterial
@@ -22,10 +53,15 @@ namespace FlawedEngine
 
 		sMaterial mMaterial;
 
-		//Give appriopriate types
-		std::vector<float> mVertexBuffer;
-		std::vector<float> mIndexBuffer;
-		std::vector<float> mTexturePos;
-		std::vector<float> mNormals;
+		std::vector<sVertex> mVertexBuffer;
+		std::vector<sTexture> mTextureCoords;
+		//std::vector<float> mIndexBuffer;
 	};
+
+	inline cEntity::~cEntity()
+	{
+		mVertexBuffer.clear();
+		mTextureCoords.clear();
+		//mIndexBuffer.clear();
+	}
 }

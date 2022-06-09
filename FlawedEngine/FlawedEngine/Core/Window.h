@@ -2,9 +2,9 @@
 
 namespace FlawedEngine
 {
-
+#ifndef OPENGL
 #define OPENGL //TODO: Add this to the renderer class to be deterimned there.
-
+#endif
 //there is going to be other API's in the future
 #ifdef OPENGL 
 #include <glad/glad.h>

@@ -153,6 +153,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="Core\Scene.cpp" />
     <ClCompile Include="Core\BasicModel\Triangle.cpp" />
+    <ClCompile Include="Core\Models\ModelRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Engine.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="Core\Scene.h" />
     <ClInclude Include="Core\BasicModel\Triangle.h" />
+    <ClInclude Include="Core\Models\ModelRenderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

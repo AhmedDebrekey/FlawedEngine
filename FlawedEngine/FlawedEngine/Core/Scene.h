@@ -17,9 +17,6 @@ namespace FlawedEngine
 			SpotLight
 		}; 
 
-
-
-
 		cScene();
 		~cScene();
 		void Setup();
@@ -28,6 +25,6 @@ namespace FlawedEngine
 		void LoadModel(eBasicObject Object);
 
 	private:
-		std::vector<sEntity*> WorldEntities; //TODO: Make this into a "non"-array type, better to have an unordered map
+		std::vector<cEntity*> WorldEntities; //TODO: Make this into a "non"-array type, better to have an unordered map
 	};
 }

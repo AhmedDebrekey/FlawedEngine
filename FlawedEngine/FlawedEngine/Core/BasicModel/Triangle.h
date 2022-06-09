@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Entity.h"
+#include "../Models/ModelRenderer.h"
 
 namespace FlawedEngine
 {
@@ -8,9 +9,11 @@ namespace FlawedEngine
 	{
 	public:
 		cTriangle();
-		virtual ~cTriangle() override;
-
+		~cTriangle();
 		virtual void Render() override;
-
+	private:
+		cModelRenderer Renderer = cModelRenderer(mVertexBuffer, mTextureCoords);
+		
 	};
 }
+
