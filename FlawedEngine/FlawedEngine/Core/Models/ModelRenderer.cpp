@@ -8,6 +8,8 @@ namespace FlawedEngine
         mTextures = Textures;
 
         Setup();
+
+        Shader.Create("Core/Models/Shaders/Vertex.glsl","Core/Models/Shaders/Fragment.glsl");
     }
 
 	void cModelRenderer::Setup()
@@ -53,9 +55,11 @@ namespace FlawedEngine
 	void cModelRenderer::Draw()
 	{
     #ifdef OPENGL
-        std::cout << "ModelRenderer VAO: " << VAO << std::endl;
+        //std::cout << "ModelRenderer VAO: " << VAO << std::endl;
+        Shader.Bind();
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindVertexArray(0);
     #endif 
 	}
 }

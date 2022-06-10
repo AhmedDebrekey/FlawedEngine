@@ -59,6 +59,8 @@ namespace FlawedEngine
 		std::vector<sVertex> mVertexBuffer;
 		std::vector<sTexture> mTextureCoords;
 		//std::vector<float> mIndexBuffer;
+
+		
 	};
 
 	inline cEntity::~cEntity()

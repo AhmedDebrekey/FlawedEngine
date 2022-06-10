@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "../Entity.h"
+#include "../Shader.h"
 
 namespace FlawedEngine
 {
@@ -33,6 +34,7 @@ namespace FlawedEngine
 	
 	private:
 		uint32_t VBO, EBO;
+		cShader Shader;
 	};
 }
 
