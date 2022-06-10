@@ -7,6 +7,8 @@ namespace FlawedEngine
 		mVertexBuffer.push_back({-0.5f, -0.5f, 0.0f});
 		mVertexBuffer.push_back({ 0.5f, -0.5f, 0.0f });
 		mVertexBuffer.push_back({ 0.0f,  0.5f, 0.0f });
+		Renderer.Init(mVertexBuffer, mTextureCoords);
+		std::cout << "Constructor being called" << std::endl;
 	}
 	
 	cTriangle::~cTriangle()
@@ -18,5 +20,13 @@ namespace FlawedEngine
 	{
 		//Rendering of a triangle
 		Renderer.Draw();
+	}
+
+	//tempForDebugPurposes
+	void cTriangle::GetInfo()
+	{
+		auto pos = Renderer.mVertecies.at(0).Postion;
+		std::cout << "Renderer Vertecies: " << pos.x << ", " << pos.y << ", " << pos.z << std::endl;
+		std::cout << "Renderer VAO: " << Renderer.VAO << std::endl;
 	}
 }

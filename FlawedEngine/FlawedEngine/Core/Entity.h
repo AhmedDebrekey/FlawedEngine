@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 
+#include <iostream> //temp for the destructor, remove later
+
 namespace FlawedEngine
 {
 	typedef unsigned int uint32_t;
@@ -42,6 +44,7 @@ namespace FlawedEngine
 		vec3 Postition, Rotation, Scale; 
 
 		virtual void Render() = 0;
+		virtual void GetInfo() = 0;
 		virtual ~cEntity() = 0;
 
 		struct sMaterial
@@ -60,6 +63,7 @@ namespace FlawedEngine
 
 	inline cEntity::~cEntity()
 	{
+		std::cout << "Entity Has Been Destructed" << std::endl;
 		mVertexBuffer.clear();
 		mTextureCoords.clear();
 		//mIndexBuffer.clear();

@@ -25,6 +25,7 @@ namespace FlawedEngine
 		void LoadModel(eBasicObject Object);
 
 	private:
-		std::vector<cEntity*> WorldEntities; //TODO: Make this into a "non"-array type, better to have an unordered map
+		
+		std::vector<std::shared_ptr<cEntity>> WorldEntities; //TODO: Make this into a "non"-array type, better to have an unordered map
 	};
 }

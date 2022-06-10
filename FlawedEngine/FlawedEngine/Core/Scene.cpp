@@ -1,10 +1,13 @@
 #include "Scene.h"
 
+#include "BasicModel/Triangle.h"
+
 namespace FlawedEngine
 {
 	cScene::cScene()
 	{
-
+		//Should have more stuff in the future probably, IDK little secret, I am just winging it, I don't really know what I am doing.
+		Setup();
 	}
 
 	cScene::~cScene()
@@ -19,7 +22,12 @@ namespace FlawedEngine
 
 	void cScene::Render()
 	{
-		//Render 3D Models
+		//Render Models
+		for (auto Entity : WorldEntities)
+		{
+			Entity->Render();
+			//Entity->GetInfo();
+		}
 	}
 
 	void cScene::LoadModel(const char* FilePath)
@@ -36,6 +44,10 @@ namespace FlawedEngine
 		case FlawedEngine::cScene::Sphere:
 			break;
 		case FlawedEngine::cScene::Triangle:
+			{
+				cTriangle triangle = cTriangle();
+				WorldEntities.push_back(std::make_shared<cTriangle>(triangle));
+			}
 			break;
 		case FlawedEngine::cScene::PointLight:
 			break;

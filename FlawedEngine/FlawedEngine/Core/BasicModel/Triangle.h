@@ -11,8 +11,10 @@ namespace FlawedEngine
 		cTriangle();
 		~cTriangle();
 		virtual void Render() override;
+
+		virtual void GetInfo() override;
 	private:
-		cModelRenderer Renderer = cModelRenderer(mVertexBuffer, mTextureCoords);
+		cModelRenderer Renderer;
 		
 	};
 }

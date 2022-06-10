@@ -2,6 +2,7 @@
 
 #include <memory>
 #include "Window.h"
+#include "Scene.h"
 
 namespace FlawedEngine
 {
@@ -18,5 +19,6 @@ namespace FlawedEngine
 
 	private:
 		FlawedEngine::cWindow& EngineWindow = FlawedEngine::cWindow::get();
+		std::vector<std::shared_ptr<cScene>> Scenes;
 	};
 }

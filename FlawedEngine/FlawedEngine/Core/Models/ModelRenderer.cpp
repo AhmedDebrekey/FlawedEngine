@@ -2,13 +2,13 @@
 
 namespace FlawedEngine
 {
-	cModelRenderer::cModelRenderer(std::vector<sVertex> Vertecies, std::vector<sTexture> Textures)
-	{
-		mVertecies = Vertecies;
-		mTextures = Textures;
+    void cModelRenderer::Init(std::vector<sVertex> Vertecies, std::vector<sTexture> Textures)
+    {
+        mVertecies = Vertecies;
+        mTextures = Textures;
 
-		Setup();
-	}
+        Setup();
+    }
 
 	void cModelRenderer::Setup()
 	{
@@ -53,6 +53,7 @@ namespace FlawedEngine
 	void cModelRenderer::Draw()
 	{
     #ifdef OPENGL
+        std::cout << "ModelRenderer VAO: " << VAO << std::endl;
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
     #endif 

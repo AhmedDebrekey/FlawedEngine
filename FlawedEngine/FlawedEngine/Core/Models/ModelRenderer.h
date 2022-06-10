@@ -20,19 +20,19 @@ namespace FlawedEngine
 	class cModelRenderer
 	{
 	public:
-		cModelRenderer(std::vector<sVertex> Vertecies, std::vector<sTexture> Textures);
+		void Draw();
+		void Init(std::vector<sVertex> Vertecies, std::vector<sTexture> Textures);
 
+	public:
 		std::vector<sVertex> mVertecies;
 		std::vector<sTexture> mTextures;
 		uint32_t VAO; 
-		void Draw();
+
 	private:
-		
-		uint32_t VBO, EBO;
-
 		void Setup();
-
 	
+	private:
+		uint32_t VBO, EBO;
 	};
 }
 
