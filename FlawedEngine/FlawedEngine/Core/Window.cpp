@@ -52,6 +52,7 @@ namespace FlawedEngine
 		glfwMakeContextCurrent(mWindow);
 		gladLoadGL();
 		UpdateViewPort(mWidth, mHeight);
+		glEnable(GL_DEPTH_TEST);
 	#endif
 	}
 
@@ -73,10 +74,7 @@ namespace FlawedEngine
 	void cWindow::Update()
 	{
 	#ifdef OPENGL
-		glClearColor(0.7f, 0.2f, 0.5f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		glfwSwapBuffers(mWindow);
-		glfwPollEvents();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		int tempWidth, tempHeight;
 		glfwGetWindowSize(mWindow, &tempWidth, &tempHeight);
@@ -86,6 +84,17 @@ namespace FlawedEngine
 			UpdateViewPort(tempWidth, tempHeight);
 		}
 	#endif
+	}
+
+	void cWindow::PollEvents()
+	{
+		glfwPollEvents();
+	}
+
+	void cWindow::EndFrame()
+	{
+		glfwSwapBuffers(mWindow);
+		glClearColor(0.7f, 0.2f, 0.5f, 1.0f);
 	}
 
 	bool cWindow::ShouldClose()

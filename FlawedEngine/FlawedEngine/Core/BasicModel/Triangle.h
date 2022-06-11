@@ -2,6 +2,7 @@
 
 #include "../Entity.h"
 #include "../Models/ModelRenderer.h"
+#include "../Shader.h"
 
 namespace FlawedEngine
 {
@@ -15,7 +16,5 @@ namespace FlawedEngine
 		virtual void GetInfo() override;
 	private:
 		cModelRenderer Renderer;
-		
 	};
 }
-

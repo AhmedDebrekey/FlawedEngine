@@ -8,7 +8,6 @@ namespace FlawedEngine
 		mVertexBuffer.push_back({ 0.5f, -0.5f, 0.0f });
 		mVertexBuffer.push_back({ 0.0f,  0.5f, 0.0f });
 		Renderer.Init(mVertexBuffer, mTextureCoords);
-		std::cout << "Constructor being called" << std::endl;
 	}
 	
 	cTriangle::~cTriangle()

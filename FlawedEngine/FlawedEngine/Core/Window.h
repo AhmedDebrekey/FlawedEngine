@@ -25,6 +25,8 @@ namespace FlawedEngine
 		void Init();
 		int CreateWindow();
 		void Update();
+		void PollEvents();
+		void EndFrame();
 
 		bool ShouldClose();
 		
@@ -55,4 +57,3 @@ namespace FlawedEngine
 		cWindow(cWindow&);
 	};
 }
-

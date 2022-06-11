@@ -37,4 +37,3 @@ namespace FlawedEngine
 		cShader Shader;
 	};
 }
-

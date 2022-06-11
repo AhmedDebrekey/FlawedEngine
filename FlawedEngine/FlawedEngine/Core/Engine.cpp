@@ -12,8 +12,7 @@ namespace FlawedEngine
 			In the future, this should be controlled by the use in the GUI/IMGUI
 		*/
 		{
-			cScene NewScene;
-			Scenes.push_back(std::make_shared<cScene>(NewScene));
+			Scenes.push_back(std::make_shared<cScene>());
 		}
 	}
 
@@ -21,7 +20,8 @@ namespace FlawedEngine
 	{
 		while (!EngineWindow.ShouldClose())
 		{
-			EngineWindow.Update();
+			EngineWindow.Update(); 
+			OnEvent();
 			for (auto Scene : Scenes)
 			{
 				Scene->Render();
@@ -31,12 +31,12 @@ namespace FlawedEngine
 			//UI update
 			//World update
 
-			OnEvent();
+			EngineWindow.EndFrame();
 		}
 	}
 
 	void cEngine::OnEvent()
 	{
-		//add implementation
+		EngineWindow.PollEvents();
 	}
 }

@@ -1,2 +1,6 @@
-﻿  Shader.cpp
+﻿  Engine.cpp
+  Window.cpp
+  EntryPoint.cpp
+  Generating Code...
+C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\Window.cpp(57): warning C4715: 'FlawedEngine::cWindow::CreateWindow': not all control paths return a value
   FlawedEngine.vcxproj -> C:\Dev\FlawedEngine\FlawedEngine\x64\Debug\FlawedEngine.exe

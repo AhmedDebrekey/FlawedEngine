@@ -45,8 +45,7 @@ namespace FlawedEngine
 			break;
 		case FlawedEngine::cScene::Triangle:
 			{
-				cTriangle triangle = cTriangle();
-				WorldEntities.push_back(std::make_shared<cTriangle>(triangle));
+				WorldEntities.push_back(std::make_shared<cTriangle>());
 			}
 			break;
 		case FlawedEngine::cScene::PointLight:
