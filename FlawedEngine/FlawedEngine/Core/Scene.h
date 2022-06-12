@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.h"
+#include "PerspectiveCamera.h"
 
 namespace FlawedEngine
 {
@@ -17,7 +18,7 @@ namespace FlawedEngine
 			SpotLight
 		}; 
 
-		cScene();
+		cScene(void* Window);
 		~cScene();
 		void Setup();
 		void Render();
@@ -25,7 +26,7 @@ namespace FlawedEngine
 		void LoadModel(eBasicObject Object);
 
 	private:
-		
 		std::vector<std::shared_ptr<cEntity>> WorldEntities; //TODO: Make this into a "non"-array type, better to have an unordered map
+		cpCamera Camera;
 	};
 }

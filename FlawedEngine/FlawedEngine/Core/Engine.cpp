@@ -12,7 +12,7 @@ namespace FlawedEngine
 			In the future, this should be controlled by the use in the GUI/IMGUI
 		*/
 		{
-			Scenes.push_back(std::make_shared<cScene>());
+			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow()));
 		}
 	}
 

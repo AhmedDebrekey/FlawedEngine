@@ -4,11 +4,19 @@
 #include <string>
 
 #include <iostream> //temp for the destructor, remove later
+#include <glm/glm.hpp>
 
 namespace FlawedEngine
 {
 	typedef unsigned int uint32_t;
 #define MAX_BONE_INFLUENCE 4
+
+	struct Transform
+	{
+		glm::mat4 Projection;
+		glm::mat4 View;
+	};
+
 	struct vec3//temp
 	{
 		float x, y, z;
@@ -43,7 +51,7 @@ namespace FlawedEngine
 	public:
 		vec3 Postition, Rotation, Scale; 
 
-		virtual void Render() = 0;
+		virtual void Render(Transform Trans) = 0;
 		virtual void GetInfo() = 0;
 		virtual ~cEntity() = 0;
 

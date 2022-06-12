@@ -15,10 +15,10 @@ namespace FlawedEngine
 		//Delete if used other variables than mVertexBuffer and Texture and the indexbuffer
 	}
 
-	void cTriangle::Render() 
+	void cTriangle::Render(Transform Trans) 
 	{
 		//Rendering of a triangle
-		Renderer.Draw();
+		Renderer.Draw(Trans);
 	}
 
 	//tempForDebugPurposes

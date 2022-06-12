@@ -1,6 +1,10 @@
 ﻿  Engine.cpp
-  Window.cpp
+C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\PerspectiveCamera.h(32,21): warning C4305: 'initializing': truncation from 'double' to 'float'
+  PerspectiveCamera.cpp
+C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\PerspectiveCamera.h(32,21): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Scene.cpp
+C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\PerspectiveCamera.h(32,21): warning C4305: 'initializing': truncation from 'double' to 'float'
   EntryPoint.cpp
+C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\PerspectiveCamera.h(32,21): warning C4305: 'initializing': truncation from 'double' to 'float'
   Generating Code...
-C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\Window.cpp(57): warning C4715: 'FlawedEngine::cWindow::CreateWindow': not all control paths return a value
   FlawedEngine.vcxproj -> C:\Dev\FlawedEngine\FlawedEngine\x64\Debug\FlawedEngine.exe

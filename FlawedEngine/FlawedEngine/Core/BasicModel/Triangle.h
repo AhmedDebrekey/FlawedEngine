@@ -11,7 +11,7 @@ namespace FlawedEngine
 	public:
 		cTriangle();
 		~cTriangle();
-		virtual void Render() override;
+		virtual void Render(Transform Trans) override;
 
 		virtual void GetInfo() override;
 	private:

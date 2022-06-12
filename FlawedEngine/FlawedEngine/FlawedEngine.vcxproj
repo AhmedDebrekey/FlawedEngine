@@ -155,6 +155,7 @@
     <ClCompile Include="Core\Scene.cpp" />
     <ClCompile Include="Core\BasicModel\Triangle.cpp" />
     <ClCompile Include="Core\Models\ModelRenderer.cpp" />
+    <ClCompile Include="Core\PerspectiveCamera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Engine.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Core\Scene.h" />
     <ClInclude Include="Core\BasicModel\Triangle.h" />
     <ClInclude Include="Core\Models\ModelRenderer.h" />
+    <ClInclude Include="Core\PerspectiveCamera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Fragment.glsl" />
