@@ -27,6 +27,7 @@ namespace FlawedEngine
 
 	private:
 		std::vector<std::shared_ptr<cEntity>> WorldEntities; //TODO: Make this into a "non"-array type, better to have an unordered map
-		cpCamera Camera;
+		void* mWindow;
+		cpCamera Camera;		
 	};
 }

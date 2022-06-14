@@ -5,7 +5,7 @@
 namespace FlawedEngine
 {
 	cScene::cScene(void* Window)
-		:Camera(Window)
+		:mWindow(Window), Camera(mWindow)
 	{
 		//Should have more stuff in the future probably, IDK little secret, I am just winging it, I don't really know what I am doing.
 		Setup();
@@ -26,7 +26,6 @@ namespace FlawedEngine
 		Camera.Compute();
 		Transform tCamera { Camera.Projection(), Camera.View()};
 		
-
 		//Render Models
 		for (auto Entity : WorldEntities)
 		{

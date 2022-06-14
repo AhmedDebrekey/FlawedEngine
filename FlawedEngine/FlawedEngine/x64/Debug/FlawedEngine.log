@@ -1,10 +1,2 @@
-﻿  Engine.cpp
-C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\PerspectiveCamera.h(32,21): warning C4305: 'initializing': truncation from 'double' to 'float'
-  PerspectiveCamera.cpp
-C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\PerspectiveCamera.h(32,21): warning C4305: 'initializing': truncation from 'double' to 'float'
-  Scene.cpp
-C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\PerspectiveCamera.h(32,21): warning C4305: 'initializing': truncation from 'double' to 'float'
-  EntryPoint.cpp
-C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\PerspectiveCamera.h(32,21): warning C4305: 'initializing': truncation from 'double' to 'float'
-  Generating Code...
+﻿  Triangle.cpp
   FlawedEngine.vcxproj -> C:\Dev\FlawedEngine\FlawedEngine\x64\Debug\FlawedEngine.exe

@@ -29,7 +29,7 @@ namespace FlawedEngine
 		float mFOV = 80.0f;
 
 		float mSpeed = 10.f;
-		float mMouseSpeed = 0.003;
+		float mMouseSpeed = 0.003f;
 
 	};
 }

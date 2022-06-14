@@ -1,58 +1,19 @@
 #pragma once
 
-#include <vector>
-#include <string>
+#include "Core.h"
+#include "Input/Input.h"
 
 #include <iostream> //temp for the destructor, remove later
-#include <glm/glm.hpp>
 
 namespace FlawedEngine
 {
-	typedef unsigned int uint32_t;
-#define MAX_BONE_INFLUENCE 4
-
-	struct Transform
-	{
-		glm::mat4 Projection;
-		glm::mat4 View;
-	};
-
-	struct vec3//temp
-	{
-		float x, y, z;
-	};
-	struct vec2//temp
-	{
-		float x, y;
-	};
-
-	struct sVertex
-	{
-		vec3 Postion;
-		vec3 Normal;
-		vec2 TexCoords;
-
-		vec3 Tangent;
-		vec3 BiTangent;
-
-		int mBoneIDs[MAX_BONE_INFLUENCE];
-		float mWeights[MAX_BONE_INFLUENCE];
-	};
-
-	struct sTexture
-	{
-		uint32_t ID;
-		std::string Type;
-		std::string Path;
-	};
-
 	class cEntity
 	{
 	public:
-		vec3 Postition, Rotation, Scale; 
+		glm::vec3 Postition, Rotation, Scale; 
 
-		virtual void Render(Transform Trans) = 0;
-		virtual void GetInfo() = 0;
+		virtual void Render(Transform& Trans) = 0;
+		virtual void Update() = 0;
 		virtual ~cEntity() = 0;
 
 		struct sMaterial
@@ -68,7 +29,7 @@ namespace FlawedEngine
 		std::vector<sTexture> mTextureCoords;
 		//std::vector<float> mIndexBuffer;
 
-		
+		cInput& Input = cInput::get();
 	};
 
 	inline cEntity::~cEntity()

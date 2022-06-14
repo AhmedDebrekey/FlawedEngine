@@ -18,7 +18,7 @@ namespace FlawedEngine
 		void OnEvent();
 
 	private:
-		FlawedEngine::cWindow& EngineWindow = FlawedEngine::cWindow::get();
+		cWindow& EngineWindow = cWindow::get();
 		std::vector<std::shared_ptr<cScene>> Scenes;
 	};
 }

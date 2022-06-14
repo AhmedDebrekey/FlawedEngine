@@ -1,7 +1,5 @@
 #pragma once
 
-namespace FlawedEngine
-{
 #ifndef OPENGL
 #define OPENGL //TODO: Add this to the renderer class to be deterimned there.
 #endif
@@ -10,6 +8,9 @@ namespace FlawedEngine
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #endif
+
+namespace FlawedEngine
+{
 
 	typedef unsigned int uint32_t;
 	struct sWindowSize
@@ -33,15 +34,11 @@ namespace FlawedEngine
 		void UpdateViewPort(uint32_t Width, uint32_t Height);
 		struct sWindowSize GetWindowSize();
 
-	#ifdef OPENGL
 		GLFWwindow* GetWindow() { return mWindow; }
-	#endif
 
 	private:
-	#ifdef OPENGL 
 		GLFWwindow* mWindow;
-	#endif
-		uint32_t mWidth = 800, mHeight = 800;
+		uint32_t mWidth = 1600, mHeight = 900;
 
 	public:
 		static cWindow& get();
