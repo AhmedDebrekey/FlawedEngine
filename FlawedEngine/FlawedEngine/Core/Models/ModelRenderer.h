@@ -22,10 +22,11 @@ namespace FlawedEngine
 	{
 	public:
 		void Draw(Transform& Trans);
-		void Init(std::vector<sVertex> Vertecies, std::vector<sTexture> Textures);
+		void Init(std::vector<sVertex>& Vertecies, std::vector<sTexture>& Textures, std::vector<uint32_t>& Indices);
 
 	public:
 		std::vector<sVertex> mVertecies;
+		std::vector<uint32_t> mIndices;
 		std::vector<sTexture> mTextures;
 		uint32_t VAO; 
 

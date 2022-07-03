@@ -2,10 +2,11 @@
 
 namespace FlawedEngine
 {
-    void cModelRenderer::Init(std::vector<sVertex> Vertecies, std::vector<sTexture> Textures)
+    void cModelRenderer::Init(std::vector<sVertex>& Vertecies, std::vector<sTexture>& Textures, std::vector<uint32_t>& Indices)
     {
         mVertecies = Vertecies;
         mTextures = Textures;
+        mIndices = Indices;
 
         Setup();
         Shader.Create("Core/Models/Shaders/Vertex.glsl", "Core/Models/Shaders/Fragment.glsl");
@@ -18,14 +19,14 @@ namespace FlawedEngine
     #ifdef OPENGL
         glGenVertexArrays(1, &VAO);
         glGenBuffers(1, &VBO);
-        //glGenBuffers(1, &EBO);
+        glGenBuffers(1, &EBO);
 
         glBindVertexArray(VAO);
         glBindBuffer(GL_ARRAY_BUFFER, VBO);
         glBufferData(GL_ARRAY_BUFFER, mVertecies.size() * sizeof(sVertex), &mVertecies[0], GL_STATIC_DRAW);
 
-        /*glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);*/
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(unsigned int), &mIndices[0], GL_STATIC_DRAW);
 
         // vertex Positions
         glEnableVertexAttribArray(0);
@@ -62,7 +63,8 @@ namespace FlawedEngine
         Shader.SetMat4f("Model", Trans.Model);
         Shader.SetVec3("Color", glm::vec3(0.1f, 0.2f, 0.8f));
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
         Shader.Unbind();
     #endif 

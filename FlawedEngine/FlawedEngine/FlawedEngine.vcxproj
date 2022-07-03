@@ -151,6 +151,7 @@
     <ClCompile Include="Core\Input\Input.cpp" />
     <ClCompile Include="Core\Shader.cpp" />
     <ClCompile Include="Core\Window.cpp" />
+    <ClCompile Include="Core\BasicModel\Cube.cpp" />
     <ClCompile Include="EntryPoint.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="Core\Scene.cpp" />
@@ -169,6 +170,7 @@
     <ClInclude Include="Core\BasicModel\Triangle.h" />
     <ClInclude Include="Core\Models\ModelRenderer.h" />
     <ClInclude Include="Core\PerspectiveCamera.h" />
+    <ClInclude Include="Core\BasicModel\Cube.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Fragment.glsl" />

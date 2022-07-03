@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "BasicModel/Triangle.h"
+#include "BasicModel/Cube.h"
 
 namespace FlawedEngine
 {
@@ -18,7 +19,8 @@ namespace FlawedEngine
 
 	void cScene::Setup()
 	{
-		LoadModel(Triangle);
+		LoadModel(Triangle); //Maybe can get a shared pointer instead . . . It would be used to make transformations 
+		LoadModel(Cube);
 	}
 
 	void cScene::Render()
@@ -43,6 +45,9 @@ namespace FlawedEngine
 		switch (Object)
 		{
 		case FlawedEngine::cScene::Cube:
+			{
+				WorldEntities.push_back(std::make_shared<cCube>());
+			}
 			break;
 		case FlawedEngine::cScene::Sphere:
 			break;

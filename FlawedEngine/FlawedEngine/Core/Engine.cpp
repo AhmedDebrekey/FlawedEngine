@@ -22,7 +22,7 @@ namespace FlawedEngine
 		{
 			EngineWindow.Update(); 
 			OnEvent();
-			for (auto Scene : Scenes)
+			for (auto Scene : Scenes)//TODO: Switch from a for loop to single based scene.
 			{
 				Scene->Render();
 			}

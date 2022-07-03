@@ -6,7 +6,10 @@ namespace FlawedEngine
 		mVertexBuffer.push_back({ glm::vec3(-0.5f, -0.5f, 0.0f) });
 		mVertexBuffer.push_back({ glm::vec3(0.5f, -0.5f, 0.0f)  });
 		mVertexBuffer.push_back({ glm::vec3(0.0f,  0.5f, 0.0f)  });
-		Renderer.Init(mVertexBuffer, mTextureCoords);
+
+		mIndices = { 0,1,2 };
+
+		Renderer.Init(mVertexBuffer, mTextureCoords, mIndices);
 	}
 	
 	cTriangle::~cTriangle()
@@ -17,7 +20,7 @@ namespace FlawedEngine
 	void cTriangle::Render(Transform& Trans) 
 	{
 		//Rendering of a triangle
-		glm::mat4 Model = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 10.0f, 0.0f));
+		glm::mat4 Model = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 		Trans.Model = Model;
 		Renderer.Draw(Trans);
 	}

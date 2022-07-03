@@ -13,7 +13,7 @@ namespace FlawedEngine
 		glm::vec3 Postition, Rotation, Scale; 
 
 		virtual void Render(Transform& Trans) = 0;
-		virtual void Update() = 0;
+		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
 		virtual ~cEntity() = 0;
 
 		struct sMaterial
@@ -25,7 +25,10 @@ namespace FlawedEngine
 
 		sMaterial mMaterial;
 
+		glm::mat4 mModel;
+
 		std::vector<sVertex> mVertexBuffer;
+		std::vector<uint32_t> mIndices;
 		std::vector<sTexture> mTextureCoords;
 		//std::vector<float> mIndexBuffer;
 
