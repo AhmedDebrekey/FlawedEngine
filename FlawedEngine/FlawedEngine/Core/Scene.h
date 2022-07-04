@@ -2,6 +2,7 @@
 
 #include "Entity.h"
 #include "PerspectiveCamera.h"
+#include <unordered_map>
 
 namespace FlawedEngine
 {
@@ -22,11 +23,13 @@ namespace FlawedEngine
 		~cScene();
 		void Setup();
 		void Render();
-		void LoadModel(const char* FilePath);
-		void LoadModel(eBasicObject Object);
+		void LoadModel(const char* FilePath, const char* Name);
+		void LoadModel(eBasicObject Object, const char* Name);
+
+		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
 
 	private:
-		std::vector<std::shared_ptr<cEntity>> WorldEntities; //TODO: Make this into a "non"-array type, better to have an unordered map
+		std::unordered_map<std::string, std::shared_ptr<cEntity>> WorldEntities;
 		void* mWindow;
 		cpCamera Camera;		
 	};

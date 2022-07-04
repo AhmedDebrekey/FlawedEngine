@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include "glm/gtc/matrix_transform.hpp"
 #include <string>
 #include <vector>
 
@@ -8,6 +9,13 @@ namespace FlawedEngine
 {
 	typedef unsigned int uint32_t;
 #define MAX_BONE_INFLUENCE 4
+
+	struct sModel
+	{
+		glm::vec3 Translation = glm::vec3(0.0f);
+		glm::vec3 Rotation = glm::vec3(0.0f);
+		glm::vec3 Scale = glm::vec3(1.0f);
+	};
 
 	struct Transform
 	{

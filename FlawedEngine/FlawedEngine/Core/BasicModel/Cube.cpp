@@ -34,8 +34,7 @@ namespace FlawedEngine
 
 	void cCube::Render(Transform& Trans)
 	{
-		glm::mat4 Model = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 1.0f, 1.0f));
-		Trans.Model = Model;
+		Trans.Model = mModel;
 		Renderer.Draw(Trans);
 	}
 

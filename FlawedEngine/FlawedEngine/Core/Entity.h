@@ -3,17 +3,18 @@
 #include "Core.h"
 #include "Input/Input.h"
 
-#include <iostream> //temp for the destructor, remove later
+#include <iostream>
 
 namespace FlawedEngine
 {
 	class cEntity
 	{
 	public:
-		glm::vec3 Postition, Rotation, Scale; 
+		sModel mTransformation; //I can't find a better name
 
 		virtual void Render(Transform& Trans) = 0;
 		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
+		void ModelTransform(sModel& model);
 		virtual ~cEntity() = 0;
 
 		struct sMaterial
@@ -37,9 +38,21 @@ namespace FlawedEngine
 
 	inline cEntity::~cEntity()
 	{
-		std::cout << "Entity Has Been Destructed" << std::endl;
 		mVertexBuffer.clear();
 		mTextureCoords.clear();
-		//mIndexBuffer.clear();
+		mIndices.clear();
+	}
+
+	inline void cEntity::ModelTransform(sModel& model)
+	{//this is a big mess tbh, i am confusion
+		mTransformation = model;
+		glm::mat4 Model = glm::mat4(1.0f);
+		Model = glm::translate(Model, mTransformation.Translation);
+		Model = glm::rotate(Model, glm::radians(mTransformation.Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+		Model = glm::rotate(Model, glm::radians(mTransformation.Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+		Model = glm::rotate(Model, glm::radians(mTransformation.Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+		Model = glm::scale(Model, mTransformation.Scale);
+
+		mModel = Model;
 	}
 }
