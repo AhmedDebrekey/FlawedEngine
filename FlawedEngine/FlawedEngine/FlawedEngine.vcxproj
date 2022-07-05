@@ -158,12 +158,14 @@
     <ClCompile Include="Core\BasicModel\Triangle.cpp" />
     <ClCompile Include="Core\Models\ModelRenderer.cpp" />
     <ClCompile Include="Core\PerspectiveCamera.cpp" />
+    <ClCompile Include="Core\Models\OBJModel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\Engine.h" />
     <ClInclude Include="Core\Entity.h" />
     <ClInclude Include="Core\Input\Input.h" />
+    <ClInclude Include="Core\Models\OBJ_Loader.h" />
     <ClInclude Include="Core\Shader.h" />
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="Core\Scene.h" />
@@ -171,6 +173,7 @@
     <ClInclude Include="Core\Models\ModelRenderer.h" />
     <ClInclude Include="Core\PerspectiveCamera.h" />
     <ClInclude Include="Core\BasicModel\Cube.h" />
+    <ClInclude Include="Core\Models\OBJModel.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Fragment.glsl" />

@@ -3,6 +3,8 @@
 #include "BasicModel/Triangle.h"
 #include "BasicModel/Cube.h"
 
+#include "Models/OBJModel.h"
+
 namespace FlawedEngine
 {
 	cScene::cScene(void* Window)
@@ -19,9 +21,11 @@ namespace FlawedEngine
 
 	void cScene::Setup()
 	{
-		LoadModel(Triangle, "Triangle"); //Maybe can get a shared pointer instead . . . It would be used to make transformations 
+		LoadModel(Triangle, "Triangle");
 		LoadModel(Cube, "Cube");
 		LoadModel(Cube, "Debreky");
+		LoadModel("Core\\Models\\OBJ\\DeformedBall\\Ball.obj", "Ball");
+		LoadModel("Core\\Models\\OBJ\\Cone\\Cone.obj", "Cone");
 	}
 
 	void cScene::Render()
@@ -30,15 +34,23 @@ namespace FlawedEngine
 		Transform tCamera { Camera.Projection(), Camera.View()};
 
 		std::shared_ptr<cEntity> Triangle = GetObjectByName("Triangle");
-		sModel TriangleModel = { glm::vec3(3.0f, 5.0f, 0.0f), glm::vec3(45.0f), glm::vec3(5.0f) };
-		Triangle->ModelTransform(TriangleModel);
+		if (Triangle)
+		{
+			sModel TriangleModel = { glm::vec3(3.0f, 5.0f, 0.0f), glm::vec3(45.0f), glm::vec3(5.0f) };
+			Triangle->ModelTransform(TriangleModel);
+		}
 
 		sModel CubeModel = { glm::vec3(-1.0f, 1.0f, 1.0f) };
 		GetObjectByName("Cube")->ModelTransform(CubeModel); // Unsafe since it can be a nullptr
 
-		glm::vec3 DebrekyTranslation = glm::vec3(10.0f, 5.0f, 6.0f);
 		sModel DebrekyModel = { glm::vec3(10.0f, 5.0f, 6.0f), glm::vec3(45.0f, 180.0f, 65.0f)};
 		GetObjectByName("Debreky")->ModelTransform(DebrekyModel);
+
+		sModel BallModel = { glm::vec3(15.0f, 2.0f, 4.0f), glm::vec3(0.0f), glm::vec3(2.0f) };
+		GetObjectByName("Ball")->ModelTransform(BallModel);
+
+		sModel ConeModel = { glm::vec3(-15.0f, 2.0f, 4.0f), glm::vec3(0.0f), glm::vec3(3.0f) };
+		GetObjectByName("Cone")->ModelTransform(ConeModel);
 		
 		//Render Models
 		for (auto Entities : WorldEntities)
@@ -49,7 +61,7 @@ namespace FlawedEngine
 
 	void cScene::LoadModel(const char* FilePath, const char* Name)
 	{
-		//TODO: Implement a 3D Model Loader
+		WorldEntities[Name] = std::make_shared<cOBJModel>(FilePath);
 	}
 
 	void cScene::LoadModel(eBasicObject Object, const char* Name)
