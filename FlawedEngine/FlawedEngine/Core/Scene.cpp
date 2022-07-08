@@ -23,10 +23,10 @@ namespace FlawedEngine
 	void cScene::Setup()
 	{
 		LoadModel(Triangle, "Triangle");
-		LoadModel(Cube, "Cube");
-		LoadModel("Core\\Models\\OBJ\\DeformedBall\\Ball.obj", "Ball");
+		LoadModel("Core\\Models\\OBJ\\Cube\\Cube.obj", "Cube");
 		LoadModel("Core\\Models\\OBJ\\Cone\\Cone.obj", "Cone");
 		LoadModel(PointLight, "Light");
+		LoadModel("Core\\Models\\OBJ\\Cube\\Cube.obj", "Ground");
 	}
 
 	void cScene::Render()
@@ -45,14 +45,6 @@ namespace FlawedEngine
 		sModel CubeModel = { glm::vec3(-1.0f, 1.0f, 1.0f) };
 		GetObjectByName("Cube")->ModelTransform(CubeModel); // Unsafe since it can be a nullptr
 
-		auto Ball = GetObjectByName("Ball");
-		if (Ball)
-		{
-			sModel BallModel = { glm::vec3(15.0f, 2.0f, 4.0f), glm::vec3(0.0f), glm::vec3(2.0f) };
-			Ball->ModelTransform(BallModel);
-			Ball->SetColor(glm::vec3(0.7f, 0.2f, 0.5f));
-		}
-
 		auto Cone = GetObjectByName("Cone");
 		if (Cone)
 		{
@@ -67,12 +59,21 @@ namespace FlawedEngine
 			sModel LightModel = { glm::vec3(-18.0f, 6.0f, 2.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
 			Light->ModelTransform(LightModel);
 			Light->SetColor(glm::vec3(0.5f, 0.3f, 0.9f));
+			AddLightIfNotFound("Light", LightModel.Translation);
+		}
+
+		auto Ground = GetObjectByName("Ground");
+		if (Ground)
+		{
+			sModel GroundModel = { glm::vec3(0.0f, -5.0f, 0.0f), glm::vec3(0.0f), glm::vec3(30.0f, 0.1f, 30.0f) };
+			Ground->ModelTransform(GroundModel);
+			Ground->SetColor(glm::vec3(0.3f, 0.3f, 0.3f));
 		}
 
 		//Render Models
 		for (auto &Entities : WorldEntities)
 		{
-			Entities.second->Render(tCamera);
+			Entities.second->Render(tCamera, LightPositions); 
 		}
 	}
 
@@ -100,7 +101,6 @@ namespace FlawedEngine
 		case FlawedEngine::cScene::PointLight:
 			{
 				WorldEntities[Name] = std::make_shared<cPointLight>();
-
 			}
 			break;
 		case FlawedEngine::cScene::SpotLight:
@@ -110,13 +110,23 @@ namespace FlawedEngine
 		}
 	}
 
-	std::shared_ptr<cEntity> FlawedEngine::cScene::GetObjectByName(const char* Name)
+	std::shared_ptr<cEntity> cScene::GetObjectByName(const char* Name)
 	{
 		auto Entity = WorldEntities.find(Name);
 
 		if (Entity == WorldEntities.end())
 			return nullptr;
 
-		return Entity->second;;
+		return Entity->second;
+	}
+
+	void cScene::AddLightIfNotFound(const char* Name, glm::vec3& Pos)
+	{
+		auto Light = LightPositions.find(Name);
+
+		if (Light == LightPositions.end())
+		{
+			LightPositions[Name] = Pos;
+		}
 	}
 }

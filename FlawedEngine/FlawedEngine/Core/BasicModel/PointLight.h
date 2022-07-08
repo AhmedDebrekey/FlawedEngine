@@ -3,6 +3,8 @@
 #include "../Entity.h"
 #include "../Models/ModelRenderer.h"
 
+#include <unordered_map>
+
 namespace FlawedEngine
 {
 	class cPointLight : public cEntity
@@ -10,7 +12,7 @@ namespace FlawedEngine
 	public:
 		cPointLight();
 		~cPointLight();
-		virtual void Render(Transform& Trans) override;
+		virtual void Render(Transform& Trans, std::unordered_map<std::string, glm::vec3>& LightPositions) override;
 		virtual void Update() override;
 
 		glm::vec3 mPosition;

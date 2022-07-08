@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include <unordered_map>
+
 namespace FlawedEngine
 {
 	class cEntity
@@ -12,7 +14,7 @@ namespace FlawedEngine
 	public:
 		sModel mTransformation; //I can't find a better name
 
-		virtual void Render(Transform& Trans) = 0;
+		virtual void Render(Transform& Trans, std::unordered_map<std::string, glm::vec3>& LightPositions) = 0;
 		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
 		void ModelTransform(sModel& model);
 		void SetColor(glm::vec3 Color);

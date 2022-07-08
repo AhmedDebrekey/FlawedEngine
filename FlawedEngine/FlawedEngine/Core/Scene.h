@@ -25,11 +25,13 @@ namespace FlawedEngine
 		void Render();
 		void LoadModel(const char* FilePath, const char* Name);
 		void LoadModel(eBasicObject Object, const char* Name);
+		void AddLightIfNotFound(const char* Name, glm::vec3& Pos);
 
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
 
 	private:
 		std::unordered_map<std::string, std::shared_ptr<cEntity>> WorldEntities;
+		std::unordered_map<std::string, glm::vec3> LightPositions;
 		void* mWindow;
 		cpCamera Camera;		
 	};

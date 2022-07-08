@@ -54,10 +54,14 @@ namespace FlawedEngine
     #endif //OPENGL
 	}
 
-	void cModelRenderer::Draw(Transform& Trans, sMaterial& Mat)
+	void cModelRenderer::Draw(Transform& Trans, sMaterial& Mat, std::unordered_map<std::string, glm::vec3>& LightPositions)
 	{
     #ifdef OPENGL
         Shader.Bind();
+        for (auto& Light : LightPositions)
+        {
+            Shader.SetVec3("lightPos", Light.second);
+        }
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);
         Shader.SetMat4f("Model", Trans.Model);
