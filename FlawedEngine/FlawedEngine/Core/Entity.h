@@ -15,14 +15,8 @@ namespace FlawedEngine
 		virtual void Render(Transform& Trans) = 0;
 		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
 		void ModelTransform(sModel& model);
+		void SetColor(glm::vec3 Color);
 		virtual ~cEntity() = 0;
-
-		struct sMaterial
-		{
-			float Shininess;
-			float Roughness;
-			//...
-		};
 
 		sMaterial mMaterial;
 
@@ -54,5 +48,10 @@ namespace FlawedEngine
 		Model = glm::scale(Model, mTransformation.Scale);
 
 		mModel = Model;
+	}
+
+	inline void cEntity::SetColor(glm::vec3 Color)
+	{
+		mMaterial.Color = Color;
 	}
 }

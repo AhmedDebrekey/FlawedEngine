@@ -21,7 +21,7 @@ namespace FlawedEngine
 	{
 		//Rendering of a triangle
 		Trans.Model = mModel;
-		Renderer.Draw(Trans);
+		Renderer.Draw(Trans, mMaterial);
 	}
 
 	void cTriangle::Update()

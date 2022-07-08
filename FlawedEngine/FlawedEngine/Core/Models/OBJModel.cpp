@@ -51,7 +51,7 @@ namespace FlawedEngine
 	void cOBJModel::Render(Transform& Trans)
 	{
 		Trans.Model = mModel;
-		Renderer.Draw(Trans);
+		Renderer.Draw(Trans, mMaterial);
 	}
 
 	void cOBJModel::Update()

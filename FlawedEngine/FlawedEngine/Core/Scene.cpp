@@ -2,6 +2,7 @@
 
 #include "BasicModel/Triangle.h"
 #include "BasicModel/Cube.h"
+#include "BasicModel/PointLight.h"
 
 #include "Models/OBJModel.h"
 
@@ -23,9 +24,9 @@ namespace FlawedEngine
 	{
 		LoadModel(Triangle, "Triangle");
 		LoadModel(Cube, "Cube");
-		LoadModel(Cube, "Debreky");
 		LoadModel("Core\\Models\\OBJ\\DeformedBall\\Ball.obj", "Ball");
 		LoadModel("Core\\Models\\OBJ\\Cone\\Cone.obj", "Cone");
+		LoadModel(PointLight, "Light");
 	}
 
 	void cScene::Render()
@@ -38,22 +39,38 @@ namespace FlawedEngine
 		{
 			sModel TriangleModel = { glm::vec3(3.0f, 5.0f, 0.0f), glm::vec3(45.0f), glm::vec3(5.0f) };
 			Triangle->ModelTransform(TriangleModel);
+			Triangle->SetColor(glm::vec3( 0.3f, 0.6f, 0.1f ));
 		}
 
 		sModel CubeModel = { glm::vec3(-1.0f, 1.0f, 1.0f) };
 		GetObjectByName("Cube")->ModelTransform(CubeModel); // Unsafe since it can be a nullptr
 
-		sModel DebrekyModel = { glm::vec3(10.0f, 5.0f, 6.0f), glm::vec3(45.0f, 180.0f, 65.0f)};
-		GetObjectByName("Debreky")->ModelTransform(DebrekyModel);
+		auto Ball = GetObjectByName("Ball");
+		if (Ball)
+		{
+			sModel BallModel = { glm::vec3(15.0f, 2.0f, 4.0f), glm::vec3(0.0f), glm::vec3(2.0f) };
+			Ball->ModelTransform(BallModel);
+			Ball->SetColor(glm::vec3(0.7f, 0.2f, 0.5f));
+		}
 
-		sModel BallModel = { glm::vec3(15.0f, 2.0f, 4.0f), glm::vec3(0.0f), glm::vec3(2.0f) };
-		GetObjectByName("Ball")->ModelTransform(BallModel);
+		auto Cone = GetObjectByName("Cone");
+		if (Cone)
+		{
+			sModel ConeModel = { glm::vec3(-15.0f, 2.0f, 4.0f), glm::vec3(0.0f), glm::vec3(3.0f) };
+			Cone->ModelTransform(ConeModel);
+			Cone->SetColor(glm::vec3(0.05f, 0.05f, 0.4f));
+		}
+			
+		auto Light = GetObjectByName("Light");
+		if (Light)
+		{
+			sModel LightModel = { glm::vec3(-18.0f, 6.0f, 2.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
+			Light->ModelTransform(LightModel);
+			Light->SetColor(glm::vec3(0.5f, 0.3f, 0.9f));
+		}
 
-		sModel ConeModel = { glm::vec3(-15.0f, 2.0f, 4.0f), glm::vec3(0.0f), glm::vec3(3.0f) };
-		GetObjectByName("Cone")->ModelTransform(ConeModel);
-		
 		//Render Models
-		for (auto Entities : WorldEntities)
+		for (auto &Entities : WorldEntities)
 		{
 			Entities.second->Render(tCamera);
 		}
@@ -81,6 +98,10 @@ namespace FlawedEngine
 			}
 			break;
 		case FlawedEngine::cScene::PointLight:
+			{
+				WorldEntities[Name] = std::make_shared<cPointLight>();
+
+			}
 			break;
 		case FlawedEngine::cScene::SpotLight:
 			break;

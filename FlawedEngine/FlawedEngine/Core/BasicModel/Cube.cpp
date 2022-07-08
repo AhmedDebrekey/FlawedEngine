@@ -35,7 +35,7 @@ namespace FlawedEngine
 	void cCube::Render(Transform& Trans)
 	{
 		Trans.Model = mModel;
-		Renderer.Draw(Trans);
+		Renderer.Draw(Trans, mMaterial);
 	}
 
 	void cCube::Update()

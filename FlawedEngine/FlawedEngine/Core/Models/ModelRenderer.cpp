@@ -54,14 +54,14 @@ namespace FlawedEngine
     #endif //OPENGL
 	}
 
-	void cModelRenderer::Draw(Transform& Trans)
+	void cModelRenderer::Draw(Transform& Trans, sMaterial& Mat)
 	{
     #ifdef OPENGL
         Shader.Bind();
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);
         Shader.SetMat4f("Model", Trans.Model);
-        Shader.SetVec3("Color", glm::vec3(0.1f, 0.2f, 0.8f));
+        Shader.SetVec3("Color", Mat.Color);
 		glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);

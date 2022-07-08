@@ -10,6 +10,22 @@ namespace FlawedEngine
 	typedef unsigned int uint32_t;
 #define MAX_BONE_INFLUENCE 4
 
+	struct sLights
+	{
+		std::vector<glm::vec3> PointPos;
+		glm::vec3 DirectionalPos;
+		std::vector<glm::vec3> SpotPos;
+	};
+
+	struct sMaterial
+	{
+		glm::vec3 Color = glm::vec3(1);
+		glm::vec3 Diffuse;
+		glm::vec3 Specular;
+		float Shininess;
+		float Roughness;
+	};
+
 	struct sModel
 	{
 		glm::vec3 Translation = glm::vec3(0.0f);

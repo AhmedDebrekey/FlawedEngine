@@ -21,7 +21,7 @@ namespace FlawedEngine
 	class cModelRenderer
 	{
 	public:
-		void Draw(Transform& Trans);
+		void Draw(Transform& Trans, sMaterial& Mat);
 		void Init(std::vector<sVertex>& Vertecies, std::vector<sTexture>& Textures, std::vector<uint32_t>& Indices);
 
 	public:

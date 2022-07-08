@@ -159,6 +159,7 @@
     <ClCompile Include="Core\Models\ModelRenderer.cpp" />
     <ClCompile Include="Core\PerspectiveCamera.cpp" />
     <ClCompile Include="Core\Models\OBJModel.cpp" />
+    <ClCompile Include="Core\BasicModel\PointLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Core.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="Core\PerspectiveCamera.h" />
     <ClInclude Include="Core\BasicModel\Cube.h" />
     <ClInclude Include="Core\Models\OBJModel.h" />
+    <ClInclude Include="Core\BasicModel\PointLight.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Fragment.glsl" />
