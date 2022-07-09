@@ -11,7 +11,7 @@ namespace FlawedEngine
 	public:
 		cCube();
 		~cCube();
-		virtual void Render(Transform& Trans, std::unordered_map<std::string, glm::vec3>& LightPositions) override;
+		virtual void Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions) override;
 		virtual void Update() override;
 
 	private:

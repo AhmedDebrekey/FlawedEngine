@@ -17,7 +17,7 @@ namespace FlawedEngine
 		//Delete if used other variables than mVertexBuffer and Texture and the indexbuffer
 	}
 
-	void cTriangle::Render(Transform& Trans, std::unordered_map<std::string, glm::vec3>& LightPositions)
+	void cTriangle::Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
 		//Rendering of a triangle
 		Trans.Model = mModel;

@@ -48,7 +48,7 @@ namespace FlawedEngine
 		}
 	}
 
-	void cOBJModel::Render(Transform& Trans, std::unordered_map<std::string, glm::vec3>& LightPositions)
+	void cOBJModel::Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
 		Trans.Model = mModel;
 		Renderer.Draw(Trans, mMaterial, LightPositions);

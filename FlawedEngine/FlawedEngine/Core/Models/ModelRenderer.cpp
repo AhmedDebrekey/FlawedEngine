@@ -54,18 +54,48 @@ namespace FlawedEngine
     #endif //OPENGL
 	}
 
-	void cModelRenderer::Draw(Transform& Trans, sMaterial& Mat, std::unordered_map<std::string, glm::vec3>& LightPositions)
+	void cModelRenderer::Draw(Transform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights)
 	{
     #ifdef OPENGL
         Shader.Bind();
-        for (auto& Light : LightPositions)
+        int Iteration = 0;
+        for (auto& Light : Lights)
         {
-            Shader.SetVec3("lightPos", Light.second);
+            auto CurrLight = Light.second;
+
+            char buffer[64];
+
+            sprintf_s(buffer, "pointLights[%i].position", Iteration);
+            Shader.SetVec3(buffer, CurrLight.position);
+
+            sprintf_s(buffer, "pointLights[%i].ambient", Iteration);
+            Shader.SetVec3(buffer, CurrLight.ambient);
+
+            sprintf_s(buffer, "pointLights[%i].diffuse", Iteration);
+            Shader.SetVec3(buffer, CurrLight.diffuse);
+
+            sprintf_s(buffer, "pointLights[%i].specular", Iteration);
+            Shader.SetVec3(buffer, CurrLight.specular);
+
+            sprintf_s(buffer, "pointLights[%i].constant", Iteration);
+            Shader.SetFloat(buffer, CurrLight.constant);
+
+            sprintf_s(buffer, "pointLights[%i].linear", Iteration);
+            Shader.SetFloat(buffer, CurrLight.linear);
+            
+            sprintf_s(buffer, "pointLights[%i].quadratic", Iteration);
+            Shader.SetFloat(buffer, CurrLight.quadratic);
+            Iteration++;
         }
+
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);
         Shader.SetMat4f("Model", Trans.Model);
-        Shader.SetVec3("Color", Mat.Color);
+        Shader.SetVec3("viewPos", Trans.Position);
+        Shader.SetVec3("material.ambient", Mat.Color);
+        Shader.SetVec3("material.diffuse", Mat.Diffuse);
+        Shader.SetVec3("material.specular", Mat.Specular);
+        Shader.SetFloat("material.shininess", Mat.Shininess);
 		glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);

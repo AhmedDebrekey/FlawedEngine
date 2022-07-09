@@ -30,7 +30,7 @@ namespace FlawedEngine
 	{
 	}
 
-	void cPointLight::Render(Transform& Trans, std::unordered_map<std::string, glm::vec3>& LightPositions)
+	void cPointLight::Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
 		mColor = mMaterial.Color;
 		Trans.Model = mModel;

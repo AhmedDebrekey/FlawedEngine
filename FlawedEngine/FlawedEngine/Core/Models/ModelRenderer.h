@@ -23,7 +23,7 @@ namespace FlawedEngine
 	class cModelRenderer
 	{
 	public:
-		void Draw(Transform& Trans, sMaterial& Mat, std::unordered_map<std::string, glm::vec3>& LightPositions);
+		void Draw(Transform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights);
 
 		void Init(std::vector<sVertex>& Vertecies, std::vector<sTexture>& Textures, std::vector<uint32_t>& Indices);
 

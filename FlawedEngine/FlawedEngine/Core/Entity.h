@@ -14,10 +14,11 @@ namespace FlawedEngine
 	public:
 		sModel mTransformation; //I can't find a better name
 
-		virtual void Render(Transform& Trans, std::unordered_map<std::string, glm::vec3>& LightPositions) = 0;
+		virtual void Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions) = 0;
 		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
 		void ModelTransform(sModel& model);
 		void SetColor(glm::vec3 Color);
+		void SetMaterial(sMaterial& Mat);
 		virtual ~cEntity() = 0;
 
 		sMaterial mMaterial;
@@ -55,5 +56,10 @@ namespace FlawedEngine
 	inline void cEntity::SetColor(glm::vec3 Color)
 	{
 		mMaterial.Color = Color;
+	}
+
+	inline void cEntity::SetMaterial(sMaterial& Mat)
+	{
+		mMaterial = Mat;
 	}
 }

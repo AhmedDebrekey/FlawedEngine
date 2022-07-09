@@ -26,13 +26,14 @@ namespace FlawedEngine
 		LoadModel("Core\\Models\\OBJ\\Cube\\Cube.obj", "Cube");
 		LoadModel("Core\\Models\\OBJ\\Cone\\Cone.obj", "Cone");
 		LoadModel(PointLight, "Light");
+		LoadModel(PointLight, "Example");
 		LoadModel("Core\\Models\\OBJ\\Cube\\Cube.obj", "Ground");
 	}
 
 	void cScene::Render()
 	{
 		Camera.Compute();
-		Transform tCamera { Camera.Projection(), Camera.View()};
+		Transform tCamera { Camera.Postion() , Camera.Front(),Camera.Projection(), Camera.View()};
 
 		std::shared_ptr<cEntity> Triangle = GetObjectByName("Triangle");
 		if (Triangle)
@@ -50,7 +51,8 @@ namespace FlawedEngine
 		{
 			sModel ConeModel = { glm::vec3(-15.0f, 2.0f, 4.0f), glm::vec3(0.0f), glm::vec3(3.0f) };
 			Cone->ModelTransform(ConeModel);
-			Cone->SetColor(glm::vec3(0.05f, 0.05f, 0.4f));
+			sMaterial ConeMaterial = { glm::vec3(0.05f, 0.05f, 0.4f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f };
+			Cone->SetMaterial(ConeMaterial);
 		}
 			
 		auto Light = GetObjectByName("Light");
@@ -59,7 +61,18 @@ namespace FlawedEngine
 			sModel LightModel = { glm::vec3(-18.0f, 6.0f, 2.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
 			Light->ModelTransform(LightModel);
 			Light->SetColor(glm::vec3(0.5f, 0.3f, 0.9f));
-			AddLightIfNotFound("Light", LightModel.Translation);
+			sLight LightProps = { LightModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(0.5), glm::vec3(0.8f), glm::vec3(1.0f)};
+			AddLightIfNotFound("Light", LightProps);
+		}
+
+		auto ExampleLight = GetObjectByName("Example");
+		if(ExampleLight) 
+		{
+			sModel LightModel = { glm::vec3(15.0f, 3.0f, 2.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
+			ExampleLight->ModelTransform(LightModel);
+			ExampleLight->SetColor(glm::vec3(0.6f, 0.5f, 0.3f));
+			sLight LightProps = { LightModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(0.5), glm::vec3(0.8f), glm::vec3(1.0f) };
+			AddLightIfNotFound("Example", LightProps);
 		}
 
 		auto Ground = GetObjectByName("Ground");
@@ -67,13 +80,14 @@ namespace FlawedEngine
 		{
 			sModel GroundModel = { glm::vec3(0.0f, -5.0f, 0.0f), glm::vec3(0.0f), glm::vec3(30.0f, 0.1f, 30.0f) };
 			Ground->ModelTransform(GroundModel);
-			Ground->SetColor(glm::vec3(0.3f, 0.3f, 0.3f));
+			sMaterial GroundMat = { glm::vec3(0.5f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f), 32.0f };
+			Ground->SetMaterial(GroundMat);
 		}
 
 		//Render Models
 		for (auto &Entities : WorldEntities)
 		{
-			Entities.second->Render(tCamera, LightPositions); 
+			Entities.second->Render(tCamera, PointLights); 
 		}
 	}
 
@@ -120,13 +134,13 @@ namespace FlawedEngine
 		return Entity->second;
 	}
 
-	void cScene::AddLightIfNotFound(const char* Name, glm::vec3& Pos)
+	void cScene::AddLightIfNotFound(const char* Name, sLight& Props)
 	{
-		auto Light = LightPositions.find(Name);
+		auto Light = PointLights.find(Name);
 
-		if (Light == LightPositions.end())
+		if (Light == PointLights.end())
 		{
-			LightPositions[Name] = Pos;
+			PointLights[Name] = Props;
 		}
 	}
 }
