@@ -23,11 +23,13 @@ namespace FlawedEngine
 	void cScene::Setup()
 	{
 		LoadModel(Triangle, "Triangle");
-		LoadModel("Core\\Models\\OBJ\\Cube\\Cube.obj", "Cube");
-		LoadModel("Core\\Models\\OBJ\\Cone\\Cone.obj", "Cone");
 		LoadModel(PointLight, "Light");
 		LoadModel(PointLight, "Example");
-		LoadModel("Core\\Models\\OBJ\\Cube\\Cube.obj", "Ground");
+		LoadModel(PointLight, "AnotherOne");
+		LoadModel(Sphere, "Sphere");
+		LoadModel(Cube, "Ground");
+		LoadModel(Cone, "Cone");
+		LoadModel(Torus, "Torus");
 	}
 
 	void cScene::Render()
@@ -43,13 +45,29 @@ namespace FlawedEngine
 			Triangle->SetColor(glm::vec3( 0.3f, 0.6f, 0.1f ));
 		}
 
-		sModel CubeModel = { glm::vec3(-1.0f, 1.0f, 1.0f) };
-		GetObjectByName("Cube")->ModelTransform(CubeModel); // Unsafe since it can be a nullptr
+		auto Sphere = GetObjectByName("Sphere");
+		if (Sphere)
+		{
+			sModel SphereModel = { glm::vec3(-14.0f, 3.0f, -10.0f), glm::vec3(0.0f), glm::vec3(2.0f) };
+			Sphere->ModelTransform(SphereModel);
+			Sphere->SetColor(glm::vec3(0.5f, 0.2f, 0.5f));
+		}
+
+		auto Torus = GetObjectByName("Torus");
+		if (Torus)
+		{
+			sModel TorusModel = { glm::vec3(10.0f, 5.0f, -15.0f), glm::vec3(-45.0f), glm::vec3(5.0f)};
+			Torus->ModelTransform(TorusModel);
+			Torus->SetColor(glm::vec3(1.0f, 0.5f, 1.0f));
+		}
 
 		auto Cone = GetObjectByName("Cone");
 		if (Cone)
 		{
-			sModel ConeModel = { glm::vec3(-15.0f, 2.0f, 4.0f), glm::vec3(0.0f), glm::vec3(3.0f) };
+			glm::vec3 LightPos;
+			LightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;
+			LightPos.y = sin(glfwGetTime() / 2.0f) * 2.0f;
+			sModel ConeModel = { glm::vec3(-15.0f + LightPos.x , 2.0f, 4.0f + LightPos.y), glm::vec3(0.0f), glm::vec3(3.0f) };
 			Cone->ModelTransform(ConeModel);
 			sMaterial ConeMaterial = { glm::vec3(0.05f, 0.05f, 0.4f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f };
 			Cone->SetMaterial(ConeMaterial);
@@ -61,7 +79,7 @@ namespace FlawedEngine
 			sModel LightModel = { glm::vec3(-18.0f, 6.0f, 2.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
 			Light->ModelTransform(LightModel);
 			Light->SetColor(glm::vec3(0.5f, 0.3f, 0.9f));
-			sLight LightProps = { LightModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(0.5), glm::vec3(0.8f), glm::vec3(1.0f)};
+			sLight LightProps = { LightModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f)};
 			AddLightIfNotFound("Light", LightProps);
 		}
 
@@ -71,8 +89,17 @@ namespace FlawedEngine
 			sModel LightModel = { glm::vec3(15.0f, 3.0f, 2.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
 			ExampleLight->ModelTransform(LightModel);
 			ExampleLight->SetColor(glm::vec3(0.6f, 0.5f, 0.3f));
-			sLight LightProps = { LightModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(0.5), glm::vec3(0.8f), glm::vec3(1.0f) };
+			sLight LightProps = { LightModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(0.3f, 0.2f, 0.7f), glm::vec3(0.6f, 0.3f, 0.9f), glm::vec3(0.5f, 0.2f, 0.9f) };
 			AddLightIfNotFound("Example", LightProps);
+		}
+
+		auto SomeLight = GetObjectByName("AnotherOne");
+		if (SomeLight)
+		{
+			sModel LightModel = { glm::vec3(0.0f, 3.0f, 10.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
+			SomeLight->ModelTransform(LightModel);
+			sLight LightProps = { LightModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(0.5f, 0.1f, 0.8f), glm::vec3(0.8f), glm::vec3(1.0f) };
+			AddLightIfNotFound("AnotherOne", LightProps);
 		}
 
 		auto Ground = GetObjectByName("Ground");
@@ -80,7 +107,7 @@ namespace FlawedEngine
 		{
 			sModel GroundModel = { glm::vec3(0.0f, -5.0f, 0.0f), glm::vec3(0.0f), glm::vec3(30.0f, 0.1f, 30.0f) };
 			Ground->ModelTransform(GroundModel);
-			sMaterial GroundMat = { glm::vec3(0.5f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f), 32.0f };
+			sMaterial GroundMat = { glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(1.0f), 16.0f };
 			Ground->SetMaterial(GroundMat);
 		}
 
@@ -102,10 +129,23 @@ namespace FlawedEngine
 		{
 		case FlawedEngine::cScene::Cube:
 			{
-				WorldEntities[Name] = std::make_shared<cCube>();
+				LoadModel("Core\\Models\\OBJ\\Cube\\Cube.obj", Name); // should be a class but i cant bother
 			}
 			break;
 		case FlawedEngine::cScene::Sphere:
+			{
+				LoadModel("Core\\Models\\OBJ\\Sphere\\Sphere.obj", Name);
+			}
+			break;
+		case FlawedEngine::cScene::Cone:
+			{
+				LoadModel("Core\\Models\\OBJ\\Cone\\Cone.obj", Name);
+			}
+			break;
+		case FlawedEngine::cScene::Torus:
+			{
+				LoadModel("Core\\Models\\OBJ\\Torus\\Torus.obj", Name);
+			}
 			break;
 		case FlawedEngine::cScene::Triangle:
 			{

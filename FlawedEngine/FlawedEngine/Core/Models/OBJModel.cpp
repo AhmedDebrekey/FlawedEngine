@@ -30,12 +30,12 @@ namespace FlawedEngine
 	{
 		for (auto CurrentMesh : mLoader.LoadedMeshes)
 		{
-			for (auto &Vertex : mLoader.LoadedVertices)
+			for (uint32_t i = 0; i < CurrentMesh.Vertices.size(); i++)
 			{
 				//3 postional float, 3 Normal float, 2 UV Coords
-				glm::vec3 Position = glm::vec3(Vertex.Position.X, Vertex.Position.Y, Vertex.Position.Z);
-				glm::vec3 Normal = glm::vec3(Vertex.Normal.X, Vertex.Normal.Y, Vertex.Normal.Z);
-				glm::vec2 TexCoords = glm::vec2(Vertex.TextureCoordinate.X, Vertex.TextureCoordinate.Y);
+				glm::vec3 Position = glm::vec3(CurrentMesh.Vertices[i].Position.X, CurrentMesh.Vertices[i].Position.Y, CurrentMesh.Vertices[i].Position.Z);
+				glm::vec3 Normal = glm::vec3(CurrentMesh.Vertices[i].Normal.X, CurrentMesh.Vertices[i].Normal.Y, CurrentMesh.Vertices[i].Normal.Z);
+				glm::vec2 TexCoords = glm::vec2(CurrentMesh.Vertices[i].TextureCoordinate.X, CurrentMesh.Vertices[i].TextureCoordinate.Y);
 				mVertexBuffer.push_back({ Position, Normal, TexCoords });
 			}
 

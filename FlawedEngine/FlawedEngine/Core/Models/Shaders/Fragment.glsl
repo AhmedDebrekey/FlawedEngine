@@ -27,8 +27,10 @@ struct PointLight {
     vec3 specular;
 }; 
 
-#define NR_POINT_LIGHTS 2
+#define NR_POINT_LIGHTS 128
 uniform PointLight pointLights[NR_POINT_LIGHTS];
+uniform int LightSize;
+
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
@@ -43,7 +45,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float attenuation = 1.0 / (light.constant + light.linear * distance + 
   			     light.quadratic * (distance * distance));    
     // combine results
-    vec3 ambient  = light.ambient  * vec3(material.diffuse);
+    vec3 ambient  = light.ambient  * vec3(material.ambient);
     vec3 diffuse  = light.diffuse  * diff * vec3(material.diffuse);
     vec3 specular = light.specular * spec * vec3(material.specular);
 
@@ -54,15 +56,42 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     return (ambient + diffuse + specular);
 } 
 
+struct DirLight {
+    vec3 direction;
+	
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};
+
+uniform DirLight dirLight;
+
+// calculates the color when using a directional light.
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
+{
+    vec3 lightDir = normalize(-light.direction);
+    // diffuse shading
+    float diff = max(dot(normal, lightDir), 0.0);
+    // specular shading
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    // combine results
+    vec3 ambient  = light.ambient  * vec3(material.ambient);
+    vec3 diffuse  = light.diffuse  * diff * vec3(material.diffuse);
+    vec3 specular = light.specular * spec * vec3(material.specular) * 0.1;
+    return (ambient + diffuse + specular);
+}
+
 void main()
 {
     // properties
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
-        
+    
     vec3 result = vec3(0);
+    result = CalcDirLight(dirLight, norm, viewDir);
 
-    for(int i = 0; i < NR_POINT_LIGHTS; i++)
+    for(int i = 0; i < LightSize; i++)
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
     
     FragColor = vec4(result, 1.0);

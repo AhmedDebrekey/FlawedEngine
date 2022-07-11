@@ -14,6 +14,8 @@ namespace FlawedEngine
 		{
 			Cube = 0,
 			Sphere,
+			Cone,
+			Torus,
 			Triangle,
 			PointLight,
 			SpotLight

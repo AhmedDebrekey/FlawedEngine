@@ -59,6 +59,8 @@ namespace FlawedEngine
     #ifdef OPENGL
         Shader.Bind();
         int Iteration = 0;
+
+        Shader.SetInt("LightSize", Lights.size());
         for (auto& Light : Lights)
         {
             auto CurrLight = Light.second;
@@ -88,6 +90,11 @@ namespace FlawedEngine
             Iteration++;
         }
 
+        Shader.SetVec3("dirLight.direction", glm::vec3(0.2f, -1.0f, 0.3f));
+        Shader.SetVec3("dirLight.ambient", glm::vec3(0.9f));
+        Shader.SetVec3("dirLight.diffuse", glm::vec3(0.6f, 0.6f, 0.8f));
+        Shader.SetVec3("dirLight.specular", glm::vec3( 0.5f, 0.5f, 0.2f));
+
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);
         Shader.SetMat4f("Model", Trans.Model);
@@ -96,6 +103,7 @@ namespace FlawedEngine
         Shader.SetVec3("material.diffuse", Mat.Diffuse);
         Shader.SetVec3("material.specular", Mat.Specular);
         Shader.SetFloat("material.shininess", Mat.Shininess);
+
 		glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
