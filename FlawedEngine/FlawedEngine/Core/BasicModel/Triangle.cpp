@@ -31,7 +31,7 @@ namespace FlawedEngine
 	void cTriangle::setDynamic(bool isDynamic)
 	{
 	}
-	void cTriangle::SetPhysics()
+	void cTriangle::SetPhysics(eBasicObject Object)
 	{
 	}
 }

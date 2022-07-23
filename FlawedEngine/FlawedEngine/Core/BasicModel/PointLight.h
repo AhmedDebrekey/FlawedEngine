@@ -15,7 +15,7 @@ namespace FlawedEngine
 		virtual void Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions) override;
 		virtual void Update() override;
 		virtual void setDynamic(bool isDynamic) override;
-		virtual void SetPhysics() override;
+		virtual void SetPhysics(eBasicObject Object) override;
 
 
 		glm::vec3 mPosition;

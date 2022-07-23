@@ -12,24 +12,13 @@ namespace FlawedEngine
 	{
 	public:
 
-		enum eBasicObject
-		{
-			Cube = 0,
-			Sphere,
-			Cone,
-			Torus,
-			Triangle,
-			PointLight,
-			SpotLight
-		}; 
-
 		cScene(void* Window);
 		~cScene();
 		void Setup();
 		void Render();
 		void LoadModel(const char* FilePath, const char* Name, void* PhysicsWorld);
 		void LoadModel(eBasicObject Object, const char* Name, void* PhysicsWorld);
-		void AddLightIfNotFound(const char* Name, sLight& Props);
+		void AddLight(const char* Name, sLight& Props);
 
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
 

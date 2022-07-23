@@ -19,11 +19,12 @@ namespace FlawedEngine
 
 		virtual void Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions) = 0;
 		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
-		virtual void SetPhysics() = 0;
+		virtual void SetPhysics(eBasicObject Object) = 0;
 		virtual void setDynamic(bool IsDynamic) = 0;
 		void ModelTransform(sModel& model);
 		void SetColor(glm::vec3 Color);
 		void SetMaterial(sMaterial& Mat);
+		void ApplyForce(glm::vec3 Force);
 		virtual ~cEntity() = 0;
 
 		sMaterial mMaterial;
@@ -69,5 +70,18 @@ namespace FlawedEngine
 	inline void cEntity::SetMaterial(sMaterial& Mat)
 	{
 		mMaterial = Mat;
+	}
+
+	inline void cEntity::ApplyForce(glm::vec3 Force)
+	{
+		if (!mRidigBody->isActive())
+			mRidigBody->activate(true);
+		btVector3 relativeForce = btVector3(Force.x, Force.y, Force.z);
+		btTransform boxTrans;
+		mRidigBody->getMotionState()->getWorldTransform(boxTrans);
+		btVector3 RelativeTransform = relativeForce;
+		btVector3 correctedForce = (boxTrans * relativeForce) - boxTrans.getOrigin();
+		relativeForce = (boxTrans * RelativeTransform) - boxTrans.getOrigin();
+		mRidigBody->applyCentralForce(relativeForce);
 	}
 }

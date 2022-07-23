@@ -47,7 +47,45 @@ namespace FlawedEngine
 
 	cScene::~cScene()
 	{
+		///-----cleanup_start-----
 
+//remove the rigidbodies from the dynamics world and delete them
+		for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
+		{
+			btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
+			btRigidBody* body = btRigidBody::upcast(obj);
+			if (body && body->getMotionState())
+			{
+				delete body->getMotionState();
+			}
+			dynamicsWorld->removeCollisionObject(obj);
+			delete obj;
+		}
+
+		//delete collision shapes
+		for (int j = 0; j < collisionShapes.size(); j++)
+		{
+			btCollisionShape* shape = collisionShapes[j];
+			collisionShapes[j] = 0;
+			delete shape;
+		}
+
+		//delete dynamics world
+		delete dynamicsWorld;
+
+		//delete solver
+		delete solver;
+
+		//delete broadphase
+		delete overlappingPairCache;
+
+		//delete dispatcher
+		delete dispatcher;
+
+		delete collisionConfiguration;
+
+		//next line is optional: it will be cleared by the destructor when the array goes out of scope
+		collisionShapes.clear();
 	}
 
 	void cScene::Setup()
@@ -74,17 +112,25 @@ namespace FlawedEngine
 		{
 			sModel TriangleModel = { glm::vec3(3.0f, 5.0f, 0.0f), glm::vec3(45.0f), glm::vec3(5.0f) };
 			Triangle->ModelTransform(TriangleModel);
+
 			Triangle->SetColor(glm::vec3( 0.3f, 0.6f, 0.1f ));
 		}
 
 		auto Sphere = GetObjectByName("Sphere");
 		if (Sphere)
 		{
-			sModel SphereModel = { glm::vec3(-14.0f, 30.0f, -10.0f), glm::vec3(0.0f), glm::vec3(2.0f) };
+			sModel SphereModel = { glm::vec3(-15.0f, 30.0f, -10.0f), glm::vec3(0.0f), glm::vec3(2.0f) };
 			Sphere->ModelTransform(SphereModel);
+
 			Sphere->SetColor(glm::vec3(0.5f, 0.2f, 0.5f));
-			Sphere->SetPhysics();
+
+			Sphere->SetPhysics(eBasicObject::Sphere);
 			Sphere->setDynamic(true);
+
+			if (glfwGetKey((GLFWwindow*)mWindow, GLFW_KEY_N) == GLFW_PRESS)
+			{
+				Sphere->ApplyForce(glm::vec3(0, 1, 2));
+			}
 		}
 
 		auto Torus = GetObjectByName("Torus");
@@ -92,21 +138,26 @@ namespace FlawedEngine
 		{
 			sModel TorusModel = { glm::vec3(10.0f, 5.0f, -15.0f), glm::vec3(-45.0f), glm::vec3(5.0f)};
 			Torus->ModelTransform(TorusModel);
+
 			Torus->SetColor(glm::vec3(1.0f, 0.5f, 1.0f));
 		}
 
 		auto Cone = GetObjectByName("Cone");
 		if (Cone)
 		{
-			glm::vec3 LightPos;
-			LightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;
-			LightPos.y = sin(glfwGetTime() / 2.0f) * 2.0f;
-			sModel ConeModel = { glm::vec3(-15.0f + LightPos.x , 20.0f, 4.0f + LightPos.y), glm::vec3(0.0f), glm::vec3(3.0f) };
+			sModel ConeModel = { glm::vec3(-15.0f , 20.0f, 4.0f ), glm::vec3(0.0f), glm::vec3(3.0f) };
 			Cone->ModelTransform(ConeModel);
+
 			sMaterial ConeMaterial = { glm::vec3(0.05f, 0.05f, 0.4f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f };
 			Cone->SetMaterial(ConeMaterial);
-			Cone->SetPhysics();
+
+			Cone->SetPhysics(eBasicObject::Cube);
 			Cone->setDynamic(true);
+
+			if (glfwGetKey((GLFWwindow*)mWindow, GLFW_KEY_N) == GLFW_PRESS)
+			{
+				Cone->ApplyForce(glm::vec3(0, 2, -1));
+			}
 		}
 			
 		auto Light = GetObjectByName("Light");
@@ -114,9 +165,11 @@ namespace FlawedEngine
 		{
 			sModel LightModel = { glm::vec3(-18.0f, 6.0f, 2.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
 			Light->ModelTransform(LightModel);
+
 			Light->SetColor(glm::vec3(0.5f, 0.3f, 0.9f));
+
 			sLight LightProps = { LightModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f)};
-			AddLightIfNotFound("Light", LightProps);
+			AddLight("Light", LightProps);
 		}
 
 		auto ExampleLight = GetObjectByName("Example");
@@ -124,9 +177,11 @@ namespace FlawedEngine
 		{
 			sModel LightModel = { glm::vec3(15.0f, 3.0f, 2.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
 			ExampleLight->ModelTransform(LightModel);
+
 			ExampleLight->SetColor(glm::vec3(0.6f, 0.5f, 0.3f));
+
 			sLight LightProps = { LightModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(0.3f, 0.2f, 0.7f), glm::vec3(0.6f, 0.3f, 0.9f), glm::vec3(0.5f, 0.2f, 0.9f) };
-			AddLightIfNotFound("Example", LightProps);
+			AddLight("Example", LightProps);
 		}
 
 		auto SomeLight = GetObjectByName("AnotherOne");
@@ -134,18 +189,21 @@ namespace FlawedEngine
 		{
 			sModel LightModel = { glm::vec3(0.0f, 3.0f, 10.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
 			SomeLight->ModelTransform(LightModel);
+
 			sLight LightProps = { LightModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(0.5f, 0.1f, 0.8f), glm::vec3(0.8f), glm::vec3(1.0f) };
-			AddLightIfNotFound("AnotherOne", LightProps);
+			AddLight("AnotherOne", LightProps);
 		}
 
 		auto Ground = GetObjectByName("Ground");
 		if (Ground)
 		{
-			sModel GroundModel = { glm::vec3(0.0f, -5.0f, 0.0f), glm::vec3(0.0f), glm::vec3(30.0f, 0.1f, 30.0f) };
+			sModel GroundModel = { glm::vec3(0.0f, -5.0f, 0.0f), glm::vec3(45.0f), glm::vec3(30.0f, 0.1f, 30.0f) };
 			Ground->ModelTransform(GroundModel);
+
 			sMaterial GroundMat = { glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(1.0f), 16.0f };
 			Ground->SetMaterial(GroundMat);
-			Ground->SetPhysics();
+
+			Ground->SetPhysics(Cube);
 			Ground->setDynamic(false);
 		}
 
@@ -165,37 +223,37 @@ namespace FlawedEngine
 	{
 		switch (Object)
 		{
-		case FlawedEngine::cScene::Cube:
+		case FlawedEngine::Cube:
 			{
 				LoadModel("Core\\Models\\OBJ\\Cube\\Cube.obj", Name, dynamicsWorld); // should be a class but i cant bother
 			}
 			break;
-		case FlawedEngine::cScene::Sphere:
+		case FlawedEngine::Sphere:
 			{
 				LoadModel("Core\\Models\\OBJ\\Sphere\\Sphere.obj", Name, dynamicsWorld);
 			}
 			break;
-		case FlawedEngine::cScene::Cone:
+		case FlawedEngine::Cone:
 			{
 				LoadModel("Core\\Models\\OBJ\\Cone\\Cone.obj", Name, dynamicsWorld);
 			}
 			break;
-		case FlawedEngine::cScene::Torus:
+		case FlawedEngine::Torus:
 			{
 				LoadModel("Core\\Models\\OBJ\\Torus\\Torus.obj", Name, dynamicsWorld);
 			}
 			break;
-		case FlawedEngine::cScene::Triangle:
+		case FlawedEngine::Triangle:
 			{
 				WorldEntities[Name] = std::make_shared<cTriangle>();
 			}
 			break;
-		case FlawedEngine::cScene::PointLight:
+		case FlawedEngine::PointLight:
 			{
 				WorldEntities[Name] = std::make_shared<cPointLight>();
 			}
 			break;
-		case FlawedEngine::cScene::SpotLight:
+		case FlawedEngine::SpotLight:
 			break;
 		default:
 			break;
@@ -212,7 +270,7 @@ namespace FlawedEngine
 		return Entity->second;
 	}
 
-	void cScene::AddLightIfNotFound(const char* Name, sLight& Props)
+	void cScene::AddLight(const char* Name, sLight& Props)
 	{
 		auto Light = PointLights.find(Name);
 

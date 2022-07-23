@@ -43,7 +43,7 @@ namespace FlawedEngine
 	void cPointLight::setDynamic(bool isDynamic)
 	{
 	}
-	void cPointLight::SetPhysics()
+	void cPointLight::SetPhysics(eBasicObject Object)
 	{
 	}
 }

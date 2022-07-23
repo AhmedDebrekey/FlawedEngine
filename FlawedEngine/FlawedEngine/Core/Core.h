@@ -67,4 +67,15 @@ namespace FlawedEngine
 		std::string Type;
 		std::string Path;
 	};
+
+	enum eBasicObject
+	{
+		Cube = 0,
+		Sphere,
+		Cone,
+		Torus,
+		Triangle,
+		PointLight,
+		SpotLight
+	};
 }

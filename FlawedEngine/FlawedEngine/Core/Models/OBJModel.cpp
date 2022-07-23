@@ -5,7 +5,7 @@ namespace FlawedEngine
 {
 	cOBJModel::cOBJModel(const char* FilePath, void* PhysicsWorld)
 	{
-		dynamicsWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
+		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
 
 		if (!LoadModel(FilePath))
 		{
@@ -50,7 +50,36 @@ namespace FlawedEngine
 		}
 	}
 
-	void cOBJModel::SetPhysics()
+	void cOBJModel::SetCollisionShape(eBasicObject Object)
+	{
+		switch (Object)
+		{
+		case FlawedEngine::Cube:
+		{
+			mCollisionShape = new btBoxShape(btVector3(btScalar(1.), btScalar(1.), btScalar(1.)));
+		}
+			break;
+		case FlawedEngine::Sphere:
+		{
+			mCollisionShape = new btSphereShape(1.0);
+		}
+			break;
+		case FlawedEngine::Cone:
+			break;
+		case FlawedEngine::Torus:
+			break;
+		case FlawedEngine::Triangle:
+			break;
+		case FlawedEngine::PointLight:
+			break;
+		case FlawedEngine::SpotLight:
+			break;
+		default:
+			break;
+		}
+	}
+
+	void cOBJModel::SetPhysics(eBasicObject Object)
 	{
 		if (!isPhysicsSet)
 		{
@@ -58,71 +87,63 @@ namespace FlawedEngine
 			glm::vec3 Rotation = mTransformation.Rotation;
 			glm::vec3 Scale = mTransformation.Scale;
 
-			groundShape = new btBoxShape(btVector3(btScalar(1.), btScalar(1.), btScalar(1.)));
-			btTransform groundTransform;
-			groundTransform.setIdentity();
-			groundTransform.setOrigin(btVector3(Trans.x, Trans.y, Trans.z));
-			groundShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
+			SetCollisionShape(Object);
+
+			btTransform ObjectTransform;
+			ObjectTransform.setIdentity();
+			ObjectTransform.setOrigin(btVector3(Trans.x, Trans.y, Trans.z));
+			mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
+
 			btScalar mass(1.0);
 
-			//rigidbody is dynamic if and only if mass is non zero, otherwise static
-			bool isDynamic = (mass != 0.f);
-
 			btVector3 localInertia(0, 0, 0);
-			if (isDynamic)
-				groundShape->calculateLocalInertia(mass, localInertia);
+			if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, localInertia);
 
-			btDefaultMotionState* myMotionState = new btDefaultMotionState(groundTransform);
-			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, myMotionState, groundShape, localInertia);
+			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, localInertia);
 			
 			mRidigBody = new btRigidBody(rbInfo);
-			mRidigBody->setRestitution(.1);
+			mRidigBody->setActivationState(DISABLE_DEACTIVATION);
+			mRidigBody->setRollingFriction(10);
 
-			//add the body to the dynamics world
-			dynamicsWorld->addRigidBody(mRidigBody);
-			dynamicsWorld->updateSingleAabb(mRidigBody);
-			std::cout << "setting up physics..." << std::endl;
+			mPhysicsDynamicWorld->addRigidBody(mRidigBody);
+			mPhysicsDynamicWorld->updateSingleAabb(mRidigBody);
+
 			isPhysicsSet = true;
 		}
 	}
 
 	void cOBJModel::Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
-		btTransform btTrans;
-		glm::mat4 Model = glm::mat4(1.0f);
 
 		if (mRidigBody != nullptr && mRidigBody->getMotionState())
 		{
+			btTransform btTrans;
 			mRidigBody->getMotionState()->getWorldTransform(btTrans);
-			btVector3 smth = btTrans.getOrigin();
-			Model = glm::translate(Model, glm::vec3(smth.getX(), smth.getY(), smth.getZ()));
-			btVector3 myscale = groundShape->getLocalScaling();
+			
+			btVector3 ObjectTransform = btTrans.getOrigin();
+			btVector3 myscale = mCollisionShape->getLocalScaling();
+
+			glm::mat4 Model = glm::mat4(1.0f);
+			Model = glm::translate(Model, glm::vec3(ObjectTransform.getX(), ObjectTransform.getY(), ObjectTransform.getZ()));
 			Model = glm::scale(Model, glm::vec3(myscale.getX(), myscale.getY(), myscale.getZ()));
+
 			Trans.Model = Model;
 		}
 		else
-		{
 			Trans.Model = mModel;
-		}
 
 		Renderer.Draw(Trans, mMaterial, LightPositions);
 	}
 
 	void cOBJModel::Update()
 	{
-
+		//Should Update Physics here
 	}
 
 	void cOBJModel::setDynamic(bool isDynamic)
 	{
-		//rigidbody is dynamic if and only if mass is non zero, otherwise static
-		btVector3 localInertia(0, 0, 0);
-		if (isDynamic)
-		{
-			btScalar mass(1.0);
-			groundShape->calculateLocalInertia(mass, localInertia);
-		}
-		else
+		if (!isDynamic)
 		{
 			mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
 		}

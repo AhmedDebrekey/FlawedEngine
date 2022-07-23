@@ -15,15 +15,15 @@ namespace FlawedEngine
 		virtual void Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions) override;
 		virtual void Update() override;
 		virtual void setDynamic(bool isDynamic) override;
-		virtual void SetPhysics() override;
+		virtual void SetPhysics(eBasicObject Object) override;
 
 		bool LoadModel(const char* FilePath);
 		void Populate();
-
+		void SetCollisionShape(eBasicObject Object);
 		bool isPhysicsSet = false;
 	private:
-		btDiscreteDynamicsWorld* dynamicsWorld;
-		btCollisionShape* groundShape;
+		btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
+		btCollisionShape* mCollisionShape;
 		cModelRenderer Renderer;
 		objl::Loader mLoader;
 	};
