@@ -7,6 +7,9 @@
 
 #include <unordered_map>
 
+#include <Bullet/btBulletDynamicsCommon.h>
+
+
 namespace FlawedEngine
 {
 	class cEntity
@@ -16,6 +19,8 @@ namespace FlawedEngine
 
 		virtual void Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions) = 0;
 		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
+		virtual void SetPhysics() = 0;
+		virtual void setDynamic(bool IsDynamic) = 0;
 		void ModelTransform(sModel& model);
 		void SetColor(glm::vec3 Color);
 		void SetMaterial(sMaterial& Mat);
@@ -29,6 +34,9 @@ namespace FlawedEngine
 		std::vector<uint32_t> mIndices;
 		std::vector<sTexture> mTextureCoords;
 		//std::vector<float> mIndexBuffer;
+
+		btRigidBody* mRidigBody = nullptr;
+		bool mDynamic;
 
 		cInput& Input = cInput::get();
 	};

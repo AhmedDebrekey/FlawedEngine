@@ -42,4 +42,10 @@ namespace FlawedEngine
 	{
 
 	}
+	void cCube::setDynamic(bool isDynamic)
+	{
+	}
+	void cCube::SetPhysics()
+	{
+	}
 }

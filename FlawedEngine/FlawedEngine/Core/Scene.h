@@ -3,6 +3,8 @@
 #include "Entity.h"
 #include "PerspectiveCamera.h"
 #include <unordered_map>
+#include <Bullet/btBulletDynamicsCommon.h>
+
 
 namespace FlawedEngine
 {
@@ -25,8 +27,8 @@ namespace FlawedEngine
 		~cScene();
 		void Setup();
 		void Render();
-		void LoadModel(const char* FilePath, const char* Name);
-		void LoadModel(eBasicObject Object, const char* Name);
+		void LoadModel(const char* FilePath, const char* Name, void* PhysicsWorld);
+		void LoadModel(eBasicObject Object, const char* Name, void* PhysicsWorld);
 		void AddLightIfNotFound(const char* Name, sLight& Props);
 
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
@@ -36,5 +38,14 @@ namespace FlawedEngine
 		std::unordered_map<std::string, sLight> PointLights;
 		void* mWindow;
 		cpCamera Camera;		
+
+	private: //Bullet Physics
+		btDefaultCollisionConfiguration* collisionConfiguration;
+		btCollisionDispatcher* dispatcher;
+		btBroadphaseInterface* overlappingPairCache;
+		btSequentialImpulseConstraintSolver* solver;
+		btDiscreteDynamicsWorld* dynamicsWorld;
+
+		btAlignedObjectArray<btCollisionShape*> collisionShapes;
 	};
 }

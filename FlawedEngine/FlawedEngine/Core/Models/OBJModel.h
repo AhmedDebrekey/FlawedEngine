@@ -10,15 +10,20 @@ namespace FlawedEngine
 	class cOBJModel : public cEntity
 	{
 	public:
-		cOBJModel(const char* FilePath);
+		cOBJModel(const char* FilePath, void* PhysicsWorld);
 		~cOBJModel();
 		virtual void Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions) override;
 		virtual void Update() override;
+		virtual void setDynamic(bool isDynamic) override;
+		virtual void SetPhysics() override;
 
 		bool LoadModel(const char* FilePath);
 		void Populate();
 
+		bool isPhysicsSet = false;
 	private:
+		btDiscreteDynamicsWorld* dynamicsWorld;
+		btCollisionShape* groundShape;
 		cModelRenderer Renderer;
 		objl::Loader mLoader;
 	};

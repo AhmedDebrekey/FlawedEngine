@@ -40,4 +40,10 @@ namespace FlawedEngine
 	void cPointLight::Update()
 	{
 	}
+	void cPointLight::setDynamic(bool isDynamic)
+	{
+	}
+	void cPointLight::SetPhysics()
+	{
+	}
 }

@@ -28,4 +28,10 @@ namespace FlawedEngine
 	{
 		//TODO: Should have an Input System here
 	}
+	void cTriangle::setDynamic(bool isDynamic)
+	{
+	}
+	void cTriangle::SetPhysics()
+	{
+	}
 }
