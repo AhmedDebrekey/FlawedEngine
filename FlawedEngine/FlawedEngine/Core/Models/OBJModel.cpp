@@ -1,5 +1,5 @@
 #include "OBJModel.h"
-
+#include <glm/gtc/type_ptr.hpp>
 
 namespace FlawedEngine
 {
@@ -52,7 +52,7 @@ namespace FlawedEngine
 
 	void cOBJModel::SetCollisionShape(eBasicObject Object)
 	{
-		switch (Object)
+		switch (Object) //if it is not set code will crash ofc
 		{
 		case FlawedEngine::Cube:
 		{
@@ -79,20 +79,19 @@ namespace FlawedEngine
 		}
 	}
 
-	void cOBJModel::SetPhysics(eBasicObject Object)
+	void cOBJModel::SetPhysics(eBasicObject Object /*Will take phsyics props later*/)
 	{
 		if (!isPhysicsSet)
 		{
-			glm::vec3 Trans = mTransformation.Translation;
-			glm::vec3 Rotation = mTransformation.Rotation;
-			glm::vec3 Scale = mTransformation.Scale;
+			glm::vec3 Trans			= mTransformation.Translation;
+			glm::vec3 Rotation		= mTransformation.Rotation;
+			glm::vec3 Scale			= mTransformation.Scale;
 
 			SetCollisionShape(Object);
 
 			btTransform ObjectTransform;
 			ObjectTransform.setIdentity();
 			ObjectTransform.setOrigin(btVector3(Trans.x, Trans.y, Trans.z));
-			mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
 
 			btScalar mass(1.0);
 
@@ -101,10 +100,23 @@ namespace FlawedEngine
 
 			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, localInertia);
-			
+			rbInfo.m_startWorldTransform;
 			mRidigBody = new btRigidBody(rbInfo);
-			mRidigBody->setActivationState(DISABLE_DEACTIVATION);
-			mRidigBody->setRollingFriction(10);
+
+
+			btTransform trans = mRidigBody->getCenterOfMassTransform();
+			btQuaternion transrot = trans.getRotation();
+			btQuaternion rotquat;
+			rotquat = rotquat.getIdentity();
+			rotquat.setEuler(glm::radians(Rotation.y), glm::radians(Rotation.x), glm::radians(Rotation.z));
+			transrot = rotquat * transrot;
+			trans.setRotation(transrot);
+			mRidigBody->setCenterOfMassTransform(trans);
+
+			mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
+
+			mRidigBody->setActivationState(DISABLE_DEACTIVATION); //not so good 
+			//mRidigBody->setRollingFriction(0.1);
 
 			mPhysicsDynamicWorld->addRigidBody(mRidigBody);
 			mPhysicsDynamicWorld->updateSingleAabb(mRidigBody);
@@ -113,6 +125,7 @@ namespace FlawedEngine
 		}
 	}
 
+	float Matrix[16];
 	void cOBJModel::Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
 
@@ -120,14 +133,20 @@ namespace FlawedEngine
 		{
 			btTransform btTrans;
 			mRidigBody->getMotionState()->getWorldTransform(btTrans);
-			
+
 			btVector3 ObjectTransform = btTrans.getOrigin();
 			btVector3 myscale = mCollisionShape->getLocalScaling();
 
+			btScalar x,y,z;
+			btTransform trans = mRidigBody->getCenterOfMassTransform();
+			trans.getRotation().getEulerZYX(z,y,x);
+
 			glm::mat4 Model = glm::mat4(1.0f);
 			Model = glm::translate(Model, glm::vec3(ObjectTransform.getX(), ObjectTransform.getY(), ObjectTransform.getZ()));
+			Model = glm::rotate(Model, (float)x, glm::vec3(1.0f, 0.0f, 0.0f));
+			Model = glm::rotate(Model, (float)y, glm::vec3(0.0f, 1.0f, 0.0f));
+			Model = glm::rotate(Model, (float)z, glm::vec3(0.0f, 0.0f, 1.0f));
 			Model = glm::scale(Model, glm::vec3(myscale.getX(), myscale.getY(), myscale.getZ()));
-
 			Trans.Model = Model;
 		}
 		else

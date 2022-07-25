@@ -6,15 +6,6 @@
 
 #include "Models/OBJModel.h"
 
-
-
-/*
-* 
-* OKAY PHYSICS WORKS, EXCEPT ALL TRANSFORMATIONS ARE F*ED UP :*)
-* 
-*/
-
-
 namespace FlawedEngine
 {
 	cScene::cScene(void* Window)
@@ -22,34 +13,18 @@ namespace FlawedEngine
 	{
 		//Should have more stuff in the future probably, IDK little secret, I am just winging it, I don't really know what I am doing.
 
-		///-----initialization_start-----
-
-	///collision configuration contains default setup for memory, collision setup. Advanced users can create their own configuration.
 		collisionConfiguration = new btDefaultCollisionConfiguration();
-
-		///use the default collision dispatcher. For parallel processing you can use a diffent dispatcher (see Extras/BulletMultiThreaded)
 		dispatcher = new btCollisionDispatcher(collisionConfiguration);
-
-		///btDbvtBroadphase is a good general purpose broadphase. You can also try out btAxis3Sweep.
 		overlappingPairCache = new btDbvtBroadphase();
-
-		///the default constraint solver. For parallel processing you can use a different solver (see Extras/BulletMultiThreaded)
 		solver = new btSequentialImpulseConstraintSolver;
-
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration); 
-		//TODO: should change to use std::share_ptr intead
-
-		dynamicsWorld->setGravity(btVector3(0.0, -0.5, 0));
-		///-----initialization_end-----
+		dynamicsWorld->setGravity(btVector3(0.0, -5., 0));
 
 		Setup();
 	}
 
 	cScene::~cScene()
 	{
-		///-----cleanup_start-----
-
-//remove the rigidbodies from the dynamics world and delete them
 		for (int i = dynamicsWorld->getNumCollisionObjects() - 1; i >= 0; i--)
 		{
 			btCollisionObject* obj = dynamicsWorld->getCollisionObjectArray()[i];
@@ -62,7 +37,6 @@ namespace FlawedEngine
 			delete obj;
 		}
 
-		//delete collision shapes
 		for (int j = 0; j < collisionShapes.size(); j++)
 		{
 			btCollisionShape* shape = collisionShapes[j];
@@ -70,21 +44,11 @@ namespace FlawedEngine
 			delete shape;
 		}
 
-		//delete dynamics world
 		delete dynamicsWorld;
-
-		//delete solver
 		delete solver;
-
-		//delete broadphase
 		delete overlappingPairCache;
-
-		//delete dispatcher
 		delete dispatcher;
-
 		delete collisionConfiguration;
-
-		//next line is optional: it will be cleared by the destructor when the array goes out of scope
 		collisionShapes.clear();
 	}
 
@@ -96,12 +60,15 @@ namespace FlawedEngine
 		LoadModel(PointLight,	"AnotherOne",	dynamicsWorld);
 		LoadModel(Sphere,		"Sphere",		dynamicsWorld);
 		LoadModel(Cube,			"Ground",		dynamicsWorld);
+		LoadModel(Cube,			"Ground2",		dynamicsWorld);
+		LoadModel(Cube,			"PhysicsCube",	dynamicsWorld);
 		LoadModel(Cone,			"Cone",			dynamicsWorld);
 		LoadModel(Torus,		"Torus",		dynamicsWorld);
 	}
 
 	void cScene::Render()
 	{
+
 		Camera.Compute();
 		Transform tCamera { Camera.Postion() , Camera.Front(),Camera.Projection(), Camera.View()};
 
@@ -129,14 +96,14 @@ namespace FlawedEngine
 
 			if (glfwGetKey((GLFWwindow*)mWindow, GLFW_KEY_N) == GLFW_PRESS)
 			{
-				Sphere->ApplyForce(glm::vec3(0, 1, 2));
+				Sphere->ApplyForce(glm::vec3(0, 5, 0));
 			}
 		}
 
 		auto Torus = GetObjectByName("Torus");
 		if (Torus)
 		{
-			sModel TorusModel = { glm::vec3(10.0f, 5.0f, -15.0f), glm::vec3(-45.0f), glm::vec3(5.0f)};
+			sModel TorusModel = { glm::vec3(10.0f, 5.0f, -15.0f), glm::vec3(45.0f, 0.0f, 0.0f), glm::vec3(5.0f) };
 			Torus->ModelTransform(TorusModel);
 
 			Torus->SetColor(glm::vec3(1.0f, 0.5f, 1.0f));
@@ -154,9 +121,9 @@ namespace FlawedEngine
 			Cone->SetPhysics(eBasicObject::Cube);
 			Cone->setDynamic(true);
 
-			if (glfwGetKey((GLFWwindow*)mWindow, GLFW_KEY_N) == GLFW_PRESS)
+			if (glfwGetKey((GLFWwindow*)mWindow, GLFW_KEY_N) == GLFW_PRESS) //in need of better input system :)
 			{
-				Cone->ApplyForce(glm::vec3(0, 2, -1));
+				Cone->ApplyForce(glm::vec3(0, 5, 0));
 			}
 		}
 			
@@ -194,10 +161,23 @@ namespace FlawedEngine
 			AddLight("AnotherOne", LightProps);
 		}
 
+		auto PhysicCube = GetObjectByName("PhysicsCube");
+		if(PhysicCube)
+		{
+			sModel CubeModel = { glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(10.0f), glm::vec3(2.0f)};
+			PhysicCube->ModelTransform(CubeModel);
+			
+			sMaterial CubeMat = {glm::vec3(0,0,1), glm::vec3(1.0f), glm::vec3(1.0f), 32.0f};
+			PhysicCube->SetMaterial(CubeMat);
+
+			PhysicCube->SetPhysics(Cube);
+			PhysicCube->setDynamic(true);
+		}
+
 		auto Ground = GetObjectByName("Ground");
 		if (Ground)
 		{
-			sModel GroundModel = { glm::vec3(0.0f, -5.0f, 0.0f), glm::vec3(45.0f), glm::vec3(30.0f, 0.1f, 30.0f) };
+			sModel GroundModel = { glm::vec3(0.0f, -5.0f, 0.0f), glm::vec3(0.0f, 0.0f, 20.0f), glm::vec3(30.0f, 0.1f, 30.0f) };
 			Ground->ModelTransform(GroundModel);
 
 			sMaterial GroundMat = { glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(1.0f), 16.0f };
@@ -207,6 +187,18 @@ namespace FlawedEngine
 			Ground->setDynamic(false);
 		}
 
+		auto otherGround = GetObjectByName("Ground2");
+		if (Ground)
+		{
+			sModel GroundModel = { glm::vec3(-60.0f, -20.0f, 0.0f), glm::vec3(0.0f, 0.0f, -10.0f), glm::vec3(30.0f, 0.1f, 30.0f) };
+			otherGround->ModelTransform(GroundModel);
+
+			sMaterial GroundMat = { glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(1.0f), 16.0f };
+			otherGround->SetMaterial(GroundMat);
+
+			otherGround->SetPhysics(Cube);
+			otherGround->setDynamic(false);
+		}
 		//Render Models
 		for (auto &Entities : WorldEntities)
 		{
