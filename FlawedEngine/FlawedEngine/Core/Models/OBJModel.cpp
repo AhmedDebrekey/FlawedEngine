@@ -1,5 +1,6 @@
 #include "OBJModel.h"
 #include <glm/gtc/type_ptr.hpp>
+#include "../Physics/Physics.h"
 
 namespace FlawedEngine
 {
@@ -50,19 +51,17 @@ namespace FlawedEngine
 		}
 	}
 
-	void cOBJModel::SetCollisionShape(eBasicObject Object)
+	void cOBJModel::SetRigidBody(eBasicObject Object)
 	{
 		switch (Object) //if it is not set code will crash ofc
 		{
-		case FlawedEngine::Cube:
+		case FlawedEngine::Cube: //mRidigBody = ((cPhysics*)PhysicsWorld)->AddBox(Object, PhysProps).get();
 		{
-			mCollisionShape = new btBoxShape(btVector3(btScalar(1.), btScalar(1.), btScalar(1.)));
-		}
+		} 
 			break;
 		case FlawedEngine::Sphere:
 		{
-			mCollisionShape = new btSphereShape(1.0);
-		}
+		} 
 			break;
 		case FlawedEngine::Cone:
 			break;
@@ -79,63 +78,28 @@ namespace FlawedEngine
 		}
 	}
 
-	void cOBJModel::SetPhysics(eBasicObject Object /*Will take phsyics props later*/)
+	void cOBJModel::SetPhysics(eBasicObject Object, void* PhysicsWorld)
 	{
 		if (!isPhysicsSet)
 		{
-			glm::vec3 Trans			= mTransformation.Translation;
-			glm::vec3 Rotation		= mTransformation.Rotation;
-			glm::vec3 Scale			= mTransformation.Scale;
-
-			SetCollisionShape(Object);
-
-			btTransform ObjectTransform;
-			ObjectTransform.setIdentity();
-			ObjectTransform.setOrigin(btVector3(Trans.x, Trans.y, Trans.z));
-
-			btScalar mass(1.0);
-
-			btVector3 localInertia(0, 0, 0);
-			if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, localInertia);
-
-			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
-			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, localInertia);
-			rbInfo.m_startWorldTransform;
-			mRidigBody = new btRigidBody(rbInfo);
-
-
-			btTransform trans = mRidigBody->getCenterOfMassTransform();
-			btQuaternion transrot = trans.getRotation();
-			btQuaternion rotquat;
-			rotquat = rotquat.getIdentity();
-			rotquat.setEuler(glm::radians(Rotation.y), glm::radians(Rotation.x), glm::radians(Rotation.z));
-			transrot = rotquat * transrot;
-			trans.setRotation(transrot);
-			mRidigBody->setCenterOfMassTransform(trans);
-
-			mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
-
-			mRidigBody->setActivationState(DISABLE_DEACTIVATION); //not so good 
-			//mRidigBody->setRollingFriction(0.1);
-
-			mPhysicsDynamicWorld->addRigidBody(mRidigBody);
-			mPhysicsDynamicWorld->updateSingleAabb(mRidigBody);
+			sPhysicsProps PhysProps = { 10.f, 1.0f, 0.5 };
+			mRidigBody = ((cPhysics*)PhysicsWorld)->AddBox(Object, PhysProps).get();
 
 			isPhysicsSet = true;
 		}
 	}
 
 	float Matrix[16];
-	void cOBJModel::Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
+	void cOBJModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
 
 		if (mRidigBody != nullptr && mRidigBody->getMotionState())
 		{
 			btTransform btTrans;
 			mRidigBody->getMotionState()->getWorldTransform(btTrans);
-
+			 
 			btVector3 ObjectTransform = btTrans.getOrigin();
-			btVector3 myscale = mCollisionShape->getLocalScaling();
+			btVector3 myscale = mRidigBody->getCollisionShape()->getLocalScaling();
 
 			btScalar x,y,z;
 			btTransform trans = mRidigBody->getCenterOfMassTransform();
@@ -164,7 +128,7 @@ namespace FlawedEngine
 	{
 		if (!isDynamic)
 		{
-			mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
+			//mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
 		}
 	}
 }

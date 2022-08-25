@@ -17,13 +17,14 @@ namespace FlawedEngine
 	public:
 		sModel mTransformation; //I can't find a better name
 
-		virtual void Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions) = 0;
+		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions) = 0;
 		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
-		virtual void SetPhysics(eBasicObject Object) = 0;
+		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) = 0;
 		virtual void setDynamic(bool IsDynamic) = 0;
 		void ModelTransform(sModel& model);
 		void SetColor(glm::vec3 Color);
 		void SetMaterial(sMaterial& Mat);
+		void SetPhysicsProps(sPhysicsProps& Props);
 		void ApplyForce(glm::vec3 Force);
 		virtual ~cEntity() = 0;
 
@@ -38,6 +39,10 @@ namespace FlawedEngine
 
 		btRigidBody* mRidigBody = nullptr;
 		bool mDynamic;
+
+		float mMass = 0.0f;
+		float mFricton = 0.5;
+		float mRestitution = 0.0f;
 
 		cInput& Input = cInput::get();
 	};
@@ -70,6 +75,13 @@ namespace FlawedEngine
 	inline void cEntity::SetMaterial(sMaterial& Mat)
 	{
 		mMaterial = Mat;
+	}
+
+	inline void cEntity::SetPhysicsProps(sPhysicsProps& Props)
+	{
+		mMass = Props.Mass;
+		mFricton = Props.Friction;
+		mRestitution = Props.Restitution;
 	}
 
 	inline void cEntity::ApplyForce(glm::vec3 Force)

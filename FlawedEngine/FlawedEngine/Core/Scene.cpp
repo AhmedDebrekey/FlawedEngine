@@ -18,7 +18,7 @@ namespace FlawedEngine
 		overlappingPairCache = new btDbvtBroadphase();
 		solver = new btSequentialImpulseConstraintSolver;
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration); 
-		dynamicsWorld->setGravity(btVector3(0.0, -5., 0));
+		dynamicsWorld->setGravity(btVector3(0.0, -0.5, 0));
 
 		Setup();
 	}
@@ -54,6 +54,8 @@ namespace FlawedEngine
 
 	void cScene::Setup()
 	{
+		myPhysics->Setup();
+
 		LoadModel(Triangle,		"Triangle",		dynamicsWorld);
 		LoadModel(PointLight,	"Light",		dynamicsWorld);
 		LoadModel(PointLight,	"Example",		dynamicsWorld);
@@ -66,13 +68,26 @@ namespace FlawedEngine
 		LoadModel(Torus,		"Torus",		dynamicsWorld);
 	}
 
+	static bool isPlayPressed = false; //hehe idc hahah :(
+
 	void cScene::Render()
 	{
+		myPhysics->Update();
 
 		Camera.Compute();
-		Transform tCamera { Camera.Postion() , Camera.Front(),Camera.Projection(), Camera.View()};
+		sTransform tCamera { Camera.Postion() , Camera.Front(), Camera.Projection(), Camera.View()};		
 
-		dynamicsWorld->stepSimulation(1.f / 60.f, 10);
+		// is Play Pressed (P)
+		 //yes, wait until released ... then toggle Physics
+		if (glfwGetKey((GLFWwindow*)mWindow, GLFW_KEY_P) == GLFW_PRESS)
+		{
+			if (glfwGetKey((GLFWwindow*)mWindow, GLFW_KEY_1) == GLFW_PRESS)
+			{
+				isPlayPressed = !isPlayPressed; 
+				std::cout << "IsPlayPressed: " << isPlayPressed << std::endl;
+			}
+		}
+		if (isPlayPressed)	dynamicsWorld->stepSimulation(1.f / 60.f, 10);
 
 		std::shared_ptr<cEntity> Triangle = GetObjectByName("Triangle");
 		if (Triangle)
@@ -90,9 +105,13 @@ namespace FlawedEngine
 			Sphere->ModelTransform(SphereModel);
 
 			Sphere->SetColor(glm::vec3(0.5f, 0.2f, 0.5f));
+			
+			sPhysicsProps PhysProps = { 1.f, 1.0f, 10.0f, SphereModel };
+			Sphere->SetPhysicsProps(PhysProps);
 
-			Sphere->SetPhysics(eBasicObject::Sphere);
+			Sphere->SetPhysics(eBasicObject::Sphere, myPhysics.get());
 			Sphere->setDynamic(true);
+
 
 			if (glfwGetKey((GLFWwindow*)mWindow, GLFW_KEY_N) == GLFW_PRESS)
 			{
@@ -118,7 +137,10 @@ namespace FlawedEngine
 			sMaterial ConeMaterial = { glm::vec3(0.05f, 0.05f, 0.4f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f };
 			Cone->SetMaterial(ConeMaterial);
 
-			Cone->SetPhysics(eBasicObject::Cube);
+			sPhysicsProps PhysProps = { 10.f, 1.0f, 0.5 };
+			Cone->SetPhysicsProps(PhysProps);
+
+			Cone->SetPhysics(eBasicObject::Cube, myPhysics.get());
 			Cone->setDynamic(true);
 
 			if (glfwGetKey((GLFWwindow*)mWindow, GLFW_KEY_N) == GLFW_PRESS) //in need of better input system :)
@@ -169,9 +191,13 @@ namespace FlawedEngine
 			
 			sMaterial CubeMat = {glm::vec3(0,0,1), glm::vec3(1.0f), glm::vec3(1.0f), 32.0f};
 			PhysicCube->SetMaterial(CubeMat);
+			
+			sPhysicsProps PhysProps = { 1.f, 10.0f, 0.0f };
+			PhysicCube->SetPhysicsProps(PhysProps);
 
-			PhysicCube->SetPhysics(Cube);
+			PhysicCube->SetPhysics(Cube, myPhysics.get());
 			PhysicCube->setDynamic(true);
+
 		}
 
 		auto Ground = GetObjectByName("Ground");
@@ -183,7 +209,7 @@ namespace FlawedEngine
 			sMaterial GroundMat = { glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(1.0f), 16.0f };
 			Ground->SetMaterial(GroundMat);
 
-			Ground->SetPhysics(Cube);
+			Ground->SetPhysics(Cube, myPhysics.get());
 			Ground->setDynamic(false);
 		}
 
@@ -196,7 +222,7 @@ namespace FlawedEngine
 			sMaterial GroundMat = { glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(1.0f), glm::vec3(1.0f), 16.0f };
 			otherGround->SetMaterial(GroundMat);
 
-			otherGround->SetPhysics(Cube);
+			otherGround->SetPhysics(Cube, myPhysics.get());
 			otherGround->setDynamic(false);
 		}
 		//Render Models

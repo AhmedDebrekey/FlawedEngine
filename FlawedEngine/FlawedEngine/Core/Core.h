@@ -39,7 +39,15 @@ namespace FlawedEngine
 		glm::vec3 Scale = glm::vec3(1.0f);
 	};
 
-	struct Transform
+	struct sPhysicsProps
+	{
+		float Mass = 1.0f;
+		float Friction = 0.5f;
+		float Restitution = 0.0f;
+		sModel Transformation;
+	};
+
+	struct sTransform
 	{
 		glm::vec3 Position;
 		glm::vec3 Front;

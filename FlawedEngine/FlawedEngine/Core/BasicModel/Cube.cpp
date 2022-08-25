@@ -32,7 +32,7 @@ namespace FlawedEngine
 
 	}
 
-	void cCube::Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
+	void cCube::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
 		Trans.Model = mModel;
 		Renderer.Draw(Trans, mMaterial, LightPositions);
@@ -45,7 +45,7 @@ namespace FlawedEngine
 	void cCube::setDynamic(bool isDynamic)
 	{
 	}
-	void cCube::SetPhysics(eBasicObject Object)
+	void cCube::SetPhysics(eBasicObject Object, void* PhysicsWorld)
 	{
 	}
 }

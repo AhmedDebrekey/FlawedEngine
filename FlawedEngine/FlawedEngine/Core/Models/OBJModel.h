@@ -12,14 +12,14 @@ namespace FlawedEngine
 	public:
 		cOBJModel(const char* FilePath, void* PhysicsWorld);
 		~cOBJModel();
-		virtual void Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions) override;
+		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions) override;
 		virtual void Update() override;
 		virtual void setDynamic(bool isDynamic) override;
-		virtual void SetPhysics(eBasicObject Object) override;
+		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
 
 		bool LoadModel(const char* FilePath);
 		void Populate();
-		void SetCollisionShape(eBasicObject Object);
+		void SetRigidBody(eBasicObject Object);
 		bool isPhysicsSet = false;
 	private:
 		btDiscreteDynamicsWorld* mPhysicsDynamicWorld;

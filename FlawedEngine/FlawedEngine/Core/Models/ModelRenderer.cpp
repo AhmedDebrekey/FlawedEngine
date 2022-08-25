@@ -54,7 +54,7 @@ namespace FlawedEngine
     #endif //OPENGL
 	}
 
-	void cModelRenderer::Draw(Transform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights)
+	void cModelRenderer::Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights)
 	{
     #ifdef OPENGL
         Shader.Bind();

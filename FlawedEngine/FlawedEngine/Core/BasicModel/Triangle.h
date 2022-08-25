@@ -13,10 +13,10 @@ namespace FlawedEngine
 	public:
 		cTriangle();
 		~cTriangle();
-		virtual void Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions) override;
+		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions) override;
 		virtual void Update() override;
 		virtual void setDynamic(bool isDynamic) override;
-		virtual void SetPhysics(eBasicObject Object) override;
+		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
 
 
 	private:

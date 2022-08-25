@@ -17,7 +17,7 @@ namespace FlawedEngine
 		//Delete if used other variables than mVertexBuffer and Texture and the indexbuffer
 	}
 
-	void cTriangle::Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
+	void cTriangle::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
 		//Rendering of a triangle
 		Trans.Model = mModel;
@@ -31,7 +31,7 @@ namespace FlawedEngine
 	void cTriangle::setDynamic(bool isDynamic)
 	{
 	}
-	void cTriangle::SetPhysics(eBasicObject Object)
+	void cTriangle::SetPhysics(eBasicObject Object, void* PhysicsWorld)
 	{
 	}
 }

@@ -30,7 +30,7 @@ namespace FlawedEngine
 	{
 	}
 
-	void cPointLight::Render(Transform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
+	void cPointLight::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
 		mColor = mMaterial.Color;
 		Trans.Model = mModel;
@@ -43,7 +43,7 @@ namespace FlawedEngine
 	void cPointLight::setDynamic(bool isDynamic)
 	{
 	}
-	void cPointLight::SetPhysics(eBasicObject Object)
+	void cPointLight::SetPhysics(eBasicObject Object, void* PhysicsWorld)
 	{
 	}
 }

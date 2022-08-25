@@ -4,6 +4,7 @@
 #include "PerspectiveCamera.h"
 #include <unordered_map>
 #include <Bullet/btBulletDynamicsCommon.h>
+#include "Physics/Physics.h"
 
 namespace FlawedEngine
 {
@@ -26,6 +27,8 @@ namespace FlawedEngine
 		std::unordered_map<std::string, sLight> PointLights;
 		void* mWindow;
 		cpCamera Camera;		
+
+		std::shared_ptr<cPhysics> myPhysics = std::make_shared<cPhysics>(); //probably a bad idea . . .
 
 	private: //Bullet Physics
 		btDefaultCollisionConfiguration* collisionConfiguration;
