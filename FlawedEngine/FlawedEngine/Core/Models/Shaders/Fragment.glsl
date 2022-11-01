@@ -96,23 +96,3 @@ void main()
     
     FragColor = vec4(result, 1.0);
 }
-
-
-/*
-    Hello Future Debreky,
-        This message is for you, because I know that you will PROBABLY forget everything that I did today.
-        So let me simply explain to you.
-
-        First Note that if we do not have the same number of pointlights in the scene as the "NR_POINT_LIGHTS", everything will be black
-
-        Secondly, in the modelrenderer.cpp, a bunch of stuff have changed, now if you have a lot of point lights, it will be automatically sent
-        over to the GPU
-
-        IDK IF I AM MAKING SENSE, HOPEFULLY YOU WILL UNDERSTAND. AFTER ALL YOU ARE ME.
-
-        My code does not support TEXTURES. not yet.
-
-        It will
-
-        In scene.cpp when creating a light, you have to have a sLight or light properties properly filled in order for everything to work.
-*/

@@ -20,6 +20,7 @@ namespace FlawedEngine
 		bool LoadModel(const char* FilePath);
 		void Populate();
 		void SetRigidBody(eBasicObject Object);
+		void SetCollisionShape(eBasicObject Object);
 		bool isPhysicsSet = false;
 	private:
 		btDiscreteDynamicsWorld* mPhysicsDynamicWorld;

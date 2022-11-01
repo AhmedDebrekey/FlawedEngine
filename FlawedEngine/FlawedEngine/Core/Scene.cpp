@@ -18,7 +18,7 @@ namespace FlawedEngine
 		overlappingPairCache = new btDbvtBroadphase();
 		solver = new btSequentialImpulseConstraintSolver;
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration); 
-		dynamicsWorld->setGravity(btVector3(0.0, -0.5, 0));
+		dynamicsWorld->setGravity(btVector3(0.0, git-0.9, 0));
 
 		Setup();
 	}
@@ -186,10 +186,10 @@ namespace FlawedEngine
 		auto PhysicCube = GetObjectByName("PhysicsCube");
 		if(PhysicCube)
 		{
-			sModel CubeModel = { glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(10.0f), glm::vec3(2.0f)};
+			sModel CubeModel = { glm::vec3(0.0f, 20.0f, 0.0f), glm::vec3(10.5f), glm::vec3(2.0f)};
 			PhysicCube->ModelTransform(CubeModel);
 			
-			sMaterial CubeMat = {glm::vec3(0,0,1), glm::vec3(1.0f), glm::vec3(1.0f), 32.0f};
+			sMaterial CubeMat = {glm::vec3(1,1,1), glm::vec3(1.0f), glm::vec3(1.0f), 32.0f};
 			PhysicCube->SetMaterial(CubeMat);
 			
 			sPhysicsProps PhysProps = { 1.f, 10.0f, 0.0f };

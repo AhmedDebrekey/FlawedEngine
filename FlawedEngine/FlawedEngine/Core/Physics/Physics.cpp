@@ -92,7 +92,7 @@ namespace FlawedEngine
 
 		mWorld->addRigidBody(RigidBody.get());
 		mWorld->updateSingleAabb(RigidBody.get());
-
+		 
 		return RigidBody;
 	}
 

@@ -78,12 +78,76 @@ namespace FlawedEngine
 		}
 	}
 
+	void cOBJModel::SetCollisionShape(eBasicObject Object)
+	{
+		switch (Object) //if it is not set code will crash ofc
+		{
+		case FlawedEngine::Cube:
+		{
+			mCollisionShape = new btBoxShape(btVector3(btScalar(1.), btScalar(1.), btScalar(1.)));
+		}
+		break;
+		case FlawedEngine::Sphere:
+		{
+			mCollisionShape = new btSphereShape(1.0);
+		}
+		break;
+		case FlawedEngine::Cone:
+			break;
+		case FlawedEngine::Torus:
+			break;
+		case FlawedEngine::Triangle:
+			break;
+		case FlawedEngine::PointLight:
+			break;
+		case FlawedEngine::SpotLight:
+			break;
+		default:
+			break;
+		}
+	}
+
 	void cOBJModel::SetPhysics(eBasicObject Object, void* PhysicsWorld)
 	{
 		if (!isPhysicsSet)
 		{
-			sPhysicsProps PhysProps = { 10.f, 1.0f, 0.5 };
-			mRidigBody = ((cPhysics*)PhysicsWorld)->AddBox(Object, PhysProps).get();
+			glm::vec3 Trans = mTransformation.Translation;
+			glm::vec3 Rotation = mTransformation.Rotation;
+			glm::vec3 Scale = mTransformation.Scale;
+
+			SetCollisionShape(Object);
+
+			btTransform ObjectTransform;
+			ObjectTransform.setIdentity();
+			ObjectTransform.setOrigin(btVector3(Trans.x, Trans.y, Trans.z));
+
+			btScalar mass(1.0);
+
+			btVector3 localInertia(0, 0, 0);
+			if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, localInertia);
+
+			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, localInertia);
+			rbInfo.m_startWorldTransform;
+			mRidigBody = new btRigidBody(rbInfo);
+
+
+			btTransform trans = mRidigBody->getCenterOfMassTransform();
+			btQuaternion transrot = trans.getRotation();
+			btQuaternion rotquat;
+			rotquat = rotquat.getIdentity();
+			rotquat.setEuler(glm::radians(Rotation.y), glm::radians(Rotation.x), glm::radians(Rotation.z));
+			transrot = rotquat * transrot;
+			trans.setRotation(transrot);
+			mRidigBody->setCenterOfMassTransform(trans);
+
+			mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
+
+			mRidigBody->setActivationState(DISABLE_DEACTIVATION); //not so good 
+			//mRidigBody->setRollingFriction(0.1);
+
+			mPhysicsDynamicWorld->addRigidBody(mRidigBody);
+			mPhysicsDynamicWorld->updateSingleAabb(mRidigBody);
 
 			isPhysicsSet = true;
 		}
@@ -128,7 +192,7 @@ namespace FlawedEngine
 	{
 		if (!isDynamic)
 		{
-			//mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
+			mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
 		}
 	}
 }
