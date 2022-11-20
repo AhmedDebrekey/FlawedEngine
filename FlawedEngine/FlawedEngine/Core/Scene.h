@@ -38,5 +38,10 @@ namespace FlawedEngine
 		btDiscreteDynamicsWorld* dynamicsWorld;
 
 		btAlignedObjectArray<btCollisionShape*> collisionShapes;
+
+	private:
+		uint32_t FrameBuffer;
+		uint32_t TextureColorBuffer;
+		uint32_t RenderBufferObject;
 	};
 }

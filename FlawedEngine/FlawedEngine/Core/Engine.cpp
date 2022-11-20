@@ -11,6 +11,7 @@ namespace FlawedEngine
 			Creating a new scene here
 			In the future, this should be controlled by the use in the GUI/IMGUI
 		*/
+
 		{
 			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow()));
 		}

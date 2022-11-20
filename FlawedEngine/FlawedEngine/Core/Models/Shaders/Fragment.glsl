@@ -1,5 +1,7 @@
 #version 330 core
 
+layout(location = 0) out vec3 color;
+
 out vec4 FragColor;  
 in vec3 ourColor;
 in vec3 Normal;  
