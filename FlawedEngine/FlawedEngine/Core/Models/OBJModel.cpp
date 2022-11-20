@@ -51,33 +51,6 @@ namespace FlawedEngine
 		}
 	}
 
-	void cOBJModel::SetRigidBody(eBasicObject Object)
-	{
-		switch (Object) //if it is not set code will crash ofc
-		{
-		case FlawedEngine::Cube: //mRidigBody = ((cPhysics*)PhysicsWorld)->AddBox(Object, PhysProps).get();
-		{
-		} 
-			break;
-		case FlawedEngine::Sphere:
-		{
-		} 
-			break;
-		case FlawedEngine::Cone:
-			break;
-		case FlawedEngine::Torus:
-			break;
-		case FlawedEngine::Triangle:
-			break;
-		case FlawedEngine::PointLight:
-			break;
-		case FlawedEngine::SpotLight:
-			break;
-		default:
-			break;
-		}
-	}
-
 	void cOBJModel::SetCollisionShape(eBasicObject Object)
 	{
 		switch (Object) //if it is not set code will crash ofc

@@ -3,6 +3,8 @@
 #include <memory>
 #include "Window.h"
 #include "Scene.h"
+#include "UIManager.h"
+
 
 namespace FlawedEngine
 {
@@ -20,5 +22,6 @@ namespace FlawedEngine
 	private:
 		cWindow& EngineWindow = cWindow::get();
 		std::vector<std::shared_ptr<cScene>> Scenes;
+		cUIManager UI;
 	};
 }

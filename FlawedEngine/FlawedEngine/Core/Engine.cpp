@@ -7,10 +7,7 @@ namespace FlawedEngine
 		EngineWindow.Init();
 		EngineWindow.CreateWindow();
 		
-		/*
-			Creating a new scene here
-			In the future, this should be controlled by the use in the GUI/IMGUI
-		*/
+		UI.Init(EngineWindow.GetWindow());
 
 		{
 			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow()));
@@ -21,16 +18,18 @@ namespace FlawedEngine
 	{
 		while (!EngineWindow.ShouldClose())
 		{
-			EngineWindow.Update(); 
+			EngineWindow.Update();
+			
+			UI.UpdateUI();
+			
 			OnEvent();
+			
 			for (auto Scene : Scenes)//TODO: Switch from a for loop to single based scene.
 			{
 				Scene->Render();
 			}
-			//Physics update
-			//Audio update
-			//UI update
-			//World update
+
+			UI.RenderUI();
 
 			EngineWindow.EndFrame();
 		}
