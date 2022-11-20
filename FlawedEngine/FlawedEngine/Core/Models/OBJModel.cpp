@@ -1,6 +1,5 @@
 #include "OBJModel.h"
 #include <glm/gtc/type_ptr.hpp>
-#include "../Physics/Physics.h"
 
 namespace FlawedEngine
 {

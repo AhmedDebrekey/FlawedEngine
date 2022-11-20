@@ -164,7 +164,6 @@
     <ClCompile Include="Core\PerspectiveCamera.cpp" />
     <ClCompile Include="Core\Models\OBJModel.cpp" />
     <ClCompile Include="Core\BasicModel\PointLight.cpp" />
-    <ClCompile Include="Core\Physics\Physics.cpp" />
     <ClCompile Include="Libraries\include\ImGui\imgui.cpp" />
     <ClCompile Include="Libraries\include\ImGui\imgui_demo.cpp" />
     <ClCompile Include="Libraries\include\ImGui\imgui_draw.cpp" />
@@ -173,6 +172,7 @@
     <ClCompile Include="Libraries\include\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Libraries\include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Core\UIManager.cpp" />
+    <ClCompile Include="Core\Physics\Physics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Core.h" />
@@ -189,7 +189,6 @@
     <ClInclude Include="Core\BasicModel\Cube.h" />
     <ClInclude Include="Core\Models\OBJModel.h" />
     <ClInclude Include="Core\BasicModel\PointLight.h" />
-    <ClInclude Include="Core\Physics\Physics.h" />
     <ClInclude Include="Libraries\include\ImGui\imconfig.h" />
     <ClInclude Include="Libraries\include\ImGui\imgui.h" />
     <ClInclude Include="Libraries\include\ImGui\imgui_impl_glfw.h" />
@@ -200,6 +199,7 @@
     <ClInclude Include="Libraries\include\ImGui\imstb_textedit.h" />
     <ClInclude Include="Libraries\include\ImGui\imstb_truetype.h" />
     <ClInclude Include="Core\UIManager.h" />
+    <ClInclude Include="Core\Physics\Physics.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Fragment.glsl" />

@@ -8,9 +8,10 @@ namespace FlawedEngine
 		EngineWindow.CreateWindow();
 		
 		UI.Init(EngineWindow.GetWindow());
+		PhysicsWorld = Physics.Init();
 
 		{
-			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow()));
+			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), PhysicsWorld));
 		}
 	}
 
@@ -24,7 +25,9 @@ namespace FlawedEngine
 			
 			OnEvent();
 			
-			for (auto Scene : Scenes)//TODO: Switch from a for loop to single based scene.
+			Physics.Update();
+
+			for (auto Scene : Scenes)//TODO: Switch from a for loop to single based scene chosen from UI WAYYY later on. so don't create 2 scene hehe
 			{
 				Scene->Render();
 			}
@@ -39,4 +42,10 @@ namespace FlawedEngine
 	{
 		EngineWindow.PollEvents();
 	}
+
+	cEngine::~cEngine()
+	{
+
+	}
+
 }

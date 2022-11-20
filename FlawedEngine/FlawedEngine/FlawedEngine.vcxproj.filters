@@ -54,9 +54,6 @@
     <ClCompile Include="Core\BasicModel\PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Physics\Physics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Libraries\include\ImGui\imgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -79,6 +76,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\UIManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Physics\Physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,9 +125,6 @@
     <ClInclude Include="Core\BasicModel\PointLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Physics\Physics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\include\ImGui\imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -156,6 +153,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\UIManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Physics\Physics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

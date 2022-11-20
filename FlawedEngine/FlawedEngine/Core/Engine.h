@@ -4,7 +4,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "UIManager.h"
-
+#include "Physics/Physics.h"	
 
 namespace FlawedEngine
 {
@@ -13,6 +13,8 @@ namespace FlawedEngine
 	public:
 
 		cEngine();
+		~cEngine();
+
 		void Run();
 	
 	private: 
@@ -21,7 +23,13 @@ namespace FlawedEngine
 
 	private:
 		cWindow& EngineWindow = cWindow::get();
+		
+		cUIManager UI;//make into singleton
+
+		cPhysics Physics;//make into singleton
+
 		std::vector<std::shared_ptr<cScene>> Scenes;
-		cUIManager UI;
+
+		void* PhysicsWorld = nullptr;
 	};
 }

@@ -1,34 +1,27 @@
 #pragma once
 
 #include <Bullet/btBulletDynamicsCommon.h>
-#include "../Core.h"
 
-#include <memory>
-namespace FlawedEngine
-{
+namespace FlawedEngine {
+
 	class cPhysics
 	{
 	public:
 		cPhysics();
 		~cPhysics();
 
-		void Setup();
+		void* Init();
+
 		void Update();
 
-		std::shared_ptr<btRigidBody> AddBox(eBasicObject Object, sPhysicsProps& Props);
-		std::shared_ptr<btRigidBody> AddSphere(eBasicObject Object, sPhysicsProps& Props);
 	private:
-		btDefaultCollisionConfiguration*		mCollisionConfiguration	= nullptr;
-		btCollisionDispatcher*					mDispatcher				= nullptr;
-		btBroadphaseInterface*					mOverlappingPairCache	= nullptr;
-		btSequentialImpulseConstraintSolver*	mSolver					= nullptr;
-		btDiscreteDynamicsWorld*				mWorld					= nullptr; //I'm cool hehe 8)
-
+		btDefaultCollisionConfiguration*		collisionConfiguration	= nullptr;
+		btCollisionDispatcher*					dispatcher				= nullptr;
+		btBroadphaseInterface*					overlappingPairCache	= nullptr;
+		btSequentialImpulseConstraintSolver*	solver					= nullptr;
+		btDiscreteDynamicsWorld*				dynamicsWorld			= nullptr;
 		btAlignedObjectArray<btCollisionShape*> collisionShapes;
-
-		bool isPlaying = false;
-
-		std::shared_ptr<btCollisionShape> SetCollisionShape(eBasicObject Object);
 	};
+
 }
 
