@@ -1,31 +1,30 @@
 #pragma once
 
-#include "Entity.h"
-#include "PerspectiveCamera.h"
 #include <unordered_map>
 #include <Bullet/btBulletDynamicsCommon.h>
+
+#include "Entity.h"
+#include "PerspectiveCamera.h"
+#include "Models/ObjectManager.h"
+
 
 namespace FlawedEngine
 {
 	class cScene
 	{
 	public:
-
-		cScene(void* Window, void* Physics);
+		cScene(void* Window, void* Physics, btAlignedObjectArray<btCollisionShape*>* CollisionShapes);
 		~cScene();
 		void Setup();
 		void Render();
-		void LoadModel(const char* FilePath, const char* Name, void* PhysicsWorld);
-		void LoadModel(eBasicObject Object, const char* Name, void* PhysicsWorld);
-		void AddLight(const char* Name, sLight& Props);
 
-		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
+		void Print() { std::cout << "Print" << std::endl; }
 
+		cObjectManager ObjectMan;
 	private:
-		std::unordered_map<std::string, std::shared_ptr<cEntity>> WorldEntities;
-		std::unordered_map<std::string, sLight> PointLights;
 		void* mWindow;
 		void* PhysicsWorld = nullptr;
-		cpCamera Camera;		
+		cpCamera Camera;
+		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
 	};
 }

@@ -3,7 +3,8 @@
 
 namespace FlawedEngine
 {
-	cOBJModel::cOBJModel(const char* FilePath, void* PhysicsWorld)
+	cOBJModel::cOBJModel(const char* FilePath, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes)
+		:mCollisionShapesArray(CollisionShapes)
 	{
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
 
@@ -121,6 +122,8 @@ namespace FlawedEngine
 			mPhysicsDynamicWorld->addRigidBody(mRidigBody);
 			mPhysicsDynamicWorld->updateSingleAabb(mRidigBody);
 
+			mCollisionShapesArray->push_back(mCollisionShape);
+
 			isPhysicsSet = true;
 		}
 	}
@@ -151,7 +154,7 @@ namespace FlawedEngine
 		}
 		else
 			Trans.Model = mModel;
-
+		
 		Renderer.Draw(Trans, mMaterial, LightPositions);
 	}
 
@@ -162,7 +165,7 @@ namespace FlawedEngine
 
 	void cOBJModel::setDynamic(bool isDynamic)
 	{
-		if (!isDynamic)
+		if (false)
 		{
 			mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
 		}

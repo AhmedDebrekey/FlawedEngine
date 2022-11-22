@@ -81,6 +81,9 @@
     <ClCompile Include="Core\Physics\Physics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Models\ObjectManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Window.h">
@@ -156,6 +159,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Physics\Physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Models\ObjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

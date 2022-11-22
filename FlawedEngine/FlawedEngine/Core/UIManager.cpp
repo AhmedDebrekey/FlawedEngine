@@ -72,7 +72,7 @@ void cUIManager::UpdateUI()
 	// RenderUI() will reset the frame buffer back to zero so it renders on the default one as usual
 
 	glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
-	glClearColor(0.6f, 0.6f, 0.8f, 1.0f); //This also could be found in the window class, TODO: Refactor it
+	glClearColor(0.365f, 0.506f, 0.635f, 1.0f); //This also could be found in the window class, TODO: Refactor it
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 

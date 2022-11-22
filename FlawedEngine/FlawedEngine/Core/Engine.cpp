@@ -9,9 +9,10 @@ namespace FlawedEngine
 		
 		UI.Init(EngineWindow.GetWindow());
 		PhysicsWorld = Physics.Init();
+		btAlignedObjectArray<btCollisionShape*>* CollisionShapes = Physics.GetCollisionShapesArray();
 
 		{
-			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), PhysicsWorld));
+			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), PhysicsWorld, CollisionShapes));
 		}
 	}
 

@@ -173,6 +173,7 @@
     <ClCompile Include="Libraries\include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Core\UIManager.cpp" />
     <ClCompile Include="Core\Physics\Physics.cpp" />
+    <ClCompile Include="Core\Models\ObjectManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Core.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Libraries\include\ImGui\imstb_truetype.h" />
     <ClInclude Include="Core\UIManager.h" />
     <ClInclude Include="Core\Physics\Physics.h" />
+    <ClInclude Include="Core\Models\ObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Fragment.glsl" />

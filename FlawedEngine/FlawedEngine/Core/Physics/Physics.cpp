@@ -1,5 +1,7 @@
 #include "Physics.h"
 
+#include <iostream>
+
 namespace FlawedEngine
 {
 	cPhysics::cPhysics()

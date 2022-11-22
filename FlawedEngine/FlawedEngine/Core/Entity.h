@@ -44,6 +44,8 @@ namespace FlawedEngine
 		float mFricton = 0.5;
 		float mRestitution = 0.0f;
 
+		bool Dead = false;
+
 		cInput& Input = cInput::get();
 	};
 

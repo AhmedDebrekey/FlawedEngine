@@ -14,6 +14,8 @@ namespace FlawedEngine {
 
 		void Update();
 
+		btAlignedObjectArray<btCollisionShape*>* GetCollisionShapesArray() { return &collisionShapes; }
+
 	private:
 		btDefaultCollisionConfiguration*		collisionConfiguration	= nullptr;
 		btCollisionDispatcher*					dispatcher				= nullptr;

@@ -10,7 +10,7 @@ namespace FlawedEngine
 	class cOBJModel : public cEntity
 	{
 	public:
-		cOBJModel(const char* FilePath, void* PhysicsWorld);
+		cOBJModel(const char* FilePath, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes);
 		~cOBJModel();
 		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions) override;
 		virtual void Update() override;
@@ -27,5 +27,6 @@ namespace FlawedEngine
 		btCollisionShape* mCollisionShape;
 		cModelRenderer Renderer;
 		objl::Loader mLoader;
+		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
 	};
 }
