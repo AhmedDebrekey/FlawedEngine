@@ -38,7 +38,6 @@ namespace FlawedEngine
 		std::vector<sVertex> mVertexBuffer;
 		std::vector<uint32_t> mIndices;
 		std::vector<sTexture> mTextureCoords;
-		//std::vector<float> mIndexBuffer;
 
 		btRigidBody* mRidigBody = nullptr;
 		bool mDynamic;

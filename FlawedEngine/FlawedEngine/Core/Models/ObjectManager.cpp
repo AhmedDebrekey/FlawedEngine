@@ -47,18 +47,24 @@ namespace FlawedEngine
 		break;
 		case FlawedEngine::Cone:
 		{
-
 			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Cone\\Cone.obj", mPhysicsWorld, mCollisionShapesArray);
+			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
+			SceneObjects[Name]->ModelTransform(DefaultModel);
+
 		}
 		break;
 		case FlawedEngine::Torus:
 		{
 			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Torus\\Torus.obj", mPhysicsWorld, mCollisionShapesArray);
+			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
+			SceneObjects[Name]->ModelTransform(DefaultModel);
 		}
 		break;
 		case FlawedEngine::Triangle:
 		{
 			SceneObjects[Name] = std::make_shared<cTriangle>();
+			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
+			SceneObjects[Name]->ModelTransform(DefaultModel);
 		}
 		break;
 		case FlawedEngine::PointLight:

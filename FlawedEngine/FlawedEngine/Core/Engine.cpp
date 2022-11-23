@@ -15,7 +15,7 @@ namespace FlawedEngine
 			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), PhysicsWorld, CollisionShapes));
 		}
 
-		UI.SetSceneObjectsPointer(Scenes[0]->GetObjectsPointer()); //VERY BAD, should have CURRENT ACTIVE SCENE RETURNS THAT POINTER
+		//VERY BAD, should have CURRENT ACTIVE SCENE RETURNS THAT POINTER
 		UI.SetObjectManager(Scenes[0]->GetObjectManager());
 	}
 

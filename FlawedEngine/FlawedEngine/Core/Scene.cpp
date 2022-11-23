@@ -19,7 +19,6 @@ namespace FlawedEngine
 	void cScene::Setup()
 	{
 		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray);
-		mSceneObjects = ObjectMan.GetObjectsPointer();
 	}
 
 	void cScene::Render()

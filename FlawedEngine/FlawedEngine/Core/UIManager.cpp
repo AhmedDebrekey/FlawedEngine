@@ -54,13 +54,14 @@ namespace FlawedEngine
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 		ImGui::StyleColorsDark();
 
+		io.Fonts->AddFontFromFileTTF("RobotoSlabRegular-w1GE3.ttf", 18);
+
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{
 			style.WindowRounding = 0.0f;
 			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 		}
-
 
 		ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)Window, true);
 		ImGui_ImplOpenGL3_Init("#version 330");
@@ -104,26 +105,89 @@ namespace FlawedEngine
 			ImGui::EndMenuBar();
 		}
 
+		static int Cubes		= 0;
+		static int Spheres		= 0;
+		static int Cones		= 0;
+		static int Toruses		= 0;
+		static int Triangles	= 0;
+
 		{
 			ImGui::Begin("Settings");
 
 			bool CubePressed = ImGui::Button("Add Cube");
 			static char CubeName[20] = "";
 			ImGui::SameLine();
-			ImGui::InputText("##", CubeName, IM_ARRAYSIZE(CubeName));
+			ImGui::InputText("##Cube", CubeName, IM_ARRAYSIZE(CubeName));
 			if (CubePressed)
 				if (!((CubeName != NULL) && (CubeName[0] == '\0'))) //if not empty
 					ObjectMan->AddObject(Cube, CubeName);
+				else
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Cube(%i)", Cubes);
+					ObjectMan->AddObject(Cube, buffer);
+					Cubes++;
+				}
 
 			bool SpherePressed = ImGui::Button("Add Sphere");
 			static char SphereName[20] = "";
 			ImGui::SameLine();
-			ImGui::InputText("###", SphereName, IM_ARRAYSIZE(SphereName));
+			ImGui::InputText("##Shpere", SphereName, IM_ARRAYSIZE(SphereName));
 			if (SpherePressed)
-				if (!((SphereName != NULL) && (SphereName[0] == '\0'))) //if not empty
+				if (!((SphereName != NULL) && (SphereName[0] == '\0')))
 					ObjectMan->AddObject(Sphere, SphereName);
-			
+				else
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Sphere(%i)", Spheres);
+					ObjectMan->AddObject(Sphere, buffer);
+					Spheres++;
+				}
 
+			bool ConePressed = ImGui::Button("Add Cone");
+			static char ConeName[20] = "";
+			ImGui::SameLine();
+			ImGui::InputText("##Cone", ConeName, IM_ARRAYSIZE(ConeName));
+			if (ConePressed)
+				if (!((ConeName != NULL) && (ConeName[0] == '\0')))
+					ObjectMan->AddObject(Sphere, ConeName);
+				else
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Cone(%i)", Cones);
+					ObjectMan->AddObject(Cone, buffer);
+					Cones++;
+				}
+
+			bool TorusPressed = ImGui::Button("Add Torus");
+			static char TorusName[20] = "";
+			ImGui::SameLine();
+			ImGui::InputText("##Torus", TorusName, IM_ARRAYSIZE(TorusName));
+			if (TorusPressed)
+				if (!((TorusName != NULL) && (TorusName[0] == '\0')))
+					ObjectMan->AddObject(Torus, TorusName);
+				else
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Torus(%i)", Toruses);
+					ObjectMan->AddObject(Torus, buffer);
+					Toruses++;
+				}
+
+			bool TrianglePressed = ImGui::Button("Add Triangle");
+			static char TriangleName[20] = "";
+			ImGui::SameLine();
+			ImGui::InputText("##Triangle", TriangleName, IM_ARRAYSIZE(TriangleName));
+			if (TrianglePressed)
+				if (!((TriangleName != NULL) && (TriangleName[0] == '\0')))
+					ObjectMan->AddObject(Triangle, TriangleName);
+				else
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Triangle(%i)", Triangles);
+					ObjectMan->AddObject(Triangle, buffer);
+					Triangles++;
+				}
 
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
@@ -136,17 +200,21 @@ namespace FlawedEngine
 			ImGui::Begin("Scene Hierarchy");
 			for (auto& Object : *ObjectMan->GetObjectsPointer())
 			{
-				ImGui::Text(Object.first.c_str());
-				auto Entity = Object.second;
-				
-				sModel EntityModel = Entity->GetModel();
-				ImGui::SliderFloat3(std::string("Translation:##"	+ Object.first).c_str(), &EntityModel.Translation.x		, -10.f, 10.f);
-				ImGui::SliderFloat3(std::string("Rotation:##"		+ Object.first).c_str(), &EntityModel.Rotation.x		, -10.f, 10.f);
-				ImGui::SliderFloat3(std::string("Scale:##"			+ Object.first).c_str(), &EntityModel.Scale.x			, -10.f, 10.f);
-				Entity->ModelTransform(EntityModel);
+				if (ImGui::TreeNode(Object.first.c_str()))
+				{
+					auto Entity = Object.second;
 
-				glm::vec3* EntityColor = Entity->GetColor();
-				ImGui::ColorEdit3(std::string("Color:##" + Object.first).c_str(), &EntityColor->x);
+					sModel EntityModel = Entity->GetModel();
+					ImGui::SliderFloat3(std::string("Translation:##" + Object.first).c_str(), &EntityModel.Translation.x, -10.f, 10.f);
+					ImGui::SliderFloat3(std::string("Rotation:##" + Object.first).c_str(), &EntityModel.Rotation.x, -10.f, 10.f);
+					ImGui::SliderFloat3(std::string("Scale:##" + Object.first).c_str(), &EntityModel.Scale.x, -10.f, 10.f);
+					Entity->ModelTransform(EntityModel);
+
+					glm::vec3* EntityColor = Entity->GetColor();
+					ImGui::ColorEdit3(std::string("Color:##" + Object.first).c_str(), &EntityColor->x);
+
+					ImGui::TreePop();
+				}
 			}
 			ImGui::End();
 		}

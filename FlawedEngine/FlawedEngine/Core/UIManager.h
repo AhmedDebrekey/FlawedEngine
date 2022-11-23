@@ -19,7 +19,6 @@ namespace FlawedEngine
 		void Init(void* Window);
 		void UpdateUI();
 		void RenderUI();
-		void SetSceneObjectsPointer(std::unordered_map<std::string, std::shared_ptr<cEntity>>* Objects) { mSceneObjects = Objects; }
 		void SetObjectManager(cObjectManager* Manager) { ObjectMan = Manager; };
 	private:
 		void InitRendering();
@@ -32,6 +31,5 @@ namespace FlawedEngine
 		ImVec2 ViewportSize;
 	private:
 		cObjectManager* ObjectMan;
-		std::unordered_map<std::string, std::shared_ptr<cEntity>>* mSceneObjects;
 	};
 }
