@@ -20,8 +20,10 @@ namespace FlawedEngine
 
 		std::unordered_map<std::string, std::shared_ptr<cEntity>>* GetObjectsPointer() { return mSceneObjects; }
 
-		cObjectManager ObjectMan;
+		cObjectManager* GetObjectManager() { return &ObjectMan; }
+
 	private:
+		cObjectManager ObjectMan;
 		void* mWindow;
 		void* PhysicsWorld = nullptr;
 		cpCamera Camera;

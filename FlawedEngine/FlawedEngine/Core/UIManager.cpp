@@ -105,14 +105,25 @@ namespace FlawedEngine
 		}
 
 		{
-			static int counter = 0;
-
 			ImGui::Begin("Settings");
 
-			if (ImGui::Button("Button"))
-				counter++;
+			bool CubePressed = ImGui::Button("Add Cube");
+			static char CubeName[20] = "";
 			ImGui::SameLine();
-			ImGui::Text("counter = %d", counter);
+			ImGui::InputText("##", CubeName, IM_ARRAYSIZE(CubeName));
+			if (CubePressed)
+				if (!((CubeName != NULL) && (CubeName[0] == '\0'))) //if not empty
+					ObjectMan->AddObject(Cube, CubeName);
+
+			bool SpherePressed = ImGui::Button("Add Sphere");
+			static char SphereName[20] = "";
+			ImGui::SameLine();
+			ImGui::InputText("###", SphereName, IM_ARRAYSIZE(SphereName));
+			if (SpherePressed)
+				if (!((SphereName != NULL) && (SphereName[0] == '\0'))) //if not empty
+					ObjectMan->AddObject(Sphere, SphereName);
+			
+
 
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
@@ -123,7 +134,7 @@ namespace FlawedEngine
 			ImGui::End();
 			
 			ImGui::Begin("Scene Hierarchy");
-			for (auto& Object : *mSceneObjects)
+			for (auto& Object : *ObjectMan->GetObjectsPointer())
 			{
 				ImGui::Text(Object.first.c_str());
 				auto Entity = Object.second;

@@ -2,7 +2,7 @@
 
 #include "Core.h"
 #include "Entity.h"
-
+#include "Models/ObjectManager.h"
 #include <memory>
 #include <unordered_map>
 #include <ImGui/imgui.h>
@@ -20,7 +20,7 @@ namespace FlawedEngine
 		void UpdateUI();
 		void RenderUI();
 		void SetSceneObjectsPointer(std::unordered_map<std::string, std::shared_ptr<cEntity>>* Objects) { mSceneObjects = Objects; }
-
+		void SetObjectManager(cObjectManager* Manager) { ObjectMan = Manager; };
 	private:
 		void InitRendering();
 		void InitFrameBuffer();
@@ -31,6 +31,7 @@ namespace FlawedEngine
 		uint32_t RenderBufferObject;
 		ImVec2 ViewportSize;
 	private:
+		cObjectManager* ObjectMan;
 		std::unordered_map<std::string, std::shared_ptr<cEntity>>* mSceneObjects;
 	};
 }

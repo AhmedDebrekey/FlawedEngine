@@ -18,7 +18,6 @@ namespace FlawedEngine
 
 	void cScene::Setup()
 	{
-		glfwSetWindowUserPointer((GLFWwindow*)mWindow, this);
 		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray);
 		mSceneObjects = ObjectMan.GetObjectsPointer();
 	}
@@ -27,21 +26,6 @@ namespace FlawedEngine
 	{
 		Camera.Compute();
 		sTransform tCamera { Camera.Postion() , Camera.Front(), Camera.Projection(), Camera.View()};
-
-		auto AddObj = [](GLFWwindow* window, int key, int scancode, int action, int mods)
-		{
-			cScene* scene = static_cast<cScene*>(glfwGetWindowUserPointer(window));
-			if (key == GLFW_KEY_I && action == GLFW_PRESS)
-			{
-				scene->ObjectMan.AddObject(Cube, "Cube");
-			}
-			if (key == GLFW_KEY_O && action == GLFW_PRESS)
-			{
-				scene->ObjectMan.AddObject(Sphere, "Sphere");
-			}
-		};
-
-		glfwSetKeyCallback((GLFWwindow*)mWindow, AddObj);
 
 		ObjectMan.RenderObjects(tCamera);
 	}

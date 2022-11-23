@@ -7,8 +7,8 @@ namespace FlawedEngine
 		EngineWindow.Init();
 		EngineWindow.CreateWindow();
 		
-		UI.Init(EngineWindow.GetWindow());
 		PhysicsWorld = Physics.Init();
+		UI.Init(EngineWindow.GetWindow());
 		btAlignedObjectArray<btCollisionShape*>* CollisionShapes = Physics.GetCollisionShapesArray();
 
 		{
@@ -16,6 +16,7 @@ namespace FlawedEngine
 		}
 
 		UI.SetSceneObjectsPointer(Scenes[0]->GetObjectsPointer()); //VERY BAD, should have CURRENT ACTIVE SCENE RETURNS THAT POINTER
+		UI.SetObjectManager(Scenes[0]->GetObjectManager());
 	}
 
 	void cEngine::Run()
