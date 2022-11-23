@@ -28,6 +28,9 @@ namespace FlawedEngine
 		void ApplyForce(glm::vec3 Force);
 		virtual ~cEntity() = 0;
 
+		sModel GetModel() { return mTransformation; }
+		glm::vec3* GetColor() { return &mMaterial.Color; }
+
 		sMaterial mMaterial;
 
 		glm::mat4 mModel;

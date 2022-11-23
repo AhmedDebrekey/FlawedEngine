@@ -14,6 +14,8 @@ namespace FlawedEngine
 		{
 			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), PhysicsWorld, CollisionShapes));
 		}
+
+		UI.SetSceneObjectsPointer(Scenes[0]->GetObjectsPointer()); //VERY BAD, should have CURRENT ACTIVE SCENE RETURNS THAT POINTER
 	}
 
 	void cEngine::Run()
@@ -42,6 +44,7 @@ namespace FlawedEngine
 	void cEngine::OnEvent()
 	{
 		EngineWindow.PollEvents();
+		//To be continued
 	}
 
 	cEngine::~cEngine()

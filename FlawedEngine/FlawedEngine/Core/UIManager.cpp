@@ -6,82 +6,83 @@
 static bool opt_fullscreen = true;
 static bool opt_padding = false;
 static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
-
-cUIManager::cUIManager()
+namespace FlawedEngine
 {
-}
-
-cUIManager::~cUIManager()
-{
-}
-
-void cUIManager::InitFrameBuffer()
-{
-	glGenFramebuffers(1, &FrameBuffer);
-	glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
-
-	glGenTextures(1, &TextureColorBuffer);
-	glBindTexture(GL_TEXTURE_2D, TextureColorBuffer);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1600, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, TextureColorBuffer, 0);
-
-	glGenRenderbuffers(1, &RenderBufferObject);
-	glBindRenderbuffer(GL_RENDERBUFFER, RenderBufferObject);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1600, 900);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RenderBufferObject);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		assert(false);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-void cUIManager::Init(void* Window)
-{
-	InitFrameBuffer();
-
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
-	ImGui::StyleColorsDark();
-
-	ImGuiStyle& style = ImGui::GetStyle();
-	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	cUIManager::cUIManager()
 	{
-		style.WindowRounding = 0.0f;
-		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
 	}
 
+	cUIManager::~cUIManager()
+	{
+	}
 
-	ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)Window, true);
-	ImGui_ImplOpenGL3_Init("#version 330");
-}
+	void cUIManager::InitFrameBuffer()
+	{
+		glGenFramebuffers(1, &FrameBuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
 
-void cUIManager::UpdateUI()
-{
+		glGenTextures(1, &TextureColorBuffer);
+		glBindTexture(GL_TEXTURE_2D, TextureColorBuffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1600, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
-	//IK this doesn't make a lot of sense being here, but this is basically going to the wrapper around the Scene rendering and to be rendered on the other framebuffer
-	// RenderUI() will reset the frame buffer back to zero so it renders on the default one as usual
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, TextureColorBuffer, 0);
 
-	glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
-	glClearColor(0.365f, 0.506f, 0.635f, 1.0f); //This also could be found in the window class, TODO: Refactor it
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glEnable(GL_DEPTH_TEST);
+		glGenRenderbuffers(1, &RenderBufferObject);
+		glBindRenderbuffer(GL_RENDERBUFFER, RenderBufferObject);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1600, 900);
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
-}
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RenderBufferObject);
 
-void cUIManager::RenderUI()
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	InitRendering();
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+			assert(false);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	void cUIManager::Init(void* Window)
+	{
+		InitFrameBuffer();
+
+		IMGUI_CHECKVERSION();
+		ImGui::CreateContext();
+		ImGuiIO& io = ImGui::GetIO(); (void)io;
+		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+		ImGui::StyleColorsDark();
+
+		ImGuiStyle& style = ImGui::GetStyle();
+		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+		{
+			style.WindowRounding = 0.0f;
+			style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+		}
+
+
+		ImGui_ImplGlfw_InitForOpenGL((GLFWwindow*)Window, true);
+		ImGui_ImplOpenGL3_Init("#version 330");
+	}
+
+	void cUIManager::UpdateUI()
+	{
+
+		//IK this doesn't make a lot of sense being here, but this is basically going to the wrapper around the Scene rendering and to be rendered on the other framebuffer
+		// RenderUI() will reset the frame buffer back to zero so it renders on the default one as usual
+
+		glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
+		glClearColor(0.365f, 0.506f, 0.635f, 1.0f); //This also could be found in the window class, TODO: Refactor it
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
+
+	}
+
+	void cUIManager::RenderUI()
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		InitRendering();
 
 		if (ImGui::BeginMenuBar())
 		{
@@ -104,10 +105,9 @@ void cUIManager::RenderUI()
 		}
 
 		{
-			static float f = 0.0f;
 			static int counter = 0;
 
-			ImGui::Begin("Settings");   
+			ImGui::Begin("Settings");
 
 			if (ImGui::Button("Button"))
 				counter++;
@@ -119,7 +119,24 @@ void cUIManager::RenderUI()
 
 			ImGui::Begin("ViewPort");
 			ViewportSize = { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() };
-			ImGui::Image((void*)TextureColorBuffer, {ViewportSize.x, ViewportSize.y}, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((void*)TextureColorBuffer, { ViewportSize.x, ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::End();
+			
+			ImGui::Begin("Scene Hierarchy");
+			for (auto& Object : *mSceneObjects)
+			{
+				ImGui::Text(Object.first.c_str());
+				auto Entity = Object.second;
+				
+				sModel EntityModel = Entity->GetModel();
+				ImGui::SliderFloat3(std::string("Translation:##"	+ Object.first).c_str(), &EntityModel.Translation.x		, -10.f, 10.f);
+				ImGui::SliderFloat3(std::string("Rotation:##"		+ Object.first).c_str(), &EntityModel.Rotation.x		, -10.f, 10.f);
+				ImGui::SliderFloat3(std::string("Scale:##"			+ Object.first).c_str(), &EntityModel.Scale.x			, -10.f, 10.f);
+				Entity->ModelTransform(EntityModel);
+
+				glm::vec3* EntityColor = Entity->GetColor();
+				ImGui::ColorEdit3(std::string("Color:##" + Object.first).c_str(), &EntityColor->x);
+			}
 			ImGui::End();
 		}
 
@@ -135,48 +152,49 @@ void cUIManager::RenderUI()
 			ImGui::RenderPlatformWindowsDefault();
 			glfwMakeContextCurrent(backup_current_context);
 		}
-}
-
-void cUIManager::InitRendering()
-{
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
-
-	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-	if (opt_fullscreen)
-	{
-		const ImGuiViewport* viewport = ImGui::GetMainViewport();
-		ImGui::SetNextWindowPos(viewport->WorkPos);
-		ImGui::SetNextWindowSize(viewport->WorkSize);
-		ImGui::SetNextWindowViewport(viewport->ID);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-	}
-	else
-	{
-		dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
 	}
 
-	if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-		window_flags |= ImGuiWindowFlags_NoBackground;
-
-	if (!opt_padding)
-		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-	ImGui::Begin("DockSpace", nullptr, window_flags);
-	if (!opt_padding)
-		ImGui::PopStyleVar();
-
-	if (opt_fullscreen)
-		ImGui::PopStyleVar(2);
-
-	// Submit the DockSpace
-	ImGuiIO& io = ImGui::GetIO();
-	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+	void cUIManager::InitRendering()
 	{
-		ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
-		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+		if (opt_fullscreen)
+		{
+			const ImGuiViewport* viewport = ImGui::GetMainViewport();
+			ImGui::SetNextWindowPos(viewport->WorkPos);
+			ImGui::SetNextWindowSize(viewport->WorkSize);
+			ImGui::SetNextWindowViewport(viewport->ID);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+		}
+		else
+		{
+			dockspace_flags &= ~ImGuiDockNodeFlags_PassthruCentralNode;
+		}
+
+		if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+			window_flags |= ImGuiWindowFlags_NoBackground;
+
+		if (!opt_padding)
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::Begin("DockSpace", nullptr, window_flags);
+		if (!opt_padding)
+			ImGui::PopStyleVar();
+
+		if (opt_fullscreen)
+			ImGui::PopStyleVar(2);
+
+		// Submit the DockSpace
+		ImGuiIO& io = ImGui::GetIO();
+		if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+		{
+			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+		}
 	}
 }

@@ -20,6 +20,8 @@ namespace FlawedEngine
 		void RemoveObject(const char* Name);
 
 		void ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps);
+
+		std::unordered_map<std::string, std::shared_ptr<cEntity>>* GetObjectsPointer() { return &SceneObjects; }
 		
 	private:
 		void AddLight(const char* Name, sLight& Props);

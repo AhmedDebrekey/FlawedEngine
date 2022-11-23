@@ -18,7 +18,7 @@ namespace FlawedEngine
 		void Setup();
 		void Render();
 
-		void Print() { std::cout << "Print" << std::endl; }
+		std::unordered_map<std::string, std::shared_ptr<cEntity>>* GetObjectsPointer() { return mSceneObjects; }
 
 		cObjectManager ObjectMan;
 	private:
@@ -26,5 +26,6 @@ namespace FlawedEngine
 		void* PhysicsWorld = nullptr;
 		cpCamera Camera;
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
+		std::unordered_map<std::string, std::shared_ptr<cEntity>>* mSceneObjects;
 	};
 }

@@ -20,6 +20,7 @@ namespace FlawedEngine
 	{
 		glfwSetWindowUserPointer((GLFWwindow*)mWindow, this);
 		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray);
+		mSceneObjects = ObjectMan.GetObjectsPointer();
 	}
 
 	void cScene::Render()
@@ -44,7 +45,4 @@ namespace FlawedEngine
 
 		ObjectMan.RenderObjects(tCamera);
 	}
-
-
-
 }
