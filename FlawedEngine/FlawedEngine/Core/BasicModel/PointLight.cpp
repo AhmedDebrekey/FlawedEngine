@@ -46,4 +46,7 @@ namespace FlawedEngine
 	void cPointLight::SetPhysics(eBasicObject Object, void* PhysicsWorld)
 	{
 	}
+	void cPointLight::UnSetPhysics()
+	{
+	}
 }

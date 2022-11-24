@@ -16,7 +16,7 @@ namespace FlawedEngine
 		virtual void Update() override;
 		virtual void setDynamic(bool isDynamic) override;
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
-
+		virtual void UnSetPhysics() override;
 
 		glm::vec3 mPosition;
 	private:

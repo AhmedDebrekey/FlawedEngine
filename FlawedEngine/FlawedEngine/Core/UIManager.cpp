@@ -204,13 +204,51 @@ namespace FlawedEngine
 				if (ImGui::TreeNode(Object.first.c_str()))
 				{
 					auto Entity = Object.second;
+					if (!Object.second->mPhysics)
+					{
+						Object.second->UnSetPhysics();
+						sModel EntityModel = Entity->GetModel();
+						ImGui::SliderFloat3(std::string("Translation:##" + Object.first).c_str(), &EntityModel.Translation.x, -10.f, 10.f);
+						ImGui::SliderFloat3(std::string("Rotation:##" + Object.first).c_str(), &EntityModel.Rotation.x, -10.f, 10.f);
+						ImGui::SliderFloat3(std::string("Scale:##" + Object.first).c_str(), &EntityModel.Scale.x, -10.f, 10.f);
+						Entity->ModelTransform(EntityModel);
+					}
+					else
+					{
+						btTransform Trans;
+						Object.second->mRidigBody->getMotionState()->getWorldTransform(Trans);
 
-					sModel EntityModel = Entity->GetModel();
-					ImGui::SliderFloat3(std::string("Translation:##" + Object.first).c_str(), &EntityModel.Translation.x, -10.f, 10.f);
-					ImGui::SliderFloat3(std::string("Rotation:##" + Object.first).c_str(), &EntityModel.Rotation.x, -10.f, 10.f);
-					ImGui::SliderFloat3(std::string("Scale:##" + Object.first).c_str(), &EntityModel.Scale.x, -10.f, 10.f);
-					Entity->ModelTransform(EntityModel);
+						//Translation......
+						btVector3 Origin =  Trans.getOrigin();
+						glm::vec3 Translation = glm::vec3(Origin.x(), Origin.y(), Origin.z());
 
+						ImGui::SliderFloat3(std::string("Translation:##" + Object.first).c_str(), &Translation.x, -10.f, 10.f);
+						btVector3 FinalTranslation(Translation.x, Translation.y, Translation.z);
+						Trans.setOrigin(FinalTranslation);
+
+						//Rotation........
+						btScalar x, y, z;
+						btTransform rot = Object.second->mRidigBody->getCenterOfMassTransform();
+						rot.getRotation().getEulerZYX(z, y, x);
+
+						glm::vec3 Rotation = glm::vec3(x, y, z);
+						ImGui::SliderFloat3(std::string("Rotation:##" + Object.first).c_str(), &Rotation.x, -10.f, 10.f);
+						rot.setRotation(btQuaternion(Rotation.x, Rotation.y, Rotation.z));
+						Trans.setRotation(rot.getRotation());
+						Object.second->mRidigBody->getMotionState()->setWorldTransform(Trans);
+
+						//Scale..........
+						btVector3 myscale = Object.second->mRidigBody->getCollisionShape()->getLocalScaling();
+						glm::vec3 scale(myscale.x(), myscale.y(), myscale.z());
+						ImGui::SliderFloat3(std::string("Scale:##" + Object.first).c_str(), &scale.x, -10.f, 10.f);
+						myscale = btVector3(scale.x, scale.y, scale.z);
+						Object.second->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
+
+						if (!Object.second->mDynamic)
+						{
+							Object.second->mRidigBody->setWorldTransform(Trans);
+						}
+					}
 					glm::vec3* EntityColor = Entity->GetColor();
 					ImGui::ColorEdit3(std::string("Color:##" + Object.first).c_str(), &EntityColor->x);
 
@@ -219,7 +257,7 @@ namespace FlawedEngine
 					if (Object.second->mPhysics)
 					{
 						ImGui::Checkbox(std::string("Dynamic:##" + Object.first).c_str(), &Object.second->mDynamic);
-						Object.second->SetPhysics(eBasicObject::Cube, ObjectMan->GetPhysicsWorld());
+						Object.second->SetPhysics(Object.second->PhysicsType, ObjectMan->GetPhysicsWorld());
 						Object.second->setDynamic(Object.second->mDynamic);
 					}
 					else

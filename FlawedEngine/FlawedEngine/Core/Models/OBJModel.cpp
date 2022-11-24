@@ -22,8 +22,11 @@ namespace FlawedEngine
 
 	cOBJModel::~cOBJModel()
 	{
+		SetPhysics(Cube, mPhysicsDynamicWorld); //EXTREMELY BAD, but at least it makes sure that smth can get deleted and no unable to read memory, very probable that it will lead to memory leak ofc
+		//To recreate error, remove the line above, add an object, give physics then remove physics then delete object.
+
 		delete mRidigBody->getMotionState();
-		delete mRidigBody->getCollisionShape();
+		mRidigBody->getCollisionShape();
 		mPhysicsDynamicWorld->removeRigidBody(mRidigBody);
 		mCollisionShapesArray->remove(mCollisionShape);
 		delete mRidigBody;
@@ -135,11 +138,24 @@ namespace FlawedEngine
 		}
 	}
 
+	void cOBJModel::UnSetPhysics()
+	{
+		if (isPhysicsSet)
+		{
+			delete mRidigBody->getMotionState();
+			delete mRidigBody->getCollisionShape();
+			mPhysicsDynamicWorld->removeRigidBody(mRidigBody);
+			mCollisionShapesArray->remove(mCollisionShape);
+			delete mRidigBody;
+			isPhysicsSet = false;
+		}
+	}
+
 	float Matrix[16];
 	void cOBJModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
 
-		if (mRidigBody != nullptr && mRidigBody->getMotionState())
+		if (mRidigBody != nullptr && mRidigBody->getMotionState() && isPhysicsSet)
 		{
 			btTransform btTrans;
 			mRidigBody->getMotionState()->getWorldTransform(btTrans);

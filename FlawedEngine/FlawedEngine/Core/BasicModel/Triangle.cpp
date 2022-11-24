@@ -34,4 +34,7 @@ namespace FlawedEngine
 	void cTriangle::SetPhysics(eBasicObject Object, void* PhysicsWorld)
 	{
 	}
+	void cTriangle::UnSetPhysics()
+	{
+	}
 }

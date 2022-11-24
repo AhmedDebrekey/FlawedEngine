@@ -38,6 +38,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
+			SceneObjects[Name]->PhysicsType = Cube;
 		}
 		break;
 		case FlawedEngine::Sphere:
@@ -47,6 +48,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
+			SceneObjects[Name]->PhysicsType = Sphere;
 		}
 		break;
 		case FlawedEngine::Cone:
@@ -56,7 +58,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
-
+			SceneObjects[Name]->PhysicsType = Cube;
 		}
 		break;
 		case FlawedEngine::Torus:
@@ -66,6 +68,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
+			SceneObjects[Name]->PhysicsType = Cube;
 		}
 		break;
 		case FlawedEngine::Triangle:
@@ -75,6 +78,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
+			SceneObjects[Name]->PhysicsType = Cube;
 		}
 		break;
 		case FlawedEngine::PointLight:

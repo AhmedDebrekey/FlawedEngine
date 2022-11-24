@@ -20,6 +20,7 @@ namespace FlawedEngine
 		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions) = 0;
 		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) = 0;
+		virtual void UnSetPhysics() = 0;
 		virtual void setDynamic(bool IsDynamic) = 0;
 		void ModelTransform(sModel& model);
 		void SetColor(glm::vec3 Color);
@@ -48,6 +49,8 @@ namespace FlawedEngine
 		float mRestitution = 0.0f;
 
 		bool Dead = false;
+
+		eBasicObject PhysicsType;
 
 		cInput& Input = cInput::get();
 	};
