@@ -20,6 +20,7 @@ namespace FlawedEngine
 
 	cOBJModel::~cOBJModel()
 	{
+		//this should delete the physics object from physicsworld
 	}
 
 	bool cOBJModel::LoadModel(const char* FilePath)

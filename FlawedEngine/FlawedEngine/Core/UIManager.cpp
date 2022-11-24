@@ -198,6 +198,7 @@ namespace FlawedEngine
 			ImGui::End();
 			
 			ImGui::Begin("Scene Hierarchy");
+			Reset: //Incase we remove an item we should reset the loop since elements get shifted in the map (I Think) maybe thats not the reason but who knows, I aslo should make a vector of "needs to be deleted" and delete later 
 			for (auto& Object : *ObjectMan->GetObjectsPointer())
 			{
 				if (ImGui::TreeNode(Object.first.c_str()))
@@ -212,7 +213,12 @@ namespace FlawedEngine
 
 					glm::vec3* EntityColor = Entity->GetColor();
 					ImGui::ColorEdit3(std::string("Color:##" + Object.first).c_str(), &EntityColor->x);
-
+					if (ImGui::Button("Remove"))
+					{
+						ObjectMan->RemoveObject(Object.first.c_str());
+						ImGui::TreePop();
+						goto Reset;
+					}
 					ImGui::TreePop();
 				}
 			}

@@ -81,7 +81,7 @@ namespace FlawedEngine
 
 	void cObjectManager::RemoveObject(const char* Name)
 	{
-
+		SceneObjects.erase(Name);
 	}
 
 	void cObjectManager::ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps)
