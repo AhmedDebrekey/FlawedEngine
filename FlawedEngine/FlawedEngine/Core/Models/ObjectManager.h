@@ -21,6 +21,7 @@ namespace FlawedEngine
 
 		void ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps);
 
+		void* GetPhysicsWorld() { return mPhysicsWorld; }
 		std::unordered_map<std::string, std::shared_ptr<cEntity>>* GetObjectsPointer() { return &SceneObjects; }
 		
 	private:

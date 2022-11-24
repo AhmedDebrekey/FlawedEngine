@@ -40,7 +40,8 @@ namespace FlawedEngine
 		std::vector<sTexture> mTextureCoords;
 
 		btRigidBody* mRidigBody = nullptr;
-		bool mDynamic;
+		bool mDynamic = true;
+		bool mPhysics = false;
 
 		float mMass = 0.0f;
 		float mFricton = 0.5;

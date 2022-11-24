@@ -1,6 +1,8 @@
 #include "OBJModel.h"
 #include <glm/gtc/type_ptr.hpp>
 
+#include <iostream>
+
 namespace FlawedEngine
 {
 	cOBJModel::cOBJModel(const char* FilePath, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes)
@@ -20,7 +22,11 @@ namespace FlawedEngine
 
 	cOBJModel::~cOBJModel()
 	{
-		//this should delete the physics object from physicsworld
+		delete mRidigBody->getMotionState();
+		delete mRidigBody->getCollisionShape();
+		mPhysicsDynamicWorld->removeRigidBody(mRidigBody);
+		mCollisionShapesArray->remove(mCollisionShape);
+		delete mRidigBody;
 	}
 
 	bool cOBJModel::LoadModel(const char* FilePath)
@@ -166,9 +172,11 @@ namespace FlawedEngine
 
 	void cOBJModel::setDynamic(bool isDynamic)
 	{
-		if (false)
+		if (!isDynamic)
 		{
 			mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
 		}
+		else
+			mRidigBody->setCollisionFlags(btCollisionObject::CF_DYNAMIC_OBJECT);
 	}
 }

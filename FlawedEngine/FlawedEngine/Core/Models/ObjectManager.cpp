@@ -36,6 +36,8 @@ namespace FlawedEngine
 			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Cube\\Cube.obj", mPhysicsWorld, mCollisionShapesArray);
 			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 			SceneObjects[Name]->ModelTransform(DefaultModel);
+			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
+			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
 		}
 		break;
 		case FlawedEngine::Sphere:
@@ -43,6 +45,8 @@ namespace FlawedEngine
 			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Sphere\\Sphere.obj", mPhysicsWorld, mCollisionShapesArray);
 			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 			SceneObjects[Name]->ModelTransform(DefaultModel);
+			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
+			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
 		}
 		break;
 		case FlawedEngine::Cone:
@@ -50,6 +54,8 @@ namespace FlawedEngine
 			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Cone\\Cone.obj", mPhysicsWorld, mCollisionShapesArray);
 			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 			SceneObjects[Name]->ModelTransform(DefaultModel);
+			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
+			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
 
 		}
 		break;
@@ -58,6 +64,8 @@ namespace FlawedEngine
 			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Torus\\Torus.obj", mPhysicsWorld, mCollisionShapesArray);
 			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 			SceneObjects[Name]->ModelTransform(DefaultModel);
+			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
+			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
 		}
 		break;
 		case FlawedEngine::Triangle:
@@ -65,6 +73,8 @@ namespace FlawedEngine
 			SceneObjects[Name] = std::make_shared<cTriangle>();
 			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 			SceneObjects[Name]->ModelTransform(DefaultModel);
+			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
+			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
 		}
 		break;
 		case FlawedEngine::PointLight:

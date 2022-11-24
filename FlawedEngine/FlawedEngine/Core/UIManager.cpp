@@ -213,6 +213,18 @@ namespace FlawedEngine
 
 					glm::vec3* EntityColor = Entity->GetColor();
 					ImGui::ColorEdit3(std::string("Color:##" + Object.first).c_str(), &EntityColor->x);
+
+					ImGui::Checkbox(std::string("Physics:##" + Object.first).c_str(), &Object.second->mPhysics);
+
+					if (Object.second->mPhysics)
+					{
+						ImGui::Checkbox(std::string("Dynamic:##" + Object.first).c_str(), &Object.second->mDynamic);
+						Object.second->SetPhysics(eBasicObject::Cube, ObjectMan->GetPhysicsWorld());
+						Object.second->setDynamic(Object.second->mDynamic);
+					}
+					else
+						Object.second->mDynamic = false;
+
 					if (ImGui::Button("Remove"))
 					{
 						ObjectMan->RemoveObject(Object.first.c_str());
