@@ -110,6 +110,7 @@ namespace FlawedEngine
 		static int Cones		= 0;
 		static int Toruses		= 0;
 		static int Triangles	= 0;
+		static int Lights		= 0;
 
 		{
 			ImGui::Begin("Settings");
@@ -189,6 +190,21 @@ namespace FlawedEngine
 					Triangles++;
 				}
 
+			bool LightPressed = ImGui::Button("Add PointLight");
+			static char LightName[20] = "";
+			ImGui::SameLine();
+			ImGui::InputText("##PointLight", LightName, IM_ARRAYSIZE(LightName));
+			if (LightPressed)
+				if (!((LightName != NULL) && (LightName[0] == '\0')))
+					ObjectMan->AddObject(PointLight, LightName);
+				else
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Light(%i)", Lights);
+					ObjectMan->AddObject(PointLight, buffer);
+					Lights++;
+				}
+
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
 
@@ -198,70 +214,87 @@ namespace FlawedEngine
 			ImGui::End();
 			
 			ImGui::Begin("Scene Hierarchy");
-			Reset: //Incase we remove an item we should reset the loop since elements get shifted in the map (I Think) maybe thats not the reason but who knows, I aslo should make a vector of "needs to be deleted" and delete later 
+			Reset: //Incase we remove an item we should reset the loop since elements get shifted in the map (I Think) maybe thats not the reason but who knows, I aslo should make a vector of "needs to be deleted" and delete later instead
 			for (auto& Object : *ObjectMan->GetObjectsPointer())
 			{
 				if (ImGui::TreeNode(Object.first.c_str()))
 				{
 					auto Entity = Object.second;
-					if (!Object.second->mPhysics)
+
+					if (Entity->Type == PointLight)
 					{
-						Object.second->UnSetPhysics();
-						sModel EntityModel = Entity->GetModel();
-						ImGui::SliderFloat3(std::string("Translation:##" + Object.first).c_str(), &EntityModel.Translation.x, -10.f, 10.f);
-						ImGui::SliderFloat3(std::string("Rotation:##" + Object.first).c_str(), &EntityModel.Rotation.x, -10.f, 10.f);
-						ImGui::SliderFloat3(std::string("Scale:##" + Object.first).c_str(), &EntityModel.Scale.x, -10.f, 10.f);
-						Entity->ModelTransform(EntityModel);
+						sModel LightModel = Entity->GetModel();
+						ImGui::SliderFloat3(std::string("Translation:##" + Object.first).c_str(), &LightModel.Translation.x, -10.f, 10.f);
+						Entity->ModelTransform(LightModel);
+						ObjectMan->ChangeLightPosition(Object.first.c_str(), LightModel.Translation);
+
+						glm::vec3 LightColor = ObjectMan->GetLightColor(Object.first.c_str());
+						ImGui::ColorEdit3(std::string("LightColor:##" + Object.first).c_str(), &LightColor.x);
+						ObjectMan->ChangeLightColor(Object.first.c_str(), LightColor);
+						Entity->SetColor(LightColor);
 					}
 					else
 					{
-						btTransform Trans;
-						Object.second->mRidigBody->getMotionState()->getWorldTransform(Trans);
-
-						//Translation......
-						btVector3 Origin =  Trans.getOrigin();
-						glm::vec3 Translation = glm::vec3(Origin.x(), Origin.y(), Origin.z());
-
-						ImGui::SliderFloat3(std::string("Translation:##" + Object.first).c_str(), &Translation.x, -10.f, 10.f);
-						btVector3 FinalTranslation(Translation.x, Translation.y, Translation.z);
-						Trans.setOrigin(FinalTranslation);
-
-						//Rotation........
-						btScalar x, y, z;
-						btTransform rot = Object.second->mRidigBody->getCenterOfMassTransform();
-						rot.getRotation().getEulerZYX(z, y, x);
-
-						glm::vec3 Rotation = glm::vec3(x, y, z);
-						ImGui::SliderFloat3(std::string("Rotation:##" + Object.first).c_str(), &Rotation.x, -10.f, 10.f);
-						rot.setRotation(btQuaternion(Rotation.x, Rotation.y, Rotation.z));
-						Trans.setRotation(rot.getRotation());
-						Object.second->mRidigBody->getMotionState()->setWorldTransform(Trans);
-
-						//Scale..........
-						btVector3 myscale = Object.second->mRidigBody->getCollisionShape()->getLocalScaling();
-						glm::vec3 scale(myscale.x(), myscale.y(), myscale.z());
-						ImGui::SliderFloat3(std::string("Scale:##" + Object.first).c_str(), &scale.x, -10.f, 10.f);
-						myscale = btVector3(scale.x, scale.y, scale.z);
-						Object.second->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
-
-						if (!Object.second->mDynamic)
+						if (!Entity->mPhysics)
 						{
-							Object.second->mRidigBody->setWorldTransform(Trans);
+							Object.second->UnSetPhysics();
+							sModel EntityModel = Entity->GetModel();
+							ImGui::SliderFloat3(std::string("Translation:##" + Object.first).c_str(), &EntityModel.Translation.x, -10.f, 10.f);
+							ImGui::SliderFloat3(std::string("Rotation:##" + Object.first).c_str(), &EntityModel.Rotation.x, -10.f, 10.f);
+							ImGui::SliderFloat3(std::string("Scale:##" + Object.first).c_str(), &EntityModel.Scale.x, -10.f, 10.f);
+							Entity->ModelTransform(EntityModel);
 						}
-					}
-					glm::vec3* EntityColor = Entity->GetColor();
-					ImGui::ColorEdit3(std::string("Color:##" + Object.first).c_str(), &EntityColor->x);
+						else
+						{
+							btTransform Trans;
+							Entity->mRidigBody->getMotionState()->getWorldTransform(Trans);
 
-					ImGui::Checkbox(std::string("Physics:##" + Object.first).c_str(), &Object.second->mPhysics);
+							//Translation......
+							btVector3 Origin = Trans.getOrigin();
+							glm::vec3 Translation = glm::vec3(Origin.x(), Origin.y(), Origin.z());
 
-					if (Object.second->mPhysics)
-					{
-						ImGui::Checkbox(std::string("Dynamic:##" + Object.first).c_str(), &Object.second->mDynamic);
-						Object.second->SetPhysics(Object.second->PhysicsType, ObjectMan->GetPhysicsWorld());
-						Object.second->setDynamic(Object.second->mDynamic);
+							ImGui::SliderFloat3(std::string("Translation:##" + Object.first).c_str(), &Translation.x, -10.f, 10.f);
+							btVector3 FinalTranslation(Translation.x, Translation.y, Translation.z);
+							Trans.setOrigin(FinalTranslation);
+
+							//Rotation........
+							static btScalar roll, pitch, yaw;
+							Entity->mRidigBody->getCenterOfMassTransform().getBasis().getEulerYPR(yaw, pitch, roll);
+
+							glm::vec3 Rotation = glm::vec3(roll, pitch, yaw);
+							ImGui::SliderFloat3(std::string("Rotation:##" + Object.first).c_str(), &Rotation.x, -0.5f, 0.5f);
+							Trans.setRotation(btQuaternion(Rotation.z, Rotation.y, Rotation.x));
+							Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
+
+							//Scale..........
+							btVector3 myscale = Entity->mRidigBody->getCollisionShape()->getLocalScaling();
+							glm::vec3 scale(myscale.x(), myscale.y(), myscale.z());
+							ImGui::SliderFloat3(std::string("Scale:##" + Object.first).c_str(), &scale.x, -10.f, 10.f);
+							myscale = btVector3(scale.x, scale.y, scale.z);
+							Entity->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
+
+							ImGui::Text("Activation State: %i", Entity->GetActivationState());
+
+							if (!Entity->mDynamic)
+							{
+								Entity->mRidigBody->setWorldTransform(Trans);
+							}
+						}
+
+						glm::vec3* EntityColor = Entity->GetColor();
+						ImGui::ColorEdit3(std::string("Color:##" + Object.first).c_str(), &EntityColor->x);
+
+						ImGui::Checkbox(std::string("Physics:##" + Object.first).c_str(), &Entity->mPhysics);
+
+						if (Entity->mPhysics)
+						{
+							ImGui::Checkbox(std::string("Dynamic:##" + Object.first).c_str(), &Entity->mDynamic);
+							Entity->SetPhysics(Entity->Type, ObjectMan->GetPhysicsWorld());
+							Entity->setDynamic(Entity->mDynamic);
+						}
+						else
+							Entity->mDynamic = false;
 					}
-					else
-						Object.second->mDynamic = false;
 
 					if (ImGui::Button("Remove"))
 					{

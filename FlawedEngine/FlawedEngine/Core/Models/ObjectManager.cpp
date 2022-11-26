@@ -38,7 +38,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
-			SceneObjects[Name]->PhysicsType = Cube;
+			SceneObjects[Name]->Type = Cube;
 		}
 		break;
 		case FlawedEngine::Sphere:
@@ -48,7 +48,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
-			SceneObjects[Name]->PhysicsType = Sphere;
+			SceneObjects[Name]->Type = Sphere;
 		}
 		break;
 		case FlawedEngine::Cone:
@@ -58,7 +58,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
-			SceneObjects[Name]->PhysicsType = Cube;
+			SceneObjects[Name]->Type = Cube;
 		}
 		break;
 		case FlawedEngine::Torus:
@@ -68,7 +68,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
-			SceneObjects[Name]->PhysicsType = Cube;
+			SceneObjects[Name]->Type = Cube;
 		}
 		break;
 		case FlawedEngine::Triangle:
@@ -78,12 +78,19 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
-			SceneObjects[Name]->PhysicsType = Cube;
+			SceneObjects[Name]->Type = Cube;
 		}
 		break;
 		case FlawedEngine::PointLight:
 		{
 			SceneObjects[Name] = std::make_shared<cPointLight>();
+			sModel DefaultModel = { glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(0.5f) };
+			SceneObjects[Name]->ModelTransform(DefaultModel);
+			glm::vec3 DefaultColor = glm::vec3(1.0f);
+			SceneObjects[Name]->SetColor(DefaultColor);
+			sLight DefualtLightProps = { DefaultModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(1.0f), glm::vec3(0.6f, 0.3f, 0.9f), glm::vec3(0.5f, 0.2f, 0.9f) };
+			AddLight(Name, DefualtLightProps);
+			SceneObjects[Name]->Type = PointLight;
 		}
 		break;
 		case FlawedEngine::SpotLight:
@@ -114,6 +121,27 @@ namespace FlawedEngine
 		}
 	}
 
+	glm::vec3 cObjectManager::GetLightColor(const char* Name)
+	{
+		auto Light = GetLightByName(Name);
+		if(Light)
+			return Light->ambient;
+	}
+
+	void cObjectManager::ChangeLightColor(const char* Name, glm::vec3 Color)
+	{
+		auto Light = GetLightByName(Name);
+		if (Light)
+			Light->ambient = Color;
+	}
+
+	void cObjectManager::ChangeLightPosition(const char* Name, glm::vec3 Position)
+	{
+		auto Light = GetLightByName(Name);
+		if (Light)
+			Light->position = Position;
+	}
+
 	void cObjectManager::AddLight(const char* Name, sLight& Props)
 	{
 		auto Light = PointLights.find(Name);
@@ -135,5 +163,14 @@ namespace FlawedEngine
 			return nullptr;
 
 		return Object->second;
+	}
+	sLight* cObjectManager::GetLightByName(const char* Name)
+	{
+		auto Light = PointLights.find(Name);
+
+		if (Light == PointLights.end())
+			return nullptr;
+
+		return &Light->second;
 	}
 }

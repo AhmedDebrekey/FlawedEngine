@@ -15,7 +15,7 @@ namespace FlawedEngine
 	class cEntity
 	{
 	public:
-		sModel mTransformation; //I can't find a better name
+		sModel mTransformation;
 
 		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions) = 0;
 		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
@@ -31,6 +31,7 @@ namespace FlawedEngine
 
 		sModel GetModel() { return mTransformation; }
 		glm::vec3* GetColor() { return &mMaterial.Color; }
+		int GetActivationState() { return mRidigBody->getActivationState(); }
 
 		sMaterial mMaterial;
 
@@ -50,7 +51,7 @@ namespace FlawedEngine
 
 		bool Dead = false;
 
-		eBasicObject PhysicsType;
+		eBasicObject Type;
 
 		cInput& Input = cInput::get();
 	};
@@ -63,7 +64,7 @@ namespace FlawedEngine
 	}
 
 	inline void cEntity::ModelTransform(sModel& model)
-	{//this is a big mess tbh, i am confusion
+	{
 		mTransformation = model;
 		glm::mat4 Model = glm::mat4(1.0f);
 		Model = glm::translate(Model, mTransformation.Translation);

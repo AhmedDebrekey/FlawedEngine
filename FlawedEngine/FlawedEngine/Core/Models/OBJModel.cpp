@@ -114,20 +114,21 @@ namespace FlawedEngine
 			rbInfo.m_startWorldTransform;
 			mRidigBody = new btRigidBody(rbInfo);
 
-
 			btTransform trans = mRidigBody->getCenterOfMassTransform();
-			btQuaternion transrot = trans.getRotation();
+			btQuaternion transrot;
+			trans.getBasis().getRotation(transrot);
 			btQuaternion rotquat;
 			rotquat = rotquat.getIdentity();
-			rotquat.setEuler(glm::radians(Rotation.y), glm::radians(Rotation.x), glm::radians(Rotation.z));
+			rotquat.setEuler(glm::radians(Rotation.z), glm::radians(Rotation.y), glm::radians(Rotation.x));
 			transrot = rotquat * transrot;
 			trans.setRotation(transrot);
 			mRidigBody->setCenterOfMassTransform(trans);
 
 			mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
-
-			mRidigBody->setActivationState(DISABLE_DEACTIVATION); //not so good 
-			//mRidigBody->setRollingFriction(0.1);
+			mRidigBody->setActivationState(DISABLE_DEACTIVATION);
+			//mRidigBody->setSleepingThresholds(0.2, 0.2);
+			mRidigBody->setRestitution(mRestitution);
+			mRidigBody->setFriction(mFricton);
 
 			mPhysicsDynamicWorld->addRigidBody(mRidigBody);
 			mPhysicsDynamicWorld->updateSingleAabb(mRidigBody);
@@ -161,18 +162,20 @@ namespace FlawedEngine
 			mRidigBody->getMotionState()->getWorldTransform(btTrans);
 			 
 			btVector3 ObjectTransform = btTrans.getOrigin();
-			btVector3 myscale = mRidigBody->getCollisionShape()->getLocalScaling();
+			btVector3 Scale = mRidigBody->getCollisionShape()->getLocalScaling();
 
-			btScalar x,y,z;
-			btTransform trans = mRidigBody->getCenterOfMassTransform();
-			trans.getRotation().getEulerZYX(z,y,x);
+			glm::vec4 Rotation;
+			btQuaternion quat = mRidigBody->getCenterOfMassTransform().getRotation();
+			btVector3 v = quat.getAxis();
+			Rotation.x = v.x();
+			Rotation.y = v.y();
+			Rotation.z = v.z();
+			Rotation.w = quat.getAngle();
 
 			glm::mat4 Model = glm::mat4(1.0f);
 			Model = glm::translate(Model, glm::vec3(ObjectTransform.getX(), ObjectTransform.getY(), ObjectTransform.getZ()));
-			Model = glm::rotate(Model, (float)x, glm::vec3(1.0f, 0.0f, 0.0f));
-			Model = glm::rotate(Model, (float)y, glm::vec3(0.0f, 1.0f, 0.0f));
-			Model = glm::rotate(Model, (float)z, glm::vec3(0.0f, 0.0f, 1.0f));
-			Model = glm::scale(Model, glm::vec3(myscale.getX(), myscale.getY(), myscale.getZ()));
+			Model = glm::rotate(Model, Rotation.w, glm::vec3(Rotation.x, Rotation.y, Rotation.z));
+			Model = glm::scale(Model, glm::vec3(Scale.getX(), Scale.getY(), Scale.getZ()));
 			Trans.Model = Model;
 		}
 		else
@@ -183,7 +186,6 @@ namespace FlawedEngine
 
 	void cOBJModel::Update()
 	{
-		//Should Update Physics here
 	}
 
 	void cOBJModel::setDynamic(bool isDynamic)
@@ -193,6 +195,8 @@ namespace FlawedEngine
 			mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
 		}
 		else
+		{
 			mRidigBody->setCollisionFlags(btCollisionObject::CF_DYNAMIC_OBJECT);
+		}
 	}
 }

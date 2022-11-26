@@ -90,10 +90,10 @@ namespace FlawedEngine
             Iteration++;
         }
 
-        Shader.SetVec3("dirLight.direction", glm::vec3(0.2f, -1.0f, 0.3f));
+        Shader.SetVec3("dirLight.direction", glm::vec3(30.0f, -10.0f, 30.0f));
         Shader.SetVec3("dirLight.ambient", glm::vec3(0.9f));
-        Shader.SetVec3("dirLight.diffuse", glm::vec3(0.6f, 0.6f, 0.8f));
-        Shader.SetVec3("dirLight.specular", glm::vec3( 0.5f, 0.5f, 0.2f));
+        Shader.SetVec3("dirLight.diffuse", glm::vec3(0.9f));
+        Shader.SetVec3("dirLight.specular", glm::vec3(0.9f));
 
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);

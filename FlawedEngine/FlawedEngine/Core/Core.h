@@ -12,7 +12,7 @@ namespace FlawedEngine
 
 	struct sMaterial
 	{
-		glm::vec3 Color = glm::vec3(0.5);
+		glm::vec3 Color = glm::vec3(1.0f);
 		glm::vec3 Diffuse = glm::vec3(0.5f);
 		glm::vec3 Specular = glm::vec3(0.5f);
 		float Shininess = 32.0f;

@@ -24,9 +24,15 @@ namespace FlawedEngine
 		void* GetPhysicsWorld() { return mPhysicsWorld; }
 		std::unordered_map<std::string, std::shared_ptr<cEntity>>* GetObjectsPointer() { return &SceneObjects; }
 		
+		glm::vec3 GetLightColor(const char* Name);
+		void ChangeLightColor(const char* Name, glm::vec3 Color);
+		void ChangeLightPosition(const char* Name, glm::vec3 Position);
+
 	private:
 		void AddLight(const char* Name, sLight& Props);
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
+		sLight* GetLightByName(const char* Name);
+
 
 	private:
 		std::unordered_map<std::string, std::shared_ptr<cEntity>> SceneObjects;
