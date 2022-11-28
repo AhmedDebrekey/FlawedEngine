@@ -14,16 +14,25 @@ namespace FlawedEngine
 
 	cUIManager::~cUIManager()
 	{
+		glDeleteFramebuffers(1, &FrameBuffer);
+		glDeleteTextures(1, &TextureColorBuffer);
+		glDeleteRenderbuffers(1, &RenderBufferObject);
 	}
 
 	void cUIManager::InitFrameBuffer()
 	{
+		if (FrameBuffer)
+		{
+			glDeleteFramebuffers(1, &FrameBuffer);
+			glDeleteTextures(1, &TextureColorBuffer);
+			glDeleteRenderbuffers(1, &RenderBufferObject);
+		}
 		glGenFramebuffers(1, &FrameBuffer);
 		glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
 
 		glGenTextures(1, &TextureColorBuffer);
 		glBindTexture(GL_TEXTURE_2D, TextureColorBuffer);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1600, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ViewportSize.x, ViewportSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -32,7 +41,7 @@ namespace FlawedEngine
 
 		glGenRenderbuffers(1, &RenderBufferObject);
 		glBindRenderbuffer(GL_RENDERBUFFER, RenderBufferObject);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1600, 900);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, ViewportSize.x, ViewportSize.y);
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RenderBufferObject);
@@ -208,11 +217,19 @@ namespace FlawedEngine
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
 
+			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
 			ImGui::Begin("ViewPort");
 			ViewportSize = { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() };
+			if (PrevViewportSize != ViewportSize)
+			{
+				//resize framebuffer
+				InitFrameBuffer();
+			}
+			PrevViewportSize = ViewportSize;
 			ImGui::Image((void*)TextureColorBuffer, { ViewportSize.x, ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
 			ImGui::End();
-			
+			ImGui::PopStyleVar();
+
 			ImGui::Begin("Scene Hierarchy");
 			Reset: //Incase we remove an item we should reset the loop since elements get shifted in the map (I Think) maybe thats not the reason but who knows, I aslo should make a vector of "needs to be deleted" and delete later instead
 			for (auto& Object : *ObjectMan->GetObjectsPointer())

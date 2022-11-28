@@ -28,7 +28,8 @@ namespace FlawedEngine
 		uint32_t FrameBuffer;
 		uint32_t TextureColorBuffer;
 		uint32_t RenderBufferObject;
-		ImVec2 ViewportSize;
+		glm::vec2 PrevViewportSize = {1600, 900};
+		glm::vec2 ViewportSize = {1600, 900};
 	private:
 		cObjectManager* ObjectMan;
 	};
