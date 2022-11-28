@@ -181,6 +181,7 @@
     <ClInclude Include="Core\Entity.h" />
     <ClInclude Include="Core\Input\Input.h" />
     <ClInclude Include="Core\Models\OBJ_Loader.h" />
+    <ClInclude Include="Core\Models\stb_image.h" />
     <ClInclude Include="Core\Shader.h" />
     <ClInclude Include="Core\Window.h" />
     <ClInclude Include="Core\Scene.h" />
@@ -205,6 +206,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Fragment.glsl" />
+    <None Include="Core\Models\Shaders\SkyboxFragment.glsl" />
+    <None Include="Core\Models\Shaders\SkyboxVertex.glsl" />
     <None Include="Core\Models\Shaders\Vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

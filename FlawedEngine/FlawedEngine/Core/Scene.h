@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <vector>
 #include <Bullet/btBulletDynamicsCommon.h>
 
 #include "Entity.h"
@@ -19,12 +20,15 @@ namespace FlawedEngine
 		void Render();
 
 		cObjectManager* GetObjectManager() { return &ObjectMan; }
-
+		uint32_t loadCubemap(std::vector<std::string> faces);
 	private:
 		cObjectManager ObjectMan;
 		void* mWindow;
 		void* PhysicsWorld = nullptr;
 		cpCamera Camera;
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
+		cShader SkyboxShader;
+		unsigned int skyboxVAO, skyboxVBO;
+		uint32_t CubeMapTexture;
 	};
 }

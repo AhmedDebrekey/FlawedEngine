@@ -44,7 +44,7 @@ namespace FlawedEngine
 		overlappingPairCache = new btDbvtBroadphase();
 		solver = new btSequentialImpulseConstraintSolver;
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-		dynamicsWorld->setGravity(btVector3(0.0, -0.9, 0));
+		dynamicsWorld->setGravity(btVector3(0.0, -9, 0));
 		return dynamicsWorld;
 	}
 

@@ -164,9 +164,14 @@
     <ClInclude Include="Core\Models\ObjectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Models\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Vertex.glsl" />
     <None Include="Core\Models\Shaders\Fragment.glsl" />
+    <None Include="Core\Models\Shaders\SkyboxVertex.glsl" />
+    <None Include="Core\Models\Shaders\SkyboxFragment.glsl" />
   </ItemGroup>
 </Project>
