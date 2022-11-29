@@ -8,7 +8,7 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
-
+#include <string>
 namespace FlawedEngine
 {
 	class cUIManager
@@ -30,6 +30,8 @@ namespace FlawedEngine
 		uint32_t RenderBufferObject;
 		glm::vec2 PrevViewportSize = {1600, 900};
 		glm::vec2 ViewportSize = {1600, 900};
+
+		std::string mSelectedEntity;
 	private:
 		cObjectManager* ObjectMan;
 	};

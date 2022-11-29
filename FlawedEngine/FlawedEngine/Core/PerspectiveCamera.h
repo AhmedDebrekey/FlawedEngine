@@ -20,10 +20,10 @@ namespace FlawedEngine
 		glm::mat4 mProjectionMatrix;
 		glm::mat4 mViewMatrix;
 
-		glm::vec3 mPostion = glm::vec3(0, 0, -3);
+		glm::vec3 mPostion = glm::vec3(-5, 3, -5);
 		glm::vec3 mDirection = glm::vec3(0);
 		
-		float mHorizontalAngle = 1.0f;
+		float mHorizontalAngle = 0.0f;
 		float mVerticalAngle = 0.0f;
 
 		float mFOV = 80.0f;

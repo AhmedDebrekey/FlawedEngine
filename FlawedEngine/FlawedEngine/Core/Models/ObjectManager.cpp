@@ -102,6 +102,8 @@ namespace FlawedEngine
 
 	void cObjectManager::RemoveObject(const char* Name)
 	{
+		if (SceneObjects[Name]->Type == PointLight)
+			PointLights.erase(Name);
 		SceneObjects.erase(Name);
 	}
 
@@ -140,6 +142,13 @@ namespace FlawedEngine
 		auto Light = GetLightByName(Name);
 		if (Light)
 			Light->position = Position;
+	}
+
+	void cObjectManager::ChangeName(const char* OldName, const char* NewName)
+	{
+		auto Object = SceneObjects.extract(OldName);
+		Object.key() = NewName;
+		SceneObjects.insert(std::move(Object));
 	}
 
 	void cObjectManager::AddLight(const char* Name, sLight& Props)

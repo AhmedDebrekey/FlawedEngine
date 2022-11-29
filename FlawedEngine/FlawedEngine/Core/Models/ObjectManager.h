@@ -28,9 +28,11 @@ namespace FlawedEngine
 		void ChangeLightColor(const char* Name, glm::vec3 Color);
 		void ChangeLightPosition(const char* Name, glm::vec3 Position);
 
+		// BAD API
+		void ChangeName(const char* OldName, const char* NewName); 
+		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
 	private:
 		void AddLight(const char* Name, sLight& Props);
-		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
 		sLight* GetLightByName(const char* Name);
 
 
