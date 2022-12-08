@@ -11,6 +11,9 @@
 
 namespace FlawedEngine
 {
+	///<summary>Scene contains all objects in the world, every world has it's object manager, 
+	/// managing the 3d models. Every scene should in the future be able to seralize its self and 
+	/// deserialize as well, however this has not been implemented yet.</summary>
 	class cScene
 	{
 	public:
@@ -20,15 +23,13 @@ namespace FlawedEngine
 		void Render();
 
 		cObjectManager* GetObjectManager() { return &ObjectMan; }
-		uint32_t loadCubemap(std::vector<std::string> faces);
+		cpCamera* GetCamera() { return &Camera; }
 	private:
 		cObjectManager ObjectMan;
 		void* mWindow;
 		void* PhysicsWorld = nullptr;
 		cpCamera Camera;
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
-		cShader SkyboxShader;
-		unsigned int skyboxVAO, skyboxVBO;
-		uint32_t CubeMapTexture;
+
 	};
 }

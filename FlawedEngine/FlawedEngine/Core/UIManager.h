@@ -8,7 +8,11 @@
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_impl_glfw.h>
 #include <ImGui/imgui_impl_opengl3.h>
+#include <ImGuizmo/ImGuizmo.h>
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 #include <string>
+#include "PerspectiveCamera.h"
 namespace FlawedEngine
 {
 	class cUIManager
@@ -16,10 +20,11 @@ namespace FlawedEngine
 	public:
 		cUIManager();
 		~cUIManager();
-		void Init(void* Window);
+		void Init(void* Window, void* Camera);
 		void UpdateUI();
 		void RenderUI();
 		void SetObjectManager(cObjectManager* Manager) { ObjectMan = Manager; };
+		bool DecomposeTransform(const glm::mat4& transform, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale);
 	private:
 		void InitRendering();
 		void InitFrameBuffer();
@@ -34,5 +39,6 @@ namespace FlawedEngine
 		std::string mSelectedEntity;
 	private:
 		cObjectManager* ObjectMan;
+		cpCamera* mCamera;
 	};
 }

@@ -27,14 +27,12 @@ namespace FlawedEngine
 		glm::vec3 GetLightColor(const char* Name);
 		void ChangeLightColor(const char* Name, glm::vec3 Color);
 		void ChangeLightPosition(const char* Name, glm::vec3 Position);
-
-		// BAD API
 		void ChangeName(const char* OldName, const char* NewName); 
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
+
 	private:
 		void AddLight(const char* Name, sLight& Props);
 		sLight* GetLightByName(const char* Name);
-
 
 	private:
 		std::unordered_map<std::string, std::shared_ptr<cEntity>> SceneObjects;
@@ -45,6 +43,14 @@ namespace FlawedEngine
 		sTransform tCamera;
 
 		void* mPhysicsWorld = nullptr;
+
+	private:
+		void SetupSkybox();
+		void RenderSkyBox();
+		uint32_t loadCubemap(std::vector<std::string> faces);
+		cShader mSkyboxShader;
+		unsigned int mskyboxVAO, mskyboxVBO;
+		uint32_t mCubeMapTexture;
 	};
 }
 

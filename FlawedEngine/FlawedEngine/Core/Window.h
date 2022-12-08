@@ -13,16 +13,17 @@ namespace FlawedEngine
 {
 
 	typedef unsigned int uint32_t;
+
 	struct sWindowSize
 	{
 		uint32_t Width;
 		uint32_t Height;
 	};
 
+	///<summary>A singleton class to wrap the window creation and glfw updates in.</summary>
 	class cWindow
 	{
 	public:
-
 		void Init();
 		int CreateWindow();
 		void Update();

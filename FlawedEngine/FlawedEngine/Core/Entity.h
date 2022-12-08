@@ -2,13 +2,10 @@
 
 #include "Core.h"
 #include "Input/Input.h"
-
 #include <iostream>
-
 #include <unordered_map>
-
 #include <Bullet/btBulletDynamicsCommon.h>
-
+#include <glm/gtc/type_ptr.hpp>
 
 namespace FlawedEngine
 {
@@ -30,6 +27,7 @@ namespace FlawedEngine
 		virtual ~cEntity() = 0;
 
 		sModel GetModel() { return mTransformation; }
+		glm::mat4* GetModelMatrix() { return &mModel; }
 		glm::vec3* GetColor() { return &mMaterial.Color; }
 		int GetActivationState() { return mRidigBody->getActivationState(); }
 

@@ -3,7 +3,7 @@
 #include <Bullet/btBulletDynamicsCommon.h>
 
 namespace FlawedEngine {
-
+	///<summary>Handling physics creation.</summary>
 	class cPhysics
 	{
 	public:
@@ -11,7 +11,6 @@ namespace FlawedEngine {
 		~cPhysics();
 
 		void* Init();
-
 		void Update();
 
 		btAlignedObjectArray<btCollisionShape*>* GetCollisionShapesArray() { return &collisionShapes; }

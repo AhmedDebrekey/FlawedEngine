@@ -2,6 +2,9 @@
 #include "../BasicModel/Pointlight.h"	
 #include "../BasicModel/Triangle.h"	
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 
 namespace FlawedEngine
 {
@@ -17,10 +20,13 @@ namespace FlawedEngine
 	{
 		mPhysicsWorld = PhysicsWorld;
 		mCollisionShapesArray = CollisionShapes;
+		SetupSkybox();
 	}
 
 	void cObjectManager::RenderObjects(sTransform& tCamera)
 	{
+		RenderSkyBox();
+
 		for (auto& Object : SceneObjects)
 		{
 			Object.second->Render(tCamera, PointLights);
@@ -146,9 +152,17 @@ namespace FlawedEngine
 
 	void cObjectManager::ChangeName(const char* OldName, const char* NewName)
 	{
-		auto Object = SceneObjects.extract(OldName);
-		Object.key() = NewName;
-		SceneObjects.insert(std::move(Object));
+		auto Type = SceneObjects.extract(OldName);
+		Type.key() = NewName;
+		SceneObjects.insert(std::move(Type));
+
+		if(auto Entity = GetObjectByName(NewName))
+			if (bool isLight = Entity->Type == PointLight)
+			{
+				auto LightType = PointLights.extract(OldName);
+				LightType.key() = NewName;
+				PointLights.insert(std::move(LightType));
+			}
 	}
 
 	void cObjectManager::AddLight(const char* Name, sLight& Props)
@@ -173,6 +187,7 @@ namespace FlawedEngine
 
 		return Object->second;
 	}
+
 	sLight* cObjectManager::GetLightByName(const char* Name)
 	{
 		auto Light = PointLights.find(Name);
@@ -181,5 +196,121 @@ namespace FlawedEngine
 			return nullptr;
 
 		return &Light->second;
+	}
+
+	void cObjectManager::SetupSkybox()
+	{
+		std::vector<std::string> Faces
+		{
+			"Core\\Models\\skybox\\skybox\\right.jpg",
+			"Core\\Models\\skybox\\skybox\\left.jpg",
+			"Core\\Models\\skybox\\skybox\\top.jpg",
+			"Core\\Models\\skybox\\skybox\\bottom.jpg",
+			"Core\\Models\\skybox\\skybox\\front.jpg",
+			"Core\\Models\\skybox\\skybox\\back.jpg"
+		};
+		mCubeMapTexture = loadCubemap(Faces);
+		float skyboxVertices[] = {
+			// positions          
+			-1.0f,  1.0f, -1.0f,
+			-1.0f, -1.0f, -1.0f,
+			 1.0f, -1.0f, -1.0f,
+			 1.0f, -1.0f, -1.0f,
+			 1.0f,  1.0f, -1.0f,
+			-1.0f,  1.0f, -1.0f,
+
+			-1.0f, -1.0f,  1.0f,
+			-1.0f, -1.0f, -1.0f,
+			-1.0f,  1.0f, -1.0f,
+			-1.0f,  1.0f, -1.0f,
+			-1.0f,  1.0f,  1.0f,
+			-1.0f, -1.0f,  1.0f,
+
+			 1.0f, -1.0f, -1.0f,
+			 1.0f, -1.0f,  1.0f,
+			 1.0f,  1.0f,  1.0f,
+			 1.0f,  1.0f,  1.0f,
+			 1.0f,  1.0f, -1.0f,
+			 1.0f, -1.0f, -1.0f,
+
+			-1.0f, -1.0f,  1.0f,
+			-1.0f,  1.0f,  1.0f,
+			 1.0f,  1.0f,  1.0f,
+			 1.0f,  1.0f,  1.0f,
+			 1.0f, -1.0f,  1.0f,
+			-1.0f, -1.0f,  1.0f,
+
+			-1.0f,  1.0f, -1.0f,
+			 1.0f,  1.0f, -1.0f,
+			 1.0f,  1.0f,  1.0f,
+			 1.0f,  1.0f,  1.0f,
+			-1.0f,  1.0f,  1.0f,
+			-1.0f,  1.0f, -1.0f,
+
+			-1.0f, -1.0f, -1.0f,
+			-1.0f, -1.0f,  1.0f,
+			 1.0f, -1.0f, -1.0f,
+			 1.0f, -1.0f, -1.0f,
+			-1.0f, -1.0f,  1.0f,
+			 1.0f, -1.0f,  1.0f
+		};
+		glGenVertexArrays(1, &mskyboxVAO);
+		glGenBuffers(1, &mskyboxVBO);
+		glBindVertexArray(mskyboxVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, mskyboxVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		mSkyboxShader.Create("Core\\Models\\Shaders\\SkyboxVertex.glsl", "Core\\Models\\Shaders\\SkyboxFragment.glsl");
+		mSkyboxShader.Bind();
+		mSkyboxShader.SetInt("skybox", 0);
+		mSkyboxShader.Unbind();
+	}
+
+	void cObjectManager::RenderSkyBox()
+	{
+		glDepthFunc(GL_LEQUAL);
+		mSkyboxShader.Bind();
+		glm::mat4 view = glm::mat4(glm::mat3(tCamera.View));
+		mSkyboxShader.SetMat4f("view", view);
+		mSkyboxShader.SetMat4f("projection", tCamera.Projection);
+		glBindVertexArray(mskyboxVAO);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mCubeMapTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+		glDepthFunc(GL_LESS);
+	}
+
+	uint32_t cObjectManager::loadCubemap(std::vector<std::string> faces)
+	{
+		unsigned int textureID;
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+		int width, height, nrChannels;
+		for (unsigned int i = 0; i < faces.size(); i++)
+		{
+			unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+			if (data)
+			{
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+					0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+				);
+				stbi_image_free(data);
+			}
+			else
+			{
+				std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
+				stbi_image_free(data);
+			}
+		}
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+		return textureID;
 	}
 }
