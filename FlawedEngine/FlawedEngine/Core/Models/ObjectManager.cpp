@@ -25,6 +25,7 @@ namespace FlawedEngine
 
 	void cObjectManager::RenderObjects(sTransform& tCamera)
 	{
+		this->tCamera = tCamera;
 		RenderSkyBox();
 
 		for (auto& Object : SceneObjects)

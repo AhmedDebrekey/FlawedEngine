@@ -35,7 +35,7 @@ namespace FlawedEngine
 		uint32_t RenderBufferObject;
 		glm::vec2 PrevViewportSize = {1600, 900};
 		glm::vec2 ViewportSize = {1600, 900};
-
+		glm::vec2 m_ViewportBounds[2];
 		std::string mSelectedEntity;
 	private:
 		cObjectManager* ObjectMan;

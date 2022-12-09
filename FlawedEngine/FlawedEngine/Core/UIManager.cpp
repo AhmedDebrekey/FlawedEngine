@@ -47,6 +47,8 @@ namespace FlawedEngine
 
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RenderBufferObject);
 
+		glViewport(0, 0, ViewportSize.x, ViewportSize.y);
+
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 			assert(false);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -234,6 +236,8 @@ namespace FlawedEngine
 			{
 				//resize framebuffer
 				InitFrameBuffer();
+				mCamera->UpdateProjection(glm::perspective(glm::radians(mCamera->FoV()), ViewportSize.x / ViewportSize.y, 0.1f, 100.0f));
+			
 			}
 			PrevViewportSize = ViewportSize;
 			ImGui::Image((void*)TextureColorBuffer, { ViewportSize.x, ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
@@ -241,7 +245,16 @@ namespace FlawedEngine
 			//Gizmo
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
-			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, ImGui::GetWindowWidth(), ImGui::GetWindowHeight());
+
+			float windowWidth = (float)ImGui::GetWindowWidth();
+			float windowHeight = (float)ImGui::GetWindowHeight();
+
+			auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+			auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+			auto viewportOffset = ImGui::GetWindowPos();
+			m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
+			m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
+			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
 			{
 				auto Entity = ObjectMan->GetObjectByName(mSelectedEntity.c_str());
@@ -250,21 +263,19 @@ namespace FlawedEngine
 					glm::mat4* Transform = Entity->GetModelMatrix();
 					ImGuizmo::Manipulate(glm::value_ptr(mCamera->View()), glm::value_ptr(mCamera->Projection()),
 						ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(*Transform));
+
 					if (ImGuizmo::IsUsing())
 					{
 						glm::vec3 translation, rotation, scale;
 						DecomposeTransform(*Transform, translation, rotation, scale);
 
 						sModel Model = Entity->GetModel();
-						
 						Model.Translation = translation;
 						Model.Rotation = rotation;
 						Model.Scale = scale;
 						Entity->ModelTransform(Model);
 					}
 				}
-
-				
 			}
 			
 			ImGui::End();
