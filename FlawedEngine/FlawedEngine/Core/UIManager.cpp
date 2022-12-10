@@ -271,7 +271,7 @@ namespace FlawedEngine
 					if (ImGuizmo::IsUsing())
 					{
 						glm::vec3 translation, rotation, scale;
-						DecomposeTransform(*Transform, translation, rotation, scale);
+						ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(*Transform), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
 
 						sModel Model = Entity->GetModel();
 						Model.Translation = translation;
@@ -295,6 +295,8 @@ namespace FlawedEngine
 				if (ImGui::Selectable(Object.first.c_str(), (Object.first == mSelectedEntity) ? true : false))
 					mSelectedEntity = Object.first;
 			}
+			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+				mSelectedEntity = "";
 			ImGui::End();
 
 			ImGui::Begin("Properties");
@@ -331,9 +333,9 @@ namespace FlawedEngine
 					{
 						Entity->UnSetPhysics();
 						sModel EntityModel = Entity->GetModel();
-						ImGui::SliderFloat3(std::string("Translation:##" + mSelectedEntity).c_str(), &EntityModel.Translation.x, -10.f, 10.f);
-						ImGui::SliderFloat3(std::string("Rotation:##" + mSelectedEntity).c_str(), &EntityModel.Rotation.x, -10.f, 10.f);
-						ImGui::SliderFloat3(std::string("Scale:##" + mSelectedEntity).c_str(), &EntityModel.Scale.x, -10.f, 10.f);
+						DrawVec3("Translation", EntityModel.Translation, 0.0f);
+						DrawVec3("Rotation", EntityModel.Rotation, 0.0f);
+						DrawVec3("Scale", EntityModel.Scale, 1.0f);
 						Entity->ModelTransform(EntityModel);
 					}
 					else
@@ -344,8 +346,7 @@ namespace FlawedEngine
 						//Translation......
 						btVector3 Origin = Trans.getOrigin();
 						glm::vec3 Translation = glm::vec3(Origin.x(), Origin.y(), Origin.z());
-
-						ImGui::SliderFloat3(std::string("Translation:##" + mSelectedEntity).c_str(), &Translation.x, -10.f, 10.f);
+						DrawVec3("Translation", Translation);
 						btVector3 FinalTranslation(Translation.x, Translation.y, Translation.z);
 						Trans.setOrigin(FinalTranslation);
 
@@ -354,14 +355,14 @@ namespace FlawedEngine
 						Entity->mRidigBody->getCenterOfMassTransform().getBasis().getEulerYPR(yaw, pitch, roll);
 
 						glm::vec3 Rotation = glm::vec3(roll, pitch, yaw);
-						ImGui::SliderFloat3(std::string("Rotation:##" + mSelectedEntity).c_str(), &Rotation.x, -0.5f, 0.5f);
+						DrawVec3("Rotation", Rotation);
 						Trans.setRotation(btQuaternion(Rotation.z, Rotation.y, Rotation.x));
 						Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
 
 						//Scale..........
 						btVector3 myscale = Entity->mRidigBody->getCollisionShape()->getLocalScaling();
 						glm::vec3 scale(myscale.x(), myscale.y(), myscale.z());
-						ImGui::SliderFloat3(std::string("Scale:##" + mSelectedEntity).c_str(), &scale.x, -10.f, 10.f);
+						DrawVec3("Scale", scale, 1.0f);
 						myscale = btVector3(scale.x, scale.y, scale.z);
 						Entity->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
 
@@ -412,76 +413,41 @@ namespace FlawedEngine
 		}
 	}
 
-	bool cUIManager::DecomposeTransform(const glm::mat4& transform, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale)
+	void cUIManager::DrawVec3(const std::string& label, glm::vec3& values, float resetValue, float columnWidth)
 	{
-		// From glm::decompose in matrix_decompose.inl
+		ImGui::PushID(label.c_str());
 
-		using namespace glm;
-		using T = float;
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, columnWidth);
+		ImGui::Text(label.c_str());
+		ImGui::NextColumn();
 
-		mat4 LocalMatrix(transform);
+		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
 
-		// Normalize the matrix.
-		if (epsilonEqual(LocalMatrix[3][3], static_cast<float>(0), epsilon<T>()))
-			return false;
+		if (ImGui::Button("X", ImVec2(25, 25)))	
+			values.x = resetValue;
+		ImGui::SameLine();
+		ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
 
-		// First, isolate perspective.  This is the messiest.
-		if (
-			epsilonNotEqual(LocalMatrix[0][3], static_cast<T>(0), epsilon<T>()) ||
-			epsilonNotEqual(LocalMatrix[1][3], static_cast<T>(0), epsilon<T>()) ||
-			epsilonNotEqual(LocalMatrix[2][3], static_cast<T>(0), epsilon<T>()))
-		{
-			// Clear the perspective partition
-			LocalMatrix[0][3] = LocalMatrix[1][3] = LocalMatrix[2][3] = static_cast<T>(0);
-			LocalMatrix[3][3] = static_cast<T>(1);
-		}
+		if (ImGui::Button("Y", ImVec2(25, 25)))	
+			values.y = resetValue;
+		ImGui::SameLine();
+		ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
 
-		// Next take care of translation (easy).
-		translation = vec3(LocalMatrix[3]);
-		LocalMatrix[3] = vec4(0, 0, 0, LocalMatrix[3].w);
+		if (ImGui::Button("Z", ImVec2(25, 25)))	
+			values.z = resetValue;
+		ImGui::SameLine();
+		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
 
-		vec3 Row[3], Pdum3;
-
-		// Now get scale and shear.
-		for (length_t i = 0; i < 3; ++i)
-			for (length_t j = 0; j < 3; ++j)
-				Row[i][j] = LocalMatrix[i][j];
-
-		// Compute X scale factor and normalize first row.
-		scale.x = length(Row[0]);
-		Row[0] = detail::scale(Row[0], static_cast<T>(1));
-		scale.y = length(Row[1]);
-		Row[1] = detail::scale(Row[1], static_cast<T>(1));
-		scale.z = length(Row[2]);
-		Row[2] = detail::scale(Row[2], static_cast<T>(1));
-
-		// At this point, the matrix (in rows[]) is orthonormal.
-		// Check for a coordinate system flip.  If the determinant
-		// is -1, then negate the matrix and the scaling factors.
-#if 0
-		Pdum3 = cross(Row[1], Row[2]); // v3Cross(row[1], row[2], Pdum3);
-		if (dot(Row[0], Pdum3) < 0)
-		{
-			for (length_t i = 0; i < 3; i++)
-			{
-				scale[i] *= static_cast<T>(-1);
-				Row[i] *= static_cast<T>(-1);
-			}
-		}
-#endif
-
-		rotation.y = asin(-Row[0][2]);
-		if (cos(rotation.y) != 0) {
-			rotation.x = atan2(Row[1][2], Row[2][2]);
-			rotation.z = atan2(Row[0][1], Row[0][0]);
-		}
-		else {
-			rotation.x = atan2(-Row[2][0], Row[1][1]);
-			rotation.z = 0;
-		}
-
-
-		return true;
+		ImGui::Columns(1);
+		ImGui::PopStyleVar();
+		ImGui::PopID();
 	}
 
 	void cUIManager::InitRendering()

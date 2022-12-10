@@ -24,11 +24,10 @@ namespace FlawedEngine
 		void UpdateUI();
 		void RenderUI();
 		void SetObjectManager(cObjectManager* Manager) { ObjectMan = Manager; };
-		bool DecomposeTransform(const glm::mat4& transform, glm::vec3& translation, glm::vec3& rotation, glm::vec3& scale);
 	private:
 		void InitRendering();
 		void InitFrameBuffer();
-
+		void DrawVec3(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
 	private:
 		uint32_t FrameBuffer;
 		uint32_t TextureColorBuffer;

@@ -31,7 +31,7 @@ namespace FlawedEngine
 		GLFWmonitor* Monitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* Mode = glfwGetVideoMode(Monitor);
 
-		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_Space))
+		if (ImGui::IsMouseDown(1))
 		{
 			if (FirstMouse)
 			{
@@ -40,13 +40,10 @@ namespace FlawedEngine
 				FirstMouse = false;
 			}
 			float MouseSpeed = 0.0f;
-			glfwSetInputMode(GLFW_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 			MouseSpeed = mMouseSpeed;
 			mHorizontalAngle += MouseSpeed * float(LastX - xPos);
 			mVerticalAngle += MouseSpeed * float(LastY - yPos);
 		}
-		else
-			glfwSetInputMode(GLFW_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);	
 
 		LastX = xPos;
 		LastY = yPos;
