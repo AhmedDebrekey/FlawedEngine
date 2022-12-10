@@ -32,6 +32,7 @@ namespace FlawedEngine
 
 		float mSpeed = 10.f;
 		float mMouseSpeed = 0.003f;
-
+		bool FirstMouse = true;
+		float LastX = 1600, LastY = 900;
 	};
 }

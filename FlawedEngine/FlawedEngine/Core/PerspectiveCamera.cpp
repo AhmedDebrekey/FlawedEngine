@@ -1,6 +1,7 @@
 #include "PerspectiveCamera.h"
 
 #include <GLFW/glfw3.h>
+#include <ImGui/imgui.h>
 
 namespace FlawedEngine
 {
@@ -30,19 +31,25 @@ namespace FlawedEngine
 		GLFWmonitor* Monitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* Mode = glfwGetVideoMode(Monitor);
 
-		if (glfwGetKey(GLFW_Window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_Space))
 		{
+			if (FirstMouse)
+			{
+				LastX = xPos;
+				LastY = yPos;
+				FirstMouse = false;
+			}
 			float MouseSpeed = 0.0f;
-			glfwSetCursorPos(GLFW_Window, double(Mode->width / 2), double(Mode->height / 2));
 			glfwSetInputMode(GLFW_Window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 			MouseSpeed = mMouseSpeed;
-			mHorizontalAngle += MouseSpeed * float(Mode->width / 2 - xPos);
-			mVerticalAngle += MouseSpeed * float(Mode->height / 2 - yPos);
+			mHorizontalAngle += MouseSpeed * float(LastX - xPos);
+			mVerticalAngle += MouseSpeed * float(LastY - yPos);
 		}
-		if (glfwGetKey(GLFW_Window, GLFW_KEY_SPACE) == GLFW_RELEASE)
-		{
-			glfwSetInputMode(GLFW_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-		}
+		else
+			glfwSetInputMode(GLFW_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);	
+
+		LastX = xPos;
+		LastY = yPos;
 
 		mDirection = {
 			cos(mVerticalAngle) * sin(mHorizontalAngle),
@@ -62,14 +69,16 @@ namespace FlawedEngine
 		glm::vec3 Up = glm::cross(Right, mDirection);
 		glm::vec3 Upwards = glm::vec3(0.0f, 1.0f, 0.0f);
 
-		if (glfwGetKey(GLFW_Window, GLFW_KEY_W) == GLFW_PRESS) mPostion += mDirection * DeltaTime * mSpeed;
-		if (glfwGetKey(GLFW_Window, GLFW_KEY_S) == GLFW_PRESS) mPostion -= mDirection * DeltaTime * mSpeed;
+		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) { mPostion += mDirection * DeltaTime * mSpeed; }
 
-		if (glfwGetKey(GLFW_Window, GLFW_KEY_D) == GLFW_PRESS) mPostion += Right * DeltaTime * mSpeed;
-		if (glfwGetKey(GLFW_Window, GLFW_KEY_A) == GLFW_PRESS) mPostion -= Right * DeltaTime * mSpeed;
+		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) mPostion += mDirection * DeltaTime * mSpeed;
+		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_S)) mPostion -= mDirection * DeltaTime * mSpeed;
 
-		if (glfwGetKey(GLFW_Window, GLFW_KEY_E) == GLFW_PRESS) mPostion += Upwards * DeltaTime * mSpeed;
-		if (glfwGetKey(GLFW_Window, GLFW_KEY_Q) == GLFW_PRESS) mPostion -= Upwards * DeltaTime * mSpeed;
+		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_D)) mPostion += Right * DeltaTime * mSpeed;
+		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_A)) mPostion -= Right * DeltaTime * mSpeed;
+
+		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_E)) mPostion += Upwards * DeltaTime * mSpeed;
+		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_Q)) mPostion -= Upwards * DeltaTime * mSpeed;
 
 		float FoV = mFOV;
 		mProjectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, 0.1f, 200.f);
