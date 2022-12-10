@@ -72,7 +72,7 @@ namespace FlawedEngine
 		if (glfwGetKey(GLFW_Window, GLFW_KEY_Q) == GLFW_PRESS) mPostion -= Upwards * DeltaTime * mSpeed;
 
 		float FoV = mFOV;
-		mProjectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, 0.1f, 100.f);
+		mProjectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, 0.1f, 200.f);
 		mViewMatrix = glm::lookAt(
 			mPostion,
 			mPostion + mDirection,

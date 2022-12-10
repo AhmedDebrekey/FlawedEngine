@@ -243,6 +243,10 @@ namespace FlawedEngine
 			ImGui::Image((void*)TextureColorBuffer, { ViewportSize.x, ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
 
 			//Gizmo
+			if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_T)) { mGizmoType = ImGuizmo::OPERATION::TRANSLATE; }
+			if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_R)) { mGizmoType = ImGuizmo::OPERATION::ROTATE; }
+			if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_G)) { mGizmoType = ImGuizmo::OPERATION::SCALE; }
+
 			ImGuizmo::SetOrthographic(false);
 			ImGuizmo::SetDrawlist();
 
@@ -262,7 +266,7 @@ namespace FlawedEngine
 				{
 					glm::mat4* Transform = Entity->GetModelMatrix();
 					ImGuizmo::Manipulate(glm::value_ptr(mCamera->View()), glm::value_ptr(mCamera->Projection()),
-						ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(*Transform));
+						(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, glm::value_ptr(*Transform));
 
 					if (ImGuizmo::IsUsing())
 					{
@@ -271,7 +275,10 @@ namespace FlawedEngine
 
 						sModel Model = Entity->GetModel();
 						Model.Translation = translation;
-						Model.Rotation = rotation;
+
+						glm::vec3 deltaRotation = rotation - Model.Rotation;
+						Model.Rotation += deltaRotation;
+						
 						Model.Scale = scale;
 						Entity->ModelTransform(Model);
 					}

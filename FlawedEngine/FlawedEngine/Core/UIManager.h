@@ -37,6 +37,7 @@ namespace FlawedEngine
 		glm::vec2 ViewportSize = {1600, 900};
 		glm::vec2 m_ViewportBounds[2];
 		std::string mSelectedEntity;
+		int mGizmoType = ImGuizmo::OPERATION::TRANSLATE;
 	private:
 		cObjectManager* ObjectMan;
 		cpCamera* mCamera;
