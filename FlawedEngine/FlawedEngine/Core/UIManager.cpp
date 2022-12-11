@@ -127,106 +127,10 @@ namespace FlawedEngine
 
 		{
 			ImGui::Begin("Settings");
-
-			bool CubePressed = ImGui::Button("Add Cube");
-			static char CubeName[20] = "";
-			ImGui::SameLine();
-			ImGui::InputText("##Cube", CubeName, IM_ARRAYSIZE(CubeName));
-			if (CubePressed)
-				if (!((CubeName != NULL) && (CubeName[0] == '\0'))) //if not empty
-				{
-					ObjectMan->AddObject(Cube, CubeName);
-				}
-				else
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Cube(%i)", Cubes);
-					ObjectMan->AddObject(Cube, buffer);
-					mSelectedEntity = buffer;
-					Cubes++;
-				}
-
-			bool SpherePressed = ImGui::Button("Add Sphere");
-			static char SphereName[20] = "";
-			ImGui::SameLine();
-			ImGui::InputText("##Shpere", SphereName, IM_ARRAYSIZE(SphereName));
-			if (SpherePressed)
-				if (!((SphereName != NULL) && (SphereName[0] == '\0')))
-					ObjectMan->AddObject(Sphere, SphereName);
-				else
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Sphere(%i)", Spheres);
-					ObjectMan->AddObject(Sphere, buffer);
-					mSelectedEntity = buffer;
-					Spheres++;
-				}
-
-			bool ConePressed = ImGui::Button("Add Cone");
-			static char ConeName[20] = "";
-			ImGui::SameLine();
-			ImGui::InputText("##Cone", ConeName, IM_ARRAYSIZE(ConeName));
-			if (ConePressed)
-				if (!((ConeName != NULL) && (ConeName[0] == '\0')))
-					ObjectMan->AddObject(Sphere, ConeName);
-				else
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Cone(%i)", Cones);
-					ObjectMan->AddObject(Cone, buffer);
-					mSelectedEntity = buffer;
-					Cones++;
-				}
-
-			bool TorusPressed = ImGui::Button("Add Torus");
-			static char TorusName[20] = "";
-			ImGui::SameLine();
-			ImGui::InputText("##Torus", TorusName, IM_ARRAYSIZE(TorusName));
-			if (TorusPressed)
-				if (!((TorusName != NULL) && (TorusName[0] == '\0')))
-					ObjectMan->AddObject(Torus, TorusName);
-				else
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Torus(%i)", Toruses);
-					ObjectMan->AddObject(Torus, buffer);
-					mSelectedEntity = buffer;
-					Toruses++;
-				}
-
-			bool TrianglePressed = ImGui::Button("Add Triangle");
-			static char TriangleName[20] = "";
-			ImGui::SameLine();
-			ImGui::InputText("##Triangle", TriangleName, IM_ARRAYSIZE(TriangleName));
-			if (TrianglePressed)
-				if (!((TriangleName != NULL) && (TriangleName[0] == '\0')))
-					ObjectMan->AddObject(Triangle, TriangleName);
-				else
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Triangle(%i)", Triangles);
-					ObjectMan->AddObject(Triangle, buffer);
-					mSelectedEntity = buffer;
-					Triangles++;
-				}
-
-			bool LightPressed = ImGui::Button("Add PointLight");
-			static char LightName[20] = "";
-			ImGui::SameLine();
-			ImGui::InputText("##PointLight", LightName, IM_ARRAYSIZE(LightName));
-			if (LightPressed)
-				if (!((LightName != NULL) && (LightName[0] == '\0')))
-					ObjectMan->AddObject(PointLight, LightName);
-				else
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Light(%i)", Lights);
-					ObjectMan->AddObject(PointLight, buffer);
-					mSelectedEntity = buffer;
-					Lights++;
-				}
-
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::Text("Move: W,A,S,D,E,Q");
+			ImGui::Text("Gizmo: R,T,G");
+			ImGui::Text("Right Click SceneHierachy To Create Entitys");
 			ImGui::End();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
@@ -284,7 +188,6 @@ namespace FlawedEngine
 					}
 				}
 			}
-			
 			ImGui::End();
 			ImGui::PopStyleVar();
 
@@ -297,6 +200,58 @@ namespace FlawedEngine
 			}
 			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 				mSelectedEntity = "";
+
+			if (ImGui::BeginPopupContextWindow("Add Entity", 1))
+			{
+				if (ImGui::MenuItem("Point Light"))
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Light(%i)", Lights);
+					ObjectMan->AddObject(PointLight, buffer);
+					mSelectedEntity = buffer;
+					Lights++;
+				}
+
+				if (ImGui::MenuItem("Cube"))
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Cube(%i)", Cubes);
+					ObjectMan->AddObject(Cube, buffer);
+					mSelectedEntity = buffer;
+					Cubes++;
+				}
+
+				if (ImGui::MenuItem("Sphere"))
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Sphere(%i)", Spheres);
+					ObjectMan->AddObject(Sphere, buffer);
+					mSelectedEntity = buffer;
+					Spheres++;
+				}
+
+				if (ImGui::MenuItem("Cone"))
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Cone(%i)", Cones);
+					ObjectMan->AddObject(Cone, buffer);
+					mSelectedEntity = buffer;
+					Cones++;
+				}
+
+				if (ImGui::MenuItem("Torus"))
+				{
+					char buffer[20];
+					sprintf_s(buffer, "Torus(%i)", Toruses);
+					ObjectMan->AddObject(Torus, buffer);
+					mSelectedEntity = buffer;
+					Toruses++;
+				} //Left out the Trianlge for no reason, It was just a proof of concept.
+				// later could be used as a billbord, (rectangles ofc)
+
+				ImGui::EndPopup();
+			}
+
 			ImGui::End();
 
 			ImGui::Begin("Properties");
@@ -318,7 +273,7 @@ namespace FlawedEngine
 				if (Entity->Type == PointLight)
 				{
 					sModel LightModel = Entity->GetModel();
-					ImGui::SliderFloat3(std::string("Translation:##" + mSelectedEntity).c_str(), &LightModel.Translation.x, -10.f, 10.f);
+					DrawVec3("Translation", LightModel.Translation, 0.0f);
 					Entity->ModelTransform(LightModel);
 					ObjectMan->ChangeLightPosition(mSelectedEntity.c_str(), LightModel.Translation);
 

@@ -102,7 +102,7 @@ namespace FlawedEngine
 	{
 		bool bShouldClose;
 	#ifdef OPENGL
-		bShouldClose = glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwWindowShouldClose(mWindow);
+		bShouldClose = /*glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS || */glfwWindowShouldClose(mWindow);
 	#endif
 		return bShouldClose;
 	}
