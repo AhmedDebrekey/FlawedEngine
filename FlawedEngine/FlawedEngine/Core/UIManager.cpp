@@ -89,8 +89,8 @@ namespace FlawedEngine
 		glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
 		glClearColor(0.365f, 0.506f, 0.635f, 1.0f); //This also could be found in the window class, TODO: Refactor it
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glViewport(0, 0, ViewportSize.x, ViewportSize.y);
 		glEnable(GL_DEPTH_TEST);
-
 	}
 
 	void cUIManager::RenderUI()
@@ -118,13 +118,6 @@ namespace FlawedEngine
 			ImGui::EndMenuBar();
 		}
 
-		static int Cubes		= 0;
-		static int Spheres		= 0;
-		static int Cones		= 0;
-		static int Toruses		= 0;
-		static int Triangles	= 0;
-		static int Lights		= 0;
-
 		{
 			ImGui::Begin("Settings");
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -134,7 +127,7 @@ namespace FlawedEngine
 			ImGui::End();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
-			ImGui::Begin("ViewPort");
+			ImGui::Begin("ViewPort", 0, ImGuiWindowFlags_NoScrollbar);
 			ViewportSize = { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() };
 			if (PrevViewportSize != ViewportSize)
 			{
@@ -168,21 +161,22 @@ namespace FlawedEngine
 				auto Entity = ObjectMan->GetObjectByName(mSelectedEntity.c_str());
 				if (Entity)
 				{
+
+					float tmpMatrix[16];
+					sModel Model = Entity->GetModel();
+					ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(Model.Translation), glm::value_ptr(Model.Rotation), glm::value_ptr(Model.Scale), tmpMatrix);
+
 					glm::mat4* Transform = Entity->GetModelMatrix();
 					ImGuizmo::Manipulate(glm::value_ptr(mCamera->View()), glm::value_ptr(mCamera->Projection()),
-						(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, glm::value_ptr(*Transform));
+						(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, tmpMatrix);
 
 					if (ImGuizmo::IsUsing())
 					{
 						glm::vec3 translation, rotation, scale;
-						ImGuizmo::DecomposeMatrixToComponents(glm::value_ptr(*Transform), glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
+						ImGuizmo::DecomposeMatrixToComponents(tmpMatrix, glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
 
-						sModel Model = Entity->GetModel();
 						Model.Translation = translation;
-
-						glm::vec3 deltaRotation = rotation - Model.Rotation;
-						Model.Rotation += deltaRotation;
-						
+						Model.Rotation = rotation;
 						Model.Scale = scale;
 						Entity->ModelTransform(Model);
 					}
@@ -192,6 +186,14 @@ namespace FlawedEngine
 			ImGui::PopStyleVar();
 
 			ImGui::Begin("Scene Hierarchy");
+
+			static int Cubes = 0;
+			static int Spheres = 0;
+			static int Cones = 0;
+			static int Toruses = 0;
+			static int Triangles = 0;
+			static int Lights = 0;
+
 			for (auto& Object : *ObjectMan->GetObjectsPointer())
 			{
 				auto Entity = Object.second;
@@ -277,10 +279,17 @@ namespace FlawedEngine
 					Entity->ModelTransform(LightModel);
 					ObjectMan->ChangeLightPosition(mSelectedEntity.c_str(), LightModel.Translation);
 
-					glm::vec3 LightColor = ObjectMan->GetLightColor(mSelectedEntity.c_str());
-					ImGui::ColorEdit3(std::string("LightColor:##" + mSelectedEntity).c_str(), &LightColor.x);
-					ObjectMan->ChangeLightColor(mSelectedEntity.c_str(), LightColor);
-					Entity->SetColor(LightColor);
+					sLight* LightProps = nullptr;
+					LightProps = ObjectMan->GetLightProps(mSelectedEntity.c_str());
+
+					ImGui::ColorEdit3(std::string("LightColor:##" + mSelectedEntity).c_str(), &LightProps->ambient.x);
+					Entity->SetColor(LightProps->ambient);
+
+					ImGui::ColorEdit3(std::string("LightDiffuse:##" + mSelectedEntity).c_str(), &LightProps->diffuse.x);
+					ImGui::ColorEdit3(std::string("LightSpecular:##" + mSelectedEntity).c_str(), &LightProps->specular.x);
+					ImGui::DragFloat(std::string("LightConstant:##" + mSelectedEntity).c_str(), &LightProps->constant, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat(std::string("LightLinear:##" + mSelectedEntity).c_str(), &LightProps->linear, 0.01f, 0.0f, 1.0f);
+					ImGui::DragFloat(std::string("LightQuadratic:##" + mSelectedEntity).c_str(), &LightProps->quadratic, 0.01f, 0.0f, 1.0f);
 				}
 				else
 				{
@@ -350,9 +359,7 @@ namespace FlawedEngine
 				}
 			}
 			ImGui::End();
-
-			
-		}
+ 		}
 
 		ImGui::End();
 

@@ -95,7 +95,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			glm::vec3 DefaultColor = glm::vec3(1.0f);
 			SceneObjects[Name]->SetColor(DefaultColor);
-			sLight DefualtLightProps = { DefaultModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(1.0f), glm::vec3(0.6f, 0.3f, 0.9f), glm::vec3(0.5f, 0.2f, 0.9f) };
+			sLight DefualtLightProps = { DefaultModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f) };
 			AddLight(Name, DefualtLightProps);
 			SceneObjects[Name]->Type = PointLight;
 		}
@@ -137,11 +137,32 @@ namespace FlawedEngine
 			return Light->ambient;
 	}
 
+	sLight* cObjectManager::GetLightProps(const char* Name)
+	{
+		auto Light = GetLightByName(Name);
+		if (Light)
+			return Light;
+	}
+
 	void cObjectManager::ChangeLightColor(const char* Name, glm::vec3 Color)
 	{
 		auto Light = GetLightByName(Name);
 		if (Light)
 			Light->ambient = Color;
+	}
+
+	void cObjectManager::ChangeLightDiffuse(const char* Name, glm::vec3 Diffuse)
+	{
+		auto Light = GetLightByName(Name);
+		if (Light)
+			Light->diffuse = Diffuse;
+	}
+
+	void cObjectManager::ChangeLightSpecular(const char* Name, glm::vec3 Specular)
+	{
+		auto Light = GetLightByName(Name);
+		if (Light)
+			Light->specular = Specular;
 	}
 
 	void cObjectManager::ChangeLightPosition(const char* Name, glm::vec3 Position)
@@ -166,14 +187,25 @@ namespace FlawedEngine
 			}
 	}
 
-	void cObjectManager::AddLight(const char* Name, sLight& Props)
+	void cObjectManager::ChangeLightQuadratic(const char* Name, float Quadratic)
 	{
-		auto Light = PointLights.find(Name);
+		auto Light = GetLightByName(Name);
+		if (Light)
+			Light->quadratic = Quadratic;
+	}
 
-		if (Light == PointLights.end())
-		{
-			PointLights[Name] = Props;
-		}
+	void cObjectManager::ChangeLightConstant(const char* Name, float Constant)
+	{
+		auto Light = GetLightByName(Name);
+		if (Light)
+			Light->constant = Constant;
+	}
+
+	void cObjectManager::ChangeLightLinear(const char* Name, float linear)
+	{
+		auto Light = GetLightByName(Name);
+		if (Light)
+			Light->linear = linear;
 	}
 
 	std::shared_ptr<cEntity> cObjectManager::GetObjectByName(const char* Name)
@@ -187,6 +219,16 @@ namespace FlawedEngine
 			return nullptr;
 
 		return Object->second;
+	}
+
+	void cObjectManager::AddLight(const char* Name, sLight& Props)
+	{
+		auto Light = PointLights.find(Name);
+
+		if (Light == PointLights.end())
+		{
+			PointLights[Name] = Props;
+		}
 	}
 
 	sLight* cObjectManager::GetLightByName(const char* Name)
