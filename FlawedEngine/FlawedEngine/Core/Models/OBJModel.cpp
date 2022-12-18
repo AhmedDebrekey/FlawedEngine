@@ -5,11 +5,11 @@
 
 namespace FlawedEngine
 {
+	
 	cOBJModel::cOBJModel(const char* FilePath, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes)
 		:mCollisionShapesArray(CollisionShapes)
 	{
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
-
 		if (!LoadModel(FilePath))
 		{
 			std::cout << "Failed To Load 3D Model from: " << FilePath << std::endl;
@@ -35,7 +35,6 @@ namespace FlawedEngine
 	bool cOBJModel::LoadModel(const char* FilePath)
 	{
 		bool Loaded = mLoader.LoadFile(FilePath);
-
 		return Loaded;
 	}
 

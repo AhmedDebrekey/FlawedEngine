@@ -23,6 +23,7 @@ namespace FlawedEngine
 		void SetRigidBody(eBasicObject Object);
 		void SetCollisionShape(eBasicObject Object);
 		bool isPhysicsSet = false;
+
 	private:
 		btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
 		btCollisionShape* mCollisionShape;

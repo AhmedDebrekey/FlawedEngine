@@ -24,6 +24,8 @@ namespace FlawedEngine
 		void UpdateUI();
 		void RenderUI();
 		void SetObjectManager(cObjectManager* Manager) { ObjectMan = Manager; };
+		glm::vec2 GetViewportSize() { return ViewportSize; };
+		glm::vec2 GetViewportPos() { return ViewportPos; };
 	private:
 		void InitRendering();
 		void InitFrameBuffer();
@@ -34,6 +36,7 @@ namespace FlawedEngine
 		uint32_t RenderBufferObject;
 		glm::vec2 PrevViewportSize = {1600, 900};
 		glm::vec2 ViewportSize = {1600, 900};
+		glm::vec2 ViewportPos = { 1600, 900 };
 		glm::vec2 m_ViewportBounds[2];
 		std::string mSelectedEntity;
 		int mGizmoType = ImGuizmo::OPERATION::TRANSLATE;

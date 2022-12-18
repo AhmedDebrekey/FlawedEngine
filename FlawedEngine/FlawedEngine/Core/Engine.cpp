@@ -26,7 +26,7 @@ namespace FlawedEngine
 			EngineWindow.Update();
 			
 			UI.UpdateUI();
-			
+			Scenes[0]->UpdateViewport(UI.GetViewportSize(), UI.GetViewportPos());
 			OnEvent();
 			
 			Physics.Update();

@@ -129,6 +129,7 @@ namespace FlawedEngine
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
 			ImGui::Begin("ViewPort", 0, ImGuiWindowFlags_NoScrollbar);
 			ViewportSize = { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() };
+			ViewportPos = { ImGui::GetWindowPos().x, ImGui::GetWindowPos().y };
 			if (PrevViewportSize != ViewportSize)
 			{
 				//resize framebuffer

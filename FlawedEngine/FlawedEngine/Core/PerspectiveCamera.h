@@ -15,6 +15,7 @@ namespace FlawedEngine
 		glm::mat4 View();
 		glm::vec3 Postion();
 		glm::vec3 Front();
+		float FarPlane() { return 200.f; }
 		float FoV();
 		void UpdateProjection(glm::mat4 Proj);
 	private:

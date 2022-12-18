@@ -24,12 +24,17 @@ namespace FlawedEngine
 
 		cObjectManager* GetObjectManager() { return &ObjectMan; }
 		cpCamera* GetCamera() { return &Camera; }
+		void UpdateViewport(glm::vec2 Size, glm::vec2 Pos) { ViewportSize = Size; ViewportPos = Pos; }
 	private:
 		cObjectManager ObjectMan;
 		void* mWindow;
 		void* PhysicsWorld = nullptr;
 		cpCamera Camera;
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
-
+	private:
+		glm::vec2 ViewportSize = { 1600, 900 };
+		glm::vec2 ViewportPos = { 1600, 900 };
+		glm::vec2 CursorPos = { 0,0 };
+		void onCursorPos(glm::vec2 pos) { CursorPos = pos; }
 	};
 }
