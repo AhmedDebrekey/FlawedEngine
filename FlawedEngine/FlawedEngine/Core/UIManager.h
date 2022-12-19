@@ -24,6 +24,7 @@ namespace FlawedEngine
 		void UpdateUI();
 		void RenderUI();
 		void SetObjectManager(cObjectManager* Manager) { ObjectMan = Manager; };
+		std::string& GetSelectedEntity() { return mSelectedEntity; }
 		glm::vec2 GetViewportSize() { return ViewportSize; };
 		glm::vec2 GetViewportPos() { return ViewportPos; };
 	private:

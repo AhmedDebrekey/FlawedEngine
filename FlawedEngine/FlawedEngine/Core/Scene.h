@@ -25,6 +25,7 @@ namespace FlawedEngine
 		cObjectManager* GetObjectManager() { return &ObjectMan; }
 		cpCamera* GetCamera() { return &Camera; }
 		void UpdateViewport(glm::vec2 Size, glm::vec2 Pos) { ViewportSize = Size; ViewportPos = Pos; }
+		void SetSelectedEntity(std::string& SelectedEntity) { mSelectedEntity = &SelectedEntity; }
 	private:
 		cObjectManager ObjectMan;
 		void* mWindow;
@@ -36,5 +37,7 @@ namespace FlawedEngine
 		glm::vec2 ViewportPos = { 1600, 900 };
 		glm::vec2 CursorPos = { 0,0 };
 		void onCursorPos(glm::vec2 pos) { CursorPos = pos; }
+	private:
+		std::string* mSelectedEntity;
 	};
 }

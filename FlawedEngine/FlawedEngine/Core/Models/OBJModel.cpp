@@ -6,8 +6,8 @@
 namespace FlawedEngine
 {
 	
-	cOBJModel::cOBJModel(const char* FilePath, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes)
-		:mCollisionShapesArray(CollisionShapes)
+	cOBJModel::cOBJModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes)
+		:mCollisionShapesArray(CollisionShapes), mName(Name)
 	{
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
 		if (!LoadModel(FilePath))
@@ -132,7 +132,10 @@ namespace FlawedEngine
 			mPhysicsDynamicWorld->addRigidBody(mRidigBody);
 			mPhysicsDynamicWorld->updateSingleAabb(mRidigBody);
 
+
 			mCollisionShapesArray->push_back(mCollisionShape);
+
+			mCollisionShape->setUserPointer((void*)mName.data());
 
 			isPhysicsSet = true;
 		}

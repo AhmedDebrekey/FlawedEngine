@@ -40,7 +40,7 @@ namespace FlawedEngine
 		{
 		case FlawedEngine::Cube:
 		{
-			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Cube\\Cube.obj", mPhysicsWorld, mCollisionShapesArray);
+			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Cube\\Cube.obj", Name, mPhysicsWorld, mCollisionShapesArray);
 			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
@@ -50,7 +50,7 @@ namespace FlawedEngine
 		break;
 		case FlawedEngine::Sphere:
 		{
-			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Sphere\\Sphere.obj", mPhysicsWorld, mCollisionShapesArray);
+			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Sphere\\Sphere.obj", Name, mPhysicsWorld, mCollisionShapesArray);
 			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
@@ -60,7 +60,7 @@ namespace FlawedEngine
 		break;
 		case FlawedEngine::Cone:
 		{
-			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Cone\\Cone.obj", mPhysicsWorld, mCollisionShapesArray);
+			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Cone\\Cone.obj", Name, mPhysicsWorld, mCollisionShapesArray);
 			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
@@ -70,7 +70,7 @@ namespace FlawedEngine
 		break;
 		case FlawedEngine::Torus:
 		{
-			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Torus\\Torus.obj", mPhysicsWorld, mCollisionShapesArray);
+			SceneObjects[Name] = std::make_shared<cOBJModel>("Core\\Models\\OBJ\\Torus\\Torus.obj", Name, mPhysicsWorld, mCollisionShapesArray);
 			sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };

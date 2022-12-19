@@ -51,8 +51,6 @@ namespace FlawedEngine
 				float mouseX = Scene->CursorPos.x;
 				float mouseY = Scene->CursorPos.y;
 
-
-
 				// Projection and view matrices
 				glm::mat4 projection = Scene->GetCamera()->Projection();
 				glm::mat4 view = Scene->GetCamera()->View();
@@ -93,10 +91,11 @@ namespace FlawedEngine
 				// Convert the world space position from a dvec4 to a vec3
 				glm::vec3 worldCoords(worldSpacePosition);
 
-				glm::vec3 rayDir = glm::vec3(0, 0, -1);
-				rayDir = glm::vec3(inverseViewMatrix * glm::vec4(rayDir, 0.0f));
+				glm::vec3 rayDir = worldCoords - cameraPos;
+				rayDir = glm::normalize(rayDir);
+				//rayDir = glm::vec3(inverseViewMatrix * glm::vec4(rayDir, 0.0f));
 
-				glm::vec3 RayTo = worldCoords + (10.f * rayDir);
+				glm::vec3 RayTo = cameraPos + (10.f * rayDir);
 
 				btDynamicsWorld* dynamicWorld = (btDynamicsWorld*)Scene->PhysicsWorld;
 
@@ -105,6 +104,7 @@ namespace FlawedEngine
 
 				btCollisionWorld::ClosestRayResultCallback rayCallback(RayBegin, RayEnd);
 				dynamicWorld->rayTest(RayBegin, RayEnd, rayCallback);
+
 				if (rayCallback.hasHit())
 				{
 					// The ray intersected an object
@@ -112,10 +112,12 @@ namespace FlawedEngine
 					btVector3 intersectionPoint = rayCallback.m_hitPointWorld;
 					btVector3 intersectionNormal = rayCallback.m_hitNormalWorld;
 
-					std::cout << object->getCollisionShape()->getName() << std::endl;
+					const char* Name = static_cast<const char*>(object->getCollisionShape()->getUserPointer());
+					*(Scene->mSelectedEntity) = Name;
 				}
 
 				//debug
+				/*
 				{
 					Scene->ObjectMan.AddObject(Cube, "Ray Start");
 					auto Entity = Scene->ObjectMan.GetObjectByName("Ray Start");
@@ -125,7 +127,6 @@ namespace FlawedEngine
 					Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 					Entity->ModelTransform(EntityModel);
 				}
-				//debug
 				{
 					Scene->ObjectMan.AddObject(Cube, "Ray end");
 					auto Entity = Scene->ObjectMan.GetObjectByName("Ray end");
@@ -135,6 +136,7 @@ namespace FlawedEngine
 					Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 					Entity->ModelTransform(EntityModel);
 				}
+				*/
 
 			}
 		});

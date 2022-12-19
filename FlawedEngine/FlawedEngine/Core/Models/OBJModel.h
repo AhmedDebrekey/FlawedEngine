@@ -9,8 +9,8 @@ namespace FlawedEngine
 {
 	class cOBJModel : public cEntity
 	{
-	public:
-		cOBJModel(const char* FilePath, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes);
+	public:								//Have to copy it
+		cOBJModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes);
 		~cOBJModel();
 		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions) override;
 		virtual void Update() override;
@@ -23,7 +23,7 @@ namespace FlawedEngine
 		void SetRigidBody(eBasicObject Object);
 		void SetCollisionShape(eBasicObject Object);
 		bool isPhysicsSet = false;
-
+		std::string mName;
 	private:
 		btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
 		btCollisionShape* mCollisionShape;
