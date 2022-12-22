@@ -11,6 +11,7 @@
 #include <ImGuizmo/ImGuizmo.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <string>
 #include "PerspectiveCamera.h"
 namespace FlawedEngine
@@ -38,6 +39,7 @@ namespace FlawedEngine
 		glm::vec2 PrevViewportSize = {1600, 900};
 		glm::vec2 ViewportSize = {1600, 900};
 		glm::vec2 ViewportPos = { 1600, 900 };
+		void* mWindow = nullptr;
 		glm::vec2 m_ViewportBounds[2];
 		std::string mSelectedEntity;
 		int mGizmoType = ImGuizmo::OPERATION::TRANSLATE;

@@ -57,6 +57,7 @@ namespace FlawedEngine
 	void cUIManager::Init(void* Window, void* Camera)
 	{
 		mCamera = (cpCamera*)Camera;
+		mWindow = Window;
 		InitFrameBuffer();
 
 		IMGUI_CHECKVERSION();
@@ -128,8 +129,21 @@ namespace FlawedEngine
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
 			ImGui::Begin("ViewPort", 0, ImGuiWindowFlags_NoScrollbar);
+
+			// Get the size of the window in screen coordinates
+			int gwindowWidth, gwindowHeight;
+			glfwGetWindowSize((GLFWwindow*)mWindow, &gwindowWidth, &gwindowHeight);
+
+			// Get the size of the framebuffer in pixels
+			int framebufferWidth, framebufferHeight;
+			glfwGetFramebufferSize((GLFWwindow*)mWindow, &framebufferWidth, &framebufferHeight);
+
+			ViewportSize = { std::min(gwindowWidth, framebufferWidth), std::min(gwindowHeight, framebufferHeight) };
+			ViewportPos = { (gwindowWidth - framebufferWidth) / 2, (gwindowHeight - framebufferHeight) / 2 };
+
 			ViewportSize = { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() };
 			ViewportPos = { ImGui::GetWindowPos().x, ImGui::GetWindowPos().y };
+
 			if (PrevViewportSize != ViewportSize)
 			{
 				//resize framebuffer
@@ -162,7 +176,6 @@ namespace FlawedEngine
 				auto Entity = ObjectMan->GetObjectByName(mSelectedEntity.c_str());
 				if (Entity)
 				{
-
 					float tmpMatrix[16];
 					sModel Model = Entity->GetModel();
 					ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(Model.Translation), glm::value_ptr(Model.Rotation), glm::value_ptr(Model.Scale), tmpMatrix);
@@ -179,7 +192,35 @@ namespace FlawedEngine
 						Model.Translation = translation;
 						Model.Rotation = rotation;
 						Model.Scale = scale;
-						Entity->ModelTransform(Model);
+
+						if (!Entity->mPhysics)
+						{
+							Entity->ModelTransform(Model);
+						}
+						else
+						{
+							btTransform Trans;
+							Entity->mRidigBody->getMotionState()->getWorldTransform(Trans);
+
+							//Translation......
+							btVector3 FinalTranslation(translation.x, translation.y, translation.z);
+							Trans.setOrigin(FinalTranslation);
+
+							//Rotation........
+							btQuaternion quat = btQuaternion(glm::radians(rotation.z), glm::radians(rotation.y), glm::radians(rotation.x));
+							Trans.setRotation(quat);
+							Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
+
+							//Scale..........
+							btVector3 myscale = btVector3(scale.x, scale.y, scale.z);
+							Entity->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
+
+							if (!Entity->mDynamic)
+							{
+								Entity->mRidigBody->setWorldTransform(Trans);
+							}
+							Entity->ModelTransform(Model);
+						}
 					}
 				}
 			}
@@ -316,12 +357,30 @@ namespace FlawedEngine
 						Trans.setOrigin(FinalTranslation);
 
 						//Rotation........
-						static btScalar roll, pitch, yaw;
-						Entity->mRidigBody->getCenterOfMassTransform().getBasis().getEulerYPR(yaw, pitch, roll);
+						btRigidBody* rigidBody = Entity->mRidigBody;
 
-						glm::vec3 Rotation = glm::vec3(roll, pitch, yaw);
+						btQuaternion orientation = rigidBody->getCenterOfMassTransform().getRotation();
+
+						// Extract the x, y, and z components of the quaternion
+						float x = orientation.x();
+						float y = orientation.y();
+						float z = orientation.z();
+
+						// Extract the w component of the quaternion
+						float w = orientation.getAngle();
+
+						// Calculate the yaw, pitch, and roll angles
+						float yaw = std::atan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z));
+						float pitch = std::asin(2 * (w * y - z * x));
+						float roll = std::atan2(2 * (w * x + y * z), 1 - 2 * (x * x + y * y));
+
+						glm::vec3 Rotation = glm::vec3(yaw, roll, pitch);
+
 						DrawVec3("Rotation", Rotation);
-						Trans.setRotation(btQuaternion(Rotation.z, Rotation.y, Rotation.x));
+						glm::quat quat = glm::quat(Rotation);
+						quat = glm::normalize(quat);
+						btQuaternion btQuat(quat.x, quat.y, quat.z, quat.w);
+						//Trans.setRotation(btQuaternion(btQuat));
 						Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
 
 						//Scale..........

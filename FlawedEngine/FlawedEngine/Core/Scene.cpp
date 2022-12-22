@@ -65,6 +65,7 @@ namespace FlawedEngine
 				int viewportHeight = Scene->ViewportSize.y;
 
 				// Normalize the mouse position to the range [0, 1]
+
 				float normalizedMouseX = (mouseX - viewportX) / viewportWidth;
 				float normalizedMouseY = (mouseY - viewportY) / viewportHeight;
 
@@ -75,7 +76,6 @@ namespace FlawedEngine
 					0.1f,
 					1.0f
 				);
-
 
 				// Convert the clip space position to eye space
 				glm::mat4 inverseProjectionMatrix = glm::inverse(projection);
@@ -93,7 +93,6 @@ namespace FlawedEngine
 
 				glm::vec3 rayDir = worldCoords - cameraPos;
 				rayDir = glm::normalize(rayDir);
-				//rayDir = glm::vec3(inverseViewMatrix * glm::vec4(rayDir, 0.0f));
 
 				glm::vec3 RayTo = cameraPos + (10.f * rayDir);
 
@@ -123,7 +122,7 @@ namespace FlawedEngine
 					auto Entity = Scene->ObjectMan.GetObjectByName("Ray Start");
 					sModel EntityModel = Entity->GetModel();
 					EntityModel.Translation = worldCoords;
-					EntityModel.Scale = glm::vec3(0.1);
+					EntityModel.Scale = glm::vec3(0.05);
 					Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 					Entity->ModelTransform(EntityModel);
 				}
@@ -132,12 +131,11 @@ namespace FlawedEngine
 					auto Entity = Scene->ObjectMan.GetObjectByName("Ray end");
 					sModel EntityModel = Entity->GetModel();
 					EntityModel.Translation = RayTo;
-					EntityModel.Scale = glm::vec3(0.1);
+					EntityModel.Scale = glm::vec3(0.05);
 					Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 					Entity->ModelTransform(EntityModel);
 				}
 				*/
-
 			}
 		});
 	}
