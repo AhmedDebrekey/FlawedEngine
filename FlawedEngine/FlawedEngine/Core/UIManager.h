@@ -46,5 +46,6 @@ namespace FlawedEngine
 	private:
 		cObjectManager* ObjectMan;
 		cpCamera* mCamera;
+		bool mMousePicking = true;
 	};
 }

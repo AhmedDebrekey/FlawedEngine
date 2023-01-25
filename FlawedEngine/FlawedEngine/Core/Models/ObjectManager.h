@@ -36,6 +36,8 @@ namespace FlawedEngine
 		void ChangeName(const char* OldName, const char* NewName); 
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
 
+		bool mMousePicking = true;
+
 	private:
 		void AddLight(const char* Name, sLight& Props);
 		sLight* GetLightByName(const char* Name);

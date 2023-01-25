@@ -34,10 +34,9 @@ namespace FlawedEngine
 		double xpos, ypos;
 		glfwGetCursorPos((GLFWwindow*)mWindow, &xpos, &ypos);
 		CursorPos = { xpos, ypos };
-
-		glfwSetMouseButtonCallback((GLFWwindow*)mWindow, [](GLFWwindow* window, int button, int action, int mods)
-		{
-			cScene* Scene = static_cast<cScene*>(glfwGetWindowUserPointer(window));
+			glfwSetMouseButtonCallback((GLFWwindow*)mWindow, [](GLFWwindow* window, int button, int action, int mods)
+				{
+					cScene* Scene = static_cast<cScene*>(glfwGetWindowUserPointer(window));
 
 			ImGuiIO& io = ImGui::GetIO();
 			if (action == GLFW_PRESS)
@@ -46,7 +45,7 @@ namespace FlawedEngine
 				io.MouseDown[button] = false;
 
 			if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
-			{				
+			{
 				// Mouse coordinates in window space
 				float mouseX = Scene->CursorPos.x;
 				float mouseY = Scene->CursorPos.y;
@@ -94,7 +93,7 @@ namespace FlawedEngine
 				glm::vec3 rayDir = worldCoords - cameraPos;
 				rayDir = glm::normalize(rayDir);
 
-				glm::vec3 RayTo = cameraPos + (10.f * rayDir);
+				glm::vec3 RayTo = cameraPos + (50.f * rayDir);
 
 				btDynamicsWorld* dynamicWorld = (btDynamicsWorld*)Scene->PhysicsWorld;
 
@@ -103,40 +102,44 @@ namespace FlawedEngine
 
 				btCollisionWorld::ClosestRayResultCallback rayCallback(RayBegin, RayEnd);
 				dynamicWorld->rayTest(RayBegin, RayEnd, rayCallback);
-
-				if (rayCallback.hasHit())
+				if (Scene->ObjectMan.mMousePicking)
 				{
-					// The ray intersected an object
-					const btCollisionObject* object = rayCallback.m_collisionObject;
-					btVector3 intersectionPoint = rayCallback.m_hitPointWorld;
-					btVector3 intersectionNormal = rayCallback.m_hitNormalWorld;
+					if (rayCallback.hasHit())
+					{
+						// The ray intersected an object
+						const btCollisionObject* object = rayCallback.m_collisionObject;
+						btVector3 intersectionPoint = rayCallback.m_hitPointWorld;
+						btVector3 intersectionNormal = rayCallback.m_hitNormalWorld;
 
-					const char* Name = static_cast<const char*>(object->getCollisionShape()->getUserPointer());
-					*(Scene->mSelectedEntity) = Name;
+						const char* Name = static_cast<const char*>(object->getCollisionShape()->getUserPointer());
+						*(Scene->mSelectedEntity) = Name;
+					}
 				}
-
-				//debug
-				/*
-				{
-					Scene->ObjectMan.AddObject(Cube, "Ray Start");
-					auto Entity = Scene->ObjectMan.GetObjectByName("Ray Start");
-					sModel EntityModel = Entity->GetModel();
-					EntityModel.Translation = worldCoords;
-					EntityModel.Scale = glm::vec3(0.05);
-					Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
-					Entity->ModelTransform(EntityModel);
-				}
-				{
-					Scene->ObjectMan.AddObject(Cube, "Ray end");
-					auto Entity = Scene->ObjectMan.GetObjectByName("Ray end");
-					sModel EntityModel = Entity->GetModel();
-					EntityModel.Translation = RayTo;
-					EntityModel.Scale = glm::vec3(0.05);
-					Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
-					Entity->ModelTransform(EntityModel);
-				}
-				*/
 			}
-		});
+
+			//debug
+			/*
+			{
+				Scene->ObjectMan.AddObject(Cube, "Ray Start");
+				auto Entity = Scene->ObjectMan.GetObjectByName("Ray Start");
+				sModel EntityModel = Entity->GetModel();
+				EntityModel.Translation = worldCoords;
+				EntityModel.Scale = glm::vec3(0.05);
+				Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+				Entity->ModelTransform(EntityModel);
+			}
+			{
+				Scene->ObjectMan.AddObject(Cube, "Ray end");
+				auto Entity = Scene->ObjectMan.GetObjectByName("Ray end");
+				sModel EntityModel = Entity->GetModel();
+				EntityModel.Translation = RayTo;
+				EntityModel.Scale = glm::vec3(0.05);
+				Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+				Entity->ModelTransform(EntityModel);
+			}
+			*/
+
+			});
+		
 	}
 }

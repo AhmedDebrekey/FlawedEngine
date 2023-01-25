@@ -125,6 +125,8 @@ namespace FlawedEngine
 			ImGui::Text("Move: W,A,S,D,E,Q");
 			ImGui::Text("Gizmo: R,T,G");
 			ImGui::Text("Right Click SceneHierachy To Create Entitys");
+			ImGui::Checkbox("Mouse Picking *Buggy*", &mMousePicking);
+			ObjectMan->mMousePicking = mMousePicking;
 			ImGui::End();
 
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
@@ -153,6 +155,9 @@ namespace FlawedEngine
 			}
 			PrevViewportSize = ViewportSize;
 			ImGui::Image((void*)TextureColorBuffer, { ViewportSize.x, ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
+
+			if (ImGui::IsMouseDown(2) && ImGui::IsWindowHovered())
+				mSelectedEntity = "";
 
 			//Gizmo
 			if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_T)) { mGizmoType = ImGuizmo::OPERATION::TRANSLATE; }
@@ -207,7 +212,7 @@ namespace FlawedEngine
 							Trans.setOrigin(FinalTranslation);
 
 							//Rotation........
-							btQuaternion quat = btQuaternion(glm::radians(rotation.z), glm::radians(rotation.y), glm::radians(rotation.x));
+							btQuaternion quat = btQuaternion(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
 							Trans.setRotation(quat);
 							Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
 
