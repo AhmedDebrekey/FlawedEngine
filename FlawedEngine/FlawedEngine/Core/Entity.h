@@ -15,7 +15,7 @@ namespace FlawedEngine
 		sModel mTransformation;
 
 		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions) = 0;
-		virtual void Update(/*Should be taking in the timestep, Maybe make deltatime a singleton that is avaliable from the Engine*/) = 0;
+		virtual void Update(/*Should be taking in the timestep*/) = 0;
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) = 0;
 		virtual void UnSetPhysics() = 0;
 		virtual void setDynamic(bool IsDynamic) = 0;
@@ -24,6 +24,7 @@ namespace FlawedEngine
 		void SetMaterial(sMaterial& Mat);
 		void SetPhysicsProps(sPhysicsProps& Props);
 		void ApplyForce(glm::vec3 Force);
+		void Move(const glm::vec3& Direction);
 		virtual ~cEntity() = 0;
 
 		sModel GetModel() { return mTransformation; }
@@ -102,5 +103,10 @@ namespace FlawedEngine
 		btVector3 correctedForce = (boxTrans * relativeForce) - boxTrans.getOrigin();
 		relativeForce = (boxTrans * RelativeTransform) - boxTrans.getOrigin();
 		mRidigBody->applyCentralForce(relativeForce);
+	}
+
+	inline void cEntity::Move(const glm::vec3& Direction)
+	{
+		mTransformation.Translation += Direction;
 	}
 }

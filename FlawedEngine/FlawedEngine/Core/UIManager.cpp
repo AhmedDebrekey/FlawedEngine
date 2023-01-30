@@ -177,11 +177,11 @@ namespace FlawedEngine
 			m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
 			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
+			float tmpMatrix[16];
 			{
 				auto Entity = ObjectMan->GetObjectByName(mSelectedEntity.c_str());
 				if (Entity)
 				{
-					float tmpMatrix[16];
 					sModel Model = Entity->GetModel();
 					ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(Model.Translation), glm::value_ptr(Model.Rotation), glm::value_ptr(Model.Scale), tmpMatrix);
 
@@ -362,30 +362,12 @@ namespace FlawedEngine
 						Trans.setOrigin(FinalTranslation);
 
 						//Rotation........
-						btRigidBody* rigidBody = Entity->mRidigBody;
-
-						btQuaternion orientation = rigidBody->getCenterOfMassTransform().getRotation();
-
-						// Extract the x, y, and z components of the quaternion
-						float x = orientation.x();
-						float y = orientation.y();
-						float z = orientation.z();
-
-						// Extract the w component of the quaternion
-						float w = orientation.getAngle();
-
-						// Calculate the yaw, pitch, and roll angles
-						float yaw = std::atan2(2 * (w * z + x * y), 1 - 2 * (y * y + z * z));
-						float pitch = std::asin(2 * (w * y - z * x));
-						float roll = std::atan2(2 * (w * x + y * z), 1 - 2 * (x * x + y * y));
-
-						glm::vec3 Rotation = glm::vec3(yaw, roll, pitch);
-
-						DrawVec3("Rotation", Rotation);
-						glm::quat quat = glm::quat(Rotation);
-						quat = glm::normalize(quat);
-						btQuaternion btQuat(quat.x, quat.y, quat.z, quat.w);
-						//Trans.setRotation(btQuaternion(btQuat));
+						glm::vec3 untranslation, rotation, unscale;
+						ImGuizmo::DecomposeMatrixToComponents(tmpMatrix, glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale));
+						DrawVec3("Rotation", rotation);
+						ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale), tmpMatrix);
+						btQuaternion quat = btQuaternion(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
+						Trans.setRotation(quat);
 						Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
 
 						//Scale..........

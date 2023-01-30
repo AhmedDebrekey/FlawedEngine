@@ -138,8 +138,6 @@ namespace FlawedEngine
 				Entity->ModelTransform(EntityModel);
 			}
 			*/
-
 			});
-		
 	}
 }
