@@ -30,6 +30,7 @@ namespace FlawedEngine
 
 		for (auto& Object : SceneObjects)
 		{
+			Object.second->Update();
 			Object.second->Render(tCamera, PointLights);
 		}
 	}

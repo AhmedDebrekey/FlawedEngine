@@ -17,7 +17,9 @@ namespace FlawedEngine
 		virtual void setDynamic(bool isDynamic) override;
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
 		virtual void UnSetPhysics() override;
-
+		virtual void SetupScripting() override;
+		virtual void SendEntity(cEntity* Entity) override;
+		virtual void SendInputToScripting(std::function<bool(int)>) override;
 		glm::vec3 mPosition;
 	private:
 		cModelRenderer Renderer;

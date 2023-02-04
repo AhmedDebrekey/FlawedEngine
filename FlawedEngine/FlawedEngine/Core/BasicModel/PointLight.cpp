@@ -49,4 +49,16 @@ namespace FlawedEngine
 	void cPointLight::UnSetPhysics()
 	{
 	}
+	void cPointLight::SetupScripting()
+	{
+	}
+
+	void cPointLight::SendEntity(cEntity* Entity)
+	{
+	}
+
+	void cPointLight::SendInputToScripting(std::function<bool(int)>)
+	{
+	}
+	
 }

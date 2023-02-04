@@ -209,5 +209,6 @@
     <None Include="Core\Models\Shaders\Fragment.glsl" />
     <None Include="Core\Models\Shaders\SkyboxVertex.glsl" />
     <None Include="Core\Models\Shaders\SkyboxFragment.glsl" />
+    <None Include="ScriptingTest.lua" />
   </ItemGroup>
 </Project>

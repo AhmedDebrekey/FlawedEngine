@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <Bullet/btBulletDynamicsCommon.h>
 #include <glm/gtc/type_ptr.hpp>
-
+#include <functional>
 namespace FlawedEngine
 {
 	class cEntity
@@ -19,12 +19,14 @@ namespace FlawedEngine
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) = 0;
 		virtual void UnSetPhysics() = 0;
 		virtual void setDynamic(bool IsDynamic) = 0;
+		virtual void SetupScripting() = 0;
+		virtual void SendEntity(cEntity* Entity) = 0;
+		virtual void SendInputToScripting(std::function<bool(int)>) = 0;
 		void ModelTransform(sModel& model);
 		void SetColor(glm::vec3 Color);
 		void SetMaterial(sMaterial& Mat);
 		void SetPhysicsProps(sPhysicsProps& Props);
 		void ApplyForce(glm::vec3 Force);
-		void Move(const glm::vec3& Direction);
 		virtual ~cEntity() = 0;
 
 		sModel GetModel() { return mTransformation; }
@@ -54,6 +56,7 @@ namespace FlawedEngine
 
 		cInput& Input = cInput::get();
 	};
+
 
 	inline cEntity::~cEntity()
 	{
@@ -103,10 +106,5 @@ namespace FlawedEngine
 		btVector3 correctedForce = (boxTrans * relativeForce) - boxTrans.getOrigin();
 		relativeForce = (boxTrans * RelativeTransform) - boxTrans.getOrigin();
 		mRidigBody->applyCentralForce(relativeForce);
-	}
-
-	inline void cEntity::Move(const glm::vec3& Direction)
-	{
-		mTransformation.Translation += Direction;
 	}
 }

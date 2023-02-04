@@ -98,7 +98,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;App_BulletExampleBrowser_vs2010_x64_debug.lib;Bullet3Collision_vs2010_x64_debug.lib;Bullet3Common_vs2010_x64_debug.lib;Bullet3Dynamics_vs2010_x64_debug.lib;Bullet3Geometry_vs2010_x64_debug.lib;Bullet3OpenCL_clew_vs2010_x64_debug.lib;BulletCollision_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;BulletExampleBrowserLib_vs2010_x64_debug.lib;BulletInverseDynamics_vs2010_x64_debug.lib;BulletInverseDynamicsUtils_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BussIK_vs2010_x64_debug.lib;gwen_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;OpenGL_Window_vs2010_x64_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;App_BulletExampleBrowser_vs2010_x64_debug.lib;Bullet3Collision_vs2010_x64_debug.lib;Bullet3Common_vs2010_x64_debug.lib;Bullet3Dynamics_vs2010_x64_debug.lib;Bullet3Geometry_vs2010_x64_debug.lib;Bullet3OpenCL_clew_vs2010_x64_debug.lib;BulletCollision_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;BulletExampleBrowserLib_vs2010_x64_debug.lib;BulletInverseDynamics_vs2010_x64_debug.lib;BulletInverseDynamicsUtils_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BussIK_vs2010_x64_debug.lib;gwen_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;OpenGL_Window_vs2010_x64_debug.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -117,7 +117,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;App_BulletExampleBrowser_vs2010_x64_debug.lib;Bullet3Collision_vs2010_x64_debug.lib;Bullet3Common_vs2010_x64_debug.lib;Bullet3Dynamics_vs2010_x64_debug.lib;Bullet3Geometry_vs2010_x64_debug.lib;Bullet3OpenCL_clew_vs2010_x64_debug.lib;BulletCollision_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;BulletExampleBrowserLib_vs2010_x64_debug.lib;BulletInverseDynamics_vs2010_x64_debug.lib;BulletInverseDynamicsUtils_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BussIK_vs2010_x64_debug.lib;gwen_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;OpenGL_Window_vs2010_x64_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;App_BulletExampleBrowser_vs2010_x64_debug.lib;Bullet3Collision_vs2010_x64_debug.lib;Bullet3Common_vs2010_x64_debug.lib;Bullet3Dynamics_vs2010_x64_debug.lib;Bullet3Geometry_vs2010_x64_debug.lib;Bullet3OpenCL_clew_vs2010_x64_debug.lib;BulletCollision_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;BulletExampleBrowserLib_vs2010_x64_debug.lib;BulletInverseDynamics_vs2010_x64_debug.lib;BulletInverseDynamicsUtils_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BussIK_vs2010_x64_debug.lib;gwen_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;OpenGL_Window_vs2010_x64_debug.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -132,7 +132,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;App_BulletExampleBrowser_vs2010_x64_debug.lib;Bullet3Collision_vs2010_x64_debug.lib;Bullet3Common_vs2010_x64_debug.lib;Bullet3Dynamics_vs2010_x64_debug.lib;Bullet3Geometry_vs2010_x64_debug.lib;Bullet3OpenCL_clew_vs2010_x64_debug.lib;BulletCollision_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;BulletExampleBrowserLib_vs2010_x64_debug.lib;BulletInverseDynamics_vs2010_x64_debug.lib;BulletInverseDynamicsUtils_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BussIK_vs2010_x64_debug.lib;gwen_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;OpenGL_Window_vs2010_x64_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;App_BulletExampleBrowser_vs2010_x64_debug.lib;Bullet3Collision_vs2010_x64_debug.lib;Bullet3Common_vs2010_x64_debug.lib;Bullet3Dynamics_vs2010_x64_debug.lib;Bullet3Geometry_vs2010_x64_debug.lib;Bullet3OpenCL_clew_vs2010_x64_debug.lib;BulletCollision_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;BulletExampleBrowserLib_vs2010_x64_debug.lib;BulletInverseDynamics_vs2010_x64_debug.lib;BulletInverseDynamicsUtils_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BussIK_vs2010_x64_debug.lib;gwen_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;OpenGL_Window_vs2010_x64_debug.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,7 +151,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;App_BulletExampleBrowser_vs2010_x64_debug.lib;Bullet3Collision_vs2010_x64_debug.lib;Bullet3Common_vs2010_x64_debug.lib;Bullet3Dynamics_vs2010_x64_debug.lib;Bullet3Geometry_vs2010_x64_debug.lib;Bullet3OpenCL_clew_vs2010_x64_debug.lib;BulletCollision_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;BulletExampleBrowserLib_vs2010_x64_debug.lib;BulletInverseDynamics_vs2010_x64_debug.lib;BulletInverseDynamicsUtils_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BussIK_vs2010_x64_debug.lib;gwen_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;OpenGL_Window_vs2010_x64_debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;App_BulletExampleBrowser_vs2010_x64_debug.lib;Bullet3Collision_vs2010_x64_debug.lib;Bullet3Common_vs2010_x64_debug.lib;Bullet3Dynamics_vs2010_x64_debug.lib;Bullet3Geometry_vs2010_x64_debug.lib;Bullet3OpenCL_clew_vs2010_x64_debug.lib;BulletCollision_vs2010_x64_debug.lib;BulletDynamics_vs2010_x64_debug.lib;BulletExampleBrowserLib_vs2010_x64_debug.lib;BulletInverseDynamics_vs2010_x64_debug.lib;BulletInverseDynamicsUtils_vs2010_x64_debug.lib;BulletSoftBody_vs2010_x64_debug.lib;BussIK_vs2010_x64_debug.lib;gwen_vs2010_x64_debug.lib;LinearMath_vs2010_x64_debug.lib;OpenGL_Window_vs2010_x64_debug.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -225,6 +225,7 @@
     <None Include="Core\Models\Shaders\SkyboxFragment.glsl" />
     <None Include="Core\Models\Shaders\SkyboxVertex.glsl" />
     <None Include="Core\Models\Shaders\Vertex.glsl" />
+    <None Include="ScriptingTest.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

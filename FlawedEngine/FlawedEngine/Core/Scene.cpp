@@ -23,6 +23,18 @@ namespace FlawedEngine
 	{
 		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray);
 		glfwSetWindowUserPointer((GLFWwindow*)mWindow, this);
+
+		ObjectMan.AddObject(Cube, "Scripting");
+		auto Entity = ObjectMan.GetObjectByName("Scripting");
+		Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
+		Entity->SendEntity(Entity.get());
+		Entity->SendInputToScripting(std::bind(&cScene::isKeyDown, this, std::placeholders::_1));
+		Entity->SetupScripting();
+	}
+
+	bool cScene::isKeyDown(int key)
+	{
+		return glfwGetKey((GLFWwindow*)mWindow, key) == GLFW_PRESS;
 	}
 
 	void cScene::Render()

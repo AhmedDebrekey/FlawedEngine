@@ -5,6 +5,18 @@
 #include <unordered_map>
 #include "../Core.h"
 
+#include <functional>
+
+extern "C"
+{
+# include <Lua/lua.h>
+# include <Lua/lauxlib.h>
+# include <Lua/lualib.h>
+}
+
+#include <LuaBridge/LuaBridge.h>
+#include <ImGui/imgui.h>
+
 namespace FlawedEngine
 {
 	class cOBJModel : public cEntity
@@ -17,13 +29,20 @@ namespace FlawedEngine
 		virtual void setDynamic(bool isDynamic) override;
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
 		virtual void UnSetPhysics() override;
-
+		virtual void SetupScripting() override;
+		virtual void SendEntity(cEntity* Entity) override;
+		virtual void SendInputToScripting(std::function<bool(int)>) override;
 		bool LoadModel(const char* FilePath);
 		void Populate();
 		void SetRigidBody(eBasicObject Object);
 		void SetCollisionShape(eBasicObject Object);
 		bool isPhysicsSet = false;
 		std::string mName;
+
+		void LMove(float x, float y, float z);
+		void LSetColor(float x, float y, float z);
+		lua_State* L = luaL_newstate();
+
 	private:
 		btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
 		btCollisionShape* mCollisionShape;

@@ -37,4 +37,13 @@ namespace FlawedEngine
 	void cTriangle::UnSetPhysics()
 	{
 	}
+	void cTriangle::SetupScripting()
+	{
+	}
+	void cTriangle::SendEntity(cEntity* Entity)
+	{
+	}
+	void cTriangle::SendInputToScripting(std::function<bool(int)>)
+	{
+	}
 }

@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+
+
 namespace FlawedEngine
 {
 	
@@ -154,10 +156,50 @@ namespace FlawedEngine
 		}
 	}
 
+	void cOBJModel::SendInputToScripting(std::function<bool(int)> func)
+	{
+		using namespace luabridge;
+		luaL_openlibs(L);
+
+		getGlobalNamespace(L)
+			.addFunction("IsKeyDown", func);
+	}
+
+	void cOBJModel::LMove(float x, float y, float z)// L for Lua
+	{
+		mTransformation.Translation += glm::vec3(x, y, z);
+		ModelTransform(mTransformation);
+	}
+
+	void cOBJModel::LSetColor(float x, float y, float z)
+	{
+		SetColor(glm::vec3(x, y, z));
+	}
+
+	void cOBJModel::SetupScripting()
+	{
+		using namespace luabridge;
+
+		std::function<void(float, float, float)> MoveFn = std::bind(&cOBJModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		std::function<void(float, float, float)> ColorFn = std::bind(&cOBJModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		
+
+		getGlobalNamespace(L)
+			.addFunction("Move", MoveFn)
+			.addFunction("ChangeColor", ColorFn);
+
+		luaL_dofile(L, "ScriptingTest.lua");
+		lua_pcall(L, 0, 0, 0);
+	}
+
+	void cOBJModel::SendEntity(cEntity* Entity)
+	{
+
+	}
+
 	float Matrix[16];
 	void cOBJModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
 	{
-
 		if (mRidigBody != nullptr && mRidigBody->getMotionState() && isPhysicsSet)
 		{
 			btTransform btTrans;
@@ -188,6 +230,7 @@ namespace FlawedEngine
 
 	void cOBJModel::Update()
 	{
+		luaL_dofile(L, "ScriptingTest.lua");
 	}
 
 	void cOBJModel::setDynamic(bool isDynamic)

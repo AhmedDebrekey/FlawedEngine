@@ -26,6 +26,8 @@ namespace FlawedEngine
 		cpCamera* GetCamera() { return &Camera; }
 		void UpdateViewport(glm::vec2 Size, glm::vec2 Pos) { ViewportSize = Size; ViewportPos = Pos; }
 		void SetSelectedEntity(std::string& SelectedEntity) { mSelectedEntity = &SelectedEntity; }
+
+		bool isKeyDown(int key);
 	private:
 		cObjectManager ObjectMan;
 		void* mWindow;
