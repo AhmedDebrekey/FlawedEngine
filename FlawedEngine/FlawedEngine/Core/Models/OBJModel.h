@@ -34,13 +34,14 @@ namespace FlawedEngine
 		virtual void SendInputToScripting(std::function<bool(int)>) override;
 		bool LoadModel(const char* FilePath);
 		void Populate();
-		void SetRigidBody(eBasicObject Object);
 		void SetCollisionShape(eBasicObject Object);
 		bool isPhysicsSet = false;
 		std::string mName;
 
 		void LMove(float x, float y, float z);
 		void LSetColor(float x, float y, float z);
+		void LRotate(float x, float y, float z);
+		void LScale(float x, float y, float z);
 		lua_State* L = luaL_newstate();
 
 	private:

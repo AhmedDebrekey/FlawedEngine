@@ -225,7 +225,8 @@
     <None Include="Core\Models\Shaders\SkyboxFragment.glsl" />
     <None Include="Core\Models\Shaders\SkyboxVertex.glsl" />
     <None Include="Core\Models\Shaders\Vertex.glsl" />
-    <None Include="ScriptingTest.lua" />
+    <None Include="OnUpdate.lua" />
+    <None Include="OnUserCreate.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

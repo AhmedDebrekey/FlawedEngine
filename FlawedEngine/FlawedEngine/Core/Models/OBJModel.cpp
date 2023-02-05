@@ -165,15 +165,41 @@ namespace FlawedEngine
 			.addFunction("IsKeyDown", func);
 	}
 
+	void cOBJModel::LSetColor(float x, float y, float z)
+	{
+		SetColor(glm::vec3(x, y, z));
+	}
+
 	void cOBJModel::LMove(float x, float y, float z)// L for Lua
 	{
 		mTransformation.Translation += glm::vec3(x, y, z);
 		ModelTransform(mTransformation);
+		if (mPhysics)
+		{
+			btTransform Trans;
+			mRidigBody->getMotionState()->getWorldTransform(Trans);
+			btVector3 Translation(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z);
+			Trans.setOrigin(Translation);
+			mRidigBody->getMotionState()->setWorldTransform(Trans);
+		}
 	}
 
-	void cOBJModel::LSetColor(float x, float y, float z)
+
+	void cOBJModel::LRotate(float x, float y, float z)
 	{
-		SetColor(glm::vec3(x, y, z));
+		mTransformation.Rotation += glm::vec3(x, y, z);
+		ModelTransform(mTransformation);
+	}
+
+	void cOBJModel::LScale(float x, float y, float z)
+	{
+		mTransformation.Scale += glm::vec3(x, y, z);
+		ModelTransform(mTransformation);
+		if (mPhysics)
+		{
+			btVector3 myscale = btVector3(mTransformation.Scale.x, mTransformation.Scale.y, mTransformation.Scale.z);
+			mRidigBody->getCollisionShape()->setLocalScaling(myscale);
+		}
 	}
 
 	void cOBJModel::SetupScripting()
@@ -181,14 +207,17 @@ namespace FlawedEngine
 		using namespace luabridge;
 
 		std::function<void(float, float, float)> MoveFn = std::bind(&cOBJModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		std::function<void(float, float, float)> RotateFn = std::bind(&cOBJModel::LRotate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		std::function<void(float, float, float)> ScaleFn = std::bind(&cOBJModel::LScale, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		std::function<void(float, float, float)> ColorFn = std::bind(&cOBJModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		
-
 		getGlobalNamespace(L)
+			.addFunction("ChangeColor", ColorFn)
 			.addFunction("Move", MoveFn)
-			.addFunction("ChangeColor", ColorFn);
+			.addFunction("Rotate", RotateFn) 
+			.addFunction("Scale", ScaleFn);
 
-		luaL_dofile(L, "ScriptingTest.lua");
+		luaL_dofile(L, "OnUserCreate.lua");
 		lua_pcall(L, 0, 0, 0);
 	}
 
@@ -230,7 +259,7 @@ namespace FlawedEngine
 
 	void cOBJModel::Update()
 	{
-		luaL_dofile(L, "ScriptingTest.lua");
+		luaL_dofile(L, "OnUpdate.lua");
 	}
 
 	void cOBJModel::setDynamic(bool isDynamic)
