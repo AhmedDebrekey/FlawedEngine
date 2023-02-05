@@ -1,18 +1,25 @@
+movementSpeed = 0.1
+Force = 10
+
 if IsKeyDown(73) then
-	Move(0, 0.0, 0.1)
+	Move(0, 0.0, movementSpeed)
+	ApplyForce(0, 0.0, Force)
 end
 
 if IsKeyDown(75) then
-	Move(0, 0.0, -0.1)
+	Move(0, 0.0, -movementSpeed)
+	ApplyForce(0, 0.0, -Force)
 end
 
 if IsKeyDown(74) then
-	Move(0.1, 0.0, 0)
+	Move(movementSpeed, 0.0, 0)
+	ApplyForce(Force, 0.0, 0)
 end
 
 if IsKeyDown(76) then
-	Move(-0.1, 0.0, 0)
-end 
+	Move(-movementSpeed, 0.0, 0)
+	ApplyForce(-Force, 0.0, 0)
+end
 
 if IsKeyDown(79) then
 	Rotate(0.0, -1, 0.0)

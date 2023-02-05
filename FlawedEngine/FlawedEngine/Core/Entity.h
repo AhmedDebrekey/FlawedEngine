@@ -27,6 +27,7 @@ namespace FlawedEngine
 		void SetMaterial(sMaterial& Mat);
 		void SetPhysicsProps(sPhysicsProps& Props);
 		void ApplyForce(glm::vec3 Force);
+		void ApplyRelativeForce(glm::vec3 Force);
 		virtual ~cEntity() = 0;
 
 		sModel GetModel() { return mTransformation; }
@@ -95,7 +96,7 @@ namespace FlawedEngine
 		mRestitution = Props.Restitution;
 	}
 
-	inline void cEntity::ApplyForce(glm::vec3 Force)
+	inline void cEntity::ApplyRelativeForce(glm::vec3 Force)
 	{
 		if (!mRidigBody->isActive())
 			mRidigBody->activate(true);
@@ -106,5 +107,13 @@ namespace FlawedEngine
 		btVector3 correctedForce = (boxTrans * relativeForce) - boxTrans.getOrigin();
 		relativeForce = (boxTrans * RelativeTransform) - boxTrans.getOrigin();
 		mRidigBody->applyCentralForce(relativeForce);
+	}
+
+	inline void cEntity::ApplyForce(glm::vec3 Force)
+	{
+		if (!mRidigBody->isActive())
+			mRidigBody->activate(true);
+		btVector3 worldForce = btVector3(Force.x, Force.y, Force.z);
+		mRidigBody->applyCentralForce(worldForce);
 	}
 }

@@ -176,11 +176,9 @@ namespace FlawedEngine
 		ModelTransform(mTransformation);
 		if (mPhysics)
 		{
-			btTransform Trans;
-			mRidigBody->getMotionState()->getWorldTransform(Trans);
-			btVector3 Translation(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z);
-			Trans.setOrigin(Translation);
-			mRidigBody->getMotionState()->setWorldTransform(Trans);
+			/*btTransform Trans;
+			Trans.setOrigin(btVector3(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z));
+			mRidigBody->getMotionState()->setWorldTransform(Trans);*/
 		}
 	}
 
@@ -189,6 +187,15 @@ namespace FlawedEngine
 	{
 		mTransformation.Rotation += glm::vec3(x, y, z);
 		ModelTransform(mTransformation);
+		if (mPhysics)
+		{
+			btTransform Trans;
+			mRidigBody->getMotionState()->getWorldTransform(Trans);
+			btQuaternion rot;
+			rot.setEuler(mTransformation.Rotation.x, mTransformation.Rotation.y, mTransformation.Rotation.z);
+			Trans.setRotation(rot);
+			mRidigBody->getMotionState()->setWorldTransform(Trans);
+		}
 	}
 
 	void cOBJModel::LScale(float x, float y, float z)
@@ -202,20 +209,35 @@ namespace FlawedEngine
 		}
 	}
 
+	void cOBJModel::LApplyForce(float x, float y, float z)
+	{
+		if (mPhysics)
+			ApplyForce(glm::vec3(x, y, z));
+	}
+
+	void cOBJModel::LApplyRelativeForce(float x, float y, float z)
+	{
+
+	}
+
 	void cOBJModel::SetupScripting()
 	{
 		using namespace luabridge;
 
+		std::function<void(float, float, float)> ColorFn = std::bind(&cOBJModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		std::function<void(float, float, float)> MoveFn = std::bind(&cOBJModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		std::function<void(float, float, float)> RotateFn = std::bind(&cOBJModel::LRotate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		std::function<void(float, float, float)> ScaleFn = std::bind(&cOBJModel::LScale, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-		std::function<void(float, float, float)> ColorFn = std::bind(&cOBJModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		std::function<void(float, float, float)> ApplyForceFn = std::bind(&cOBJModel::LApplyForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		std::function<void(float, float, float)> ApplyRelativeForceFn = std::bind(&cOBJModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		
 		getGlobalNamespace(L)
 			.addFunction("ChangeColor", ColorFn)
 			.addFunction("Move", MoveFn)
 			.addFunction("Rotate", RotateFn) 
-			.addFunction("Scale", ScaleFn);
+			.addFunction("Scale", ScaleFn)
+			.addFunction("ApplyForce", ApplyForceFn)
+			.addFunction("ApplyRelativeForce", ApplyRelativeForceFn);
 
 		luaL_dofile(L, "OnUserCreate.lua");
 		lua_pcall(L, 0, 0, 0);
