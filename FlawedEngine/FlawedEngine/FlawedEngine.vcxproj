@@ -183,6 +183,7 @@
     <ClCompile Include="Core\UIManager.cpp" />
     <ClCompile Include="Core\Physics\Physics.cpp" />
     <ClCompile Include="Core\Models\ObjectManager.cpp" />
+    <ClCompile Include="Core\ScriptingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Core.h" />
@@ -219,6 +220,7 @@
     <ClInclude Include="Core\UIManager.h" />
     <ClInclude Include="Core\Physics\Physics.h" />
     <ClInclude Include="Core\Models\ObjectManager.h" />
+    <ClInclude Include="Core\ScriptingManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Fragment.glsl" />

@@ -159,9 +159,7 @@ namespace FlawedEngine
 	void cOBJModel::SendInputToScripting(std::function<bool(int)> func)
 	{
 		using namespace luabridge;
-		luaL_openlibs(L);
-
-		getGlobalNamespace(L)
+		getGlobalNamespace(LuaState)
 			.addFunction("IsKeyDown", func);
 	}
 
@@ -176,9 +174,9 @@ namespace FlawedEngine
 		ModelTransform(mTransformation);
 		if (mPhysics)
 		{
-			/*btTransform Trans;
+			btTransform Trans;
 			Trans.setOrigin(btVector3(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z));
-			mRidigBody->getMotionState()->setWorldTransform(Trans);*/
+			mRidigBody->getMotionState()->setWorldTransform(Trans);
 		}
 	}
 
@@ -217,30 +215,36 @@ namespace FlawedEngine
 
 	void cOBJModel::LApplyRelativeForce(float x, float y, float z)
 	{
+		if (mPhysics)
+			ApplyRelativeForce(glm::vec3(x, y, z));
+	}
 
+	void cOBJModel::LAddObject()
+	{
+		//Implementation 404	
 	}
 
 	void cOBJModel::SetupScripting()
 	{
-		using namespace luabridge;
 
-		std::function<void(float, float, float)> ColorFn = std::bind(&cOBJModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-		std::function<void(float, float, float)> MoveFn = std::bind(&cOBJModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-		std::function<void(float, float, float)> RotateFn = std::bind(&cOBJModel::LRotate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-		std::function<void(float, float, float)> ScaleFn = std::bind(&cOBJModel::LScale, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-		std::function<void(float, float, float)> ApplyForceFn = std::bind(&cOBJModel::LApplyForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-		std::function<void(float, float, float)> ApplyRelativeForceFn = std::bind(&cOBJModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-		
-		getGlobalNamespace(L)
-			.addFunction("ChangeColor", ColorFn)
-			.addFunction("Move", MoveFn)
-			.addFunction("Rotate", RotateFn) 
-			.addFunction("Scale", ScaleFn)
-			.addFunction("ApplyForce", ApplyForceFn)
-			.addFunction("ApplyRelativeForce", ApplyRelativeForceFn);
+		ScriptingId = ScriptingManager.InitScripting();
+		LuaState = ScriptingManager.GetLuaState(ScriptingId);
+		ScriptingManager.RegisterFunction(ScriptingId, "Move", std::bind(&cOBJModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "Rotate", std::bind(&cOBJModel::LRotate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "Scale", std::bind(&cOBJModel::LScale, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce", std::bind(&cOBJModel::LApplyForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce", std::bind(&cOBJModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor", std::bind(&cOBJModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
-		luaL_dofile(L, "OnUserCreate.lua");
-		lua_pcall(L, 0, 0, 0);
+		luabridge::getGlobalNamespace(LuaState)
+			.beginNamespace("Pos")
+			.addVariable("x", &mTransformation.Translation.x)
+			.addVariable("y", &mTransformation.Translation.y)
+			.addVariable("z", &mTransformation.Translation.z)
+			.endNamespace();
+
+		ScriptingManager.RunFile(ScriptingId, "OnUserCreate.lua");
+		lua_pcall(LuaState, 0, 0, 0);
 	}
 
 	void cOBJModel::SendEntity(cEntity* Entity)
@@ -281,7 +285,7 @@ namespace FlawedEngine
 
 	void cOBJModel::Update()
 	{
-		luaL_dofile(L, "OnUpdate.lua");
+		ScriptingManager.RunFile(ScriptingId, "OnUpdate.lua");
 	}
 
 	void cOBJModel::setDynamic(bool isDynamic)

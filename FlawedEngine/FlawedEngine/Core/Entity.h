@@ -7,6 +7,8 @@
 #include <Bullet/btBulletDynamicsCommon.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <functional>
+#include "ScriptingManager.h"
+
 namespace FlawedEngine
 {
 	class cEntity
@@ -56,6 +58,8 @@ namespace FlawedEngine
 		eBasicObject Type;
 
 		cInput& Input = cInput::get();
+		cScriptingManager& ScriptingManager = cScriptingManager::get();
+
 	};
 
 

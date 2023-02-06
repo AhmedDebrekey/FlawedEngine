@@ -7,14 +7,6 @@
 
 #include <functional>
 
-extern "C"
-{
-# include <Lua/lua.h>
-# include <Lua/lauxlib.h>
-# include <Lua/lualib.h>
-}
-
-#include <LuaBridge/LuaBridge.h>
 #include <ImGui/imgui.h>
 
 namespace FlawedEngine
@@ -44,7 +36,8 @@ namespace FlawedEngine
 		void LScale(float x, float y, float z);
 		void LApplyForce(float x, float y, float z);
 		void LApplyRelativeForce(float x, float y, float z);
-		lua_State* L = luaL_newstate();
+		void LAddObject();
+		lua_State* LuaState = nullptr;
 
 	private:
 		btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
@@ -52,5 +45,7 @@ namespace FlawedEngine
 		cModelRenderer Renderer;
 		objl::Loader mLoader;
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
+
+		int ScriptingId;
 	};
 }

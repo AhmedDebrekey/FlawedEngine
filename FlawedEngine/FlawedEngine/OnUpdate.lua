@@ -45,3 +45,4 @@ if IsKeyDown(80) then
 		LerpedValue = 0
 	end
 end
+
