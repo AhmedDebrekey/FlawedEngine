@@ -29,7 +29,8 @@ namespace FlawedEngine
 
 		bool isKeyDown(int key);
 	private:
-		cObjectManager ObjectMan;
+		cObjectManager& ObjectMan = cObjectManager::get();
+
 		void* mWindow;
 		void* PhysicsWorld = nullptr;
 		cpCamera Camera;

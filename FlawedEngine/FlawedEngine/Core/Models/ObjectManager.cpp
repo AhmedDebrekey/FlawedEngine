@@ -8,6 +8,8 @@
 
 namespace FlawedEngine
 {
+	cObjectManager* cObjectManager::sObjectManagerInstance = nullptr;
+
 	cObjectManager::cObjectManager()
 	{
 	}
@@ -356,5 +358,14 @@ namespace FlawedEngine
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		return textureID;
+	}
+
+	cObjectManager& cObjectManager::get()
+	{
+		if (sObjectManagerInstance == nullptr)
+		{
+			sObjectManagerInstance = new cObjectManager();
+		}
+		return *sObjectManagerInstance;
 	}
 }

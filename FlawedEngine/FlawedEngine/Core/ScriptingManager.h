@@ -11,6 +11,7 @@ extern "C"
 
 #include <LuaBridge/LuaBridge.h>
 #include <functional>
+
 namespace FlawedEngine
 {
 	class cScriptingManager
@@ -28,6 +29,7 @@ namespace FlawedEngine
 	private:
 		int mNextStateId;
 		std::unordered_map<int, lua_State*> mStates;
+		void SpawnObject(const char*, int);
 	public:
 		static cScriptingManager& get();
 		~cScriptingManager();

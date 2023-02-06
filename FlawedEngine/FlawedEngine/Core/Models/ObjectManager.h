@@ -8,10 +8,7 @@ namespace FlawedEngine
 {
 	class cObjectManager
 	{
-	public:
-		cObjectManager();
-		~cObjectManager();
-		
+	public:		
 		void Init(void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes);
 
 		void RenderObjects(sTransform& tCamera);
@@ -59,6 +56,19 @@ namespace FlawedEngine
 		cShader mSkyboxShader;
 		unsigned int mskyboxVAO, mskyboxVBO;
 		uint32_t mCubeMapTexture;
+
+	public:
+		static cObjectManager& get();
+		~cObjectManager();
+
+		cObjectManager(cObjectManager const&) = delete;
+		void operator=(cObjectManager const&) = delete;
+
+	private:
+		static cObjectManager* sObjectManagerInstance;
+
+		cObjectManager();
+		cObjectManager(cObjectManager&);
 	};
 }
 

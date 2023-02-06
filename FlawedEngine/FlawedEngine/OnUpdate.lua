@@ -46,3 +46,6 @@ if IsKeyDown(80) then
 	end
 end
 
+if IsKeyDown(90) then 
+	SpawnObject("Debreky", Sphere)
+end

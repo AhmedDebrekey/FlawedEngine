@@ -1,4 +1,5 @@
 #include "ScriptingManager.h"
+#include "Models/ObjectManager.h"
 
 namespace FlawedEngine
 {
@@ -21,6 +22,11 @@ namespace FlawedEngine
 		lua_State* L = luaL_newstate();
 		luaL_openlibs(L);
 		mStates[id] = L;
+
+		std::function<void(const char*, int)> SpawnObjectFn = std::bind(&cScriptingManager::SpawnObject, this, std::placeholders::_1, std::placeholders::_2);
+		using namespace luabridge;
+		getGlobalNamespace(L)
+			.addFunction("SpawnObject", SpawnObjectFn);
 		return id;
 	}
 
@@ -71,6 +77,12 @@ namespace FlawedEngine
 	}
 
 	
+
+	void cScriptingManager::SpawnObject(const char* Name, int Type)
+	{
+		cObjectManager& ObjectMan = cObjectManager::get();
+		ObjectMan.AddObject((eBasicObject)Type, Name);
+	}
 
 	cScriptingManager& cScriptingManager::get()
 	{

@@ -219,10 +219,6 @@ namespace FlawedEngine
 			ApplyRelativeForce(glm::vec3(x, y, z));
 	}
 
-	void cOBJModel::LAddObject()
-	{
-		//Implementation 404	
-	}
 
 	void cOBJModel::SetupScripting()
 	{

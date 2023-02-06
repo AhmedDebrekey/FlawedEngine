@@ -36,7 +36,6 @@ namespace FlawedEngine
 		void LScale(float x, float y, float z);
 		void LApplyForce(float x, float y, float z);
 		void LApplyRelativeForce(float x, float y, float z);
-		void LAddObject();
 		lua_State* LuaState = nullptr;
 
 	private:
