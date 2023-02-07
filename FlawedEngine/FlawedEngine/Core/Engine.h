@@ -23,8 +23,7 @@ namespace FlawedEngine
 
 	private:
 		cWindow& EngineWindow = cWindow::get();
-
-		cUIManager UI;//make into singleton
+		cUIManager& UI = cUIManager::get();
 
 		cPhysics Physics;//make into singleton
 

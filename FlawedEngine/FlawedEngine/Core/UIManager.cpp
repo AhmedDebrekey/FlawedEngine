@@ -9,6 +9,8 @@ static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
 namespace FlawedEngine
 {
+	cUIManager* cUIManager::sUIInstance = nullptr;
+
 	cUIManager::cUIManager()
 	{
 	}
@@ -54,10 +56,11 @@ namespace FlawedEngine
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void cUIManager::Init(void* Window, void* Camera)
+	void cUIManager::Init(void* Window, void* Camera, void* Manager)
 	{
 		mCamera = (cpCamera*)Camera;
 		mWindow = Window;
+		ObjectMan = (cObjectManager*)Manager;
 		InitFrameBuffer();
 
 		IMGUI_CHECKVERSION();
@@ -124,288 +127,14 @@ namespace FlawedEngine
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::Text("Move: W,A,S,D,E,Q");
 			ImGui::Text("Gizmo: R,T,G");
-			ImGui::Text("Right Click SceneHierachy To Create Entitys");
+			ImGui::Text("Right Click SceneHierachy To Create Entities");
 			ImGui::Checkbox("Mouse Picking *Buggy*", &mMousePicking);
 			ObjectMan->mMousePicking = mMousePicking;
 			ImGui::End();
 
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
-			ImGui::Begin("ViewPort", 0, ImGuiWindowFlags_NoScrollbar);
-
-			// Get the size of the window in screen coordinates
-			int gwindowWidth, gwindowHeight;
-			glfwGetWindowSize((GLFWwindow*)mWindow, &gwindowWidth, &gwindowHeight);
-
-			// Get the size of the framebuffer in pixels
-			int framebufferWidth, framebufferHeight;
-			glfwGetFramebufferSize((GLFWwindow*)mWindow, &framebufferWidth, &framebufferHeight);
-
-			ViewportSize = { std::min(gwindowWidth, framebufferWidth), std::min(gwindowHeight, framebufferHeight) };
-			ViewportPos = { (gwindowWidth - framebufferWidth) / 2, (gwindowHeight - framebufferHeight) / 2 };
-
-			ViewportSize = { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() };
-			ViewportPos = { ImGui::GetWindowPos().x, ImGui::GetWindowPos().y };
-
-			if (PrevViewportSize != ViewportSize)
-			{
-				//resize framebuffer
-				InitFrameBuffer();
-				mCamera->UpdateProjection(glm::perspective(glm::radians(mCamera->FoV()), ViewportSize.x / ViewportSize.y, 0.1f, 100.0f));
-			
-			}
-			PrevViewportSize = ViewportSize;
-			ImGui::Image((void*)TextureColorBuffer, { ViewportSize.x, ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
-
-			if (ImGui::IsMouseDown(2) && ImGui::IsWindowHovered())
-				mSelectedEntity = "";
-
-			//Gizmo
-			if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_T)) { mGizmoType = ImGuizmo::OPERATION::TRANSLATE; }
-			if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_R)) { mGizmoType = ImGuizmo::OPERATION::ROTATE; }
-			if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_G)) { mGizmoType = ImGuizmo::OPERATION::SCALE; }
-
-			ImGuizmo::SetOrthographic(false);
-			ImGuizmo::SetDrawlist();
-
-			float windowWidth = (float)ImGui::GetWindowWidth();
-			float windowHeight = (float)ImGui::GetWindowHeight();
-
-			auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
-			auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
-			auto viewportOffset = ImGui::GetWindowPos();
-			m_ViewportBounds[0] = { viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y };
-			m_ViewportBounds[1] = { viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y };
-			ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
-
-			float tmpMatrix[16];
-			{
-				auto Entity = ObjectMan->GetObjectByName(mSelectedEntity.c_str());
-				if (Entity)
-				{
-					sModel Model = Entity->GetModel();
-					ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(Model.Translation), glm::value_ptr(Model.Rotation), glm::value_ptr(Model.Scale), tmpMatrix);
-
-					glm::mat4* Transform = Entity->GetModelMatrix();
-					ImGuizmo::Manipulate(glm::value_ptr(mCamera->View()), glm::value_ptr(mCamera->Projection()),
-						(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, tmpMatrix);
-
-					if (ImGuizmo::IsUsing())
-					{
-						glm::vec3 translation, rotation, scale;
-						ImGuizmo::DecomposeMatrixToComponents(tmpMatrix, glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
-
-						Model.Translation = translation;
-						Model.Rotation = rotation;
-						Model.Scale = scale;
-
-						if (!Entity->mPhysics)
-						{
-							Entity->ModelTransform(Model);
-						}
-						else
-						{
-							btTransform Trans;
-							Entity->mRidigBody->getMotionState()->getWorldTransform(Trans);
-
-							//Translation......
-							btVector3 FinalTranslation(translation.x, translation.y, translation.z);
-							Trans.setOrigin(FinalTranslation);
-
-							//Rotation........
-							btQuaternion quat = btQuaternion(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
-							Trans.setRotation(quat);
-							Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
-
-							//Scale..........
-							btVector3 myscale = btVector3(scale.x, scale.y, scale.z);
-							Entity->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
-
-							if (!Entity->mDynamic)
-							{
-								Entity->mRidigBody->setWorldTransform(Trans);
-							}
-							Entity->ModelTransform(Model);
-						}
-					}
-				}
-			}
-			ImGui::End();
-			ImGui::PopStyleVar();
-
-			ImGui::Begin("Scene Hierarchy");
-
-			static int Cubes = 0;
-			static int Spheres = 0;
-			static int Cones = 0;
-			static int Toruses = 0;
-			static int Triangles = 0;
-			static int Lights = 0;
-
-			for (auto& Object : *ObjectMan->GetObjectsPointer())
-			{
-				auto Entity = Object.second;
-				if (ImGui::Selectable(Object.first.c_str(), (Object.first == mSelectedEntity) ? true : false))
-					mSelectedEntity = Object.first;
-			}
-			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-				mSelectedEntity = "";
-
-			if (ImGui::BeginPopupContextWindow("Add Entity", 1))
-			{
-				if (ImGui::MenuItem("Point Light"))
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Light(%i)", Lights);
-					ObjectMan->AddObject(PointLight, buffer);
-					mSelectedEntity = buffer;
-					Lights++;
-				}
-
-				if (ImGui::MenuItem("Cube"))
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Cube(%i)", Cubes);
-					ObjectMan->AddObject(Cube, buffer);
-					mSelectedEntity = buffer;
-					Cubes++;
-				}
-
-				if (ImGui::MenuItem("Sphere"))
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Sphere(%i)", Spheres);
-					ObjectMan->AddObject(Sphere, buffer);
-					mSelectedEntity = buffer;
-					Spheres++;
-				}
-
-				if (ImGui::MenuItem("Cone"))
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Cone(%i)", Cones);
-					ObjectMan->AddObject(Cone, buffer);
-					mSelectedEntity = buffer;
-					Cones++;
-				}
-
-				if (ImGui::MenuItem("Torus"))
-				{
-					char buffer[20];
-					sprintf_s(buffer, "Torus(%i)", Toruses);
-					ObjectMan->AddObject(Torus, buffer);
-					mSelectedEntity = buffer;
-					Toruses++;
-				} //Left out the Trianlge for no reason, It was just a proof of concept.
-				// later could be used as a billbord, (rectangles ofc)
-
-				ImGui::EndPopup();
-			}
-
-			ImGui::End();
-
-			ImGui::Begin("Properties");
-			auto Entity = ObjectMan->GetObjectByName(mSelectedEntity.c_str());
-			if(Entity)
-			{
-				bool ChangeName = ImGui::Button("Name");
-				static char NewName[20] = "";
-				ImGui::SameLine();
-				ImGui::InputTextWithHint("##", "Enter Name", NewName, IM_ARRAYSIZE(NewName));
-				if (ChangeName)
-				{
-					if (!((NewName != NULL) && (NewName[0] == '\0')))
-					{
-						ObjectMan->ChangeName(mSelectedEntity.c_str(), NewName);
-						mSelectedEntity = NewName;
-					}
-				}
-				if (Entity->Type == PointLight)
-				{
-					sModel LightModel = Entity->GetModel();
-					DrawVec3("Translation", LightModel.Translation, 0.0f);
-					Entity->ModelTransform(LightModel);
-					ObjectMan->ChangeLightPosition(mSelectedEntity.c_str(), LightModel.Translation);
-
-					sLight* LightProps = nullptr;
-					LightProps = ObjectMan->GetLightProps(mSelectedEntity.c_str());
-
-					ImGui::ColorEdit3(std::string("LightColor:##" + mSelectedEntity).c_str(), &LightProps->ambient.x);
-					Entity->SetColor(LightProps->ambient);
-
-					ImGui::ColorEdit3(std::string("LightDiffuse:##" + mSelectedEntity).c_str(), &LightProps->diffuse.x);
-					ImGui::ColorEdit3(std::string("LightSpecular:##" + mSelectedEntity).c_str(), &LightProps->specular.x);
-					ImGui::DragFloat(std::string("LightConstant:##" + mSelectedEntity).c_str(), &LightProps->constant, 0.01f, 0.0f, 1.0f);
-					ImGui::DragFloat(std::string("LightLinear:##" + mSelectedEntity).c_str(), &LightProps->linear, 0.01f, 0.0f, 1.0f);
-					ImGui::DragFloat(std::string("LightQuadratic:##" + mSelectedEntity).c_str(), &LightProps->quadratic, 0.01f, 0.0f, 1.0f);
-				}
-				else
-				{
-					if (!Entity->mPhysics)
-					{
-						Entity->UnSetPhysics();
-						sModel EntityModel = Entity->GetModel();
-						DrawVec3("Translation", EntityModel.Translation, 0.0f);
-						DrawVec3("Rotation", EntityModel.Rotation, 0.0f);
-						DrawVec3("Scale", EntityModel.Scale, 1.0f);
-						Entity->ModelTransform(EntityModel);
-					}
-					else
-					{
-						btTransform Trans;
-						Entity->mRidigBody->getMotionState()->getWorldTransform(Trans);
-
-						//Translation......
-						btVector3 Origin = Trans.getOrigin();
-						glm::vec3 Translation = glm::vec3(Origin.x(), Origin.y(), Origin.z());
-						DrawVec3("Translation", Translation);
-						btVector3 FinalTranslation(Translation.x, Translation.y, Translation.z);
-						Trans.setOrigin(FinalTranslation);
-
-						//Rotation........
-						glm::vec3 untranslation, rotation, unscale;
-						ImGuizmo::DecomposeMatrixToComponents(tmpMatrix, glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale));
-						DrawVec3("Rotation", rotation);
-						ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale), tmpMatrix);
-						btQuaternion quat = btQuaternion(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
-						Trans.setRotation(quat);
-						Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
-
-						//Scale..........
-						btVector3 myscale = Entity->mRidigBody->getCollisionShape()->getLocalScaling();
-						glm::vec3 scale(myscale.x(), myscale.y(), myscale.z());
-						DrawVec3("Scale", scale, 1.0f);
-						myscale = btVector3(scale.x, scale.y, scale.z);
-						Entity->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
-
-						ImGui::Text("Activation State: %i", Entity->GetActivationState());
-
-						if (!Entity->mDynamic)
-						{
-							Entity->mRidigBody->setWorldTransform(Trans);
-						}
-					}
-
-					glm::vec3* EntityColor = Entity->GetColor();
-					ImGui::ColorEdit3(std::string("Color:##" + mSelectedEntity).c_str(), &EntityColor->x);
-
-					ImGui::Checkbox(std::string("Physics:##" + mSelectedEntity).c_str(), &Entity->mPhysics);
-
-					if (Entity->mPhysics)
-					{
-						ImGui::Checkbox(std::string("Dynamic:##" + mSelectedEntity).c_str(), &Entity->mDynamic);
-						Entity->SetPhysics(Entity->Type, ObjectMan->GetPhysicsWorld());
-						Entity->setDynamic(Entity->mDynamic);
-					}
-					else
-						Entity->mDynamic = false;
-				}
-
-				if (ImGui::Button("Remove"))
-				{
-					ObjectMan->RemoveObject(mSelectedEntity.c_str());
-				}
-			}
-			ImGui::End();
+			RenderViewport(); 
+			RenderSceneHierarchy();
+			RenderProperties();
  		}
 
 		ImGui::End();
@@ -502,5 +231,14 @@ namespace FlawedEngine
 			ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
 			ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		}
+	}
+
+	cUIManager& cUIManager::get()
+	{
+		if (sUIInstance == nullptr)
+		{
+			sUIInstance = new cUIManager();
+		}
+		return *sUIInstance;
 	}
 }

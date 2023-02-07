@@ -14,17 +14,15 @@
 #include <glm/gtx/string_cast.hpp>
 #include <string>
 #include "PerspectiveCamera.h"
+
 namespace FlawedEngine
 {
 	class cUIManager
 	{
 	public:
-		cUIManager();
-		~cUIManager();
-		void Init(void* Window, void* Camera);
+		void Init(void* Window, void* Camera, void* Manager);
 		void UpdateUI();
 		void RenderUI();
-		void SetObjectManager(cObjectManager* Manager) { ObjectMan = Manager; };
 		std::string& GetSelectedEntity() { return mSelectedEntity; }
 		glm::vec2 GetViewportSize() { return ViewportSize; };
 		glm::vec2 GetViewportPos() { return ViewportPos; };
@@ -43,9 +41,30 @@ namespace FlawedEngine
 		glm::vec2 m_ViewportBounds[2];
 		std::string mSelectedEntity;
 		int mGizmoType = ImGuizmo::OPERATION::TRANSLATE;
+		bool mMousePicking = false;
+
 	private:
 		cObjectManager* ObjectMan;
 		cpCamera* mCamera;
-		bool mMousePicking = true;
+	private:
+		void RenderGizmo();
+		void RenderViewport();
+		void RenderSceneHierarchy();
+		void RenderProperties();
+
+		float mTmpMatrix[16];
+	public:
+		static cUIManager& get();
+		~cUIManager();
+
+		cUIManager(cUIManager const&) = delete;
+		void operator=(cUIManager const&) = delete;
+
+	private:
+		static cUIManager* sUIInstance;
+
+		cUIManager();
+		cUIManager(cUIManager&);
+
 	};
 }

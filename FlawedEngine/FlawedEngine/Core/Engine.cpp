@@ -8,15 +8,13 @@ namespace FlawedEngine
 		EngineWindow.CreateWindow();
 		
 		PhysicsWorld = Physics.Init();
-		btAlignedObjectArray<btCollisionShape*>* CollisionShapes = Physics.GetCollisionShapesArray();
 
 		{
-			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), PhysicsWorld, CollisionShapes));
+			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), PhysicsWorld, Physics.GetCollisionShapesArray()));
 		}
 
-		//VERY BAD, should have CURRENT ACTIVE SCENE RETURNS THAT POINTER
-		UI.Init(EngineWindow.GetWindow(), Scenes[0]->GetCamera());
-		UI.SetObjectManager(Scenes[0]->GetObjectManager());
+		//BAD, should have CURRENT ACTIVE SCENE RETURNS THAT POINTER
+		UI.Init(EngineWindow.GetWindow(), Scenes[0]->GetCamera(), Scenes[0]->GetObjectManager());
 		Scenes[0]->SetSelectedEntity(UI.GetSelectedEntity());
 	}
 
