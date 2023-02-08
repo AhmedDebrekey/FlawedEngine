@@ -11,11 +11,11 @@ namespace FlawedEngine
 
 		{
 			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), PhysicsWorld, Physics.GetCollisionShapesArray()));
+			ActiveScene = Scenes.at(Scenes.size() - 1);
 		}
 
-		//BAD, should have CURRENT ACTIVE SCENE RETURNS THAT POINTER
-		UI.Init(EngineWindow.GetWindow(), Scenes[0]->GetCamera(), Scenes[0]->GetObjectManager());
-		Scenes[0]->SetSelectedEntity(UI.GetSelectedEntity());
+		UI.Init(EngineWindow.GetWindow(), ActiveScene->GetCamera(), ActiveScene->GetObjectManager());
+		ActiveScene->SetSelectedEntity(UI.GetSelectedEntity());
 	}
 
 	void cEngine::Run()
@@ -25,15 +25,12 @@ namespace FlawedEngine
 			EngineWindow.Update();
 			
 			UI.UpdateUI();
-			Scenes[0]->UpdateViewport(UI.GetViewportSize(), UI.GetViewportPos());
+			ActiveScene->UpdateViewport(UI.GetViewportSize(), UI.GetViewportPos());
 			OnEvent();
 			
 			Physics.Update();
 
-			for (auto Scene : Scenes)//TODO: Switch from a for loop to single based scene chosen from UI WAYYY later on. so don't create 2 scene hehe
-			{
-				Scene->Render();
-			}
+			ActiveScene->Render();
 
 			UI.RenderUI();
 

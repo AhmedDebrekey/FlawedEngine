@@ -9,7 +9,7 @@ void FlawedEngine::cUIManager::RenderProperties()
 		bool ChangeName = ImGui::Button("Name");
 		static char NewName[20] = "";
 		ImGui::SameLine();
-		ImGui::InputTextWithHint("##", "Enter Name", NewName, IM_ARRAYSIZE(NewName));
+		ImGui::InputTextWithHint(std::string("##Name" + mSelectedEntity).c_str(), "Enter Name", NewName, IM_ARRAYSIZE(NewName));
 		if (ChangeName)
 		{
 			if (!((NewName != NULL) && (NewName[0] == '\0')))
@@ -102,6 +102,16 @@ void FlawedEngine::cUIManager::RenderProperties()
 		if (ImGui::Button("Remove"))
 		{
 			ObjectMan->RemoveObject(mSelectedEntity.c_str());
+		}
+
+		bool Scripting = ImGui::Button("Add Script");
+		static char ScriptPath[64] = "";
+		ImGui::SameLine();
+		ImGui::InputTextWithHint(std::string("##UpdateScript" + mSelectedEntity).c_str(), "Enter Name", ScriptPath, IM_ARRAYSIZE(ScriptPath));
+		if (!((ScriptPath != NULL) && (ScriptPath[0] == '\0')) && Scripting)
+		{
+			Entity->SetupScripting(ScriptPath);
+			Entity->SendInputToScripting(std::bind(&cUIManager::isKeyDown, this, std::placeholders::_1));
 		}
 	}
 	ImGui::End();

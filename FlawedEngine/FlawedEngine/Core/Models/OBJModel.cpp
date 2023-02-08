@@ -20,6 +20,7 @@ namespace FlawedEngine
 		Populate();
 		
 		Renderer.Init(mVertexBuffer, mTextureCoords, mIndices);
+		mUpdateScriptPath = "";
 	}
 
 	cOBJModel::~cOBJModel()
@@ -220,9 +221,9 @@ namespace FlawedEngine
 	}
 
 
-	void cOBJModel::SetupScripting()
+	void cOBJModel::SetupScripting(const char* Path)
 	{
-
+		mUpdateScriptPath = Path;
 		ScriptingId = ScriptingManager.InitScripting();
 		LuaState = ScriptingManager.GetLuaState(ScriptingId);
 		ScriptingManager.RegisterFunction(ScriptingId, "Move", std::bind(&cOBJModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
@@ -281,7 +282,10 @@ namespace FlawedEngine
 
 	void cOBJModel::Update()
 	{
-		ScriptingManager.RunFile(ScriptingId, "OnUpdate.lua");
+		if (!((mUpdateScriptPath != NULL) && (mUpdateScriptPath[0] == '\0')))
+		{
+			ScriptingManager.RunFile(ScriptingId, mUpdateScriptPath);
+		}
 	}
 
 	void cOBJModel::setDynamic(bool isDynamic)

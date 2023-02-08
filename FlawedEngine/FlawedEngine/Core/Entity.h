@@ -21,7 +21,7 @@ namespace FlawedEngine
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) = 0;
 		virtual void UnSetPhysics() = 0;
 		virtual void setDynamic(bool IsDynamic) = 0;
-		virtual void SetupScripting() = 0;
+		virtual void SetupScripting(const char*) = 0;
 		virtual void SendEntity(cEntity* Entity) = 0;
 		virtual void SendInputToScripting(std::function<bool(int)>) = 0;
 		void ModelTransform(sModel& model);

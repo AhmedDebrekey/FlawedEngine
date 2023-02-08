@@ -21,7 +21,7 @@ namespace FlawedEngine
 		virtual void setDynamic(bool isDynamic) override;
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
 		virtual void UnSetPhysics() override;
-		virtual void SetupScripting() override;
+		virtual void SetupScripting(const char*) override;
 		virtual void SendEntity(cEntity* Entity) override;
 		virtual void SendInputToScripting(std::function<bool(int)>) override;
 		bool LoadModel(const char* FilePath);
@@ -46,5 +46,6 @@ namespace FlawedEngine
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
 
 		int ScriptingId;
+		const char* mUpdateScriptPath;
 	};
 }

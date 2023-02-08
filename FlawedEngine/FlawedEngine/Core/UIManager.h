@@ -30,6 +30,9 @@ namespace FlawedEngine
 		void InitRendering();
 		void InitFrameBuffer();
 		void DrawVec3(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
+
+		bool isKeyDown(int key);
+
 	private:
 		uint32_t FrameBuffer;
 		uint32_t TextureColorBuffer;

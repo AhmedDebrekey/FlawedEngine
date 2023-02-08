@@ -49,7 +49,7 @@ namespace FlawedEngine
 	void cPointLight::UnSetPhysics()
 	{
 	}
-	void cPointLight::SetupScripting()
+	void cPointLight::SetupScripting(const char*)
 	{
 	}
 

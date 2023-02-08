@@ -28,6 +28,7 @@ namespace FlawedEngine
 		cPhysics Physics;//make into singleton
 
 		std::vector<std::shared_ptr<cScene>> Scenes;
+		std::shared_ptr<cScene> ActiveScene;
 
 		void* PhysicsWorld = nullptr;
 	};

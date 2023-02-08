@@ -241,4 +241,9 @@ namespace FlawedEngine
 		}
 		return *sUIInstance;
 	}
+
+	bool cUIManager::isKeyDown(int key)
+	{
+		if (ImGui::IsKeyDown((ImGuiKey)key)) { return true; }
+	}
 }
