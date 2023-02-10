@@ -1,8 +1,6 @@
 movementSpeed = 0.1
 Force = 10
 
-print("smth")
-
 if IsKeyDown(73) then
 	Move(0, 0.0, movementSpeed)
 	ApplyForce(0, 0.0, Force)

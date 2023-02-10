@@ -53,6 +53,7 @@ namespace FlawedEngine
 		void SetupSkybox();
 		void RenderSkyBox();
 		uint32_t loadCubemap(std::vector<std::string> faces);
+		uint32_t loadCubemapFromHDRI(const char* panoramicPath);
 		cShader mSkyboxShader;
 		unsigned int mskyboxVAO, mskyboxVBO;
 		uint32_t mCubeMapTexture;

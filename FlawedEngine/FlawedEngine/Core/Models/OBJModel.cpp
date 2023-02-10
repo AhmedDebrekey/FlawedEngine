@@ -240,8 +240,10 @@ namespace FlawedEngine
 			.addVariable("z", &mTransformation.Translation.z)
 			.endNamespace();
 
-		ScriptingManager.RunFile(ScriptingId, "OnUserCreate.lua");
+		ScriptingManager.LoadFile(ScriptingId, Path);
 		lua_pcall(LuaState, 0, 0, 0);
+
+		ScriptingManager.RunFunction(ScriptingId, "Create");
 	}
 
 	void cOBJModel::SendEntity(cEntity* Entity)
@@ -284,7 +286,7 @@ namespace FlawedEngine
 	{
 		if (!((mUpdateScriptPath != NULL) && (mUpdateScriptPath[0] == '\0')))
 		{
-			ScriptingManager.RunFile(ScriptingId, mUpdateScriptPath);
+			ScriptingManager.RunFunction(ScriptingId, "Update");
 		}
 	}
 

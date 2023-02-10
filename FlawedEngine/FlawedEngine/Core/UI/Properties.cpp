@@ -9,7 +9,19 @@ void FlawedEngine::cUIManager::RenderProperties()
 		bool ChangeName = ImGui::Button("Name");
 		static char NewName[20] = "";
 		ImGui::SameLine();
-		ImGui::InputTextWithHint(std::string("##Name" + mSelectedEntity).c_str(), "Enter Name", NewName, IM_ARRAYSIZE(NewName));
+		ImGui::InputTextWithHint(std::string("##Name" + mSelectedEntity).c_str(), "Name", NewName, IM_ARRAYSIZE(NewName));
+		if (ImGui::IsItemActive())
+		{
+			// The text box is  highlighted
+			mCamera->DisableInput();
+			ImGui::GetIO().WantCaptureKeyboard = true;
+		}
+		else
+		{
+			// The text box is not being edited or highlighted
+			mCamera->EnableInput();
+			ImGui::GetIO().WantCaptureKeyboard = false;
+		}
 		if (ChangeName)
 		{
 			if (!((NewName != NULL) && (NewName[0] == '\0')))
@@ -107,7 +119,20 @@ void FlawedEngine::cUIManager::RenderProperties()
 		bool Scripting = ImGui::Button("Add Script");
 		static char ScriptPath[64] = "";
 		ImGui::SameLine();
-		ImGui::InputTextWithHint(std::string("##UpdateScript" + mSelectedEntity).c_str(), "Enter Name", ScriptPath, IM_ARRAYSIZE(ScriptPath));
+
+		ImGui::InputTextWithHint(std::string("##UpdateScript" + mSelectedEntity).c_str(), "File Path", ScriptPath, IM_ARRAYSIZE(ScriptPath));
+		if (ImGui::IsItemActive())
+		{
+			// The text box is  highlighted
+			mCamera->DisableInput();
+			ImGui::GetIO().WantCaptureKeyboard = true;
+		}
+		else
+		{
+			// The text box is not being edited or highlighted
+			mCamera->EnableInput();
+			ImGui::GetIO().WantCaptureKeyboard = false;
+		}
 		if (!((ScriptPath != NULL) && (ScriptPath[0] == '\0')) && Scripting)
 		{
 			Entity->SetupScripting(ScriptPath);

@@ -25,6 +25,10 @@ namespace FlawedEngine
 
 		bool RunFile(int ID, const std::string& FileName);
 
+		bool LoadFile(int ID, const std::string& FileName);
+
+		void RunFunction(int ID, const std::string& FuncName);
+
 		void RegisterFunction(int ID, const std::string& FuncName, std::function<void(float, float, float)> Func);
 	private:
 		int mNextStateId;

@@ -248,14 +248,15 @@ namespace FlawedEngine
 	{
 		std::vector<std::string> Faces
 		{
-			"Core\\Models\\skybox\\skybox\\right.jpg",
-			"Core\\Models\\skybox\\skybox\\left.jpg",
-			"Core\\Models\\skybox\\skybox\\top.jpg",
-			"Core\\Models\\skybox\\skybox\\bottom.jpg",
-			"Core\\Models\\skybox\\skybox\\front.jpg",
-			"Core\\Models\\skybox\\skybox\\back.jpg"
+			"Core\\Models\\skybox\\skybox\\OldHall\\right.png",
+			"Core\\Models\\skybox\\skybox\\OldHall\\left.png",
+			"Core\\Models\\skybox\\skybox\\OldHall\\top.png",
+			"Core\\Models\\skybox\\skybox\\OldHall\\bottom.png",
+			"Core\\Models\\skybox\\skybox\\OldHall\\front.png",
+			"Core\\Models\\skybox\\skybox\\OldHall\\back.png"
 		};
 		mCubeMapTexture = loadCubemap(Faces);
+		//mCubeMapTexture = loadCubemapFromHDRI("Core\\Models\\skybox\\skybox\\scythian_tombs_2_4k.hdr");
 		float skyboxVertices[] = {
 			// positions          
 			-1.0f,  1.0f, -1.0f,
@@ -337,11 +338,11 @@ namespace FlawedEngine
 		int width, height, nrChannels;
 		for (unsigned int i = 0; i < faces.size(); i++)
 		{
-			unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+			unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
 			if (data)
 			{
 				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-					0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+					0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data
 				);
 				stbi_image_free(data);
 			}
@@ -359,6 +360,43 @@ namespace FlawedEngine
 
 		return textureID;
 	}
+
+	uint32_t cObjectManager::loadCubemapFromHDRI(const char* path)
+	{
+		unsigned int textureID;
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+		int width, height, nrChannels;
+		unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+		if (data)
+		{
+			int faceSize = width / 4;
+			for (int i = 0; i < 6; i++)
+			{
+				int x = faceSize * (i % 4);
+				int y = height - (faceSize * (i / 4) + faceSize);
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+					0, GL_RGB, faceSize, faceSize, 0, GL_RGB, GL_UNSIGNED_BYTE, data + (y * width + x) * 3);
+			}
+			stbi_image_free(data);
+		}
+		else
+		{
+			std::cout << "Cubemap tex failed to load at path: " << path << std::endl;
+			stbi_image_free(data);
+		}
+
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+		return textureID;
+
+	}
+
 
 	cObjectManager& cObjectManager::get()
 	{

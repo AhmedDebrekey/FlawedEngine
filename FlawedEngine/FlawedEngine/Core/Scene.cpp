@@ -27,8 +27,7 @@ namespace FlawedEngine
 		/*ObjectMan.AddObject(Cube, "Scripting");
 		auto Entity = ObjectMan.GetObjectByName("Scripting");
 		Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
-		Entity->SetupScripting();
-		Entity->SendInputToScripting(std::bind(&cScene::isKeyDown, this, std::placeholders::_1));*/
+		Entity->SetupScripting("FunctionalScripting.Lua");*/
 	}
 
 	bool cScene::isKeyDown(int key)

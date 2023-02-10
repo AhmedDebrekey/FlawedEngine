@@ -18,6 +18,8 @@ namespace FlawedEngine
 		float FarPlane() { return 200.f; }
 		float FoV();
 		void UpdateProjection(glm::mat4 Proj);
+		void DisableInput() { isInputEnabled = false; }
+		void EnableInput() { isInputEnabled = true; }
 	private:
 		void* mWindow;
 		glm::mat4 mProjectionMatrix;
@@ -34,6 +36,7 @@ namespace FlawedEngine
 		float mSpeed = 10.f;
 		float mMouseSpeed = 0.003f;
 		bool FirstMouse = true;
+		bool isInputEnabled = true;
 		float LastX = 1600, LastY = 900;
 	};
 }

@@ -65,18 +65,20 @@ namespace FlawedEngine
 
 		glm::vec3 Up = glm::cross(Right, mDirection);
 		glm::vec3 Upwards = glm::vec3(0.0f, 1.0f, 0.0f);
+		if (isInputEnabled)
+		{
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) { mPostion += mDirection * DeltaTime * mSpeed; }
 
-		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) { mPostion += mDirection * DeltaTime * mSpeed; }
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) mPostion += mDirection * DeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_S)) mPostion -= mDirection * DeltaTime * mSpeed;
 
-		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) mPostion += mDirection * DeltaTime * mSpeed;
-		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_S)) mPostion -= mDirection * DeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_D)) mPostion += Right * DeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_A)) mPostion -= Right * DeltaTime * mSpeed;
 
-		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_D)) mPostion += Right * DeltaTime * mSpeed;
-		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_A)) mPostion -= Right * DeltaTime * mSpeed;
-
-		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_E)) mPostion += Upwards * DeltaTime * mSpeed;
-		if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_Q)) mPostion -= Upwards * DeltaTime * mSpeed;
-
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_E)) mPostion += Upwards * DeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_Q)) mPostion -= Upwards * DeltaTime * mSpeed;
+		}
+		
 		float FoV = mFOV;
 		mProjectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, 0.1f, 200.f);
 		mViewMatrix = glm::lookAt(
