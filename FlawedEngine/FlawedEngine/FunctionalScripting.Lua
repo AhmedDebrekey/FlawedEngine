@@ -1,5 +1,3 @@
-
-
 function Create()
 	print("Create Function Being Called")
 
@@ -9,9 +7,14 @@ function Create()
 end
 
 function Update()
+	
+	if movementSpeed == 0.5 then
+		print("It is 0.5")
+	end
+
 	if IsKeyDown(73) then
 		Move(0, 0.0, movementSpeed)
-	ApplyForce(0, 0.0, Force)
+		ApplyForce(0, 0.0, Force)
 	end
 
 	if IsKeyDown(75) then
@@ -43,5 +46,9 @@ function Update()
 
 	if IsKeyDown(78) then 
 		Scale(-0.1, -0.1, -0.1)
+	end
+
+	if IsKeyDown(90) then 
+		SpawnObject("Debreky", Sphere)
 	end
 end

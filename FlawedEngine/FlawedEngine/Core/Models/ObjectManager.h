@@ -14,6 +14,7 @@ namespace FlawedEngine
 		void RenderObjects(sTransform& tCamera);
 
 		void AddObject(eBasicObject ObjectType, const char* Name);
+		void LoadObject(const char* FilePath, const char* Name);
 		void RemoveObject(const char* Name);
 
 		void ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps);

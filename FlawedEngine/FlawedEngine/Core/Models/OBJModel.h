@@ -46,6 +46,5 @@ namespace FlawedEngine
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
 
 		int ScriptingId;
-		const char* mUpdateScriptPath;
 	};
 }

@@ -110,6 +110,16 @@ namespace FlawedEngine
 		}
 	}
 
+	void cObjectManager::LoadObject(const char* FilePath, const char* Name)
+	{
+		SceneObjects[Name] = std::make_shared<cOBJModel>(FilePath, Name, mPhysicsWorld, mCollisionShapesArray);
+		sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
+		SceneObjects[Name]->ModelTransform(DefaultModel);
+		sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
+		SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
+		SceneObjects[Name]->Type = Cube;
+	}
+
 	void cObjectManager::RemoveObject(const char* Name)
 	{
 		if (SceneObjects[Name]->Type == PointLight)
