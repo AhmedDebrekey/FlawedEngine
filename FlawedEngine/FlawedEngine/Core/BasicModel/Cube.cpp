@@ -32,10 +32,10 @@ namespace FlawedEngine
 
 	}
 
-	void cCube::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
+	void cCube::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
 	{
 		Trans.Model = mModel;
-		Renderer.Draw(Trans, mMaterial, LightPositions);
+		Renderer.Draw(Trans, mMaterial, LightPositions, SkyBox);
 	}
 
 	void cCube::Update()

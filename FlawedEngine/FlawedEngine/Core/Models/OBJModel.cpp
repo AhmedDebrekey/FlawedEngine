@@ -252,7 +252,7 @@ namespace FlawedEngine
 	}
 
 	float Matrix[16];
-	void cOBJModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions)
+	void cOBJModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
 	{
 		if (mRidigBody != nullptr && mRidigBody->getMotionState() && isPhysicsSet)
 		{
@@ -279,7 +279,7 @@ namespace FlawedEngine
 		else
 			Trans.Model = mModel;
 		
-		Renderer.Draw(Trans, mMaterial, LightPositions);
+		Renderer.Draw(Trans, mMaterial, LightPositions, SkyBox);
 	}
 
 	void cOBJModel::Update()

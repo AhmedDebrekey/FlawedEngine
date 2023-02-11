@@ -7,6 +7,9 @@ in vec3 ourColor;
 in vec3 Normal;  
 in vec3 FragPos;
 
+in vec3 Position;
+
+
 uniform vec3 viewPos;
 
 struct Material {
@@ -68,6 +71,8 @@ struct DirLight {
 
 uniform DirLight dirLight;
 
+uniform samplerCube skybox;
+
 // calculates the color when using a directional light.
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 {
@@ -96,5 +101,10 @@ void main()
     for(int i = 0; i < LightSize; i++)
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
     
-    FragColor = vec4(result, 1.0);
+    vec3 I = normalize(Position - viewPos);
+    vec3 R = reflect(I, normalize(Normal));
+
+    FragColor = vec4(mix(texture(skybox, R).rgb, result, 0.9), 1.0);
+    //FragColor = vec4(texture(skybox, R).rgb, 1.0) + vec4(result, 1.0);
+    
 }

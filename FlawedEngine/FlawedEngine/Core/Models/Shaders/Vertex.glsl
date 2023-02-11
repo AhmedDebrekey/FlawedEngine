@@ -10,9 +10,12 @@ out vec3 ourColor; // output a color to the fragment shader
 out vec3 Normal;
 out vec3 FragPos;
 
+out vec3 Position;
+
 void main()
 {
     gl_Position = Projection * View * Model * vec4(aPos, 1.0);
     FragPos = vec3(Model * vec4(aPos, 1.0));
-    Normal = mat3(transpose(inverse(Model))) * aNormal;  
+    Normal = mat3(transpose(inverse(Model))) * aNormal;
+    Position = vec3(Model * vec4(aPos, 1.0));
 }     

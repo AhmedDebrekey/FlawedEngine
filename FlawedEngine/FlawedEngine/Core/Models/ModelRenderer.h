@@ -23,7 +23,7 @@ namespace FlawedEngine
 	class cModelRenderer
 	{
 	public:
-		void Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights);
+		void Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox);
 
 		void Init(std::vector<sVertex>& Vertecies, std::vector<sTexture>& Textures, std::vector<uint32_t>& Indices);
 

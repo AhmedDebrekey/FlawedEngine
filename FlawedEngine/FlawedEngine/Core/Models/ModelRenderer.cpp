@@ -54,7 +54,7 @@ namespace FlawedEngine
     #endif //OPENGL
 	}
 
-	void cModelRenderer::Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights)
+	void cModelRenderer::Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox)
 	{
     #ifdef OPENGL
         Shader.Bind();
@@ -106,6 +106,7 @@ namespace FlawedEngine
 
 		glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
 		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
         Shader.Unbind();
