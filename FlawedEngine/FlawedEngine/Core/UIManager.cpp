@@ -268,6 +268,6 @@ namespace FlawedEngine
 
 	bool cUIManager::isKeyDown(int key)
 	{
-		if (ImGui::IsKeyDown((ImGuiKey)key)) { std::cout << "[C++] IsKeyDown " << char(key) << " " << true << std::endl; return true; }
+		if (ImGui::IsKeyDown((ImGuiKey)key)) { return true; }
 	}
 }

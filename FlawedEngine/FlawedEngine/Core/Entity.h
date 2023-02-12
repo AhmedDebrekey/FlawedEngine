@@ -45,6 +45,8 @@ namespace FlawedEngine
 		std::vector<uint32_t> mIndices;
 		std::vector<sTexture> mTextureCoords;
 
+		uint32_t TextureID;
+
 		btRigidBody* mRidigBody = nullptr;
 		bool mDynamic = true;
 		bool mPhysics = false;

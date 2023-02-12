@@ -17,6 +17,7 @@ namespace FlawedEngine
 		glm::vec3 Specular = glm::vec3(0.5f);
 		float Shininess = 32.0f;
 		float Roughness;
+		uint32_t TextureID;
 	};
 
 	struct sLight

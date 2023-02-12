@@ -1,5 +1,9 @@
 #include "ModelRenderer.h"
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 namespace FlawedEngine
 {
     void cModelRenderer::Init(std::vector<sVertex>& Vertecies, std::vector<sTexture>& Textures, std::vector<uint32_t>& Indices)
@@ -107,6 +111,7 @@ namespace FlawedEngine
 		glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
+        glBindTexture(GL_TEXTURE_2D, Mat.TextureID);
 		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
         Shader.Unbind();

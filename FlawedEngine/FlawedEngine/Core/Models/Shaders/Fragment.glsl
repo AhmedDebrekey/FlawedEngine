@@ -2,13 +2,19 @@
 
 layout(location = 0) out vec3 color;
 
+uniform sampler2D texture_diffuse1;
+uniform sampler2D texture_diffuse2;
+uniform sampler2D texture_diffuse3;
+uniform sampler2D texture_specular1;
+uniform sampler2D texture_specular2;
+
 out vec4 FragColor;  
 in vec3 ourColor;
 in vec3 Normal;  
+in vec2 TexCoords;
 in vec3 FragPos;
 
 in vec3 Position;
-
 
 uniform vec3 viewPos;
 
@@ -39,25 +45,22 @@ uniform int LightSize;
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
-    vec3 lightDir = normalize(light.position - fragPos);
+        vec3 lightDir = normalize(light.position - fragPos);
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
     // attenuation
-    float distance    = length(light.position - fragPos);
-    float attenuation = 1.0 / (light.constant + light.linear * distance + 
-  			     light.quadratic * (distance * distance));    
+    float distance = length(light.position - fragPos);
+    float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
     // combine results
-    vec3 ambient  = light.ambient  * vec3(material.ambient);
-    vec3 diffuse  = light.diffuse  * diff * vec3(material.diffuse);
-    vec3 specular = light.specular * spec * vec3(material.specular);
-
-    ambient  *= attenuation;
-    diffuse  *= attenuation;
+    vec3 ambient = light.ambient * vec3(texture(texture_diffuse1, TexCoords));
+    vec3 diffuse = light.diffuse * diff * vec3(texture(texture_diffuse1, TexCoords));
+    vec3 specular = light.specular * spec * vec3(texture(texture_specular1, TexCoords));
+    ambient *= attenuation;
+    diffuse *= attenuation;
     specular *= attenuation;
-
     return (ambient + diffuse + specular);
 } 
 
@@ -104,5 +107,6 @@ void main()
     vec3 I = normalize(Position - viewPos);
     vec3 R = reflect(I, normalize(Normal));
 
-    FragColor = vec4(mix(texture(skybox, R).rgb, result, 0.99), 1.0);
+   // FragColor = vec4(mix(texture(skybox, R).rgb, result, 0.99), 1.0);
+    FragColor = vec4(result, 1.0);
 }
