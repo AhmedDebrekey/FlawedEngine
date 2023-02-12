@@ -14,6 +14,7 @@ namespace FlawedEngine
 	void cMesh::Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox, cShader& Shader)
 	{
         Shader.Bind();
+        glBindVertexArray(VAO);
         unsigned int diffuseNr = 1;
         unsigned int specularNr = 1;
         for (unsigned int i = 0; i < mTextures.size(); i++)
@@ -79,7 +80,6 @@ namespace FlawedEngine
         Shader.SetVec3("material.specular", Mat.Specular);
         Shader.SetFloat("material.shininess", Mat.Shininess);
 
-        glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         //glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
 
@@ -87,6 +87,13 @@ namespace FlawedEngine
 
         glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
         glActiveTexture(GL_TEXTURE0);
+
+        for (unsigned int i = 0; i < mTextures.size(); i++)
+        {
+            glActiveTexture(GL_TEXTURE0 + i);
+            glBindTexture(GL_TEXTURE_2D, 0);
+        }
+
         glBindVertexArray(0);
         Shader.Unbind();
     }

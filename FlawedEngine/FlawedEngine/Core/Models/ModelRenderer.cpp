@@ -111,7 +111,6 @@ namespace FlawedEngine
 		glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
-        glBindTexture(GL_TEXTURE_2D, Mat.TextureID);
 		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
         Shader.Unbind();

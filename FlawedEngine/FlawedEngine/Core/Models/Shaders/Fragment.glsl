@@ -55,13 +55,29 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     float distance = length(light.position - fragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
     // combine results
-    vec3 ambient = light.ambient * vec3(texture(texture_diffuse1, TexCoords));
-    vec3 diffuse = light.diffuse * diff * vec3(texture(texture_diffuse1, TexCoords));
-    vec3 specular = light.specular * spec * vec3(texture(texture_specular1, TexCoords));
+
+    vec3 texDiffuseCol = vec3(texture(texture_diffuse1, TexCoords));
+     vec3 ambient;
+     vec3 diffuse;
+     vec3 specular;
+    if(length(texDiffuseCol) == 0.0)
+    {
+        ambient = light.ambient * vec3(material.ambient);
+        diffuse = light.diffuse * diff * vec3(material.diffuse);
+        specular = light.specular * spec * vec3(material.specular);
+    }
+    else
+    { 
+        ambient = light.ambient * vec3(texture(texture_diffuse1, TexCoords));
+        diffuse = light.diffuse * diff * vec3(texture(texture_diffuse1, TexCoords));        
+        specular = light.specular * spec * vec3(texture(texture_specular1, TexCoords));
+    }
+
     ambient *= attenuation;
     diffuse *= attenuation;
     specular *= attenuation;
     return (ambient + diffuse + specular);
+
 } 
 
 struct DirLight {
@@ -107,6 +123,6 @@ void main()
     vec3 I = normalize(Position - viewPos);
     vec3 R = reflect(I, normalize(Normal));
 
-   // FragColor = vec4(mix(texture(skybox, R).rgb, result, 0.99), 1.0);
-    FragColor = vec4(result, 1.0);
+    FragColor = vec4(mix(texture(skybox, R).rgb, result, 0.9), 1.0);
+    //FragColor = vec4(result, 1.0);
 }
