@@ -259,12 +259,12 @@ namespace FlawedEngine
 	{
 		std::vector<std::string> Faces
 		{
-			"Core\\Models\\skybox\\skybox\\OldHall\\right.png",
-			"Core\\Models\\skybox\\skybox\\OldHall\\left.png",
-			"Core\\Models\\skybox\\skybox\\OldHall\\top.png",
-			"Core\\Models\\skybox\\skybox\\OldHall\\bottom.png",
-			"Core\\Models\\skybox\\skybox\\OldHall\\front.png",
-			"Core\\Models\\skybox\\skybox\\OldHall\\back.png"
+			"Core\\Models\\skybox\\skybox\\Sky\\px.png",
+			"Core\\Models\\skybox\\skybox\\Sky\\nx.png",
+			"Core\\Models\\skybox\\skybox\\Sky\\py.png",
+			"Core\\Models\\skybox\\skybox\\Sky\\ny.png",
+			"Core\\Models\\skybox\\skybox\\Sky\\pz.png",
+			"Core\\Models\\skybox\\skybox\\Sky\\nz.png"
 		};
 		mCubeMapTexture = loadCubemap(Faces);
 		//mCubeMapTexture = loadCubemapFromHDRI("Core\\Models\\skybox\\skybox\\scythian_tombs_2_4k.hdr");

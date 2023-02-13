@@ -17,6 +17,7 @@ namespace FlawedEngine
         glBindVertexArray(VAO);
         unsigned int diffuseNr = 1;
         unsigned int specularNr = 1;
+        unsigned int normalNr = 1;
         for (unsigned int i = 0; i < mTextures.size(); i++)
         {
             glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
@@ -27,6 +28,8 @@ namespace FlawedEngine
                 number = std::to_string(diffuseNr++);
             else if (name == "texture_specular")
                 number = std::to_string(specularNr++);
+            else if (name == "texture_normal")
+                number = std::to_string(normalNr++);
 
             Shader.SetInt((name + number), i);
             glBindTexture(GL_TEXTURE_2D, mTextures[i].ID);
