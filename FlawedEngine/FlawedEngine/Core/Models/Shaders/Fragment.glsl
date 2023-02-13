@@ -1,4 +1,4 @@
-#version 330 core
+#version 450 core
 
 layout(location = 0) out vec3 color;
 
@@ -47,9 +47,9 @@ uniform int LightSize;
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
     // obtain normal from normal map in range [0,1]
-    normal = texture(texture_normal1, TexCoords).rgb;
+    //normal = texture(texture_normal1, TexCoords).rgb;
     // transform normal vector to range [-1,1]
-    normal = normalize(normal * 2.0 - 1.0);  
+    //normal = normalize(normal * 2.0 - 1.0);  
 
     vec3 lightDir = normalize(light.position - fragPos);
     // diffuse shading
@@ -101,9 +101,9 @@ uniform samplerCube skybox;
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 {
     // obtain normal from normal map in range [0,1]
-    normal = texture(texture_normal1, TexCoords).rgb;
+    //normal = texture(texture_normal1, TexCoords).rgb;
     // transform normal vector to range [-1,1]
-    normal = normalize(normal * 2.0 - 1.0);  
+    //normal = normalize(normal * 2.0 - 1.0);  
 
     vec3 lightDir = normalize(-light.direction);
     // diffuse shading

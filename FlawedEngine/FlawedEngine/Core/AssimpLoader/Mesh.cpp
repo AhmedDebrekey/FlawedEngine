@@ -70,9 +70,9 @@ namespace FlawedEngine
         }
 
         Shader.SetVec3("dirLight.direction", glm::vec3(30.0f, -10.0f, 30.0f));
-        Shader.SetVec3("dirLight.ambient", glm::vec3(0.9f));
-        Shader.SetVec3("dirLight.diffuse", glm::vec3(0.9f));
-        Shader.SetVec3("dirLight.specular", glm::vec3(0.9f));
+        Shader.SetVec3("dirLight.ambient", glm::vec3(0.2f));
+        Shader.SetVec3("dirLight.diffuse", glm::vec3(0.8f));
+        Shader.SetVec3("dirLight.specular", glm::vec3(0.5f));
 
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);
@@ -84,19 +84,16 @@ namespace FlawedEngine
         Shader.SetFloat("material.shininess", Mat.Shininess);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        //glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
-
-        //std::cout << "Skybox: " << *SkyBox << std::endl;
-
+        glActiveTexture(GL_TEXTURE0 + mTextures.size());
+        glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
         glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
-        glActiveTexture(GL_TEXTURE0);
-
+        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
         for (unsigned int i = 0; i < mTextures.size(); i++)
         {
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(GL_TEXTURE_2D, 0);
         }
-
+        glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(0);
         Shader.Unbind();
     }
