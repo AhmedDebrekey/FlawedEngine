@@ -1,0 +1,11 @@
+Model Information:
+* title:	Provence House 3D Scan ZenFone AR
+* source:	https://sketchfab.com/3d-models/provence-house-3d-scan-zenfone-ar-cd5fe7388c16419caf4945837a40cbec
+* author:	mano1creative (https://sketchfab.com/mano1creative)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Provence House 3D Scan ZenFone AR" (https://sketchfab.com/3d-models/provence-house-3d-scan-zenfone-ar-cd5fe7388c16419caf4945837a40cbec) by mano1creative (https://sketchfab.com/mano1creative) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

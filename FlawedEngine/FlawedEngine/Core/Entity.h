@@ -30,6 +30,8 @@ namespace FlawedEngine
 		void SetPhysicsProps(sPhysicsProps& Props);
 		void ApplyForce(glm::vec3 Force);
 		void ApplyRelativeForce(glm::vec3 Force);
+		void isInvisible() { ShouldRender = !ShouldRender; }
+		glm::vec3 GetAABB() { return glm::vec3(mhalfExtents.x(), mhalfExtents.y(), mhalfExtents.z()); }
 		virtual ~cEntity() = 0;
 
 		sModel GetModel() { return mTransformation; }
@@ -56,8 +58,11 @@ namespace FlawedEngine
 		float mRestitution = 0.0f;
 
 		bool Dead = false;
+		btVector3 mhalfExtents;
 
 		eBasicObject Type;
+		
+		bool ShouldRender = true;
 
 		cInput& Input = cInput::get();
 		cScriptingManager& ScriptingManager = cScriptingManager::get();

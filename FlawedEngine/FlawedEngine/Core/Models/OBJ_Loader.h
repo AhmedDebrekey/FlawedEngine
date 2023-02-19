@@ -16,7 +16,7 @@
 #include <math.h>
 
 // Print progress to console while loading (large models)
-#define OBJL_CONSOLE_OUTPUT
+//#define OBJL_CONSOLE_OUTPUT 0 
 
 // Namespace: OBJL
 //

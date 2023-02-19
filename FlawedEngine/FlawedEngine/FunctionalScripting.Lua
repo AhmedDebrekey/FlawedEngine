@@ -13,22 +13,22 @@ function Update()
 	end
 
 	if IsKeyDown(73) then
-		Move(0, 0.0, movementSpeed)
+		--Move(0, 0.0, movementSpeed)
 		ApplyForce(0, 0.0, Force)
 	end
 
 	if IsKeyDown(75) then
-		Move(0, 0.0, -movementSpeed)
+		--Move(0, 0.0, -movementSpeed)
 		ApplyForce(0, 0.0, -Force)
 	end
 
 	if IsKeyDown(74) then
-		Move(movementSpeed, 0.0, 0)
+		--Move(movementSpeed, 0.0, 0)
 		ApplyForce(Force, 0.0, 0)
 	end
 
 	if IsKeyDown(76) then
-		Move(-movementSpeed, 0.0, 0)
+		--Move(-movementSpeed, 0.0, 0)
 		ApplyForce(-Force, 0.0, 0)
 	end
 

@@ -3,6 +3,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "../Models/stb_image.h"
+#include <Bullet/BulletCollision/CollisionShapes/btShapeHull.h>
 
 namespace FlawedEngine
 {
@@ -34,9 +35,12 @@ namespace FlawedEngine
 		else
 			Trans.Model = mModel;
 
-		for (uint32_t i = 0; i < mMeshes.size(); i++)
+		if(ShouldRender)
 		{
-			mMeshes[i].Draw(Trans, mMaterial, LightPositions, SkyBox, Shader);
+			for (uint32_t i = 0; i < mMeshes.size(); i++)
+			{
+				mMeshes[i].Draw(Trans, mMaterial, LightPositions, SkyBox, Shader);
+			}
 		}
 	}
 
@@ -44,16 +48,110 @@ namespace FlawedEngine
 	{
 	}
 
+	void cModel::SetCollisionShape(eBasicObject Object)
+	{
+		switch (Object) //if it is not set code will crash ofc
+		{
+		case FlawedEngine::Cube:
+		{
+			mCollisionShape = new btBoxShape(mhalfExtents);
+		}
+		break;
+		case FlawedEngine::Sphere:
+		{
+			mCollisionShape = new btSphereShape(1.0);
+		}
+		break;
+		case FlawedEngine::Cone:
+			break;
+		case FlawedEngine::Torus:
+			break;
+		case FlawedEngine::Triangle:
+			break;
+		case FlawedEngine::PointLight:
+			break;
+		case FlawedEngine::SpotLight:
+			break;
+		default:
+			break;
+		}
+	}
+
 	void cModel::SetPhysics(eBasicObject Object, void* PhysicsWorld)
 	{
+		if (!isPhysicsSet)
+		{
+			glm::vec3 Trans = mTransformation.Translation;
+			glm::vec3 Rotation = mTransformation.Rotation;
+			glm::vec3 Scale = mTransformation.Scale;
+
+			SetCollisionShape(Object);
+
+			btTransform ObjectTransform;
+			ObjectTransform.setIdentity();
+			ObjectTransform.setOrigin(btVector3(Trans.x, Trans.y, Trans.z));
+
+			btScalar mass(1.0);
+
+			btVector3 localInertia(0, 0, 0);
+			if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, localInertia);
+
+			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, localInertia);
+			rbInfo.m_startWorldTransform;
+			mRidigBody = new btRigidBody(rbInfo);
+
+			btTransform trans = mRidigBody->getCenterOfMassTransform();
+			btQuaternion transrot;
+			trans.getBasis().getRotation(transrot);
+			btQuaternion rotquat;
+			rotquat = rotquat.getIdentity();
+			rotquat.setEuler(glm::radians(Rotation.z), glm::radians(Rotation.y), glm::radians(Rotation.x));
+			transrot = rotquat * transrot;
+			trans.setRotation(transrot);
+			mRidigBody->setCenterOfMassTransform(trans);
+
+			mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
+			mRidigBody->setActivationState(DISABLE_DEACTIVATION);
+			//mRidigBody->setSleepingThresholds(0.2, 0.2);
+			mRidigBody->setRestitution(mRestitution);
+			mRidigBody->setFriction(mFricton);
+
+			mPhysicsDynamicWorld->addRigidBody(mRidigBody);
+			mPhysicsDynamicWorld->updateSingleAabb(mRidigBody);
+
+
+			mCollisionShapesArray->push_back(mCollisionShape);
+
+			mCollisionShape->setUserPointer((void*)mName.data());
+
+			isPhysicsSet = true;
+		}
 	}
 
 	void cModel::UnSetPhysics()
 	{
+		if (isPhysicsSet)
+		{
+			delete mRidigBody->getMotionState();
+			delete mRidigBody->getCollisionShape();
+			mPhysicsDynamicWorld->removeRigidBody(mRidigBody);
+			mCollisionShapesArray->remove(mCollisionShape);
+			delete mRidigBody;
+			isPhysicsSet = false;
+		}
 	}
 
 	void cModel::setDynamic(bool IsDynamic)
 	{
+		if (!IsDynamic)
+		{
+			mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
+		}
+		else
+		{
+			mRidigBody->setCollisionFlags(btCollisionObject::CF_DYNAMIC_OBJECT);
+		}
 	}
 
 	void cModel::SetupScripting(const char*)
@@ -71,13 +169,18 @@ namespace FlawedEngine
 	void cModel::loadModel(std::string path)
 	{
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_PreTransformVertices);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
 			std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
 			return;
 		}
+
+		CalculateAABB(scene);
+		//mCollisionShape = CalculateMeshCollision(scene);
+
+
 		mDirectory = path.substr(0, path.find_last_of('\\'));
 
 		processNode(scene->mRootNode, scene);
@@ -85,6 +188,58 @@ namespace FlawedEngine
 		Shader.Create("Core/Models/Shaders/Vertex.glsl", "Core/Models/Shaders/Fragment.glsl");
 		Shader.Bind();
 		Shader.Unbind();
+	}
+
+	void cModel::CalculateAABB(const aiScene* scene)
+	{
+		// Calculate overall bounding box dimensions
+		btVector3 overallMin(FLT_MAX, FLT_MAX, FLT_MAX), overallMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+		for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
+			aiMesh* mesh = scene->mMeshes[i];
+			btVector3 min(FLT_MAX, FLT_MAX, FLT_MAX), max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+			for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
+				aiVector3D v = mesh->mVertices[j];
+				if (v.x < min.x()) min.setX(v.x);
+				if (v.y < min.y()) min.setY(v.y);
+				if (v.z < min.z()) min.setZ(v.z);
+				if (v.x > max.x()) max.setX(v.x);
+				if (v.y > max.y()) max.setY(v.y);
+				if (v.z > max.z()) max.setZ(v.z);
+			}
+			if (min.x() < overallMin.x()) overallMin.setX(min.x());
+			if (min.y() < overallMin.y()) overallMin.setY(min.y());
+			if (min.z() < overallMin.z()) overallMin.setZ(min.z());
+			if (max.x() > overallMax.x()) overallMax.setX(max.x());
+			if (max.y() > overallMax.y()) overallMax.setY(max.y());
+			if (max.z() > overallMax.z()) overallMax.setZ(max.z());
+		}
+
+		mhalfExtents = (overallMax - overallMin) / 2.f;
+	}
+
+	btCollisionShape* cModel::CalculateMeshCollision(const aiScene* scene)
+	{
+		btConvexHullShape* convexHull = new btConvexHullShape();
+
+		// Extract the mesh data from the Assimp scene
+		for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
+			aiMesh* mesh = scene->mMeshes[i];
+			for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
+				aiVector3D vertex = mesh->mVertices[j];
+				convexHull->addPoint(btVector3(vertex.x, vertex.y, vertex.z));
+			}
+		}
+
+		// Generate the convex hull using Bullet Physics
+		btShapeHull* hull = new btShapeHull(convexHull);
+		hull->buildHull(convexHull->getMargin());
+		btConvexHullShape* result = new btConvexHullShape(
+			(btScalar*)hull->getVertexPointer(),
+			hull->numVertices());
+		delete hull;
+		delete convexHull;
+
+		return result;
 	}
 
 	void cModel::processNode(aiNode* node, const aiScene* scene)
@@ -219,7 +374,7 @@ namespace FlawedEngine
 
 		return textureID;
 	}
-
+	
 	std::vector<sTexture> cModel::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 	{
 		std::vector<sTexture> Textures;

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Road Section
+* source:	https://sketchfab.com/3d-models/road-section-80e6923cd5074f87a957c2668c32f33b
+* author:	Mike_カニンガハム (https://sketchfab.com/Maiku_kaninguhamu)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Road Section" (https://sketchfab.com/3d-models/road-section-80e6923cd5074f87a957c2668c32f33b) by Mike_カニンガハム (https://sketchfab.com/Maiku_kaninguhamu) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

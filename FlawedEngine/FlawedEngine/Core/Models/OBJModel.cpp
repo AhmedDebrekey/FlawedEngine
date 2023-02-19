@@ -51,39 +51,6 @@ namespace FlawedEngine
 				glm::vec3 Normal = glm::vec3(CurrentMesh.Vertices[i].Normal.X, CurrentMesh.Vertices[i].Normal.Y, CurrentMesh.Vertices[i].Normal.Z);
 				glm::vec2 TexCoords = glm::vec2(CurrentMesh.Vertices[i].TextureCoordinate.X, CurrentMesh.Vertices[i].TextureCoordinate.Y);
 				mVertexBuffer.push_back({ Position, Normal, TexCoords });
-
-				if (CurrentMesh.MeshMaterial.map_Kd != "")
-				{
-					// Generate a texture ID
-					GLuint textureID;
-					glGenTextures(1, &textureID);
-					glBindTexture(GL_TEXTURE_2D, textureID);
-
-					// Set texture parameters
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-					glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-					// Load the image data
-					int width, height, nrChannels;
-					stbi_set_flip_vertically_on_load(true);
-					unsigned char* data = stbi_load(CurrentMesh.MeshMaterial.map_Kd.c_str(), &width, &height, &nrChannels, 0);
-
-					if (data)
-					{
-						// Generate the texture
-						glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-						glGenerateMipmap(GL_TEXTURE_2D);
-					}
-					else
-					{
-						std::cout << "Couldn't load " << CurrentMesh.MeshMaterial.map_Kd << std::endl;
-					}
-					mMaterial.TextureID = textureID;
-					// Free the image data
-					stbi_image_free(data);
-				}
 			}
 
 			for (uint32_t i = 0; i < CurrentMesh.Indices.size(); i += 3)
@@ -310,8 +277,9 @@ namespace FlawedEngine
 		}
 		else
 			Trans.Model = mModel;
-		
-		Renderer.Draw(Trans, mMaterial, LightPositions, SkyBox);
+
+		if(ShouldRender)
+			Renderer.Draw(Trans, mMaterial, LightPositions, SkyBox);
 	}
 
 	void cOBJModel::Update()

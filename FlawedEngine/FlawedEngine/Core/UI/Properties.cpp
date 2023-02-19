@@ -106,9 +106,30 @@ void FlawedEngine::cUIManager::RenderProperties()
 				ImGui::Checkbox(std::string("Dynamic:##" + mSelectedEntity).c_str(), &Entity->mDynamic);
 				Entity->SetPhysics(Entity->Type, ObjectMan->GetPhysicsWorld());
 				Entity->setDynamic(Entity->mDynamic);
+				static bool showBoundingBox = false;
+				ImGui::Checkbox(std::string("AABB:##" + mSelectedEntity).c_str(), &showBoundingBox);
+				if (showBoundingBox)
+				{
+					ObjectMan->AddObject(Cube, "AABB");
+					auto AABB = ObjectMan->GetObjectByName("AABB");
+					glm::vec3 AABBTrans = Entity->GetAABB();
+
+					DrawVec3("AABB", AABBTrans);
+
+					auto EntityModel = Entity->GetModel();
+					EntityModel.Scale = AABBTrans;
+
+					AABB->ModelTransform(EntityModel);
+				}
+				
 			}
 			else
 				Entity->mDynamic = false;
+		}
+		
+		if (ImGui::Button("Render"))
+		{
+			Entity->isInvisible();
 		}
 
 		if (ImGui::Button("Remove"))

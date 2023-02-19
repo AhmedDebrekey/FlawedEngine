@@ -112,7 +112,6 @@ namespace FlawedEngine
 
 	void cObjectManager::LoadObject(const char* FilePath, const char* Name)
 	{
-		//SceneObjects[Name] = std::make_shared<cOBJModel>(FilePath, Name, mPhysicsWorld, mCollisionShapesArray);
 		SceneObjects[Name] = std::make_shared<cModel>(FilePath, Name, mPhysicsWorld, mCollisionShapesArray);
 		sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 		SceneObjects[Name]->ModelTransform(DefaultModel);

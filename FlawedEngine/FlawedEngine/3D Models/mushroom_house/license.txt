@@ -1,0 +1,11 @@
+Model Information:
+* title:	Mushroom House
+* source:	https://sketchfab.com/3d-models/mushroom-house-530d651e7f07481b859d64bce100a3e5
+* author:	lettier (https://sketchfab.com/lettier)
+
+Model License:
+* license type:	CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)
+* requirements:	Author must be credited. No commercial use. Modified versions can not be distributed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Mushroom House" (https://sketchfab.com/3d-models/mushroom-house-530d651e7f07481b859d64bce100a3e5) by lettier (https://sketchfab.com/lettier) licensed under CC-BY-NC-ND-4.0 (http://creativecommons.org/licenses/by-nc-nd/4.0/)

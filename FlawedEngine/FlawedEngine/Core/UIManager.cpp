@@ -2,7 +2,6 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <ImGui/imfilebrowser.h>
 
 
 
@@ -134,25 +133,6 @@ namespace FlawedEngine
 			ImGui::Text("Right Click SceneHierachy To Create Entities");
 			ImGui::Checkbox("Mouse Picking *Buggy*", &mMousePicking);
 			ObjectMan->mMousePicking = mMousePicking;
-			static ImGui::FileBrowser fileDialog;
-			static int Objects = 0;
-
-			if (ImGui::Button("LoadModel"))
-				fileDialog.Open();
-
-			fileDialog.Display();
-
-			if (fileDialog.HasSelected())
-			{
-				std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
-				char buffer[20];
-				sprintf_s(buffer, "Object(%i)", Objects);
-				ObjectMan->LoadObject(fileDialog.GetSelected().string().c_str(), buffer);
-				mSelectedEntity = buffer;
-				Objects++;
-				fileDialog.ClearSelected();
-			}
-
 
 			ImGui::End();
 

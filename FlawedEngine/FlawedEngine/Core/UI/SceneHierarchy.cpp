@@ -1,4 +1,5 @@
 #include "../UIManager.h"
+#include <ImGui/imfilebrowser.h>
 
 void FlawedEngine::cUIManager::RenderSceneHierarchy()
 {
@@ -18,6 +19,8 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 	}
 	if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 		mSelectedEntity = "";
+
+	static ImGui::FileBrowser fileDialog;
 
 	if (ImGui::BeginPopupContextWindow("Add Entity", 1))
 	{
@@ -67,7 +70,25 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		} //Left out the Trianlge for no reason, It was just a proof of concept.
 		// later could be used as a billbord, (rectangles ofc)
 
+		if (ImGui::MenuItem("Custome"))
+			fileDialog.Open();
+
 		ImGui::EndPopup();
+	}
+
+	fileDialog.Display();
+	static int Objects = 0;
+	fileDialog.SetTypeFilters({ ".obj", ".gltf", ".fbx"});
+
+	if (fileDialog.HasSelected())
+	{
+		std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+		char buffer[20];
+		sprintf_s(buffer, "Object(%i)", Objects);
+		ObjectMan->LoadObject(fileDialog.GetSelected().string().c_str(), buffer);
+		mSelectedEntity = buffer;
+		Objects++;
+		fileDialog.ClearSelected();
 	}
 	ImGui::End();
 }

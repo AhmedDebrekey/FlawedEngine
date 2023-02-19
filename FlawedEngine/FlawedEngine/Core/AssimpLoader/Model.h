@@ -12,7 +12,9 @@ namespace FlawedEngine
     {
     public:
         cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes)
+            :mCollisionShapesArray(CollisionShapes), mName(Name)
         {
+            mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
             loadModel(FilePath);
         }
         ~cModel()
@@ -34,6 +36,7 @@ namespace FlawedEngine
         }
         virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox) override;
         virtual void Update(/*Should be taking in the timestep*/) override;
+        void SetCollisionShape(eBasicObject Object);
         virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
         virtual void UnSetPhysics() override;
         virtual void setDynamic(bool IsDynamic) override;
@@ -43,6 +46,8 @@ namespace FlawedEngine
 
     private:
         void loadModel(std::string path);
+        void CalculateAABB(const aiScene* scene);
+        btCollisionShape* CalculateMeshCollision(const aiScene* scene);
         void processNode(aiNode* node, const aiScene* scene);
         cMesh processMesh(aiMesh* mesh, const aiScene* scene);
         std::vector<sTexture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
@@ -54,8 +59,11 @@ namespace FlawedEngine
         bool gammaCorrection;
         cShader Shader;
     private:
+        std::string mName;
         bool isPhysicsSet = false;
-
-	};
+        btCollisionShape* mCollisionShape;
+        btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
+        btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
+    };
 }
 
