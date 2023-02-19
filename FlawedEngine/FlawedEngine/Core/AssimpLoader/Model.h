@@ -16,6 +16,8 @@ namespace FlawedEngine
         {
             mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
             loadModel(FilePath);
+            mFilePath = FilePath;
+            isCostume = true;
         }
         ~cModel()
         {

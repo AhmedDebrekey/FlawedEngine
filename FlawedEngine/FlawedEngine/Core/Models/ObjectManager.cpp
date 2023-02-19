@@ -249,7 +249,9 @@ namespace FlawedEngine
 			object["transform"]["position"] = { entity->mTransformation.Translation.x,entity->mTransformation.Translation.y, entity->mTransformation.Translation.z };
 			object["transform"]["rotation"] = { entity->mTransformation.Rotation.x,entity->mTransformation.Rotation.y, entity->mTransformation.Rotation.z};
 			object["transform"]["scale"] = { entity->mTransformation.Scale.x, entity->mTransformation.Scale.y, entity->mTransformation.Scale.z };
+			object["isCostume"] = { entity->isCostume };
 			object["type"] = { entity->Type };
+			object["filepath"] = { entity->mFilePath };
 			data["objects"][name] = object;
 		}
 
@@ -273,7 +275,15 @@ namespace FlawedEngine
 				glm::vec3(object["transform"]["rotation"][0], object["transform"]["rotation"][1], object["transform"]["rotation"][2]),
 				glm::vec3(object["transform"]["scale"][0], object["transform"]["scale"][1], object["transform"]["scale"][2]) };
 
-			AddObject(object["type"][0], name.c_str());
+			if (object["isCostume"][0] == false)
+			{
+				AddObject(object["type"][0], name.c_str());
+			}
+			else
+			{
+				std::string Filepath = object["filepath"][0];
+				LoadObject(Filepath.c_str(), name.c_str());
+			}
 			auto Entity = GetObjectByName(name.c_str());
 			Entity->ModelTransform(Model);
 		}

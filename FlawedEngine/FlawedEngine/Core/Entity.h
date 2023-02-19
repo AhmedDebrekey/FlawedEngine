@@ -39,6 +39,9 @@ namespace FlawedEngine
 		glm::vec3* GetColor() { return &mMaterial.Color; }
 		int GetActivationState() { return mRidigBody->getActivationState(); }
 
+		std::string mFilePath;
+		bool isCostume = false;
+
 		sMaterial mMaterial;
 
 		glm::mat4 mModel;
@@ -60,7 +63,7 @@ namespace FlawedEngine
 		bool Dead = false;
 		btVector3 mhalfExtents;
 
-		eBasicObject Type;
+		eBasicObject Type = Cube;
 		
 		bool ShouldRender = true;
 
