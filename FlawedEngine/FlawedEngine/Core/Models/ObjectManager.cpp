@@ -4,7 +4,7 @@
 #include "../AssimpLoader/Model.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
+#include <nlohmann/json.hpp>
 
 namespace FlawedEngine
 {
@@ -68,7 +68,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
-			SceneObjects[Name]->Type = Cube;
+			SceneObjects[Name]->Type = Cone;
 		}
 		break;
 		case FlawedEngine::Torus:
@@ -78,7 +78,7 @@ namespace FlawedEngine
 			SceneObjects[Name]->ModelTransform(DefaultModel);
 			sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 			SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
-			SceneObjects[Name]->Type = Cube;
+			SceneObjects[Name]->Type = Torus;
 		}
 		break;
 		case FlawedEngine::Triangle:
@@ -232,6 +232,51 @@ namespace FlawedEngine
 			return nullptr;
 
 		return Object->second;
+	}
+
+	void cObjectManager::Save(const std::string& FileName)
+	{
+		using json = nlohmann::json;
+
+		// create a JSON object
+		json data;
+
+		// serialize all the objects in the scene
+		for (const auto& [name, entity] : SceneObjects)
+		{
+			json object;
+
+			object["transform"]["position"] = { entity->mTransformation.Translation.x,entity->mTransformation.Translation.y, entity->mTransformation.Translation.z };
+			object["transform"]["rotation"] = { entity->mTransformation.Rotation.x,entity->mTransformation.Rotation.y, entity->mTransformation.Rotation.z};
+			object["transform"]["scale"] = { entity->mTransformation.Scale.x, entity->mTransformation.Scale.y, entity->mTransformation.Scale.z };
+			object["type"] = { entity->Type };
+			data["objects"][name] = object;
+		}
+
+		// write the JSON data to a file
+		std::ofstream file(FileName);
+		file << data.dump(4);
+	}
+
+	void cObjectManager::LoadSave(const std::string& FileName)
+	{
+		using json = nlohmann::json;
+		// read the JSON data from the file
+		std::ifstream file(FileName);
+		json data;
+		file >> data;
+
+		// iterate through the objects in the JSON data
+		for (auto& [name, object] : data["objects"].items())
+		{
+			sModel Model = { glm::vec3(object["transform"]["position"][0], object["transform"]["position"][1], object["transform"]["position"][2]), 
+				glm::vec3(object["transform"]["rotation"][0], object["transform"]["rotation"][1], object["transform"]["rotation"][2]),
+				glm::vec3(object["transform"]["scale"][0], object["transform"]["scale"][1], object["transform"]["scale"][2]) };
+
+			AddObject(object["type"][0], name.c_str());
+			auto Entity = GetObjectByName(name.c_str());
+			Entity->ModelTransform(Model);
+		}
 	}
 
 	void cObjectManager::AddLight(const char* Name, sLight& Props)

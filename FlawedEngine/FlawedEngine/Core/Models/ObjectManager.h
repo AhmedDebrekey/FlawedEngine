@@ -34,6 +34,9 @@ namespace FlawedEngine
 		void ChangeName(const char* OldName, const char* NewName); 
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
 
+		void Save(const std::string& FileName);
+		void LoadSave(const std::string& FileName);
+
 		bool mMousePicking = true;
 
 	private:

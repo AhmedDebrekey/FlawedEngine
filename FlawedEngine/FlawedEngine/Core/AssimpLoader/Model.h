@@ -44,6 +44,18 @@ namespace FlawedEngine
         virtual void SendEntity(cEntity* Entity) override;
         virtual void SendInputToScripting(std::function<bool(int)>) override;
 
+        void LSetColor(float x, float y, float z);
+
+        void LMove(float x, float y, float z);
+
+        void LRotate(float x, float y, float z);
+
+        void LScale(float x, float y, float z);
+
+        void LApplyForce(float x, float y, float z);
+
+        void LApplyRelativeForce(float x, float y, float z);
+
     private:
         void loadModel(std::string path);
         void CalculateAABB(const aiScene* scene);
@@ -64,6 +76,9 @@ namespace FlawedEngine
         btCollisionShape* mCollisionShape;
         btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
         btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
+    private:
+        int ScriptingId;
+        lua_State* LuaState = nullptr;
     };
 }
 

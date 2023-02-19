@@ -46,6 +46,7 @@ namespace FlawedEngine
 
 	void cModel::Update()
 	{
+		ScriptingManager.RunFunction(ScriptingId, "Update");
 	}
 
 	void cModel::SetCollisionShape(eBasicObject Object)
@@ -154,15 +155,95 @@ namespace FlawedEngine
 		}
 	}
 
-	void cModel::SetupScripting(const char*)
+	void cModel::SendInputToScripting(std::function<bool(int)> func)
 	{
+		using namespace luabridge;
+		getGlobalNamespace(LuaState)
+			.addFunction("IsKeyDown", func);
+	}
+
+	void cModel::LSetColor(float x, float y, float z)
+	{
+		SetColor(glm::vec3(x, y, z));
+	}
+
+	void cModel::LMove(float x, float y, float z)// L for Lua
+	{
+		mTransformation.Translation += glm::vec3(x, y, z);
+		ModelTransform(mTransformation);
+		if (mPhysics)
+		{
+			btTransform Trans;
+			Trans.setOrigin(btVector3(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z));
+			mRidigBody->getMotionState()->setWorldTransform(Trans);
+		}
+	}
+
+
+	void cModel::LRotate(float x, float y, float z)
+	{
+		mTransformation.Rotation += glm::vec3(x, y, z);
+		ModelTransform(mTransformation);
+		if (mPhysics)
+		{
+			btTransform Trans;
+			mRidigBody->getMotionState()->getWorldTransform(Trans);
+			btQuaternion rot;
+			rot.setEuler(mTransformation.Rotation.x, mTransformation.Rotation.y, mTransformation.Rotation.z);
+			Trans.setRotation(rot);
+			mRidigBody->getMotionState()->setWorldTransform(Trans);
+		}
+	}
+
+	void cModel::LScale(float x, float y, float z)
+	{
+		mTransformation.Scale += glm::vec3(x, y, z);
+		ModelTransform(mTransformation);
+		if (mPhysics)
+		{
+			btVector3 myscale = btVector3(mTransformation.Scale.x, mTransformation.Scale.y, mTransformation.Scale.z);
+			mRidigBody->getCollisionShape()->setLocalScaling(myscale);
+		}
+	}
+
+	void cModel::LApplyForce(float x, float y, float z)
+	{
+		if (mPhysics)
+			ApplyForce(glm::vec3(x, y, z));
+	}
+
+	void cModel::LApplyRelativeForce(float x, float y, float z)
+	{
+		if (mPhysics)
+			ApplyRelativeForce(glm::vec3(x, y, z));
+	}
+
+	void cModel::SetupScripting(const char* Path)
+	{
+		ScriptingId = ScriptingManager.InitScripting();
+		LuaState = ScriptingManager.GetLuaState(ScriptingId);
+		ScriptingManager.RegisterFunction(ScriptingId, "Move", std::bind(&cModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "Rotate", std::bind(&cModel::LRotate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "Scale", std::bind(&cModel::LScale, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce", std::bind(&cModel::LApplyForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce", std::bind(&cModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor", std::bind(&cModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+
+		luabridge::getGlobalNamespace(LuaState)
+			.beginNamespace("Pos")
+			.addVariable("x", &mTransformation.Translation.x)
+			.addVariable("y", &mTransformation.Translation.y)
+			.addVariable("z", &mTransformation.Translation.z)
+			.endNamespace();
+
+		ScriptingManager.LoadFile(ScriptingId, Path);
+
+		lua_pcall(LuaState, 0, 0, 0);
+
+		ScriptingManager.RunFunction(ScriptingId, "Create");
 	}
 
 	void cModel::SendEntity(cEntity* Entity)
-	{
-	}
-
-	void cModel::SendInputToScripting(std::function<bool(int)>)
 	{
 	}
 
@@ -178,8 +259,6 @@ namespace FlawedEngine
 		}
 
 		CalculateAABB(scene);
-		//mCollisionShape = CalculateMeshCollision(scene);
-
 
 		mDirectory = path.substr(0, path.find_last_of('\\'));
 

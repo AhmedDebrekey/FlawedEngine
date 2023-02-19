@@ -120,6 +120,7 @@ namespace FlawedEngine
 				if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar; }
 				if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, opt_fullscreen)) { dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
 				ImGui::Separator();
+
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenuBar();
@@ -134,6 +135,56 @@ namespace FlawedEngine
 			ImGui::Checkbox("Mouse Picking *Buggy*", &mMousePicking);
 			ObjectMan->mMousePicking = mMousePicking;
 
+			static char Path[20] = "";
+			{
+				bool Save = ImGui::Button("Save");
+				ImGui::SameLine();
+				ImGui::InputTextWithHint(std::string("##Save" + mSelectedEntity).c_str(), "File Name", Path, IM_ARRAYSIZE(Path));
+				if (ImGui::IsItemActive())
+				{
+					// The text box is  highlighted
+					mCamera->DisableInput();
+					ImGui::GetIO().WantCaptureKeyboard = true;
+				}
+				else
+				{
+					// The text box is not being edited or highlighted
+					mCamera->EnableInput();
+					ImGui::GetIO().WantCaptureKeyboard = false;
+				}
+				if (Save)
+				{
+					if (!((Path != NULL) && (Path[0] == '\0')))
+					{
+						ObjectMan->Save(Path);
+					}
+				}
+			}
+
+			{
+				bool Load = ImGui::Button("Load");
+				ImGui::SameLine();
+				ImGui::InputTextWithHint(std::string("##Load" + mSelectedEntity).c_str(), "File Name", Path, IM_ARRAYSIZE(Path));
+				if (ImGui::IsItemActive())
+				{
+					// The text box is  highlighted
+					mCamera->DisableInput();
+					ImGui::GetIO().WantCaptureKeyboard = true;
+				}
+				else
+				{
+					// The text box is not being edited or highlighted
+					mCamera->EnableInput();
+					ImGui::GetIO().WantCaptureKeyboard = false;
+				}
+				if (Load)
+				{
+					if (!((Path != NULL) && (Path[0] == '\0')))
+					{
+						ObjectMan->LoadSave(Path);
+					}
+				}
+			}
 			ImGui::End();
 
 			RenderViewport(); 
