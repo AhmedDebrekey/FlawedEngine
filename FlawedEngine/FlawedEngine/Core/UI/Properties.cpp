@@ -77,7 +77,7 @@ void FlawedEngine::cUIManager::RenderProperties()
 				ImGuizmo::DecomposeMatrixToComponents(mTmpMatrix, glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale));
 				DrawVec3("Rotation", rotation);
 				ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale), mTmpMatrix);
-				btQuaternion quat = btQuaternion(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
+				btQuaternion quat = btQuaternion(glm::radians(rotation.y), glm::radians(rotation.x), glm::radians(rotation.z));
 				Trans.setRotation(quat);
 				Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
 

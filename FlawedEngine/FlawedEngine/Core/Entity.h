@@ -85,9 +85,13 @@ namespace FlawedEngine
 		mTransformation = model;
 		glm::mat4 Model = glm::mat4(1.0f);
 		Model = glm::translate(Model, mTransformation.Translation);
-		Model = glm::rotate(Model, glm::radians(mTransformation.Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-		Model = glm::rotate(Model, glm::radians(mTransformation.Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-		Model = glm::rotate(Model, glm::radians(mTransformation.Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		glm::mat4 xRotation = glm::rotate(glm::mat4(1.0), glm::radians(mTransformation.Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+		glm::mat4 yRotation = glm::rotate(glm::mat4(1.0), glm::radians(mTransformation.Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+		glm::mat4 zRotation = glm::rotate(glm::mat4(1.0), glm::radians(mTransformation.Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+
+		Model *= zRotation * yRotation * xRotation;
+
 		Model = glm::scale(Model, mTransformation.Scale);
 
 		mModel = Model;
