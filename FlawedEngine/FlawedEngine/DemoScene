@@ -1,10 +1,106 @@
 {
     "objects": {
+        "CatWoman": {
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\catwoman_rigged_hatchxr\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "transform": {
+                "position": [
+                    2.418660879135132,
+                    0.22121380269527435,
+                    0.7707265019416809
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0384888648986816,
+                    1.038482904434204,
+                    1.0384927988052368
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Chair": {
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\GreenChair_01_4k.gltf\\GreenChair_01_4k.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "transform": {
+                "position": [
+                    2.4008445739746094,
+                    0.0,
+                    -1.729479193687439
+                ],
+                "rotation": [
+                    0.0,
+                    -54.232418060302734,
+                    0.0
+                ],
+                "scale": [
+                    3.210000514984131,
+                    3.2100000381469727,
+                    3.210000514984131
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "House(1)": {
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\house\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "transform": {
+                "position": [
+                    0.0,
+                    5.460324287414551,
+                    -13.17748737335205
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    5.880000114440918,
+                    5.880000114440918,
+                    5.880000114440918
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
         "Light(0)": {
             "filepath": [
                 ""
             ],
             "isCostume": [
+                false
+            ],
+            "physics": [
                 false
             ],
             "transform": {
@@ -28,68 +124,15 @@
                 5
             ]
         },
-        "Object(2)": {
-            "filepath": [
-                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\catwoman_rigged_hatchxr\\scene.gltf"
-            ],
-            "isCostume": [
-                true
-            ],
-            "transform": {
-                "position": [
-                    2.418660879135132,
-                    0.22121380269527435,
-                    0.7707265019416809
-                ],
-                "rotation": [
-                    -133.97592163085938,
-                    -83.63096618652344,
-                    114.03367614746094
-                ],
-                "scale": [
-                    1.038489818572998,
-                    1.0384925603866577,
-                    1.0384949445724487
-                ]
-            },
-            "type": [
-                0
-            ]
-        },
-        "Object(3)": {
-            "filepath": [
-                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\zombie\\scene.gltf"
-            ],
-            "isCostume": [
-                true
-            ],
-            "transform": {
-                "position": [
-                    -2.2131338119506836,
-                    0.010593562386929989,
-                    0.7123764753341675
-                ],
-                "rotation": [
-                    0.0,
-                    54.286354064941406,
-                    0.0
-                ],
-                "scale": [
-                    2.3399994373321533,
-                    2.3399999141693115,
-                    2.3399994373321533
-                ]
-            },
-            "type": [
-                0
-            ]
-        },
-        "Object(4)": {
+        "Road(1)": {
             "filepath": [
                 "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\road_straight\\scene.gltf"
             ],
             "isCostume": [
                 true
+            ],
+            "physics": [
+                false
             ],
             "transform": {
                 "position": [
@@ -112,56 +155,31 @@
                 0
             ]
         },
-        "Object(5)": {
+        "Zombie": {
             "filepath": [
-                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\house\\scene.gltf"
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\zombie\\scene.gltf"
             ],
             "isCostume": [
                 true
             ],
-            "transform": {
-                "position": [
-                    0.0,
-                    5.460324287414551,
-                    -13.17748737335205
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scale": [
-                    5.880000114440918,
-                    5.880000114440918,
-                    5.880000114440918
-                ]
-            },
-            "type": [
-                0
-            ]
-        },
-        "Object(6)": {
-            "filepath": [
-                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\GreenChair_01_4k.gltf\\GreenChair_01_4k.gltf"
-            ],
-            "isCostume": [
-                true
+            "physics": [
+                false
             ],
             "transform": {
                 "position": [
-                    2.4008445739746094,
-                    0.0,
-                    -1.729479193687439
+                    -2.2131338119506836,
+                    0.010593562386929989,
+                    0.7123764753341675
                 ],
                 "rotation": [
                     0.0,
-                    -54.232418060302734,
+                    54.286354064941406,
                     0.0
                 ],
                 "scale": [
-                    3.210000514984131,
-                    3.2100000381469727,
-                    3.210000514984131
+                    2.3399994373321533,
+                    2.3399999141693115,
+                    2.3399994373321533
                 ]
             },
             "type": [

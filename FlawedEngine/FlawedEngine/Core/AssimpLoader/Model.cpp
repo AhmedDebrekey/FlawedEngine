@@ -127,6 +127,8 @@ namespace FlawedEngine
 			mCollisionShape->setUserPointer((void*)mName.data());
 
 			isPhysicsSet = true;
+			mPhysics = true;
+			mDynamic = false;
 		}
 	}
 

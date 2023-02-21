@@ -252,6 +252,7 @@ namespace FlawedEngine
 			object["isCostume"] = { entity->isCostume };
 			object["type"] = { entity->Type };
 			object["filepath"] = { entity->mFilePath };
+			object["physics"] = { entity->mPhysics };
 			data["objects"][name] = object;
 		}
 
@@ -286,6 +287,12 @@ namespace FlawedEngine
 			}
 			auto Entity = GetObjectByName(name.c_str());
 			Entity->ModelTransform(Model);
+
+			if (object["physics"][0] == true)
+			{
+				Entity->SetPhysics(object["type"][0], GetPhysicsWorld());
+				Entity->setDynamic(false);
+			}
 		}
 	}
 
