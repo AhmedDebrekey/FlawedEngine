@@ -163,6 +163,10 @@ namespace FlawedEngine
 			.addFunction("IsKeyDown", func);
 	}
 
+	void cOBJModel::SetAABB(glm::vec3& Scale)
+	{
+	}
+
 	void cOBJModel::LSetColor(float x, float y, float z)
 	{
 		SetColor(glm::vec3(x, y, z));
@@ -239,7 +243,8 @@ namespace FlawedEngine
 			.endNamespace();
 
 		ScriptingManager.LoadFile(ScriptingId, Path);
-		
+		mScriptPath = Path;
+
 		lua_pcall(LuaState, 0, 0, 0);
 
 		ScriptingManager.RunFunction(ScriptingId, "Create");

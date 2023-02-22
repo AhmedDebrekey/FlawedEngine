@@ -80,7 +80,7 @@ namespace FlawedEngine
 		}
 		
 		float FoV = mFOV;
-		mProjectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, 0.1f, 200.f);
+		mProjectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, 0.1f, 10000.f);
 		mViewMatrix = glm::lookAt(
 			mPostion,
 			mPostion + mDirection,

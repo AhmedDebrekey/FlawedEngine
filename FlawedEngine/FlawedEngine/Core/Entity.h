@@ -32,12 +32,15 @@ namespace FlawedEngine
 		void ApplyRelativeForce(glm::vec3 Force);
 		void isInvisible() { ShouldRender = !ShouldRender; }
 		glm::vec3 GetAABB() { return glm::vec3(mhalfExtents.x(), mhalfExtents.y(), mhalfExtents.z()); }
+		virtual void SetAABB(glm::vec3& Scale) = 0;
 		virtual ~cEntity() = 0;
 
 		sModel GetModel() { return mTransformation; }
 		glm::mat4* GetModelMatrix() { return &mModel; }
 		glm::vec3* GetColor() { return &mMaterial.Color; }
 		int GetActivationState() { return mRidigBody->getActivationState(); }
+
+		std::string mScriptPath;
 
 		std::string mFilePath;
 		bool isCostume = false;

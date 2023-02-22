@@ -94,11 +94,11 @@ namespace FlawedEngine
 
 			btScalar mass(1.0);
 
-			btVector3 localInertia(0, 0, 0);
-			if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, localInertia);
+			mInertia = btVector3(0, 0, 0);
+			if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, mInertia);
 
 			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
-			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, localInertia);
+			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, mInertia);
 			rbInfo.m_startWorldTransform;
 			mRidigBody = new btRigidBody(rbInfo);
 
@@ -240,6 +240,8 @@ namespace FlawedEngine
 
 		ScriptingManager.LoadFile(ScriptingId, Path);
 
+		mScriptPath = Path;
+
 		lua_pcall(LuaState, 0, 0, 0);
 
 		ScriptingManager.RunFunction(ScriptingId, "Create");
@@ -297,6 +299,12 @@ namespace FlawedEngine
 
 		mhalfExtents = (overallMax - overallMin) / 2.f;
 	}
+
+	void cModel::SetAABB(glm::vec3& Scale)
+	{
+		//To be implemented
+	}
+
 
 	btCollisionShape* cModel::CalculateMeshCollision(const aiScene* scene)
 	{

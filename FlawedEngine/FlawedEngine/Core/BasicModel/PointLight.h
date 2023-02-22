@@ -20,6 +20,7 @@ namespace FlawedEngine
 		virtual void SetupScripting(const char*) override;
 		virtual void SendEntity(cEntity* Entity) override;
 		virtual void SendInputToScripting(std::function<bool(int)>) override;
+		virtual void SetAABB(glm::vec3& Scale) override;
 		glm::vec3 mPosition;
 	private:
 		cModelRenderer Renderer;

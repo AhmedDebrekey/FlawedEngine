@@ -266,6 +266,11 @@ namespace FlawedEngine
 		using json = nlohmann::json;
 		// read the JSON data from the file
 		std::ifstream file(FileName);
+		if (!file.is_open())
+		{
+			std::cout << "{ERROR} Can't Load " << FileName << std::endl;
+			return;
+		}
 		json data;
 		file >> data;
 
@@ -287,6 +292,11 @@ namespace FlawedEngine
 			}
 			auto Entity = GetObjectByName(name.c_str());
 			Entity->ModelTransform(Model);
+
+			if (object["type"][0] == PointLight)
+			{
+				ChangeLightPosition(name.c_str(), Model.Translation);
+			}
 
 			if (object["physics"][0] == true)
 			{

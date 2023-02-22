@@ -48,4 +48,7 @@ namespace FlawedEngine
 	void cCube::SetPhysics(eBasicObject Object, void* PhysicsWorld)
 	{
 	}
+	void cCube::SetAABB(glm::vec3& Scale)
+	{
+	}
 }

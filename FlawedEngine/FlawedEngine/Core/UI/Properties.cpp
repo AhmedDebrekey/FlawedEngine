@@ -106,22 +106,6 @@ void FlawedEngine::cUIManager::RenderProperties()
 				ImGui::Checkbox(std::string("Dynamic:##" + mSelectedEntity).c_str(), &Entity->mDynamic);
 				Entity->SetPhysics(Entity->Type, ObjectMan->GetPhysicsWorld());
 				Entity->setDynamic(Entity->mDynamic);
-				static bool showBoundingBox = false;
-				ImGui::Checkbox(std::string("AABB:##" + mSelectedEntity).c_str(), &showBoundingBox);
-				if (showBoundingBox)
-				{
-					ObjectMan->AddObject(Cube, "AABB");
-					auto AABB = ObjectMan->GetObjectByName("AABB");
-					glm::vec3 AABBTrans = Entity->GetAABB();
-
-					DrawVec3("AABB", AABBTrans);
-
-					auto EntityModel = Entity->GetModel();
-					EntityModel.Scale = AABBTrans;
-
-					AABB->ModelTransform(EntityModel);
-				}
-				
 			}
 			else
 				Entity->mDynamic = false;
@@ -136,6 +120,8 @@ void FlawedEngine::cUIManager::RenderProperties()
 		{
 			ObjectMan->RemoveObject(mSelectedEntity.c_str());
 		}
+
+		if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_Delete)) { ObjectMan->RemoveObject(mSelectedEntity.c_str()); }
 
 		bool Scripting = ImGui::Button("Add Script");
 		static char ScriptPath[64] = "";

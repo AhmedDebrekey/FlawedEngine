@@ -1,0 +1,693 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 258,
+      "max": [
+        0.5454599857330322,
+        0.10343699902296066,
+        0.19386400282382965
+      ],
+      "min": [
+        -0.5422220230102539,
+        -0.01834999956190586,
+        0.01396500039845705
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 3096,
+      "componentType": 5126,
+      "count": 258,
+      "max": [
+        0.9998070001602173,
+        0.9879714846611023,
+        0.8587872982025146
+      ],
+      "min": [
+        -0.9998680949211121,
+        -0.969323992729187,
+        -0.6726463437080383
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 258,
+      "max": [
+        0.8167380094528198,
+        0.9430209994316101
+      ],
+      "min": [
+        0.0033450000919401646,
+        0.14912299811840057
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 900,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 6192,
+      "componentType": 5126,
+      "count": 580,
+      "max": [
+        0.08871299773454666,
+        0.14859400689601898,
+        -0.5544599890708923
+      ],
+      "min": [
+        -0.0883369967341423,
+        -0.06987500190734863,
+        -0.7723169922828674
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 13152,
+      "componentType": 5126,
+      "count": 580,
+      "max": [
+        0.9990451335906982,
+        0.9999274611473083,
+        0.9997501373291016
+      ],
+      "min": [
+        -0.9989146590232849,
+        -0.9999998807907104,
+        -0.99513179063797
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 2064,
+      "componentType": 5126,
+      "count": 580,
+      "max": [
+        0.9972180128097534,
+        0.9974979758262634
+      ],
+      "min": [
+        0.0019030000548809767,
+        0.003963000141084194
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 3600,
+      "componentType": 5125,
+      "count": 2268,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 20112,
+      "componentType": 5126,
+      "count": 408,
+      "max": [
+        0.4941590130329132,
+        0.19531600177288055,
+        0.033886998891830444
+      ],
+      "min": [
+        -0.4908269941806793,
+        -0.11433099955320358,
+        -0.617688000202179
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 25008,
+      "componentType": 5126,
+      "count": 408,
+      "max": [
+        0.9988591074943542,
+        0.999775230884552,
+        0.7458810806274414
+      ],
+      "min": [
+        -0.9983543753623962,
+        -0.9993566274642944,
+        -0.9139670133590698
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 6704,
+      "componentType": 5126,
+      "count": 408,
+      "max": [
+        0.9893479943275452,
+        0.9494320154190063
+      ],
+      "min": [
+        0.017994999885559082,
+        0.00938200019299984
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 12672,
+      "componentType": 5125,
+      "count": 1938,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 29904,
+      "componentType": 5126,
+      "count": 217,
+      "max": [
+        0.22196899354457855,
+        0.24904599785804749,
+        1.040863037109375
+      ],
+      "min": [
+        -0.2319130003452301,
+        -0.04127199947834015,
+        0.8577769994735718
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 32508,
+      "componentType": 5126,
+      "count": 217,
+      "max": [
+        0.9951631426811218,
+        0.9896643757820129,
+        0.9963314533233643
+      ],
+      "min": [
+        -0.9941256642341614,
+        -0.9982512593269348,
+        -0.942634105682373
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 9968,
+      "componentType": 5126,
+      "count": 217,
+      "max": [
+        0.9425560235977173,
+        1.9970240592956543
+      ],
+      "min": [
+        0.0018570000538602471,
+        0.9990310072898865
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 20424,
+      "componentType": 5125,
+      "count": 828,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 35112,
+      "componentType": 5126,
+      "count": 297,
+      "max": [
+        0.2725839912891388,
+        0.17373600602149963,
+        1.0156049728393555
+      ],
+      "min": [
+        -0.2588590085506439,
+        -0.12628699839115143,
+        -0.0848810002207756
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 38676,
+      "componentType": 5126,
+      "count": 297,
+      "max": [
+        0.9987584948539734,
+        0.9999913573265076,
+        0.9828272461891174
+      ],
+      "min": [
+        -0.9985780119895935,
+        -0.9999944567680359,
+        -0.4619010090827942
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 11704,
+      "componentType": 5126,
+      "count": 297,
+      "max": [
+        0.9959819912910461,
+        0.9979720115661621
+      ],
+      "min": [
+        0.004015000071376562,
+        0.0022819999139755964
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 23736,
+      "componentType": 5125,
+      "count": 1284,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "sabeshkumar (https://sketchfab.com/sabeshkumar)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/cj-from-gta-sanandreas-ec17f6ada4b5441b9420233f785d81d8",
+      "title": "CJ from Gta Sanandreas"
+    },
+    "generator": "Sketchfab-12.68.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 28872,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 14080,
+      "byteOffset": 28872,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 42240,
+      "byteOffset": 42952,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 85192,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/lambert2_baseColor.png"
+    },
+    {
+      "uri": "textures/lambert5_baseColor.png"
+    },
+    {
+      "uri": "textures/lambert4_baseColor.png"
+    },
+    {
+      "uri": "textures/lambert3_baseColor.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "lambert2",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "lambert5",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 1
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "lambert4",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 2
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "lambert3",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 3
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.6
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "CJ_GTASA:Hands_lambert2_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "CJ_GTASA:Head_lambert5_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 5,
+            "POSITION": 4,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "CJ_GTASA:Torso_lambert2_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 9,
+            "POSITION": 8,
+            "TEXCOORD_0": 10
+          },
+          "indices": 11,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "CJ_GTASA:Feet_lambert4_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 13,
+            "POSITION": 12,
+            "TEXCOORD_0": 14
+          },
+          "indices": 15,
+          "material": 2,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "CJ_GTASA:Pants_lambert3_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 17,
+            "POSITION": 16,
+            "TEXCOORD_0": 18
+          },
+          "indices": 19,
+          "material": 3,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        0.8373704552650452,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.8593359191522056e-16,
+        -0.8373704552650452,
+        0.0,
+        0.0,
+        0.8373704552650452,
+        1.8593359191522056e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "a906cd8f22b341eeab50eed94da7c0db.fbx"
+    },
+    {
+      "children": [
+        3,
+        5,
+        7,
+        9,
+        11
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        1.066191554069519,
+        0.0,
+        1.0
+      ],
+      "name": "CJ_GTASA:Hands"
+    },
+    {
+      "mesh": 0,
+      "name": "CJ_GTASA:Hands_lambert2_0"
+    },
+    {
+      "children": [
+        6
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        1.066191554069519,
+        0.0,
+        1.0
+      ],
+      "name": "CJ_GTASA:Head"
+    },
+    {
+      "mesh": 1,
+      "name": "CJ_GTASA:Head_lambert5_0"
+    },
+    {
+      "children": [
+        8
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        1.066191554069519,
+        0.0,
+        1.0
+      ],
+      "name": "CJ_GTASA:Torso"
+    },
+    {
+      "mesh": 2,
+      "name": "CJ_GTASA:Torso_lambert2_0"
+    },
+    {
+      "children": [
+        10
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        1.066191554069519,
+        0.0,
+        1.0
+      ],
+      "name": "CJ_GTASA:Feet"
+    },
+    {
+      "mesh": 3,
+      "name": "CJ_GTASA:Feet_lambert4_0"
+    },
+    {
+      "children": [
+        12
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        1.066191554069519,
+        0.0,
+        1.0
+      ],
+      "name": "CJ_GTASA:Pants"
+    },
+    {
+      "mesh": 4,
+      "name": "CJ_GTASA:Pants_lambert3_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    },
+    {
+      "sampler": 0,
+      "source": 3
+    }
+  ]
+}

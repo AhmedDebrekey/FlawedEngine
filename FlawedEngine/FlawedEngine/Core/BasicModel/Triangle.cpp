@@ -46,4 +46,7 @@ namespace FlawedEngine
 	void cTriangle::SendInputToScripting(std::function<bool(int)>)
 	{
 	}
+	void cTriangle::SetAABB(glm::vec3& Scale)
+	{
+	}
 }

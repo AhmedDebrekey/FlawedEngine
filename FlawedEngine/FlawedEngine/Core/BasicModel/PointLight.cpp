@@ -60,5 +60,9 @@ namespace FlawedEngine
 	void cPointLight::SendInputToScripting(std::function<bool(int)>)
 	{
 	}
+
+	void cPointLight::SetAABB(glm::vec3& Scale)
+	{
+	}
 	
 }

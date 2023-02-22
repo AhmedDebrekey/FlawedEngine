@@ -1,0 +1,221 @@
+{
+    "objects": {
+        "CJ": {
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\cj_from_gta_sanandreas\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "transform": {
+                "position": [
+                    2.1710453033447266,
+                    -2.2774240970611572,
+                    1.3771514892578125
+                ],
+                "rotation": [
+                    -6.505400961032137e-06,
+                    -64.11768341064453,
+                    6.074109933251748e-06
+                ],
+                "scale": [
+                    2.8130791187286377,
+                    2.8130760192871094,
+                    2.8130791187286377
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Claud": {
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\PC Computer - Grand Theft Auto III - Claude\\Default Model\\claude.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "transform": {
+                "position": [
+                    -2.7272024154663086,
+                    0.16296853125095367,
+                    1.1834840774536133
+                ],
+                "rotation": [
+                    -124.17223358154297,
+                    -0.2919588088989258,
+                    91.75760650634766
+                ],
+                "scale": [
+                    2.378998279571533,
+                    2.3789968490600586,
+                    2.3789961338043213
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "CluckingBell": {
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\PC Computer - Grand Theft Auto San Andreas - Cluckin Bell San Fierro Exterior\\cluckinbell.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "transform": {
+                "position": [
+                    -3.2931742668151855,
+                    6.431796073913574,
+                    -35.565399169921875
+                ],
+                "rotation": [
+                    -179.99989318847656,
+                    -5.008955668017734e-06,
+                    -179.99989318847656
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Katie": {
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\PC Computer - Grand Theft Auto San Andreas - Katie Zahn\\Katie Zahn.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "transform": {
+                "position": [
+                    1.3084951639175415,
+                    -0.1742028295993805,
+                    3.576303005218506
+                ],
+                "rotation": [
+                    22.219337463378906,
+                    -6.993149668232945e-07,
+                    87.43285369873047
+                ],
+                "scale": [
+                    2.2047994136810303,
+                    2.204803466796875,
+                    2.2048027515411377
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "RestRoom": {
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\PC Computer - Grand Theft Auto III - Restroom\\toilet\\toilet.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "transform": {
+                "position": [
+                    0.0,
+                    1.327541708946228,
+                    -1.7800043821334839
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    2.3316001892089844,
+                    2.3316001892089844,
+                    2.3316001892089844
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Road": {
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\road_straight\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "transform": {
+                "position": [
+                    -15.205179214477539,
+                    -2.3091840744018555,
+                    -72.6131362915039
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.20000000298023224,
+                    0.20000000298023224,
+                    0.20000000298023224
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Tommy": {
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\PC Computer - Grand Theft Auto Vice City - Tommy Vercetti\\Tommy Vercetti.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "transform": {
+                "position": [
+                    0.0,
+                    0.10208022594451904,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    2.3609442710876465,
+                    2.3609442710876465,
+                    2.3609442710876465
+                ]
+            },
+            "type": [
+                0
+            ]
+        }
+    }
+}

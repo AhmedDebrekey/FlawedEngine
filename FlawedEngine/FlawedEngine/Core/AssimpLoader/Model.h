@@ -61,6 +61,7 @@ namespace FlawedEngine
     private:
         void loadModel(std::string path);
         void CalculateAABB(const aiScene* scene);
+        virtual void SetAABB(glm::vec3& Scale) override;
         btCollisionShape* CalculateMeshCollision(const aiScene* scene);
         void processNode(aiNode* node, const aiScene* scene);
         cMesh processMesh(aiMesh* mesh, const aiScene* scene);
@@ -75,6 +76,7 @@ namespace FlawedEngine
     private:
         std::string mName;
         bool isPhysicsSet = false;
+        btVector3 mInertia;
         btCollisionShape* mCollisionShape;
         btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
         btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
