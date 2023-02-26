@@ -192,6 +192,7 @@
     <ClCompile Include="Core\AssimpLoader\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\AssimpLoader\Animations\Bone.h" />
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\Engine.h" />
     <ClInclude Include="Core\Entity.h" />

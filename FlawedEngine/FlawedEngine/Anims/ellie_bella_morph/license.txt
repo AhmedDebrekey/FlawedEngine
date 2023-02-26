@@ -1,0 +1,11 @@
+Model Information:
+* title:	ELLIE Bella MORPH
+* source:	https://sketchfab.com/3d-models/ellie-bella-morph-75c75fc2f2bb41f187372e5d0b3243ca
+* author:	3designer (https://sketchfab.com/guionbaj0)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "ELLIE Bella MORPH" (https://sketchfab.com/3d-models/ellie-bella-morph-75c75fc2f2bb41f187372e5d0b3243ca) by 3designer (https://sketchfab.com/guionbaj0) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

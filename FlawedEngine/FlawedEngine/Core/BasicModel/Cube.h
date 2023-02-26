@@ -16,6 +16,8 @@ namespace FlawedEngine
 		virtual void setDynamic(bool isDynamic) override;
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
 		virtual void SetAABB(glm::vec3& Scale) override;
+		virtual void AddAnimation(const char*) override;
+
 	private:
 		cModelRenderer Renderer;
 	};

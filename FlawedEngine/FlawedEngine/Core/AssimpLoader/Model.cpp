@@ -4,9 +4,18 @@
 #include <assimp/postprocess.h>
 #include "../Models/stb_image.h"
 #include <Bullet/BulletCollision/CollisionShapes/btShapeHull.h>
+#include <GLFW/glfw3.h>
 
 namespace FlawedEngine
 {
+	cModel::cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes)
+		:mCollisionShapesArray(CollisionShapes), mName(Name)
+	{
+		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
+		loadModel(FilePath);
+		mFilePath = FilePath;
+		isCostume = true;
+	}
 	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
 	{
 
@@ -39,7 +48,15 @@ namespace FlawedEngine
 		{
 			for (uint32_t i = 0; i < mMeshes.size(); i++)
 			{
-				mMeshes[i].Draw(Trans, mMaterial, LightPositions, SkyBox, Shader);
+				std::vector<glm::mat4>	emptyVector;
+				if (mAnimator)
+				{
+					mMeshes[i].Draw(Trans, mMaterial, LightPositions, SkyBox, Shader, mAnimator->GetFinalBoneMatrices());
+				}
+				else
+				{
+					mMeshes[i].Draw(Trans, mMaterial, LightPositions, SkyBox, Shader, emptyVector);
+				}
 			}
 		}
 	}
@@ -47,6 +64,12 @@ namespace FlawedEngine
 	void cModel::Update()
 	{
 		ScriptingManager.RunFunction(ScriptingId, "Update");
+		float currentFrame = glfwGetTime();
+		mDeltaTime = currentFrame - mLastFrame;
+		mLastFrame = currentFrame;
+		if(mAnimator)
+			mAnimator->UpdateAnimation(mDeltaTime);
+
 	}
 
 	void cModel::SetCollisionShape(eBasicObject Object)
@@ -164,6 +187,17 @@ namespace FlawedEngine
 			.addFunction("IsKeyDown", func);
 	}
 
+	void cModel::AddAnimation(const char* Path)
+	{
+		if (mAnimation == nullptr)
+		{
+			mAnimation = new Animation;
+			mAnimation->Setup(Path, this, &importer);
+			mAnimator = new Animator;
+			mAnimator->Setup(mAnimation);
+		}
+	}
+
 	void cModel::LSetColor(float x, float y, float z)
 	{
 		SetColor(glm::vec3(x, y, z));
@@ -253,8 +287,7 @@ namespace FlawedEngine
 
 	void cModel::loadModel(std::string path)
 	{
-		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_PreTransformVertices);
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -354,6 +387,7 @@ namespace FlawedEngine
 		for (uint32_t i = 0; i < mesh->mNumVertices; i++)
 		{
 			sVertex Vertex;
+			SetVertexBoneDataToDefault(Vertex);
 
 			glm::vec3 Vector;
 			//Positions
@@ -420,6 +454,8 @@ namespace FlawedEngine
 
 		std::vector<sTexture> heightMaps = loadMaterialTextures(Material, aiTextureType_AMBIENT, "texture_height");
 		Textures.insert(Textures.end(), heightMaps.begin(), heightMaps.end());
+
+		ExtractBoneWeightForVertices(Vertecies, mesh, scene);
 
 		return cMesh(Vertecies, Indecides, Textures);
 	}
@@ -493,5 +529,64 @@ namespace FlawedEngine
 			}
 		}
 		return Textures;
+	}
+
+	void cModel::SetVertexBoneDataToDefault(sVertex& vertex)
+	{
+		for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+		{
+			vertex.mBoneIDs[i] = -1;
+			vertex.mWeights[i] = 0.0f;
+		}
+	}
+
+	void cModel::SetVertexBoneData(sVertex& vertex, int boneID, float weight)
+	{
+		for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
+		{
+			if (vertex.mBoneIDs[i] < 0)
+			{
+				vertex.mWeights[i] = weight;
+				vertex.mBoneIDs[i] = boneID;
+				break;
+			}
+		}
+	}
+
+
+	void cModel::ExtractBoneWeightForVertices(std::vector<sVertex>& vertices, aiMesh* mesh, const aiScene* scene)
+	{
+		auto& boneInfoMap = m_BoneInfoMap;
+		int& boneCount = m_BoneCounter;
+
+		for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
+		{
+			int boneID = -1;
+			std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
+			if (boneInfoMap.find(boneName) == boneInfoMap.end())
+			{
+				sBoneInfo newBoneInfo;
+				newBoneInfo.id = boneCount;
+				newBoneInfo.offset = ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
+				boneInfoMap[boneName] = newBoneInfo;
+				boneID = boneCount;
+				boneCount++;
+			}
+			else
+			{
+				boneID = boneInfoMap[boneName].id;
+			}
+			assert(boneID != -1);
+			auto weights = mesh->mBones[boneIndex]->mWeights;
+			int numWeights = mesh->mBones[boneIndex]->mNumWeights;
+
+			for (int weightIndex = 0; weightIndex < numWeights; ++weightIndex)
+			{
+				int vertexId = weights[weightIndex].mVertexId;
+				float weight = weights[weightIndex].mWeight;
+				assert(vertexId <= vertices.size());
+				SetVertexBoneData(vertices[vertexId], boneID, weight);
+			}
+		}
 	}
 }

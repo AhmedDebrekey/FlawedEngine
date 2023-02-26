@@ -64,5 +64,9 @@ namespace FlawedEngine
 	void cPointLight::SetAABB(glm::vec3& Scale)
 	{
 	}
+
+	void cPointLight::AddAnimation(const char*)
+	{
+	}
 	
 }

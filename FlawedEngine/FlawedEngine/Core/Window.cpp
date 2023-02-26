@@ -36,6 +36,7 @@ namespace FlawedEngine
 		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	#endif
 	}
 
@@ -53,7 +54,9 @@ namespace FlawedEngine
 		gladLoadGL();
 		UpdateViewPort(mWidth, mHeight);
 		glEnable(GL_DEPTH_TEST);
-	#endif
+		glEnable(GL_BLEND);
+		glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+#endif
 	}
 
 	void cWindow::UpdateViewPort(uint32_t Width, uint32_t Height)

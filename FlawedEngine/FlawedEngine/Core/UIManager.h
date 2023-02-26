@@ -33,6 +33,7 @@ namespace FlawedEngine
 
 		bool isKeyDown(int key);
 
+
 	private:
 		uint32_t FrameBuffer;
 		uint32_t TextureColorBuffer;

@@ -1,7 +1,10 @@
 #include "Mesh.h"
 #include <iostream>
+
 namespace FlawedEngine
 {
+#define MAX_BONES 100
+
 	cMesh::cMesh(std::vector<sVertex> vertices, std::vector<unsigned int> indices, std::vector<sTexture> textures)
 	{
 		mVertices = vertices;
@@ -11,8 +14,9 @@ namespace FlawedEngine
 		setupMesh();
 	}
 
-	void cMesh::Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox, cShader& Shader)
+	void cMesh::Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox, cShader& Shader, std::vector<glm::mat4> FinalBoneMatricies)
 	{
+        
         Shader.Bind();
         glBindVertexArray(VAO);
         unsigned int diffuseNr = 1;
@@ -83,6 +87,20 @@ namespace FlawedEngine
         Shader.SetVec3("material.specular", Mat.Specular);
         Shader.SetFloat("material.shininess", Mat.Shininess);
 
+        /*for (int i = 0; i < FinalBoneMatricies.size(); ++i)
+            Shader.SetMat4f("finalBonesMatrices[" + std::to_string(i) + "]", FinalBoneMatricies[i]);*/
+
+       
+        if (!FinalBoneMatricies.empty()) {
+            glBindBuffer(GL_UNIFORM_BUFFER, UBO);
+            glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4) * MAX_BONES, &FinalBoneMatricies[0]);
+            Shader.SetBool("UBOSET", true);
+        }
+        else
+        {
+            Shader.SetBool("UBOSET", false);
+        }
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glActiveTexture(GL_TEXTURE0 + mTextures.size());
         glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
@@ -118,6 +136,11 @@ namespace FlawedEngine
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(unsigned int), &mIndices[0], GL_STATIC_DRAW);
+
+        glGenBuffers(1, &UBO);
+        glBindBuffer(GL_UNIFORM_BUFFER, UBO);
+        glBufferData(GL_UNIFORM_BUFFER, (sizeof(glm::mat4) * MAX_BONES), nullptr, GL_DYNAMIC_DRAW);
+        glBindBufferBase(GL_UNIFORM_BUFFER, 0, UBO);
 
         // vertex Positions
         glEnableVertexAttribArray(0);

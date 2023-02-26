@@ -163,6 +163,10 @@ namespace FlawedEngine
 			.addFunction("IsKeyDown", func);
 	}
 
+	void cOBJModel::AddAnimation(const char*)
+	{
+	}
+
 	void cOBJModel::SetAABB(glm::vec3& Scale)
 	{
 	}

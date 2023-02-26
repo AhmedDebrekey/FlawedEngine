@@ -51,4 +51,7 @@ namespace FlawedEngine
 	void cCube::SetAABB(glm::vec3& Scale)
 	{
 	}
+	void cCube::AddAnimation(const char*)
+	{
+	}
 }

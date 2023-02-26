@@ -78,7 +78,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 
 	fileDialog.Display();
 	static int Objects = 0;
-	fileDialog.SetTypeFilters({ ".obj", ".gltf", ".fbx"});
+	fileDialog.SetTypeFilters({ ".obj", ".gltf", ".fbx", ".dae" });
 
 	if (fileDialog.HasSelected())
 	{

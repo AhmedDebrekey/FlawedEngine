@@ -46,6 +46,9 @@ namespace FlawedEngine
 	void cTriangle::SendInputToScripting(std::function<bool(int)>)
 	{
 	}
+	void cTriangle::AddAnimation(const char*)
+	{
+	}
 	void cTriangle::SetAABB(glm::vec3& Scale)
 	{
 	}

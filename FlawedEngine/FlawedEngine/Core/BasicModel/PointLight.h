@@ -21,7 +21,9 @@ namespace FlawedEngine
 		virtual void SendEntity(cEntity* Entity) override;
 		virtual void SendInputToScripting(std::function<bool(int)>) override;
 		virtual void SetAABB(glm::vec3& Scale) override;
+		virtual void AddAnimation(const char*) override;
 		glm::vec3 mPosition;
+
 	private:
 		cModelRenderer Renderer;
 		glm::vec3 mColor;

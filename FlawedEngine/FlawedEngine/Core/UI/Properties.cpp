@@ -1,4 +1,5 @@
 #include "../UIManager.h"
+#include <ImGui/imfilebrowser.h>
 
 void FlawedEngine::cUIManager::RenderProperties()
 {
@@ -123,28 +124,37 @@ void FlawedEngine::cUIManager::RenderProperties()
 
 		if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_Delete)) { ObjectMan->RemoveObject(mSelectedEntity.c_str()); }
 
-		bool Scripting = ImGui::Button("Add Script");
-		static char ScriptPath[64] = "";
-		ImGui::SameLine();
+		static ImGui::FileBrowser ScriptDialog;
 
-		ImGui::InputTextWithHint(std::string("##UpdateScript" + mSelectedEntity).c_str(), "File Path", ScriptPath, IM_ARRAYSIZE(ScriptPath));
-		if (ImGui::IsItemActive())
 		{
-			// The text box is  highlighted
-			mCamera->DisableInput();
-			ImGui::GetIO().WantCaptureKeyboard = true;
+			if (ImGui::Button("Add Script"))	
+				ScriptDialog.Open();
+
+			ScriptDialog.Display();
+			if (ScriptDialog.HasSelected())
+			{
+				std::cout << "Selected filename" << ScriptDialog.GetSelected().string() << std::endl;
+				Entity->SetupScripting(ScriptDialog.GetSelected().string().c_str());
+				Entity->SendInputToScripting(std::bind(&cUIManager::isKeyDown, this, std::placeholders::_1));
+				ScriptDialog.ClearSelected();
+			}
 		}
-		else
+		static ImGui::FileBrowser AnimationDialog;
+
 		{
-			// The text box is not being edited or highlighted
-			mCamera->EnableInput();
-			ImGui::GetIO().WantCaptureKeyboard = false;
+			if (ImGui::Button("Add Animation"))
+				AnimationDialog.Open();
+
+			AnimationDialog.Display();
+			AnimationDialog.SetTypeFilters({ ".obj", ".gltf", ".fbx", ".dae" });
+			if (AnimationDialog.HasSelected())
+			{
+				std::cout << "Selected filename" << AnimationDialog.GetSelected().string() << std::endl;
+				Entity->AddAnimation(AnimationDialog.GetSelected().string().c_str());
+				AnimationDialog.ClearSelected();
+			}
 		}
-		if (!((ScriptPath != NULL) && (ScriptPath[0] == '\0')) && Scripting)
-		{
-			Entity->SetupScripting(ScriptPath);
-			Entity->SendInputToScripting(std::bind(&cUIManager::isKeyDown, this, std::placeholders::_1));
-		}
+
 	}
 	ImGui::End();
 }
