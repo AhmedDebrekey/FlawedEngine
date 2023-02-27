@@ -28,15 +28,6 @@ namespace FlawedEngine
 		auto Entity = ObjectMan.GetObjectByName("Scripting");
 		Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
 		Entity->SetupScripting("FunctionalScripting.Lua");*/
-
-		ObjectMan.LoadObject("Anims/pilot_avatar/scene.gltf", "Pilot");
-		auto Pilly = ObjectMan.GetObjectByName("Pilot");
-		Pilly->AddAnimation("Anims/pilot_avatar/scene.gltf");
-		
-		ObjectMan.LoadObject("Anims/big_smoke_is_sexy/scene.gltf", "BigSmoke");
-		auto Biggy = ObjectMan.GetObjectByName("BigSmoke");
-		Biggy->AddAnimation("Anims/big_smoke_is_sexy/scene.gltf");
-
 	}
 
 	bool cScene::isKeyDown(int key)

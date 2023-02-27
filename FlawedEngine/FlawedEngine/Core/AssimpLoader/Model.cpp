@@ -5,6 +5,8 @@
 #include "../Models/stb_image.h"
 #include <Bullet/BulletCollision/CollisionShapes/btShapeHull.h>
 #include <GLFW/glfw3.h>
+#include "Animations/Animation.h"
+#include "Animations/Animator.h"
 
 namespace FlawedEngine
 {

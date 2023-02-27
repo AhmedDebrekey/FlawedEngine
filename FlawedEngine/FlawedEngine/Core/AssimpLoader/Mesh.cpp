@@ -101,6 +101,7 @@ namespace FlawedEngine
             Shader.SetBool("UBOSET", false);
         }
 
+        glBindBufferBase(GL_UNIFORM_BUFFER, 0, UBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glActiveTexture(GL_TEXTURE0 + mTextures.size());
         glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
@@ -112,6 +113,7 @@ namespace FlawedEngine
             glBindTexture(GL_TEXTURE_2D, 0);
         }
         glActiveTexture(GL_TEXTURE0);
+        glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind the UBO after drawing the object
         glBindVertexArray(0);
         Shader.Unbind();
     }
