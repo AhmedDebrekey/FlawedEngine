@@ -24,4 +24,3 @@ namespace FlawedEngine
         void setupMesh();
 	};
 }
-

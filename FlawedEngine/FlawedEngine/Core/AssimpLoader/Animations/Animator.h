@@ -41,7 +41,7 @@ namespace FlawedEngine
 
         void CalculateBoneTransform(const AssimpNodeData* node, glm::mat4 parentTransform)
         {
-            std::string nodeName = node->name;
+            const std::string& nodeName = node->name;
             glm::mat4 nodeTransform = node->transformation;
 
             std::shared_ptr<Bone> Bone = m_CurrentAnimation->FindBone(nodeName);

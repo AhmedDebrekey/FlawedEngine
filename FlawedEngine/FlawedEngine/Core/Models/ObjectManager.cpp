@@ -238,7 +238,6 @@ namespace FlawedEngine
 	{
 		using json = nlohmann::json;
 
-		// create a JSON object
 		json data;
 
 		// serialize all the objects in the scene
@@ -249,14 +248,16 @@ namespace FlawedEngine
 			object["transform"]["position"] = { entity->mTransformation.Translation.x,entity->mTransformation.Translation.y, entity->mTransformation.Translation.z };
 			object["transform"]["rotation"] = { entity->mTransformation.Rotation.x,entity->mTransformation.Rotation.y, entity->mTransformation.Rotation.z};
 			object["transform"]["scale"] = { entity->mTransformation.Scale.x, entity->mTransformation.Scale.y, entity->mTransformation.Scale.z };
+			object["color"] = { entity->GetColor()->x, entity->GetColor()->y, entity->GetColor()->z};
 			object["isCostume"] = { entity->isCostume };
 			object["type"] = { entity->Type };
 			object["filepath"] = { entity->mFilePath };
 			object["physics"] = { entity->mPhysics };
+			object["animation"]["hasAnimation"] = {	entity->HasAnimation };
+			object["animation"]["animationPath"] = { entity->AnimationPath };
 			data["objects"][name] = object;
 		}
 
-		// write the JSON data to a file
 		std::ofstream file(FileName);
 		file << data.dump(4);
 	}
@@ -264,7 +265,6 @@ namespace FlawedEngine
 	void cObjectManager::LoadSave(const std::string& FileName)
 	{
 		using json = nlohmann::json;
-		// read the JSON data from the file
 		std::ifstream file(FileName);
 		if (!file.is_open())
 		{
@@ -290,18 +290,28 @@ namespace FlawedEngine
 				std::string Filepath = object["filepath"][0];
 				LoadObject(Filepath.c_str(), name.c_str());
 			}
+
 			auto Entity = GetObjectByName(name.c_str());
+
 			Entity->ModelTransform(Model);
+			Entity->SetColor(glm::vec3(object["color"][0], object["color"][1], object["color"][2]));
 
 			if (object["type"][0] == PointLight)
 			{
 				ChangeLightPosition(name.c_str(), Model.Translation);
+				ChangeLightColor(name.c_str(), glm::vec3(object["color"][0], object["color"][1], object["color"][2]));
 			}
 
 			if (object["physics"][0] == true)
 			{
 				Entity->SetPhysics(object["type"][0], GetPhysicsWorld());
 				Entity->setDynamic(false);
+			}
+
+			if (object["animation"]["hasAnimation"][0] == true)
+			{
+				std::string AnimPath = object["animation"]["animationPath"][0];
+				Entity->AddAnimation(AnimPath.c_str());
 			}
 		}
 	}

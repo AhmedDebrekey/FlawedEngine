@@ -1,6 +1,63 @@
 {
     "objects": {
+        "BigSmoke": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\big_smoke_is_sexy\\scene.gltf"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\big_smoke_is_sexy\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "transform": {
+                "position": [
+                    -0.6429877877235413,
+                    -2.2691845893859863,
+                    2.288877487182617
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.030000029131770134,
+                    0.030000029131770134,
+                    0.030000029131770134
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
         "CJ": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
             "filepath": [
                 "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\cj_from_gta_sanandreas\\scene.gltf"
             ],
@@ -12,9 +69,9 @@
             ],
             "transform": {
                 "position": [
-                    2.1710453033447266,
-                    0.2509984076023102,
-                    1.3771514892578125
+                    4.270813465118408,
+                    0.25042253732681274,
+                    4.050235748291016
                 ],
                 "rotation": [
                     -90.00013732910156,
@@ -32,6 +89,19 @@
             ]
         },
         "Claud": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
             "filepath": [
                 "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\PC Computer - Grand Theft Auto III - Claude\\Default Model\\claude.obj"
             ],
@@ -43,28 +113,41 @@
             ],
             "transform": {
                 "position": [
-                    -2.7272024154663086,
-                    0.16296853125095367,
-                    1.1834840774536133
+                    -4.975625514984131,
+                    0.09696697443723679,
+                    0.6480672955513
                 ],
                 "rotation": [
-                    -124.17223358154297,
-                    -0.2919588088989258,
+                    -103.80044555664063,
+                    -0.29196134209632874,
                     91.75760650634766
                 ],
                 "scale": [
-                    2.378998279571533,
-                    2.3789968490600586,
-                    2.3789961338043213
+                    2.378997802734375,
+                    2.3789925575256348,
+                    2.378998041152954
                 ]
             },
             "type": [
                 0
             ]
         },
-        "CluckingBell": {
+        "ConfusedPilot": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\pilot_avatar\\scene.gltf"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
             "filepath": [
-                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\PC Computer - Grand Theft Auto San Andreas - Cluckin Bell San Fierro Exterior\\cluckinbell.obj"
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\pilot_avatar\\scene.gltf"
             ],
             "isCostume": [
                 true
@@ -74,19 +157,19 @@
             ],
             "transform": {
                 "position": [
-                    -3.2931742668151855,
-                    6.431796073913574,
-                    -35.565399169921875
+                    2.7422871589660645,
+                    -2.340848445892334,
+                    1.29470694065094
                 ],
                 "rotation": [
-                    -179.99989318847656,
-                    -5.008955668017734e-06,
-                    -179.99989318847656
+                    0.0,
+                    -74.57609558105469,
+                    0.0
                 ],
                 "scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    2.429999828338623,
+                    2.429999828338623,
+                    2.429999828338623
                 ]
             },
             "type": [
@@ -94,6 +177,19 @@
             ]
         },
         "Katie": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
             "filepath": [
                 "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\PC Computer - Grand Theft Auto San Andreas - Katie Zahn\\Katie Zahn.obj"
             ],
@@ -105,26 +201,83 @@
             ],
             "transform": {
                 "position": [
-                    1.3084951639175415,
-                    -0.1742028295993805,
-                    3.576303005218506
+                    5.5373311042785645,
+                    -0.11083322763442993,
+                    4.89286470413208
                 ],
                 "rotation": [
-                    22.219337463378906,
-                    -6.993149668232945e-07,
+                    59.783912658691406,
+                    -6.27238705419586e-07,
                     87.43285369873047
                 ],
                 "scale": [
                     2.2047994136810303,
-                    2.204803466796875,
-                    2.2048027515411377
+                    2.2048048973083496,
+                    2.2048048973083496
                 ]
             },
             "type": [
                 0
             ]
         },
+        "Light(1)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                0.10625957697629929,
+                0.48715683817863464,
+                0.6254826188087463
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "transform": {
+                "position": [
+                    -3.085867404937744,
+                    5.418183326721191,
+                    1.5629456043243408
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.21000000834465027,
+                    0.21000000834465027,
+                    0.21000000834465027
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
         "RestRoom": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
             "filepath": [
                 "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\PC Computer - Grand Theft Auto III - Restroom\\toilet\\toilet.obj"
             ],
@@ -155,38 +308,20 @@
                 0
             ]
         },
-        "Road": {
-            "filepath": [
-                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\road_straight\\scene.gltf"
-            ],
-            "isCostume": [
-                true
-            ],
-            "physics": [
-                false
-            ],
-            "transform": {
-                "position": [
-                    -15.205179214477539,
-                    -2.3091840744018555,
-                    -72.6131362915039
+        "Tommy": {
+            "animation": {
+                "animationPath": [
+                    ""
                 ],
-                "rotation": [
-                    -90.0,
-                    -0.0,
-                    0.0
-                ],
-                "scale": [
-                    0.1999976485967636,
-                    0.1999998837709427,
-                    0.1999998837709427
+                "hasAnimation": [
+                    false
                 ]
             },
-            "type": [
-                0
-            ]
-        },
-        "Tommy": {
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
             "filepath": [
                 "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\PC Computer - Grand Theft Auto Vice City - Tommy Vercetti\\Tommy Vercetti.obj"
             ],
@@ -198,9 +333,9 @@
             ],
             "transform": {
                 "position": [
-                    0.0,
-                    0.10208022594451904,
-                    0.0
+                    -2.539297342300415,
+                    0.10256311297416687,
+                    -1.4158341884613037
                 ],
                 "rotation": [
                     0.0,

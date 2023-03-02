@@ -30,6 +30,7 @@ void main()
     if(UBOSET)
     {
         vec4 totalPosition = vec4(0.0f);
+        vec3 totalNormal = vec3(0.0f);
         for(int i = 0 ; i < MAX_BONE_INFLUENCE ; i++)
         {
             if(boneIds[i] == -1) 
@@ -41,18 +42,21 @@ void main()
             }
             vec4 localPosition = finalBonesMatrices[boneIds[i]] * vec4(aPos,1.0f);
             totalPosition += localPosition * weights[i];
-            vec3 localNormal = mat3(finalBonesMatrices[boneIds[i]]) * aNormal;
+             mat3 localRotation = mat3(finalBonesMatrices[boneIds[i]]);
+            totalNormal += weights[i] * (localRotation * aNormal);
        }
-       gl_Position = Projection * View * Model * totalPosition;
+           gl_Position = Projection * View * Model * totalPosition;
+           vec4 worldPosition = Model * totalPosition;
+           FragPos = worldPosition.xyz;
+           Normal = normalize(mat3(transpose(inverse(Model))) * totalNormal);
     }
     else
     {
         gl_Position = Projection * View * Model * vec4(aPos,1.0f);
+        FragPos = vec3(Model * vec4(aPos, 1.0));
+        Normal = mat3(transpose(inverse(Model))) * aNormal;
     }
-   
-    FragPos = vec3(Model * vec4(aPos, 1.0));
-    Normal = mat3(transpose(inverse(Model))) * aNormal;
+
     Position = vec3(Model * vec4(aPos, 1.0));
     TexCoords = aTexCoords;    
-
 }     

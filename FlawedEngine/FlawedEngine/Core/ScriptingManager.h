@@ -48,5 +48,3 @@ namespace FlawedEngine
 		cScriptingManager(cScriptingManager&);
 	};
 }
-
-

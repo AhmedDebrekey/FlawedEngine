@@ -115,4 +115,3 @@ namespace FlawedEngine
         float mDeltaTime = 0, mLastFrame = 0;
     };
 }
-

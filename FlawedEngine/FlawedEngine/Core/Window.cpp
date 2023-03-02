@@ -52,6 +52,8 @@ namespace FlawedEngine
 		}
 		glfwMakeContextCurrent(mWindow);
 		gladLoadGL();
+		// Disable VSync
+		glfwSwapInterval(0);
 		UpdateViewPort(mWidth, mHeight);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_BLEND);

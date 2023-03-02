@@ -197,6 +197,8 @@ namespace FlawedEngine
 			mAnimation->Setup(Path, this, &importer);
 			mAnimator = new Animator;
 			mAnimator->Setup(mAnimation);
+			HasAnimation = true;
+			AnimationPath = Path;
 		}
 	}
 

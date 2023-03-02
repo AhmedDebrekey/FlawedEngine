@@ -46,6 +46,9 @@ namespace FlawedEngine
 		std::string mFilePath;
 		bool isCostume = false;
 
+		bool HasAnimation = false;
+		std::string AnimationPath;
+
 		sMaterial mMaterial;
 
 		glm::mat4 mModel;
