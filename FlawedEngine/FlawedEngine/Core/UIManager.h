@@ -46,7 +46,6 @@ namespace FlawedEngine
 		std::string mSelectedEntity;
 		int mGizmoType = ImGuizmo::OPERATION::TRANSLATE;
 		bool mMousePicking = false;
-
 	private:
 		cObjectManager* ObjectMan;
 		cpCamera* mCamera;

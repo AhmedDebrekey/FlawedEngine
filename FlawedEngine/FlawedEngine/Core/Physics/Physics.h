@@ -11,7 +11,7 @@ namespace FlawedEngine {
 		~cPhysics();
 
 		void* Init();
-		void Update();
+		void Update(float dt);
 
 		btAlignedObjectArray<btCollisionShape*>* GetCollisionShapesArray() { return &collisionShapes; }
 

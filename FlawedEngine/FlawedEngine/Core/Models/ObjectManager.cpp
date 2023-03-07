@@ -28,7 +28,8 @@ namespace FlawedEngine
 	void cObjectManager::RenderObjects(sTransform& tCamera)
 	{
 		this->tCamera = tCamera;
-		RenderSkyBox();
+		if(mShouldRenderSkyBox)
+			RenderSkyBox();
 
 		for (auto& Object : SceneObjects)
 		{
@@ -252,6 +253,8 @@ namespace FlawedEngine
 			object["isCostume"] = { entity->isCostume };
 			object["type"] = { entity->Type };
 			object["filepath"] = { entity->mFilePath };
+			object["scripting"]["hasScript"] = { entity->HasScripting };
+			object["scripting"]["scriptPath"] = { entity->mScriptPath };
 			object["physics"] = { entity->mPhysics };
 			object["animation"]["hasAnimation"] = {	entity->HasAnimation };
 			object["animation"]["animationPath"] = { entity->AnimationPath };
@@ -308,12 +311,24 @@ namespace FlawedEngine
 				Entity->setDynamic(false);
 			}
 
+			if (object["scripting"]["hasScript"][0] == true)
+			{
+				std::string ScriptPath = object["scripting"]["scriptPath"][0];
+				Entity->SetupScripting(ScriptPath.c_str());
+				Entity->SendInputToScripting(std::bind(&cObjectManager::isKeyDown, this, std::placeholders::_1));
+			}
+
 			if (object["animation"]["hasAnimation"][0] == true)
 			{
 				std::string AnimPath = object["animation"]["animationPath"][0];
 				Entity->AddAnimation(AnimPath.c_str());
 			}
 		}
+	}
+
+	bool cObjectManager::isKeyDown(int key)
+	{
+		if (ImGui::IsKeyDown((ImGuiKey)key)) { return true; }
 	}
 
 	void cObjectManager::AddLight(const char* Name, sLight& Props)

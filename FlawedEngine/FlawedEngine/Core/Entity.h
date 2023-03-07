@@ -41,6 +41,7 @@ namespace FlawedEngine
 		glm::vec3* GetColor() { return &mMaterial.Color; }
 		int GetActivationState() { return mRidigBody->getActivationState(); }
 
+		bool HasScripting = false;
 		std::string mScriptPath;
 
 		std::string mFilePath;

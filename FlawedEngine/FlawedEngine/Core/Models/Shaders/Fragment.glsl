@@ -70,7 +70,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     {
         ambient = light.ambient * vec3(material.ambient);
         diffuse = light.diffuse * diff * vec3(material.diffuse);
-        specular = light.specular * spec * vec3(material.specular);
+        //specular = light.specular * spec * vec3(material.specular);
     }
     else
     { 

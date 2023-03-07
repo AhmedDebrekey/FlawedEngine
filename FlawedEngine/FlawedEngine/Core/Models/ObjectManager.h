@@ -31,11 +31,13 @@ namespace FlawedEngine
 		void ChangeLightQuadratic(const char* Name, float Quadratic);
 		void ChangeLightConstant(const char* Name, float Constant);
 		void ChangeLightLinear(const char* Name, float Linear);
-		void ChangeName(const char* OldName, const char* NewName); 
+		void ChangeName(const char* OldName, const char* NewName);
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
+		void ToggleSkyBox() { mShouldRenderSkyBox = !mShouldRenderSkyBox; };
 
 		void Save(const std::string& FileName);
 		void LoadSave(const std::string& FileName);
+		bool isKeyDown(int key);
 
 		bool mMousePicking = true;
 
@@ -61,6 +63,7 @@ namespace FlawedEngine
 		cShader mSkyboxShader;
 		unsigned int mskyboxVAO, mskyboxVBO;
 		uint32_t mCubeMapTexture;
+		bool mShouldRenderSkyBox = true;
 
 	public:
 		static cObjectManager& get();

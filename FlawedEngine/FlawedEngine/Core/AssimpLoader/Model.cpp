@@ -3,7 +3,10 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "../Models/stb_image.h"
-#include <Bullet/BulletCollision/CollisionShapes/btShapeHull.h>
+
+#include <Bullet/BulletCollision/CollisionShapes/btShapeHull.h>.
+#include <Bullet/btBulletCollisionCommon.h>
+
 #include <GLFW/glfw3.h>
 #include "Animations/Animation.h"
 #include "Animations/Animator.h"
@@ -111,7 +114,8 @@ namespace FlawedEngine
 			glm::vec3 Rotation = mTransformation.Rotation;
 			glm::vec3 Scale = mTransformation.Scale;
 
-			SetCollisionShape(Object);
+			//SetCollisionShape(Object);
+			mCollisionShape = CalculateMeshCollision(scene);
 
 			btTransform ObjectTransform;
 			ObjectTransform.setIdentity();
@@ -120,7 +124,7 @@ namespace FlawedEngine
 			btScalar mass(1.0);
 
 			mInertia = btVector3(0, 0, 0);
-			if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, mInertia);
+			//if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, mInertia);
 
 			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, mInertia);
@@ -279,6 +283,7 @@ namespace FlawedEngine
 		ScriptingManager.LoadFile(ScriptingId, Path);
 
 		mScriptPath = Path;
+		HasScripting = true;
 
 		lua_pcall(LuaState, 0, 0, 0);
 
@@ -291,7 +296,7 @@ namespace FlawedEngine
 
 	void cModel::loadModel(std::string path)
 	{
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals);
+		scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -299,7 +304,7 @@ namespace FlawedEngine
 			return;
 		}
 
-		CalculateAABB(scene);
+		//CalculateAABB(scene);
 
 		mDirectory = path.substr(0, path.find_last_of('\\'));
 
@@ -345,27 +350,26 @@ namespace FlawedEngine
 
 	btCollisionShape* cModel::CalculateMeshCollision(const aiScene* scene)
 	{
-		btConvexHullShape* convexHull = new btConvexHullShape();
+		// Create a Bullet Physics mesh object
+		btTriangleMesh* triangleMesh = new btTriangleMesh();
 
-		// Extract the mesh data from the Assimp scene
-		for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
-			aiMesh* mesh = scene->mMeshes[i];
-			for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
-				aiVector3D vertex = mesh->mVertices[j];
-				convexHull->addPoint(btVector3(vertex.x, vertex.y, vertex.z));
+		// Convert the mesh data to Bullet Physics format
+		for (unsigned int i = 0; i < scene->mNumMeshes; i++)
+		{
+			const aiMesh* mesh = scene->mMeshes[i];
+			for (unsigned int j = 0; j < mesh->mNumFaces; j++)
+			{
+				const aiFace& face = mesh->mFaces[j];
+				btVector3 vertex1(mesh->mVertices[face.mIndices[0]].x, mesh->mVertices[face.mIndices[0]].y, mesh->mVertices[face.mIndices[0]].z);
+				btVector3 vertex2(mesh->mVertices[face.mIndices[1]].x, mesh->mVertices[face.mIndices[1]].y, mesh->mVertices[face.mIndices[1]].z);
+				btVector3 vertex3(mesh->mVertices[face.mIndices[2]].x, mesh->mVertices[face.mIndices[2]].y, mesh->mVertices[face.mIndices[2]].z);
+				triangleMesh->addTriangle(vertex1, vertex2, vertex3);
 			}
 		}
 
-		// Generate the convex hull using Bullet Physics
-		btShapeHull* hull = new btShapeHull(convexHull);
-		hull->buildHull(convexHull->getMargin());
-		btConvexHullShape* result = new btConvexHullShape(
-			(btScalar*)hull->getVertexPointer(),
-			hull->numVertices());
-		delete hull;
-		delete convexHull;
-
-		return result;
+		// Create a collision shape from the mesh object
+		btBvhTriangleMeshShape* shape = new btBvhTriangleMeshShape(triangleMesh, true);
+		return shape;
 	}
 
 	void cModel::processNode(aiNode* node, const aiScene* scene)
@@ -450,7 +454,7 @@ namespace FlawedEngine
 		std::vector<sTexture> diffuseMaps = loadMaterialTextures(Material, aiTextureType_DIFFUSE, "texture_diffuse");
 		Textures.insert(Textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-		std::vector<sTexture> specularMaps = loadMaterialTextures(Material, aiTextureType_SPECULAR, "texture_specular");
+		std::vector<sTexture> specularMaps = loadMaterialTextures(Material, aiTextureType_METALNESS, "texture_specular");
 		Textures.insert(Textures.end(), specularMaps.begin(), specularMaps.end());
 
 		std::vector<sTexture> normalMaps = loadMaterialTextures(Material, aiTextureType_HEIGHT, "texture_normal");

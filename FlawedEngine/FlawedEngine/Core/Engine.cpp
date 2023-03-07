@@ -20,15 +20,21 @@ namespace FlawedEngine
 
 	void cEngine::Run()
 	{
+		float DeltaTime = 0;
+		float LastFrame = 0;
 		while (!EngineWindow.ShouldClose())
 		{
+			float currentFrame = glfwGetTime();
+			DeltaTime = currentFrame - LastFrame;
+			LastFrame = currentFrame;
+
 			EngineWindow.Update();
 			
 			UI.UpdateUI();
 			ActiveScene->UpdateViewport(UI.GetViewportSize(), UI.GetViewportPos());
 			OnEvent();
 			
-			Physics.Update();
+			Physics.Update(DeltaTime);
 
 			ActiveScene->Render();
 

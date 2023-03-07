@@ -248,6 +248,7 @@ namespace FlawedEngine
 
 		ScriptingManager.LoadFile(ScriptingId, Path);
 		mScriptPath = Path;
+		HasScripting = true;
 
 		lua_pcall(LuaState, 0, 0, 0);
 

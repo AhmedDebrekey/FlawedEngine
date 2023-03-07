@@ -105,6 +105,7 @@ namespace FlawedEngine
         lua_State* LuaState = nullptr;
     private:
         Assimp::Importer importer;
+        const aiScene* scene;
         std::map<std::string, sBoneInfo> m_BoneInfoMap; 
         int m_BoneCounter = 0;
         void SetVertexBoneDataToDefault(sVertex& vertex);

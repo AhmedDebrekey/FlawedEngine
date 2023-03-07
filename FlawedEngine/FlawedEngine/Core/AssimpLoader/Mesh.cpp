@@ -82,6 +82,7 @@ namespace FlawedEngine
         Shader.SetMat4f("View", Trans.View);
         Shader.SetMat4f("Model", Trans.Model);
         Shader.SetVec3("viewPos", Trans.Position);
+
         Shader.SetVec3("material.ambient", Mat.Color);
         Shader.SetVec3("material.diffuse", Mat.Diffuse);
         Shader.SetVec3("material.specular", Mat.Specular);

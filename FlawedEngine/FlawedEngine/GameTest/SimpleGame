@@ -1,0 +1,108 @@
+{
+    "objects": {
+        "Cube(0)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                0.0,
+                1.0,
+                0.17760610580444336
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    true
+                ],
+                "scriptPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\FunctionalScripting.Lua"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -13.200732231140137,
+                    3.7160704135894775,
+                    16.978443145751953
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Object(0)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\GameTest\\Assets\\SimpleLevel\\Level.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    -12.936203002929688,
+                    0.0,
+                    -2.2412006855010986
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    2.4000000953674316,
+                    2.4000000953674316,
+                    2.4000000953674316
+                ]
+            },
+            "type": [
+                0
+            ]
+        }
+    }
+}

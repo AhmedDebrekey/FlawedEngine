@@ -30,42 +30,75 @@ void FlawedEngine::cUIManager::RenderGizmo()
 			ImGuizmo::Manipulate(glm::value_ptr(mCamera->View()), glm::value_ptr(mCamera->Projection()),
 				(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, mTmpMatrix);
 
+			
+
 			if (ImGuizmo::IsUsing())
 			{
-				glm::vec3 translation, rotation, scale;
-				ImGuizmo::DecomposeMatrixToComponents(mTmpMatrix, glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
-
-				Model.Translation = translation;
-				Model.Rotation = rotation;
-				Model.Scale = scale;
-
-				if (!Entity->mPhysics)
+				if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_Tab))
 				{
-					Entity->ModelTransform(Model);
+					static int Copies = 0;
+
+					if (Entity->isCostume)
+					{
+						char buffer[20];
+						sprintf_s(buffer, "Copy(%i)", Copies);
+						ObjectMan->LoadObject(Entity->mFilePath.c_str(), buffer);
+						mSelectedEntity = buffer;
+						Copies++;
+
+						auto newEntity = ObjectMan->GetObjectByName(buffer);
+						newEntity->mTransformation = Entity->mTransformation;
+
+					}
+					else
+					{
+						char buffer[20];
+						sprintf_s(buffer, "Copy(%i)", Copies);
+						ObjectMan->AddObject(Entity->Type, buffer);
+						mSelectedEntity = buffer;
+						Copies++;
+
+						auto newEntity = ObjectMan->GetObjectByName(buffer);
+						newEntity->mTransformation = Entity->mTransformation;
+					}
 				}
 				else
 				{
-					btTransform Trans;
-					Entity->mRidigBody->getMotionState()->getWorldTransform(Trans);
+					glm::vec3 translation, rotation, scale;
+					ImGuizmo::DecomposeMatrixToComponents(mTmpMatrix, glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale));
 
-					//Translation......
-					btVector3 FinalTranslation(translation.x, translation.y, translation.z);
-					Trans.setOrigin(FinalTranslation);
+					Model.Translation = translation;
+					Model.Rotation = rotation;
+					Model.Scale = scale;
 
-					//Rotation........
-					btQuaternion quat = btQuaternion(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
-					Trans.setRotation(quat);
-					Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
-
-					//Scale..........
-					btVector3 myscale = btVector3(scale.x, scale.y, scale.z);
-					Entity->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
-
-					if (!Entity->mDynamic)
+					if (!Entity->mPhysics)
 					{
-						Entity->mRidigBody->setWorldTransform(Trans);
+						Entity->ModelTransform(Model);
 					}
-					Entity->ModelTransform(Model);
+					else
+					{
+						btTransform Trans;
+						Entity->mRidigBody->getMotionState()->getWorldTransform(Trans);
+
+						//Translation......
+						btVector3 FinalTranslation(translation.x, translation.y, translation.z);
+						Trans.setOrigin(FinalTranslation);
+
+						//Rotation........
+						btQuaternion quat = btQuaternion(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
+						Trans.setRotation(quat);
+						Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
+
+						//Scale..........
+						btVector3 myscale = btVector3(scale.x, scale.y, scale.z);
+						Entity->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
+
+						if (!Entity->mDynamic)
+						{
+							Entity->mRidigBody->setWorldTransform(Trans);
+						}
+						Entity->ModelTransform(Model);
+					}
 				}
 			}
 		}

@@ -132,8 +132,12 @@ namespace FlawedEngine
 			ImGui::Text("Move: W,A,S,D,E,Q");
 			ImGui::Text("Gizmo: R,T,G");
 			ImGui::Text("Right Click SceneHierachy To Create Entities");
+			ImGui::Text("Press TAB And Move Gizmo To \nCopy Selected Entity");
+			ImGui::Separator();
 			ImGui::Checkbox("Mouse Picking *Buggy*", &mMousePicking);
 			ObjectMan->mMousePicking = mMousePicking;
+			if(ImGui::Button("RenderSkyBox"))
+				ObjectMan->ToggleSkyBox();
 
 			static char Path[20] = "";
 			{

@@ -1,0 +1,71 @@
+V-Sync II
+Så vilka sync-varianter finns det nuförtiden?
+Svar:
+Nvidia G-Sync, Vesa Adaptive Sync, Amd Freesync HDMI och HDMI VRR
+Vad skiljer dessa varianter åt?
+Svar:
+Nvidia G-Sync fungerar över displayport och fungerar endast med ett begränsat antal skärmar som har en G-Sync modul. Vesa Adaptive Sync fungerar också över Displayport och den finns på flera tusen skärm modeller. AMD Freesync HDMI fungerar endast med amd gpu:er över hdmi. 
+HDMI VRR fungerar som det låter endast över hdmi och främst kan man finna den hos nyare tv-apparater. 
+Förklara vad ”tearing” är för något.
+Svar:
+Tearing sker när man har V-Sync off. Det sker på grund av att hastigheterna mellan skärmen och grafikkortet inte är detsamma. Grafikkortet växlar bild buffert när den är redo oavsett vart skärmen befinner sig i sin uppdateringscykel. Det betyder att vid samma tillfälle så kan det finnas innehåll från två eller fler bildrutor. Det innebär att det är förskjutna i förhållande till varandra och det kallas för tearing.
+Hur betecknar (kraven) nVidia G-Sync Premium?
+Svar:
+Efter januari 2019 började Nvidia beteckna klassiska G-sync modulen för G-Sync Premium. Det betyder att de krav som fanns för G-sync modul också gäller G-sync premium. Kraven för g-sync premium är att det måste vara via DisplayPort, sedan måste det även vara HBR2 hastighet på Displayporten. Andra krav är att du måste ha ett grafikkort från Nvidia som är GTX 6xx eller nyare. 
+Det finns numer något som heter G-Sync Ultimate, hur skiljer det sig från Premium?
+Svar:
+Det som skiljer sig är att ultimate utmärks med HBR3 bandbredd istället för HBR2 på premium. Det betyder att det nu räcker till 4k/120hz och 4k/144 hz istället för 2560 x 1440/165 hz och 3440 x 1440/120 hz. Ultimate modellen är även försedd med funktioner som HDR och högre ljusstyrka. 
+
+
+Vad är G-Sync Compatible?
+Svar:
+G-sync compatible innebär inte att det är en nvidia skärm med en g sync modul utan troligtvis en skärm med Vesa adaptive sync eller Amd freesync. Grejen med g sync compatible är att de uppfyller kraven för g sync men har inte själva modulen för g sync. Det är som att säga att g sync kan fungera men om det inte gör det så är det inte nvidias fel. Hade det däremot varit en skärm med g sync modul hade nvidia sagt att den ska fungera. 
+Så vilka är kraven för G-Sync/Freesync/VESA Adaptive? 
+Svar:
+Kraven för G-sync är att det måste vara en Gpu som är från GTX 600-serien(kepler) eller nyare och att det måste vara över displayport. För mobila enheter med nvidia gpu så krävs det att gpun är gtx 980m, 970m, 965m eller nyare.
+För Freesync och vesa adaptive gäller det att som hos g-sync är genom displayport, att amd-gpu är baserad på andra generationens Graphics Core Next. Det betyder att grafikkortet ska vara baserad på den senaste arkitekturen Radeon DNA. Andra krav är att skärmen måste ha funktionen aktiverad i sina menyer och att grafikkortet behöver aktivera funktionen i sina drivrutiner. 
+Freesync finns i något som heter Premium och Premium Pro, hur skiljer det sig från vanliga Freesync?
+Svar:
+Skillnaden mellan dessa tre tekniker ligger främst i deras prestandanivåer och kraven som ställs på de enheter som använder de. 
+
+Freesync är den grundläggande tekniken som AMD utvecklade. Den stöds av de flesta AMD-grafikkorten och kräver en freesync kompatibel skärm. Freesync ser till att det blir lägre latens mindre flicker och att det inte blir tearing. 
+Sedan finns det Freesync premium. Det är en förbättrad version av den grundläggande freesync-tekniken. Ett krav med Freesync premium är att det kräver en uppdateringsfrekvens på 120 Hz eller högre vid drift med FHD. Den ger lägre latens men även en lägre framerate compensation(LFC) vilket innebär att tekniken fungerar även om bildhastigheten faller under skärmens lägsta uppdateringsfrekvens. Sedan erbjuder den även samma saker som vanliga Freesync. 
+Därefter har vi Freesync premium pro eller också känd under gamla namnet Freesync 2 HDR. FreeSync Premium Pro är den högsta nivån av FreeSync-teknik och kräver en skärm med ännu högre prestanda än både FreeSync och FreeSync Premium. Den stödjer lägre latens och högre bildhastighet än både FreeSync och FreeSync Premium. FreeSync premium pro lovar också 400 Nits ljusstyrka med HDR och aktiverar automatiskt LFC om spelets bildfrekvens faller under skärmens uppdateringsfrekvens. 
+
+
+
+Är det några problem med VESA Adaptive Sync/AMD Freesync? Vilka då?
+Svar:
+Typiska fel eller problem som man också kan kalla det för hos Adaptive Sync och FreeSync skärmar är att man vid låga frekvenser kan stöta på flimmer ryckighet. Man kan även stöta på varierande eftersläp nivåer.
+
+nVidias G-Sync kan numer köras på skärmar som stödjer VESA Adaptive Sync. Vilka krav ställs det för att detta ska fungera?
+Svar:
+Det krävs ett grafikkort som är från Pascal eller Turing generation vilket betyder att det ska vara Gtx 1xxx, RTX 2xxx eller nyare. Det måste även vara på windows 10 genom displayport. 
+
+
+När nVidia certifierar en skärm som stödjer VESA Adaptive Sync, ställer de dessa krav.
+Svar:
+Ja
+Nvidias lista över godkända skärmar för adaptiv synk enligt metod 1, 2 och 4. Dessa skärmar kommer automatisk fungera med adaptiv synkronisering, så länge som ditt Nvidia-grafikkort också följer kraven för den synkroniserings metod som används.
+Kan det vara så att en skärm du tittar på har stöd för och funkar med nVidias G-sync, fast nVidia inte har certifierat skärmen? Hur kan det funka? Förklara.
+Svar:
+Ja det stämmer. En skärm kan fungera med gsync även fast den inte är certifierad. Detta kallas få för G-sync compatible vilket betyder att den inte har g-sync modulen men fungerar med g-sync ändå. För att något ska vara g-sync compatible måste det valideras av Nvidia och deras krav är att funktionen endast skärmar som levereras med adaptiv synkronisering ON valideras och blir godkända av Nvidia. Om skärmen har ett för snävt frekvensspann blir den inte godkänd. Det betyder att bara för att den inte är validerad betyder det inte att det inte kommer att fungera, du kanske bara behöver byta adaptiv synkronisering från OFF till ON. 
+Vilka är kraven för AMD Freesync över HDMI?
+Svar:
+Det finns två krav och de är att AMD-gpu ska kunna köra freesync och att skärmen eller tvn ska ha funktionen freesync över hdmi.
+
+
+Om min skärm bara har en AMD Freesync-märkning, finns det någon chans att den kommer att funka med ”över HDMI” också?  Vad finns det för undantag?
+Svar:
+Den kan också funka med Hdmi men inte alltid. FreeSync över hdmi fungerar bara för AMD gpuer och inte nvidia. Det är lite upp till om skärmtillverkaren själv vill att det ska fungera eller inte men oftast så bör FreeSync även fungera över hdmi. 
+De enda kraven som finns för freesync över hdmi är att det ska vara en amd gpu som kan köra freesync och tv eller skärmen ska ha freesync över hdmi. 
+HDMI VRR, vilka krav har det för att funka?
+Svar:
+För tillfället så är det bara Nvidia som har kommit med krav och besked att deras GPU:er fungerar med HDMi VRR, AMD har alltså inte kommit med något besked. Kraven för HDMI VRR via Nvidia är att det ska vara Gtx 16xx-serien, Rtx 20xx eller nyare och sedan ska det vara den aktuella versionen av Windows och de senaste drivrutinerna. Anledningen till att det inte fungerar på Gtx 10xx-serien är för att pascal hårdvaran var ute på marknaden långt innan Vrr funktionen fanns på papper. Kort sagt är Hdmi vrr metoden för ny för pascal hårdvaran som finns i gtx 10xx serien. 
+Funkar det med både AMD och nVidia? Varför? Förklara.
+Svar:
+För tillfället så är det endast Nvidia tillsammans med LG kommit ut med att funktioner till deras tv-apparater som heter G-sync med är HDMI VRR funktionen. AMD har förmodligen inte bestämt sig för att använda funktionen än. AMD har inte kommit med något besked om hur de kommer använda funktionen vilket kan låta konstigt för många då konsoler som Xbox one x/s baseras på gpu:er som fungerar med HDMI VRR.
+
+AMD är kompatibel med HDMI VRR. AMD:s Radeon Software Adrenaline 2020 drivrutin var den första inom AMD  som implementerade HDMI VRR kompatibilitet. Både grafikkortet och skärmen måste ha HDMI VRR standarden för att det ska fungera med AMD GPU. 
+
+

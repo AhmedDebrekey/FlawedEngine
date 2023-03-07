@@ -44,12 +44,12 @@ namespace FlawedEngine
 		overlappingPairCache = new btDbvtBroadphase();
 		solver = new btSequentialImpulseConstraintSolver;
 		dynamicsWorld = new btDiscreteDynamicsWorld(dispatcher, overlappingPairCache, solver, collisionConfiguration);
-		dynamicsWorld->setGravity(btVector3(0.0, -0.9, 0));
+		dynamicsWorld->setGravity(btVector3(0.0, -9.81, 0));
 		return dynamicsWorld;
 	}
 
-	void cPhysics::Update()
+	void cPhysics::Update(float dt)
 	{
-		dynamicsWorld->stepSimulation(1.f / 60.f, 10);
+		dynamicsWorld->stepSimulation(dt, 10);
 	}
 }
