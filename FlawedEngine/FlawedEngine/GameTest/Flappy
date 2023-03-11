@@ -1,6 +1,6 @@
 {
     "objects": {
-        "Player": {
+        "Pipe": {
             "animation": {
                 "animationPath": [
                     ""
@@ -21,7 +21,59 @@
                 false
             ],
             "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    true
+                ],
+                "scriptPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\GameTest\\Scripts\\PipeMover.Lua"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    -9.379871368408203
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    4.467389106750488,
+                    1.0
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Player": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                0.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
                 false
+            ],
+            "physics": [
+                true
             ],
             "scripting": {
                 "hasScript": [
@@ -34,8 +86,8 @@
             "transform": {
                 "position": [
                     0.0,
-                    4.544025421142578,
-                    31.479887008666992
+                    -0.2359619140625,
+                    26.508529663085938
                 ],
                 "rotation": [
                     0.0,
@@ -44,60 +96,8 @@
                 ],
                 "scale": [
                     1.0,
-                    2.390868902206421,
-                    0.7235128283500671
-                ]
-            },
-            "type": [
-                0
-            ]
-        },
-        "Scene": {
-            "animation": {
-                "animationPath": [
-                    ""
-                ],
-                "hasAnimation": [
-                    false
-                ]
-            },
-            "color": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "filepath": [
-                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\GameTest\\Assets\\SimpleLevel\\Level.obj"
-            ],
-            "isCostume": [
-                true
-            ],
-            "physics": [
-                true
-            ],
-            "scripting": {
-                "hasScript": [
-                    false
-                ],
-                "scriptPath": [
-                    ""
-                ]
-            },
-            "transform": {
-                "position": [
-                    0.5969873666763306,
-                    -2.7120003700256348,
-                    10.307044982910156
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scale": [
-                    2.5299999713897705,
-                    2.5299999713897705,
-                    2.5299999713897705
+                    1.0,
+                    1.0
                 ]
             },
             "type": [

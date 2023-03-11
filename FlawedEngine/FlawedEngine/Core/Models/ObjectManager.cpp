@@ -308,6 +308,7 @@ namespace FlawedEngine
 			if (object["physics"][0] == true)
 			{
 				Entity->SetPhysics(object["type"][0], GetPhysicsWorld());
+				Entity->mPhysics = object["physics"][0];
 				Entity->setDynamic(false);
 			}
 

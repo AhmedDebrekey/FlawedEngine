@@ -180,14 +180,42 @@ namespace FlawedEngine
 	{
 		mTransformation.Translation += glm::vec3(x, y, z);
 		ModelTransform(mTransformation);
+
 		if (mPhysics)
 		{
 			btTransform Trans;
-			Trans.setOrigin(btVector3(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z));
+			mRidigBody->getMotionState()->getWorldTransform(Trans);
+			btVector3 Origin = Trans.getOrigin();
+			btVector3 FinalTranslation(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z);
+			Trans.setOrigin(FinalTranslation);
 			mRidigBody->getMotionState()->setWorldTransform(Trans);
+			if (!mDynamic)
+			{
+				mRidigBody->setWorldTransform(Trans);
+			}
+			//std::cout << "Psx" << " X: " << mTransformation.Translation.x << " Y: " << mTransformation.Translation.y << " Z: " << mTransformation.Translation.z << std::endl;
 		}
 	}
 
+	void cOBJModel::LSetPosition(float x, float y, float z)
+	{
+		mTransformation.Translation = glm::vec3(x, y, z);
+		ModelTransform(mTransformation);
+
+		if (mPhysics)
+		{
+			btTransform Trans;
+			mRidigBody->getMotionState()->getWorldTransform(Trans);
+			btVector3 Origin = Trans.getOrigin();
+			btVector3 FinalTranslation(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z);
+			Trans.setOrigin(FinalTranslation);
+			mRidigBody->getMotionState()->setWorldTransform(Trans);
+			if (!mDynamic)
+			{
+				mRidigBody->setWorldTransform(Trans);
+			}
+		}
+	}
 
 	void cOBJModel::LRotate(float x, float y, float z)
 	{
@@ -206,7 +234,7 @@ namespace FlawedEngine
 
 	void cOBJModel::LScale(float x, float y, float z)
 	{
-		mTransformation.Scale += glm::vec3(x, y, z);
+		mTransformation.Scale = glm::vec3(x, y, z);
 		ModelTransform(mTransformation);
 		if (mPhysics)
 		{
@@ -227,26 +255,61 @@ namespace FlawedEngine
 			ApplyRelativeForce(glm::vec3(x, y, z));
 	}
 
+	float cOBJModel::LGetX()
+	{
+		if (mPhysics)
+		{
+			const btTransform trans = mRidigBody->getWorldTransform(); 
+			const btVector3 pos = trans.getOrigin();
+			
+			return pos.getX();
+		}
+		return mTransformation.Translation.x;
+	}
+
+	float cOBJModel::LGetY()
+	{
+		if (mPhysics)
+		{
+			const btTransform trans = mRidigBody->getWorldTransform();
+			const btVector3 pos = trans.getOrigin();
+
+			return pos.getY();
+		}
+		return mTransformation.Translation.y;
+	}
+
+	float cOBJModel::LGetZ()
+	{
+		if (mPhysics)
+		{
+			const btTransform trans = mRidigBody->getWorldTransform();
+			const btVector3 pos = trans.getOrigin();
+
+			return pos.getZ();
+		}
+		return mTransformation.Translation.z;
+	}
+
 
 	void cOBJModel::SetupScripting(const char* Path)
 	{
 		ScriptingId = ScriptingManager.InitScripting();
 		LuaState = ScriptingManager.GetLuaState(ScriptingId);
-		ScriptingManager.RegisterFunction(ScriptingId, "Move", std::bind(&cOBJModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "Rotate", std::bind(&cOBJModel::LRotate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "Scale", std::bind(&cOBJModel::LScale, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce", std::bind(&cOBJModel::LApplyForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce", std::bind(&cOBJModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor", std::bind(&cOBJModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 
-		luabridge::getGlobalNamespace(LuaState)
-			.beginNamespace("Pos")
-			.addVariable("x", &mTransformation.Translation.x)
-			.addVariable("y", &mTransformation.Translation.y)
-			.addVariable("z", &mTransformation.Translation.z)
-			.endNamespace();
+		ScriptingManager.RegisterFunction(ScriptingId, "Move",						std::bind(&cOBJModel::LMove,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "SetPos",					std::bind(&cOBJModel::LSetPosition,			this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "Rotate",					std::bind(&cOBJModel::LRotate,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "Scale",						std::bind(&cOBJModel::LScale,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce",				std::bind(&cOBJModel::LApplyForce,			this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce",		std::bind(&cOBJModel::LApplyRelativeForce,	this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor",				std::bind(&cOBJModel::LSetColor,			this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getX",	std::bind(&cOBJModel::LGetX,				this));
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getY",	std::bind(&cOBJModel::LGetY,				this));
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getZ",	std::bind(&cOBJModel::LGetZ,				this));
 
 		ScriptingManager.LoadFile(ScriptingId, Path);
+
 		mScriptPath = Path;
 		HasScripting = true;
 

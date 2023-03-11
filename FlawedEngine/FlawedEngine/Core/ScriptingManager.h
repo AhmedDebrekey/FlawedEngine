@@ -30,6 +30,7 @@ namespace FlawedEngine
 		void RunFunction(int ID, const std::string& FuncName);
 
 		void RegisterFunction(int ID, const std::string& FuncName, std::function<void(float, float, float)> Func);
+		void RegisterFunctionInNamespace(int ID, const std::string& Namespace, const std::string& FuncName, std::function<float()> Func);
 	private:
 		int mNextStateId;
 		std::unordered_map<int, lua_State*> mStates;

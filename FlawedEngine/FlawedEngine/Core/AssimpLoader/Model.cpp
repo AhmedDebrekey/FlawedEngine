@@ -114,8 +114,8 @@ namespace FlawedEngine
 			glm::vec3 Rotation = mTransformation.Rotation;
 			glm::vec3 Scale = mTransformation.Scale;
 
-			//SetCollisionShape(Object);
-			mCollisionShape = CalculateMeshCollision(scene);
+			SetCollisionShape(Object);
+			//mCollisionShape = CalculateMeshCollision(scene);
 
 			btTransform ObjectTransform;
 			ObjectTransform.setIdentity();
@@ -124,7 +124,7 @@ namespace FlawedEngine
 			btScalar mass(1.0);
 
 			mInertia = btVector3(0, 0, 0);
-			//if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, mInertia);
+			if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, mInertia);
 
 			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, mInertia);
@@ -262,6 +262,42 @@ namespace FlawedEngine
 			ApplyRelativeForce(glm::vec3(x, y, z));
 	}
 
+	float cModel::LGetX()
+	{
+		if (mPhysics)
+		{
+			const btTransform trans = mRidigBody->getWorldTransform();
+			const btVector3 pos = trans.getOrigin();
+
+			return pos.getX();
+		}
+		return mTransformation.Translation.x;
+	}
+
+	float cModel::LGetY()
+	{
+		if (mPhysics)
+		{
+			const btTransform trans = mRidigBody->getWorldTransform();
+			const btVector3 pos = trans.getOrigin();
+
+			return pos.getY();
+		}
+		return mTransformation.Translation.y;
+	}
+
+	float cModel::LGetZ()
+	{
+		if (mPhysics)
+		{
+			const btTransform trans = mRidigBody->getWorldTransform();
+			const btVector3 pos = trans.getOrigin();
+
+			return pos.getZ();
+		}
+		return mTransformation.Translation.z;
+	}
+
 	void cModel::SetupScripting(const char* Path)
 	{
 		ScriptingId = ScriptingManager.InitScripting();
@@ -272,13 +308,9 @@ namespace FlawedEngine
 		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce", std::bind(&cModel::LApplyForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce", std::bind(&cModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor", std::bind(&cModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-
-		luabridge::getGlobalNamespace(LuaState)
-			.beginNamespace("Pos")
-			.addVariable("x", &mTransformation.Translation.x)
-			.addVariable("y", &mTransformation.Translation.y)
-			.addVariable("z", &mTransformation.Translation.z)
-			.endNamespace();
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getX", std::bind(&cModel::LGetX, this));
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getY", std::bind(&cModel::LGetY, this));
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getZ", std::bind(&cModel::LGetZ, this));
 
 		ScriptingManager.LoadFile(ScriptingId, Path);
 
@@ -304,7 +336,7 @@ namespace FlawedEngine
 			return;
 		}
 
-		//CalculateAABB(scene);
+		CalculateAABB(scene);
 
 		mDirectory = path.substr(0, path.find_last_of('\\'));
 

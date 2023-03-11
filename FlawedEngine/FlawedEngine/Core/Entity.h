@@ -61,7 +61,7 @@ namespace FlawedEngine
 		uint32_t TextureID;
 
 		btRigidBody* mRidigBody = nullptr;
-		bool mDynamic = true;
+		bool mDynamic = false;
 		bool mPhysics = false;
 
 		float mMass = 0.0f;

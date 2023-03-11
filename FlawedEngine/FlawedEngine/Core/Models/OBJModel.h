@@ -33,11 +33,15 @@ namespace FlawedEngine
 		std::string mName;
 
 		void LMove(float x, float y, float z);
+		void LSetPosition(float x, float y, float z);
 		void LSetColor(float x, float y, float z);
 		void LRotate(float x, float y, float z);
 		void LScale(float x, float y, float z);
 		void LApplyForce(float x, float y, float z);
 		void LApplyRelativeForce(float x, float y, float z);
+		float LGetX();
+		float LGetY();
+		float LGetZ();
 		lua_State* LuaState = nullptr;
 
 	private:

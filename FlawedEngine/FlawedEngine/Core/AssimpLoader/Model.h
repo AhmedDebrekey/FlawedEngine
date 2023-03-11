@@ -75,6 +75,10 @@ namespace FlawedEngine
 
         void LApplyRelativeForce(float x, float y, float z);
 
+        float LGetX();
+        float LGetY();
+        float LGetZ();
+
         std::map<std::string, sBoneInfo>& GetBoneInfoMap() { return m_BoneInfoMap; }
         int& GetBoneCount() { return m_BoneCounter; }
 

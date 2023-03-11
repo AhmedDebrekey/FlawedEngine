@@ -139,6 +139,7 @@ void FlawedEngine::cUIManager::RenderProperties()
 				ScriptDialog.ClearSelected();
 			}
 		}
+
 		static ImGui::FileBrowser AnimationDialog;
 
 		{
