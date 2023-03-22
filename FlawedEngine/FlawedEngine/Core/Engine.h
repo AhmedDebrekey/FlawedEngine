@@ -24,12 +24,10 @@ namespace FlawedEngine
 	private:
 		cWindow& EngineWindow = cWindow::get();
 		cUIManager& UI = cUIManager::get();
-
 		cPhysics Physics;//make into singleton
 
-		std::vector<std::shared_ptr<cScene>> Scenes;
-		std::shared_ptr<cScene> ActiveScene;
-
-		void* PhysicsWorld = nullptr;
+		std::vector<std::shared_ptr<cScene>> mScenes;
+		std::shared_ptr<cScene> mActiveScene;
+		void* mPhysicsWorld = nullptr;
 	};
 }

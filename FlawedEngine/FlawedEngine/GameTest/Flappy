@@ -1,5 +1,57 @@
 {
     "objects": {
+        "Light(0)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                0.8571428656578064,
+                0.640113115310669,
+                0.14561498165130615
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    -2.8217248916625977,
+                    -0.4201388359069824,
+                    0.43072474002838135
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.0005000000237487257,
+                    0.0005000000237487257,
+                    0.0005000000237487257
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
         "Pipe": {
             "animation": {
                 "animationPath": [
@@ -15,10 +67,10 @@
                 0.0
             ],
             "filepath": [
-                ""
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\GameTest\\Assets\\Pipe\\Pipe.gltf"
             ],
             "isCostume": [
-                false
+                true
             ],
             "physics": [
                 true
@@ -34,25 +86,25 @@
             "transform": {
                 "position": [
                     0.0,
-                    0.0,
-                    -9.379871368408203
+                    -5.0,
+                    27.2907772064209
                 ],
                 "rotation": [
-                    0.0,
+                    90.0,
                     -0.0,
                     0.0
                 ],
                 "scale": [
-                    1.0,
-                    4.467389106750488,
-                    1.0
+                    3.0,
+                    3.0,
+                    3.0
                 ]
             },
             "type": [
                 0
             ]
         },
-        "Player": {
+        "Pipe2": {
             "animation": {
                 "animationPath": [
                     ""
@@ -62,18 +114,70 @@
                 ]
             },
             "color": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\GameTest\\Assets\\Pipe\\Pipe.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    true
+                ],
+                "scriptPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\GameTest\\Scripts\\PipeMover.Lua"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    5.0,
+                    2.070246458053589
+                ],
+                "rotation": [
+                    -90.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    3.0,
+                    3.0,
+                    7.0
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Player": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\GameTest\\Assets\\Bird\\phoenix_bird\\scene.gltf"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
                 1.0,
                 0.0,
                 1.0
             ],
             "filepath": [
-                ""
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\GameTest\\Assets\\Bird\\phoenix_bird\\scene.gltf"
             ],
             "isCostume": [
-                false
+                true
             ],
             "physics": [
-                true
+                false
             ],
             "scripting": {
                 "hasScript": [
@@ -86,18 +190,70 @@
             "transform": {
                 "position": [
                     0.0,
-                    -0.2359619140625,
-                    26.508529663085938
-                ],
-                "rotation": [
                     0.0,
-                    -0.0,
                     0.0
                 ],
+                "rotation": [
+                    -0.0008452162728644907,
+                    88.06610107421875,
+                    -0.0008457908988930285
+                ],
                 "scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.005700000561773777,
+                    0.005700000561773777,
+                    0.005700000561773777
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Sponza": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\Sponza\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    2.9390170574188232,
+                    -11.54459285736084,
+                    -2.6743821308627957e-06
+                ],
+                "rotation": [
+                    -179.99989318847656,
+                    89.99994659423828,
+                    -179.99989318847656
+                ],
+                "scale": [
+                    0.11428254097700119,
+                    0.11428252607584,
+                    0.11428254097700119
                 ]
             },
             "type": [

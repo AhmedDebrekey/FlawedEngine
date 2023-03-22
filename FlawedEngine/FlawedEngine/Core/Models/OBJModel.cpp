@@ -27,11 +27,11 @@ namespace FlawedEngine
 		SetPhysics(Cube, mPhysicsDynamicWorld); //EXTREMELY BAD, but at least it makes sure that smth can get deleted and no unable to read memory, very probable that it will lead to memory leak ofc
 		//To recreate error, remove the line above, add an object, give physics then remove physics then delete object.
 
-		delete mRidigBody->getMotionState();
-		mRidigBody->getCollisionShape();
-		mPhysicsDynamicWorld->removeRigidBody(mRidigBody);
+		delete mRigidBody->getMotionState();
+		mRigidBody->getCollisionShape();
+		mPhysicsDynamicWorld->removeRigidBody(mRigidBody);
 		mCollisionShapesArray->remove(mCollisionShape);
-		delete mRidigBody;
+		delete mRigidBody;
 	}
 
 	bool cOBJModel::LoadModel(const char* FilePath)
@@ -113,9 +113,9 @@ namespace FlawedEngine
 			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, localInertia);
 			rbInfo.m_startWorldTransform;
-			mRidigBody = new btRigidBody(rbInfo);
+			mRigidBody = new btRigidBody(rbInfo);
 
-			btTransform trans = mRidigBody->getCenterOfMassTransform();
+			btTransform trans = mRigidBody->getCenterOfMassTransform();
 			btQuaternion transrot;
 			trans.getBasis().getRotation(transrot);
 			btQuaternion rotquat;
@@ -123,16 +123,16 @@ namespace FlawedEngine
 			rotquat.setEuler(glm::radians(Rotation.z), glm::radians(Rotation.y), glm::radians(Rotation.x));
 			transrot = rotquat * transrot;
 			trans.setRotation(transrot);
-			mRidigBody->setCenterOfMassTransform(trans);
+			mRigidBody->setCenterOfMassTransform(trans);
 
 			mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
-			mRidigBody->setActivationState(DISABLE_DEACTIVATION);
+			mRigidBody->setActivationState(DISABLE_DEACTIVATION);
 			//mRidigBody->setSleepingThresholds(0.2, 0.2);
-			mRidigBody->setRestitution(mRestitution);
-			mRidigBody->setFriction(mFricton);
+			mRigidBody->setRestitution(mRestitution);
+			mRigidBody->setFriction(mFricton);
 
-			mPhysicsDynamicWorld->addRigidBody(mRidigBody);
-			mPhysicsDynamicWorld->updateSingleAabb(mRidigBody);
+			mPhysicsDynamicWorld->addRigidBody(mRigidBody);
+			mPhysicsDynamicWorld->updateSingleAabb(mRigidBody);
 
 
 			mCollisionShapesArray->push_back(mCollisionShape);
@@ -147,11 +147,11 @@ namespace FlawedEngine
 	{
 		if (isPhysicsSet)
 		{
-			delete mRidigBody->getMotionState();
-			delete mRidigBody->getCollisionShape();
-			mPhysicsDynamicWorld->removeRigidBody(mRidigBody);
+			delete mRigidBody->getMotionState();
+			delete mRigidBody->getCollisionShape();
+			mPhysicsDynamicWorld->removeRigidBody(mRigidBody);
 			mCollisionShapesArray->remove(mCollisionShape);
-			delete mRidigBody;
+			delete mRigidBody;
 			isPhysicsSet = false;
 		}
 	}
@@ -184,16 +184,15 @@ namespace FlawedEngine
 		if (mPhysics)
 		{
 			btTransform Trans;
-			mRidigBody->getMotionState()->getWorldTransform(Trans);
+			mRigidBody->getMotionState()->getWorldTransform(Trans);
 			btVector3 Origin = Trans.getOrigin();
 			btVector3 FinalTranslation(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z);
 			Trans.setOrigin(FinalTranslation);
-			mRidigBody->getMotionState()->setWorldTransform(Trans);
+			mRigidBody->getMotionState()->setWorldTransform(Trans);
 			if (!mDynamic)
 			{
-				mRidigBody->setWorldTransform(Trans);
+				mRigidBody->setWorldTransform(Trans);
 			}
-			//std::cout << "Psx" << " X: " << mTransformation.Translation.x << " Y: " << mTransformation.Translation.y << " Z: " << mTransformation.Translation.z << std::endl;
 		}
 	}
 
@@ -205,14 +204,14 @@ namespace FlawedEngine
 		if (mPhysics)
 		{
 			btTransform Trans;
-			mRidigBody->getMotionState()->getWorldTransform(Trans);
+			mRigidBody->getMotionState()->getWorldTransform(Trans);
 			btVector3 Origin = Trans.getOrigin();
 			btVector3 FinalTranslation(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z);
 			Trans.setOrigin(FinalTranslation);
-			mRidigBody->getMotionState()->setWorldTransform(Trans);
+			mRigidBody->getMotionState()->setWorldTransform(Trans);
 			if (!mDynamic)
 			{
-				mRidigBody->setWorldTransform(Trans);
+				mRigidBody->setWorldTransform(Trans);
 			}
 		}
 	}
@@ -224,11 +223,11 @@ namespace FlawedEngine
 		if (mPhysics)
 		{
 			btTransform Trans;
-			mRidigBody->getMotionState()->getWorldTransform(Trans);
+			mRigidBody->getMotionState()->getWorldTransform(Trans);
 			btQuaternion rot;
 			rot.setEuler(mTransformation.Rotation.x, mTransformation.Rotation.y, mTransformation.Rotation.z);
 			Trans.setRotation(rot);
-			mRidigBody->getMotionState()->setWorldTransform(Trans);
+			mRigidBody->getMotionState()->setWorldTransform(Trans);
 		}
 	}
 
@@ -239,7 +238,7 @@ namespace FlawedEngine
 		if (mPhysics)
 		{
 			btVector3 myscale = btVector3(mTransformation.Scale.x, mTransformation.Scale.y, mTransformation.Scale.z);
-			mRidigBody->getCollisionShape()->setLocalScaling(myscale);
+			mRigidBody->getCollisionShape()->setLocalScaling(myscale);
 		}
 	}
 
@@ -259,7 +258,7 @@ namespace FlawedEngine
 	{
 		if (mPhysics)
 		{
-			const btTransform trans = mRidigBody->getWorldTransform(); 
+			const btTransform trans = mRigidBody->getWorldTransform(); 
 			const btVector3 pos = trans.getOrigin();
 			
 			return pos.getX();
@@ -271,7 +270,7 @@ namespace FlawedEngine
 	{
 		if (mPhysics)
 		{
-			const btTransform trans = mRidigBody->getWorldTransform();
+			const btTransform trans = mRigidBody->getWorldTransform();
 			const btVector3 pos = trans.getOrigin();
 
 			return pos.getY();
@@ -283,7 +282,7 @@ namespace FlawedEngine
 	{
 		if (mPhysics)
 		{
-			const btTransform trans = mRidigBody->getWorldTransform();
+			const btTransform trans = mRigidBody->getWorldTransform();
 			const btVector3 pos = trans.getOrigin();
 
 			return pos.getZ();
@@ -311,7 +310,7 @@ namespace FlawedEngine
 		ScriptingManager.LoadFile(ScriptingId, Path);
 
 		mScriptPath = Path;
-		HasScripting = true;
+		mHasScripting = true;
 
 		lua_pcall(LuaState, 0, 0, 0);
 
@@ -326,16 +325,16 @@ namespace FlawedEngine
 	float Matrix[16];
 	void cOBJModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
 	{
-		if (mRidigBody != nullptr && mRidigBody->getMotionState() && isPhysicsSet)
+		if (mRigidBody != nullptr && mRigidBody->getMotionState() && isPhysicsSet)
 		{
 			btTransform btTrans;
-			mRidigBody->getMotionState()->getWorldTransform(btTrans);
+			mRigidBody->getMotionState()->getWorldTransform(btTrans);
 			 
 			btVector3 ObjectTransform = btTrans.getOrigin();
-			btVector3 Scale = mRidigBody->getCollisionShape()->getLocalScaling();
+			btVector3 Scale = mRigidBody->getCollisionShape()->getLocalScaling();
 
 			glm::vec4 Rotation;
-			btQuaternion quat = mRidigBody->getCenterOfMassTransform().getRotation();
+			btQuaternion quat = mRigidBody->getCenterOfMassTransform().getRotation();
 			btVector3 v = quat.getAxis();
 			Rotation.x = v.x();
 			Rotation.y = v.y();
@@ -351,7 +350,7 @@ namespace FlawedEngine
 		else
 			Trans.Model = mModel;
 
-		if(ShouldRender)
+		if(mShouldRender)
 			Renderer.Draw(Trans, mMaterial, LightPositions, SkyBox);
 	}
 
@@ -364,11 +363,11 @@ namespace FlawedEngine
 	{
 		if (!isDynamic)
 		{
-			mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
+			mRigidBody->setCollisionFlags(mRigidBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
 		}
 		else
 		{
-			mRidigBody->setCollisionFlags(btCollisionObject::CF_DYNAMIC_OBJECT);
+			mRigidBody->setCollisionFlags(btCollisionObject::CF_DYNAMIC_OBJECT);
 		}
 	}
 }

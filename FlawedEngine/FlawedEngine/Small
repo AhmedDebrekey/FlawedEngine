@@ -1,0 +1,160 @@
+{
+    "objects": {
+        "AlTaiiir": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\Mod Assassin\\untitled.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    5.91146993637085,
+                    18.351255416870117,
+                    -5.1450018882751465
+                ],
+                "rotation": [
+                    35.85013961791992,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5800000429153442,
+                    0.5800001621246338,
+                    0.5800001621246338
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Light(0)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                0.6640926599502563,
+                0.5440369844436646,
+                0.19999702274799347
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    5.47299337387085,
+                    21.879344940185547,
+                    -4.938324451446533
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.0005000000237487257,
+                    0.0005000000237487257,
+                    0.0005000000237487257
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Sponza": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\3D Models\\Sponza\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.030000029131770134,
+                    0.030000029131770134,
+                    0.030000029131770134
+                ]
+            },
+            "type": [
+                0
+            ]
+        }
+    }
+}

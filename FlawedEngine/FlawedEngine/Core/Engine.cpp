@@ -7,15 +7,15 @@ namespace FlawedEngine
 		EngineWindow.Init();
 		EngineWindow.CreateWindow();
 		
-		PhysicsWorld = Physics.Init();
+		mPhysicsWorld = Physics.Init();
 
 		{
-			Scenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), PhysicsWorld, Physics.GetCollisionShapesArray()));
-			ActiveScene = Scenes.at(Scenes.size() - 1);
+			mScenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), mPhysicsWorld, Physics.GetCollisionShapesArray()));
+			mActiveScene = mScenes.at(mScenes.size() - 1);
 		}
 
-		UI.Init(EngineWindow.GetWindow(), ActiveScene->GetCamera(), ActiveScene->GetObjectManager());
-		ActiveScene->SetSelectedEntity(UI.GetSelectedEntity());
+		UI.Init(EngineWindow.GetWindow(), mActiveScene->GetCamera(), mActiveScene->GetObjectManager());
+		mActiveScene->SetSelectedEntity(UI.GetSelectedEntity());
 	}
 
 	void cEngine::Run()
@@ -31,12 +31,12 @@ namespace FlawedEngine
 			EngineWindow.Update();
 			
 			UI.UpdateUI();
-			ActiveScene->UpdateViewport(UI.GetViewportSize(), UI.GetViewportPos());
+			mActiveScene->UpdateViewport(UI.GetViewportSize(), UI.GetViewportPos());
 			OnEvent();
 			
 			Physics.Update(DeltaTime);
 
-			ActiveScene->Render();
+			mActiveScene->Render();
 
 			UI.RenderUI();
 

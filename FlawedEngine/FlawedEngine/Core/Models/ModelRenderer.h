@@ -37,7 +37,14 @@ namespace FlawedEngine
 		void Setup();
 	
 	private:
-		uint32_t VBO, EBO;
+		uint32_t VBO, EBO, DirectionalLightUBO;
+		std::vector<glm::vec4> DirectionalLights
+		{
+			glm::vec4(30.0f, 10.0f, 30.0f, 1.0f),    // Direction
+			glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),        // Ambient
+			glm::vec4(0.8f, 0.8f, 0.8f, 1.0f),        // Diffuse
+			glm::vec4(0.5f, 0.5f, 0.5f, 1.0f)         // Specular
+		};
 		cShader Shader;
 	};
 }

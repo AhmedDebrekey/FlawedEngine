@@ -67,6 +67,8 @@ namespace FlawedEngine
 
         void LMove(float x, float y, float z);
 
+        void LSetPosition(float x, float y, float z);
+
         void LRotate(float x, float y, float z);
 
         void LScale(float x, float y, float z);
@@ -78,6 +80,8 @@ namespace FlawedEngine
         float LGetX();
         float LGetY();
         float LGetZ();
+
+        std::string LGetName();
 
         std::map<std::string, sBoneInfo>& GetBoneInfoMap() { return m_BoneInfoMap; }
         int& GetBoneCount() { return m_BoneCounter; }

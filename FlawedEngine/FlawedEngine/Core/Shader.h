@@ -4,6 +4,7 @@
 #include <string>
 #include <glm/glm.hpp>
 #include "glm/gtc/matrix_transform.hpp"
+#include <unordered_map>
 
 namespace FlawedEngine
 {
@@ -25,7 +26,9 @@ namespace FlawedEngine
 		void SetFloat(const std::string& name, float value);
 		void SetMat4f(const std::string& name, glm::mat4 matrix);
 		void SetVec3(const std::string& name, glm::vec3 vector);
+		int GetUniformLocation(const std::string& name);
 	private:
+		std::unordered_map<std::string, int> m_UniformCache;
 		uint32_t m_ShaderObject;
 	};
 }

@@ -27,7 +27,7 @@ namespace FlawedEngine
             glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
             // retrieve texture number (the N in diffuse_textureN)
             std::string number;
-            std::string name = mTextures[i].Type;
+            std::string& name = mTextures[i].Type;
             if (name == "texture_diffuse")
                 number = std::to_string(diffuseNr++);
             else if (name == "texture_specular")
@@ -37,7 +37,7 @@ namespace FlawedEngine
 
             Shader.SetInt((name + number), i);
             glBindTexture(GL_TEXTURE_2D, mTextures[i].ID);
-            //std::cout << (name+number) << " " << mTextures[i].ID << std::endl;
+            //std::cout << "Name: " << (name + number) << " ActiveTexture0 + " << i  << " Texture ID: " << mTextures[i].ID << std::endl << std::endl;
         }
         
         //ModelRenderer
@@ -73,10 +73,10 @@ namespace FlawedEngine
             Iteration++;
         }
 
-        Shader.SetVec3("dirLight.direction", glm::vec3(30.0f, -10.0f, 30.0f));
-        Shader.SetVec3("dirLight.ambient", glm::vec3(0.2f));
-        Shader.SetVec3("dirLight.diffuse", glm::vec3(0.8f));
-        Shader.SetVec3("dirLight.specular", glm::vec3(0.5f));
+        //create a struct, populate that struct, then use that struct to populate the uniform buffer. Does not have to be a struct obv.
+
+        glBindBuffer(GL_UNIFORM_BUFFER, DirectionalLightUBO);
+        glBufferSubData(GL_UNIFORM_BUFFER, 0, DirectionalLights.size() * sizeof(glm::vec4), &DirectionalLights[0]);
 
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);
@@ -93,7 +93,7 @@ namespace FlawedEngine
 
        
         if (!FinalBoneMatricies.empty()) {
-            glBindBuffer(GL_UNIFORM_BUFFER, UBO);
+            glBindBuffer(GL_UNIFORM_BUFFER, AnimationUBO);
             glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4) * MAX_BONES, &FinalBoneMatricies[0]);
             Shader.SetBool("UBOSET", true);
         }
@@ -102,7 +102,8 @@ namespace FlawedEngine
             Shader.SetBool("UBOSET", false);
         }
 
-        glBindBufferBase(GL_UNIFORM_BUFFER, 0, UBO);
+        glBindBufferBase(GL_UNIFORM_BUFFER, 0, AnimationUBO);
+        glBindBufferBase(GL_UNIFORM_BUFFER, 1, DirectionalLightUBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glActiveTexture(GL_TEXTURE0 + mTextures.size());
         glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
@@ -115,6 +116,7 @@ namespace FlawedEngine
         }
         glActiveTexture(GL_TEXTURE0);
         glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind the UBO after drawing the object
+        glBindBufferBase(GL_UNIFORM_BUFFER, 1, 0); // unbind the UBO after drawing the object
         glBindVertexArray(0);
         Shader.Unbind();
     }
@@ -140,10 +142,15 @@ namespace FlawedEngine
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(unsigned int), &mIndices[0], GL_STATIC_DRAW);
 
-        glGenBuffers(1, &UBO);
-        glBindBuffer(GL_UNIFORM_BUFFER, UBO);
+        glGenBuffers(1, &AnimationUBO);
+        glBindBuffer(GL_UNIFORM_BUFFER, AnimationUBO);
         glBufferData(GL_UNIFORM_BUFFER, (sizeof(glm::mat4) * MAX_BONES), nullptr, GL_DYNAMIC_DRAW);
-        glBindBufferBase(GL_UNIFORM_BUFFER, 0, UBO);
+        glBindBufferBase(GL_UNIFORM_BUFFER, 0, AnimationUBO);
+
+        glGenBuffers(1, &DirectionalLightUBO);
+        glBindBuffer(GL_UNIFORM_BUFFER, DirectionalLightUBO);
+        glBufferData(GL_UNIFORM_BUFFER, DirectionalLights.size() * sizeof(glm::vec4), nullptr, GL_DYNAMIC_DRAW);
+        glBindBufferBase(GL_UNIFORM_BUFFER, 1, DirectionalLightUBO);
 
         // vertex Positions
         glEnableVertexAttribArray(0);

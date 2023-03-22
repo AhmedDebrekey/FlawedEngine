@@ -229,7 +229,7 @@ namespace FlawedEngine
 		if (Object == SceneObjects.end())
 			return nullptr;
 
-		if (Object->second->Dead)
+		if (Object->second->mDead)
 			return nullptr;
 
 		return Object->second;
@@ -250,14 +250,14 @@ namespace FlawedEngine
 			object["transform"]["rotation"] = { entity->mTransformation.Rotation.x,entity->mTransformation.Rotation.y, entity->mTransformation.Rotation.z};
 			object["transform"]["scale"] = { entity->mTransformation.Scale.x, entity->mTransformation.Scale.y, entity->mTransformation.Scale.z };
 			object["color"] = { entity->GetColor()->x, entity->GetColor()->y, entity->GetColor()->z};
-			object["isCostume"] = { entity->isCostume };
+			object["isCostume"] = { entity->mIsCostume };
 			object["type"] = { entity->Type };
 			object["filepath"] = { entity->mFilePath };
-			object["scripting"]["hasScript"] = { entity->HasScripting };
+			object["scripting"]["hasScript"] = { entity->mHasScripting };
 			object["scripting"]["scriptPath"] = { entity->mScriptPath };
 			object["physics"] = { entity->mPhysics };
-			object["animation"]["hasAnimation"] = {	entity->HasAnimation };
-			object["animation"]["animationPath"] = { entity->AnimationPath };
+			object["animation"]["hasAnimation"] = {	entity->mHasAnimation };
+			object["animation"]["animationPath"] = { entity->mAnimationPath };
 			data["objects"][name] = object;
 		}
 

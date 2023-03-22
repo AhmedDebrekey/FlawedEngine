@@ -14,8 +14,6 @@ namespace FlawedEngine
 	class cEntity
 	{
 	public:
-		sModel mTransformation;
-
 		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox) = 0;
 		virtual void Update(/*Should be taking in the timestep*/) = 0;
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) = 0;
@@ -31,53 +29,46 @@ namespace FlawedEngine
 		void SetPhysicsProps(sPhysicsProps& Props);
 		void ApplyForce(glm::vec3 Force);
 		void ApplyRelativeForce(glm::vec3 Force);
-		void isInvisible() { ShouldRender = !ShouldRender; }
-		glm::vec3 GetAABB() { return glm::vec3(mhalfExtents.x(), mhalfExtents.y(), mhalfExtents.z()); }
+		void isInvisible() { mShouldRender = !mShouldRender; }
 		virtual void SetAABB(glm::vec3& Scale) = 0;
 		virtual ~cEntity() = 0;
 
+		glm::vec3 GetAABB() { return glm::vec3(mhalfExtents.x(), mhalfExtents.y(), mhalfExtents.z()); }
 		sModel GetModel() { return mTransformation; }
 		glm::mat4* GetModelMatrix() { return &mModel; }
 		glm::vec3* GetColor() { return &mMaterial.Color; }
-		int GetActivationState() { return mRidigBody->getActivationState(); }
-
-		bool HasScripting = false;
-		std::string mScriptPath;
-
+		int GetActivationState() { return mRigidBody->getActivationState(); }
+		
+		//Serlizalizations
+		bool mIsCostume = false;
+		bool mHasScripting = false;
+		bool mHasAnimation = false;
 		std::string mFilePath;
-		bool isCostume = false;
+		std::string mScriptPath;
+		std::string mAnimationPath;
 
-		bool HasAnimation = false;
-		std::string AnimationPath;
-
-		sMaterial mMaterial;
-
-		glm::mat4 mModel;
-
-		std::vector<sVertex> mVertexBuffer;
-		std::vector<uint32_t> mIndices;
-		std::vector<sTexture> mTextureCoords;
-
-		uint32_t TextureID;
-
-		btRigidBody* mRidigBody = nullptr;
+		//Physics
+		btRigidBody* mRigidBody = nullptr;
 		bool mDynamic = false;
 		bool mPhysics = false;
-
 		float mMass = 0.0f;
 		float mFricton = 0.5;
 		float mRestitution = 0.0f;
-
-		bool Dead = false;
+		bool mDead = false;
 		btVector3 mhalfExtents;
-
 		eBasicObject Type = Cube;
-		
-		bool ShouldRender = true;
+
+		//Rendering
+		sMaterial mMaterial;
+		glm::mat4 mModel;
+		std::vector<sVertex> mVertexBuffer;
+		std::vector<uint32_t> mIndices;
+		std::vector<sTexture> mTextureCoords;
+		bool mShouldRender = true;
+		sModel mTransformation;
 
 		cInput& Input = cInput::get();
 		cScriptingManager& ScriptingManager = cScriptingManager::get();
-
 	};
 
 
@@ -124,22 +115,22 @@ namespace FlawedEngine
 
 	inline void cEntity::ApplyRelativeForce(glm::vec3 Force)
 	{
-		if (!mRidigBody->isActive())
-			mRidigBody->activate(true);
+		if (!mRigidBody->isActive())
+			mRigidBody->activate(true);
 		btVector3 relativeForce = btVector3(Force.x, Force.y, Force.z);
 		btTransform boxTrans;
-		mRidigBody->getMotionState()->getWorldTransform(boxTrans);
+		mRigidBody->getMotionState()->getWorldTransform(boxTrans);
 		btVector3 RelativeTransform = relativeForce;
 		btVector3 correctedForce = (boxTrans * relativeForce) - boxTrans.getOrigin();
 		relativeForce = (boxTrans * RelativeTransform) - boxTrans.getOrigin();
-		mRidigBody->applyCentralForce(relativeForce);
+		mRigidBody->applyCentralForce(relativeForce);
 	}
 
 	inline void cEntity::ApplyForce(glm::vec3 Force)
 	{
-		if (!mRidigBody->isActive())
-			mRidigBody->activate(true);
+		if (!mRigidBody->isActive())
+			mRigidBody->activate(true);
 		btVector3 worldForce = btVector3(Force.x, Force.y, Force.z);
-		mRidigBody->applyCentralForce(worldForce);
+		mRigidBody->applyCentralForce(worldForce);
 	}
 }

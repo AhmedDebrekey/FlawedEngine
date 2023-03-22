@@ -64,7 +64,7 @@ void FlawedEngine::cUIManager::RenderProperties()
 			else
 			{
 				btTransform Trans;
-				Entity->mRidigBody->getMotionState()->getWorldTransform(Trans);
+				Entity->mRigidBody->getMotionState()->getWorldTransform(Trans);
 
 				//Translation......
 				btVector3 Origin = Trans.getOrigin();
@@ -80,20 +80,20 @@ void FlawedEngine::cUIManager::RenderProperties()
 				ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale), mTmpMatrix);
 				btQuaternion quat = btQuaternion(glm::radians(rotation.y), glm::radians(rotation.x), glm::radians(rotation.z));
 				Trans.setRotation(quat);
-				Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
+				Entity->mRigidBody->getMotionState()->setWorldTransform(Trans);
 
 				//Scale..........
-				btVector3 myscale = Entity->mRidigBody->getCollisionShape()->getLocalScaling();
+				btVector3 myscale = Entity->mRigidBody->getCollisionShape()->getLocalScaling();
 				glm::vec3 scale(myscale.x(), myscale.y(), myscale.z());
 				DrawVec3("Scale", scale, 1.0f);
 				myscale = btVector3(scale.x, scale.y, scale.z);
-				Entity->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
+				Entity->mRigidBody->getCollisionShape()->setLocalScaling(myscale);
 
 				ImGui::Text("Activation State: %i", Entity->GetActivationState());
 
 				if (!Entity->mDynamic)
 				{
-					Entity->mRidigBody->setWorldTransform(Trans);
+					Entity->mRigidBody->setWorldTransform(Trans);
 				}
 			}
 

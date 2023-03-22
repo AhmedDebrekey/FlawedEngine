@@ -128,7 +128,7 @@ namespace FlawedEngine
 
 		{
 			ImGui::Begin("Settings");
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::Text("Move: W,A,S,D,E,Q");
 			ImGui::Text("Gizmo: R,T,G");
 			ImGui::Text("Right Click SceneHierachy To Create Entities");

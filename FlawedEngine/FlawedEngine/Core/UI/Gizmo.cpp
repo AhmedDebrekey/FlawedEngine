@@ -38,7 +38,7 @@ void FlawedEngine::cUIManager::RenderGizmo()
 				{
 					static int Copies = 0;
 
-					if (Entity->isCostume)
+					if (Entity->mIsCostume)
 					{
 						char buffer[20];
 						sprintf_s(buffer, "Copy(%i)", Copies);
@@ -78,7 +78,7 @@ void FlawedEngine::cUIManager::RenderGizmo()
 					else
 					{
 						btTransform Trans;
-						Entity->mRidigBody->getMotionState()->getWorldTransform(Trans);
+						Entity->mRigidBody->getMotionState()->getWorldTransform(Trans);
 
 						//Translation......
 						btVector3 FinalTranslation(translation.x, translation.y, translation.z);
@@ -87,15 +87,15 @@ void FlawedEngine::cUIManager::RenderGizmo()
 						//Rotation........
 						btQuaternion quat = btQuaternion(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
 						Trans.setRotation(quat);
-						Entity->mRidigBody->getMotionState()->setWorldTransform(Trans);
+						Entity->mRigidBody->getMotionState()->setWorldTransform(Trans);
 
 						//Scale..........
 						btVector3 myscale = btVector3(scale.x, scale.y, scale.z);
-						Entity->mRidigBody->getCollisionShape()->setLocalScaling(myscale);
+						Entity->mRigidBody->getCollisionShape()->setLocalScaling(myscale);
 
 						if (!Entity->mDynamic)
 						{
-							Entity->mRidigBody->setWorldTransform(Trans);
+							Entity->mRigidBody->setWorldTransform(Trans);
 						}
 						Entity->ModelTransform(Model);
 					}

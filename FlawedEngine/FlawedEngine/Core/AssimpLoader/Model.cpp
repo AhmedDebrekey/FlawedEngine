@@ -19,21 +19,21 @@ namespace FlawedEngine
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
 		loadModel(FilePath);
 		mFilePath = FilePath;
-		isCostume = true;
+		mIsCostume = true;
 	}
 	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
 	{
 
-		if (mRidigBody != nullptr && mRidigBody->getMotionState() && isPhysicsSet)
+		if (mRigidBody != nullptr && mRigidBody->getMotionState() && isPhysicsSet)
 		{
 			btTransform btTrans;
-			mRidigBody->getMotionState()->getWorldTransform(btTrans);
+			mRigidBody->getMotionState()->getWorldTransform(btTrans);
 
 			btVector3 ObjectTransform = btTrans.getOrigin();
-			btVector3 Scale = mRidigBody->getCollisionShape()->getLocalScaling();
+			btVector3 Scale = mRigidBody->getCollisionShape()->getLocalScaling();
 
 			glm::vec4 Rotation;
-			btQuaternion quat = mRidigBody->getCenterOfMassTransform().getRotation();
+			btQuaternion quat = mRigidBody->getCenterOfMassTransform().getRotation();
 			btVector3 v = quat.getAxis();
 			Rotation.x = v.x();
 			Rotation.y = v.y();
@@ -49,7 +49,7 @@ namespace FlawedEngine
 		else
 			Trans.Model = mModel;
 
-		if(ShouldRender)
+		if(mShouldRender)
 		{
 			for (uint32_t i = 0; i < mMeshes.size(); i++)
 			{
@@ -129,9 +129,9 @@ namespace FlawedEngine
 			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
 			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, mInertia);
 			rbInfo.m_startWorldTransform;
-			mRidigBody = new btRigidBody(rbInfo);
+			mRigidBody = new btRigidBody(rbInfo);
 
-			btTransform trans = mRidigBody->getCenterOfMassTransform();
+			btTransform trans = mRigidBody->getCenterOfMassTransform();
 			btQuaternion transrot;
 			trans.getBasis().getRotation(transrot);
 			btQuaternion rotquat;
@@ -139,16 +139,16 @@ namespace FlawedEngine
 			rotquat.setEuler(glm::radians(Rotation.z), glm::radians(Rotation.y), glm::radians(Rotation.x));
 			transrot = rotquat * transrot;
 			trans.setRotation(transrot);
-			mRidigBody->setCenterOfMassTransform(trans);
+			mRigidBody->setCenterOfMassTransform(trans);
 
 			mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
-			mRidigBody->setActivationState(DISABLE_DEACTIVATION);
+			mRigidBody->setActivationState(DISABLE_DEACTIVATION);
 			//mRidigBody->setSleepingThresholds(0.2, 0.2);
-			mRidigBody->setRestitution(mRestitution);
-			mRidigBody->setFriction(mFricton);
+			mRigidBody->setRestitution(mRestitution);
+			mRigidBody->setFriction(mFricton);
 
-			mPhysicsDynamicWorld->addRigidBody(mRidigBody);
-			mPhysicsDynamicWorld->updateSingleAabb(mRidigBody);
+			mPhysicsDynamicWorld->addRigidBody(mRigidBody);
+			mPhysicsDynamicWorld->updateSingleAabb(mRigidBody);
 
 
 			mCollisionShapesArray->push_back(mCollisionShape);
@@ -165,11 +165,11 @@ namespace FlawedEngine
 	{
 		if (isPhysicsSet)
 		{
-			delete mRidigBody->getMotionState();
-			delete mRidigBody->getCollisionShape();
-			mPhysicsDynamicWorld->removeRigidBody(mRidigBody);
+			delete mRigidBody->getMotionState();
+			delete mRigidBody->getCollisionShape();
+			mPhysicsDynamicWorld->removeRigidBody(mRigidBody);
 			mCollisionShapesArray->remove(mCollisionShape);
-			delete mRidigBody;
+			delete mRigidBody;
 			isPhysicsSet = false;
 		}
 	}
@@ -178,11 +178,11 @@ namespace FlawedEngine
 	{
 		if (!IsDynamic)
 		{
-			mRidigBody->setCollisionFlags(mRidigBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
+			mRigidBody->setCollisionFlags(mRigidBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
 		}
 		else
 		{
-			mRidigBody->setCollisionFlags(btCollisionObject::CF_DYNAMIC_OBJECT);
+			mRigidBody->setCollisionFlags(btCollisionObject::CF_DYNAMIC_OBJECT);
 		}
 	}
 
@@ -201,8 +201,8 @@ namespace FlawedEngine
 			mAnimation->Setup(Path, this, &importer);
 			mAnimator = new Animator;
 			mAnimator->Setup(mAnimation);
-			HasAnimation = true;
-			AnimationPath = Path;
+			mHasAnimation = true;
+			mAnimationPath = Path;
 		}
 	}
 
@@ -215,14 +215,41 @@ namespace FlawedEngine
 	{
 		mTransformation.Translation += glm::vec3(x, y, z);
 		ModelTransform(mTransformation);
+
 		if (mPhysics)
 		{
 			btTransform Trans;
-			Trans.setOrigin(btVector3(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z));
-			mRidigBody->getMotionState()->setWorldTransform(Trans);
+			mRigidBody->getMotionState()->getWorldTransform(Trans);
+			btVector3 Origin = Trans.getOrigin();
+			btVector3 FinalTranslation(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z);
+			Trans.setOrigin(FinalTranslation);
+			mRigidBody->getMotionState()->setWorldTransform(Trans);
+			if (!mDynamic)
+			{
+				mRigidBody->setWorldTransform(Trans);
+			}
 		}
 	}
 
+	void cModel::LSetPosition(float x, float y, float z)
+	{
+		mTransformation.Translation = glm::vec3(x, y, z);
+		ModelTransform(mTransformation);
+
+		if (mPhysics)
+		{
+			btTransform Trans;
+			mRigidBody->getMotionState()->getWorldTransform(Trans);
+			btVector3 Origin = Trans.getOrigin();
+			btVector3 FinalTranslation(mTransformation.Translation.x, mTransformation.Translation.y, mTransformation.Translation.z);
+			Trans.setOrigin(FinalTranslation);
+			mRigidBody->getMotionState()->setWorldTransform(Trans);
+			if (!mDynamic)
+			{
+				mRigidBody->setWorldTransform(Trans);
+			}
+		}
+	}
 
 	void cModel::LRotate(float x, float y, float z)
 	{
@@ -231,22 +258,22 @@ namespace FlawedEngine
 		if (mPhysics)
 		{
 			btTransform Trans;
-			mRidigBody->getMotionState()->getWorldTransform(Trans);
+			mRigidBody->getMotionState()->getWorldTransform(Trans);
 			btQuaternion rot;
 			rot.setEuler(mTransformation.Rotation.x, mTransformation.Rotation.y, mTransformation.Rotation.z);
 			Trans.setRotation(rot);
-			mRidigBody->getMotionState()->setWorldTransform(Trans);
+			mRigidBody->getMotionState()->setWorldTransform(Trans);
 		}
 	}
 
 	void cModel::LScale(float x, float y, float z)
 	{
-		mTransformation.Scale += glm::vec3(x, y, z);
+		mTransformation.Scale = glm::vec3(x, y, z);
 		ModelTransform(mTransformation);
 		if (mPhysics)
 		{
 			btVector3 myscale = btVector3(mTransformation.Scale.x, mTransformation.Scale.y, mTransformation.Scale.z);
-			mRidigBody->getCollisionShape()->setLocalScaling(myscale);
+			mRigidBody->getCollisionShape()->setLocalScaling(myscale);
 		}
 	}
 
@@ -266,7 +293,7 @@ namespace FlawedEngine
 	{
 		if (mPhysics)
 		{
-			const btTransform trans = mRidigBody->getWorldTransform();
+			const btTransform trans = mRigidBody->getWorldTransform();
 			const btVector3 pos = trans.getOrigin();
 
 			return pos.getX();
@@ -278,7 +305,7 @@ namespace FlawedEngine
 	{
 		if (mPhysics)
 		{
-			const btTransform trans = mRidigBody->getWorldTransform();
+			const btTransform trans = mRigidBody->getWorldTransform();
 			const btVector3 pos = trans.getOrigin();
 
 			return pos.getY();
@@ -290,19 +317,26 @@ namespace FlawedEngine
 	{
 		if (mPhysics)
 		{
-			const btTransform trans = mRidigBody->getWorldTransform();
+			const btTransform trans = mRigidBody->getWorldTransform();
 			const btVector3 pos = trans.getOrigin();
 
 			return pos.getZ();
 		}
 		return mTransformation.Translation.z;
 	}
+	
+	std::string cModel::LGetName()
+	{
+		return mName;
+	}
 
 	void cModel::SetupScripting(const char* Path)
 	{
 		ScriptingId = ScriptingManager.InitScripting();
 		LuaState = ScriptingManager.GetLuaState(ScriptingId);
+
 		ScriptingManager.RegisterFunction(ScriptingId, "Move", std::bind(&cModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "SetPos", std::bind(&cModel::LSetPosition, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		ScriptingManager.RegisterFunction(ScriptingId, "Rotate", std::bind(&cModel::LRotate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		ScriptingManager.RegisterFunction(ScriptingId, "Scale", std::bind(&cModel::LScale, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce", std::bind(&cModel::LApplyForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
@@ -312,10 +346,13 @@ namespace FlawedEngine
 		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getY", std::bind(&cModel::LGetY, this));
 		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getZ", std::bind(&cModel::LGetZ, this));
 
+		std::function<std::string()> Func = std::bind(&cModel::LGetName, this);
+		luabridge::getGlobalNamespace(LuaState).addFunction("GetName", Func);
+
 		ScriptingManager.LoadFile(ScriptingId, Path);
 
 		mScriptPath = Path;
-		HasScripting = true;
+		mHasScripting = true;
 
 		lua_pcall(LuaState, 0, 0, 0);
 
@@ -483,13 +520,18 @@ namespace FlawedEngine
 		
 		aiMaterial* Material = scene->mMaterials[mesh->mMaterialIndex];
 
+		std::cout << scene->mMaterials[mesh->mMaterialIndex]->GetName().C_Str() << std::endl;
+		std::cout << "Diffuse :" << scene->mMaterials[mesh->mMaterialIndex]->GetTextureCount(aiTextureType_DIFFUSE) << std::endl;
+		std::cout << "Specular:" << scene->mMaterials[mesh->mMaterialIndex]->GetTextureCount(aiTextureType_SPECULAR) << std::endl;
+		std::cout << "Normal  :" << scene->mMaterials[mesh->mMaterialIndex]->GetTextureCount(aiTextureType_NORMALS) << std::endl << std::endl;
+
 		std::vector<sTexture> diffuseMaps = loadMaterialTextures(Material, aiTextureType_DIFFUSE, "texture_diffuse");
 		Textures.insert(Textures.end(), diffuseMaps.begin(), diffuseMaps.end());
 
-		std::vector<sTexture> specularMaps = loadMaterialTextures(Material, aiTextureType_METALNESS, "texture_specular");
+		std::vector<sTexture> specularMaps = loadMaterialTextures(Material, aiTextureType_SPECULAR, "texture_specular");
 		Textures.insert(Textures.end(), specularMaps.begin(), specularMaps.end());
 
-		std::vector<sTexture> normalMaps = loadMaterialTextures(Material, aiTextureType_HEIGHT, "texture_normal");
+		std::vector<sTexture> normalMaps = loadMaterialTextures(Material, aiTextureType_NORMALS, "texture_normal");
 		Textures.insert(Textures.end(), normalMaps.begin(), normalMaps.end());
 
 		std::vector<sTexture> heightMaps = loadMaterialTextures(Material, aiTextureType_AMBIENT, "texture_height");
@@ -561,7 +603,7 @@ namespace FlawedEngine
 			if (!skip)
 			{
 				sTexture Texture;
-				Texture.ID = TextureFromFile(str.C_Str(), mDirectory, false);
+ 				Texture.ID = TextureFromFile(str.C_Str(), mDirectory, false);
 				Texture.Type = typeName;
 				Texture.Path = str.C_Str();
 				Textures.push_back(Texture);

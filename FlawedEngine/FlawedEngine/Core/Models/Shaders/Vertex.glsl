@@ -24,9 +24,24 @@ out vec3 Normal;
 out vec3 FragPos;
 out vec3 Position;
 out vec2 TexCoords;
+out mat3 tbn;
 
 void main()
 {
+
+//    vec3 T = normalize(vec3(Model * vec4(tangent,   0.0)));
+//    vec3 B = normalize(vec3(Model * vec4(bitangent, 0.0)));
+//    vec3 N = normalize(vec3(Model * vec4(aNormal,    0.0)));
+//    mat3 TBN = transpose(mat3(T, B, N));
+//    tbn = TBN;
+
+
+    mat3 normalMatrix = transpose(inverse(mat3(Model))); // correct normal transform as learned in previous tutorials here
+    vec3 N = normalize(normalMatrix * aNormal);
+    vec3 T = normalize(normalMatrix * tangent);
+    vec3 B = normalize(cross(N, T));
+    tbn = mat3(T, B, N);
+
     if(UBOSET)
     {
         vec4 totalPosition = vec4(0.0f);
@@ -58,5 +73,5 @@ void main()
     }
 
     Position = vec3(Model * vec4(aPos, 1.0));
-    TexCoords = aTexCoords;    
+    TexCoords = aTexCoords;
 }     

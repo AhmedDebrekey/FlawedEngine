@@ -32,6 +32,11 @@ namespace FlawedEngine
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(unsigned int), &mIndices[0], GL_STATIC_DRAW);
 
+        glGenBuffers(1, &DirectionalLightUBO);
+        glBindBuffer(GL_UNIFORM_BUFFER, DirectionalLightUBO);
+        glBufferData(GL_UNIFORM_BUFFER, DirectionalLights.size() * sizeof(glm::vec4), nullptr, GL_DYNAMIC_DRAW);
+        glBindBufferBase(GL_UNIFORM_BUFFER, 1, DirectionalLightUBO);
+
         // vertex Positions
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(sVertex), (void*)0);
@@ -94,11 +99,6 @@ namespace FlawedEngine
             Iteration++;
         }
 
-        Shader.SetVec3("dirLight.direction", glm::vec3(30.0f, -10.0f, 30.0f));
-        Shader.SetVec3("dirLight.ambient", glm::vec3(0.2f));
-        Shader.SetVec3("dirLight.diffuse", glm::vec3(0.8f));
-        Shader.SetVec3("dirLight.specular", glm::vec3(0.5f));
-
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);
         Shader.SetMat4f("Model", Trans.Model);
@@ -107,13 +107,20 @@ namespace FlawedEngine
         Shader.SetVec3("material.diffuse", Mat.Diffuse);
         Shader.SetVec3("material.specular", Mat.Specular);
         Shader.SetFloat("material.shininess", Mat.Shininess);
+        
+        glBindBuffer(GL_UNIFORM_BUFFER, DirectionalLightUBO);
+        glBufferSubData(GL_UNIFORM_BUFFER, 0, DirectionalLights.size() * sizeof(glm::vec4), &DirectionalLights[0]);
 
+
+        glBindBufferBase(GL_UNIFORM_BUFFER, 1, DirectionalLightUBO);
 		glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
 		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
         glBindVertexArray(0);
+        glBindBufferBase(GL_UNIFORM_BUFFER, 1, 0); // unbind the UBO after drawing the object
+
         Shader.Unbind();
     #endif 
 	}

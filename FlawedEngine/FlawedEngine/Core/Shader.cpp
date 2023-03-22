@@ -105,26 +105,39 @@ namespace FlawedEngine
 
     void cShader::SetBool(const std::string& name, bool value)
     {
-        glUniform1i(glGetUniformLocation(m_ShaderObject, name.c_str()), (int)value);
+        glUniform1i(GetUniformLocation(name), (int)value);
     }
 
     void cShader::SetInt(const std::string& name, int value)
     {
-        glUniform1i(glGetUniformLocation(m_ShaderObject, name.c_str()), value);
+        glUniform1i(GetUniformLocation(name), value);
     }
 
     void cShader::SetFloat(const std::string& name, float value)
     {
-        glUniform1f(glGetUniformLocation(m_ShaderObject, name.c_str()), value);
+        glUniform1f(GetUniformLocation(name), value);
     }
 
     void cShader::SetMat4f(const std::string& name, glm::mat4 matrix)
     {
-        glUniformMatrix4fv(glGetUniformLocation(m_ShaderObject, name.c_str()), 1, GL_FALSE, &matrix[0][0]);
+        glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]);
     }
 
     void cShader::SetVec3(const std::string& name, glm::vec3 vector)
     {
-        glUniform3f(glGetUniformLocation(m_ShaderObject, name.c_str()), vector.x, vector.y, vector.z);
+        glUniform3f(GetUniformLocation(name), vector.x, vector.y, vector.z);
+    }
+
+    int cShader::GetUniformLocation(const std::string& name)
+    {
+        if (m_UniformCache.find(name) != m_UniformCache.end())
+            return m_UniformCache[name];
+
+        int location = glGetUniformLocation(m_ShaderObject, name.c_str());
+        if (location == -1)
+            std::cout << "[Warning]: Uniform '" << name << "' does not exist!" << std::endl;
+
+        m_UniformCache[name] = location;
+        return location;
     }
 }
