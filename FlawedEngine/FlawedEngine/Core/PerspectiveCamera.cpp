@@ -12,6 +12,7 @@ namespace FlawedEngine
 		auto GLFW_Window = (GLFWwindow*)mWindow;
 		glfwGetWindowSize(GLFW_Window, &Width, &Height);
 		glfwSetCursorPos(GLFW_Window, double(Width/2), double(Height/2));
+		mCamFrustum = CreateFrustum();
 	}
 
 	cpCamera::~cpCamera()
@@ -30,6 +31,8 @@ namespace FlawedEngine
 
 		GLFWmonitor* Monitor = glfwGetPrimaryMonitor();
 		const GLFWvidmode* Mode = glfwGetVideoMode(Monitor);
+
+		mCamFrustum = CreateFrustum();
 
 		if (ImGui::IsMouseDown(1))
 		{
@@ -54,7 +57,7 @@ namespace FlawedEngine
 			cos(mVerticalAngle) * cos(mHorizontalAngle)
 		};
 
-		glm::vec3 Right = glm::vec3(
+		mRight = glm::vec3(
 			sin(mHorizontalAngle - 3.14f / 2.0f),
 			0,
 			cos(mHorizontalAngle - 3.14f / 2.0f)
@@ -63,7 +66,7 @@ namespace FlawedEngine
 		if (mVerticalAngle >= 1.0f) mVerticalAngle = 1.0f;
 		if (mVerticalAngle <= -1.0f) mVerticalAngle = -1.0f;
 
-		glm::vec3 Up = glm::cross(Right, mDirection);
+		mUp = glm::cross(mRight, mDirection);
 		glm::vec3 Upwards = glm::vec3(0.0f, 1.0f, 0.0f);
 		if (isInputEnabled)
 		{
@@ -72,27 +75,44 @@ namespace FlawedEngine
 			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) mPostion += mDirection * DeltaTime * mSpeed;
 			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_S)) mPostion -= mDirection * DeltaTime * mSpeed;
 
-			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_D)) mPostion += Right * DeltaTime * mSpeed;
-			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_A)) mPostion -= Right * DeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_D)) mPostion += mRight * DeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_A)) mPostion -= mRight * DeltaTime * mSpeed;
 
 			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_E)) mPostion += Upwards * DeltaTime * mSpeed;
 			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_Q)) mPostion -= Upwards * DeltaTime * mSpeed;
 		}
 		
 		float FoV = mFOV;
-		mProjectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, 0.1f, 10000.f);
+		mProjectionMatrix = glm::perspective(glm::radians(FoV), aspect, near, far);
 		mViewMatrix = glm::lookAt(
 			mPostion,
 			mPostion + mDirection,
-			Up
+			mUp
 		);
 
 		LastTime = CurrentTime;
 	}
-	glm::mat4 cpCamera::Projection() { return mProjectionMatrix; }
-	glm::mat4 cpCamera::View() { return mViewMatrix; }
-	glm::vec3 cpCamera::Postion() { return mPostion; }
-	glm::vec3 cpCamera::Front() { return mDirection; }
-	float cpCamera::FoV() {	return mFOV;	}
+
+	glm::mat4 cpCamera::Projection()				{ return mProjectionMatrix; }
+	glm::mat4 cpCamera::View()						{ return mViewMatrix; }
+	glm::vec3 cpCamera::Postion()					{ return mPostion; }
+	glm::vec3 cpCamera::Front()						{ return mDirection; }
+	float cpCamera::FoV()							{ return mFOV;}
 	void cpCamera::UpdateProjection(glm::mat4 Proj) { mProjectionMatrix = Proj; }
+
+	Frustum cpCamera::CreateFrustum()
+	{
+		Frustum     frustum;
+		const float halfVSide = far * tanf(glm::radians(mFOV * .5f));
+		const float halfHSide = halfVSide * aspect;
+		const glm::vec3 frontMultFar = far * mDirection;
+
+		frustum.nearFace	= Plane(mPostion + near * mDirection, mDirection);
+		frustum.farFace		= Plane(mPostion + frontMultFar, -mDirection );
+		frustum.rightFace	= Plane(mPostion, glm::cross(frontMultFar - mRight * halfHSide, mUp));
+		frustum.leftFace	= Plane(mPostion, glm::cross(mUp, frontMultFar + mRight * halfHSide));
+		frustum.topFace		= Plane(mPostion, glm::cross(mRight, frontMultFar - mUp * halfVSide));
+		frustum.bottomFace	= Plane(mPostion, glm::cross(frontMultFar + mUp * halfVSide, mRight));
+		return frustum;
+	}
 }

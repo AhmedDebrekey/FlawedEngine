@@ -21,7 +21,7 @@ namespace FlawedEngine
 
 	void cScene::Setup()
 	{
-		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray);
+		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray, &Camera.mCamFrustum);
 		glfwSetWindowUserPointer((GLFWwindow*)mWindow, this);
 
 		/*ObjectMan.AddObject(Cube, "Scripting");

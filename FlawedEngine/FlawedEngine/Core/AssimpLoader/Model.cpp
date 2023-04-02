@@ -13,13 +13,14 @@
 
 namespace FlawedEngine
 {
-	cModel::cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes)
+	cModel::cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum)
 		:mCollisionShapesArray(CollisionShapes), mName(Name)
 	{
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
 		loadModel(FilePath);
 		mFilePath = FilePath;
 		mIsCostume = true;
+		mCamFrustum = CamFrustum;
 	}
 	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
 	{
@@ -49,8 +50,12 @@ namespace FlawedEngine
 		else
 			Trans.Model = mModel;
 
-		if(mShouldRender)
+
+		mShouldRender = isModelInFrustum();
+
+		if (mShouldRender)
 		{
+			std::cout << "Rendering " << mName << std::endl;
 			for (uint32_t i = 0; i < mMeshes.size(); i++)
 			{
 				std::vector<glm::mat4>	emptyVector;
@@ -72,7 +77,7 @@ namespace FlawedEngine
 		float currentFrame = glfwGetTime();
 		mDeltaTime = currentFrame - mLastFrame;
 		mLastFrame = currentFrame;
-		if(mAnimator)
+		if (mAnimator)
 			mAnimator->UpdateAnimation(mDeltaTime);
 
 	}
@@ -83,7 +88,7 @@ namespace FlawedEngine
 		{
 		case FlawedEngine::Cube:
 		{
-			mCollisionShape = new btBoxShape(mhalfExtents);
+			mCollisionShape = new btBoxShape(btVector3(mhalfExtents.x, mhalfExtents.y, mhalfExtents.z));
 		}
 		break;
 		case FlawedEngine::Sphere:
@@ -324,7 +329,7 @@ namespace FlawedEngine
 		}
 		return mTransformation.Translation.z;
 	}
-	
+
 	std::string cModel::LGetName()
 	{
 		return mName;
@@ -387,7 +392,7 @@ namespace FlawedEngine
 	void cModel::CalculateAABB(const aiScene* scene)
 	{
 		// Calculate overall bounding box dimensions
-		btVector3 overallMin(FLT_MAX, FLT_MAX, FLT_MAX), overallMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+		glm::vec3 overallMin(FLT_MAX, FLT_MAX, FLT_MAX), overallMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
 		for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
 			aiMesh* mesh = scene->mMeshes[i];
 			btVector3 min(FLT_MAX, FLT_MAX, FLT_MAX), max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
@@ -400,15 +405,53 @@ namespace FlawedEngine
 				if (v.y > max.y()) max.setY(v.y);
 				if (v.z > max.z()) max.setZ(v.z);
 			}
-			if (min.x() < overallMin.x()) overallMin.setX(min.x());
-			if (min.y() < overallMin.y()) overallMin.setY(min.y());
-			if (min.z() < overallMin.z()) overallMin.setZ(min.z());
-			if (max.x() > overallMax.x()) overallMax.setX(max.x());
-			if (max.y() > overallMax.y()) overallMax.setY(max.y());
-			if (max.z() > overallMax.z()) overallMax.setZ(max.z());
+			if (min.x() < overallMin.x) overallMin.x = (min.x());
+			if (min.y() < overallMin.y) overallMin.y = (min.y());
+			if (min.z() < overallMin.z) overallMin.z = (min.z());
+			if (max.x() > overallMax.x) overallMax.x = (max.x());
+			if (max.y() > overallMax.y) overallMax.y = (max.y());
+			if (max.z() > overallMax.z) overallMax.z = (max.z());
 		}
 
+		mOverallMin = overallMin;
+		mOverallMax = overallMax;
 		mhalfExtents = (overallMax - overallMin) / 2.f;
+		mCenter = (overallMax + overallMin) * 0.5f;
+		mExtents = { overallMax.x - mCenter.x, overallMax.y - mCenter.y, overallMax.z - mCenter.z };
+	}
+
+	// Function to test if an AABB is inside the frustum
+	bool cModel::isModelInFrustum()
+	{
+		//Get global scale thanks to our transform
+		const glm::vec3 globalCenter{ mModel * glm::vec4(mCenter, 1.f) };
+
+		// Scaled orientation
+		const glm::vec3 right = mModel[0] * mExtents.x;
+		const glm::vec3 up = mModel[1] * mExtents.y;
+		const glm::vec3 forward = (-mModel[2]) * mExtents.z;
+
+		const float newIi = std::abs(glm::dot(glm::vec3{ 1.f, 0.f, 0.f }, right)) +
+			std::abs(glm::dot(glm::vec3{ 1.f, 0.f, 0.f }, up)) +
+			std::abs(glm::dot(glm::vec3{ 1.f, 0.f, 0.f }, forward));
+
+		const float newIj = std::abs(glm::dot(glm::vec3{ 0.f, 1.f, 0.f }, right)) +
+			std::abs(glm::dot(glm::vec3{ 0.f, 1.f, 0.f }, up)) +
+			std::abs(glm::dot(glm::vec3{ 0.f, 1.f, 0.f }, forward));
+
+		const float newIk = std::abs(glm::dot(glm::vec3{ 0.f, 0.f, 1.f }, right)) +
+			std::abs(glm::dot(glm::vec3{ 0.f, 0.f, 1.f }, up)) +
+			std::abs(glm::dot(glm::vec3{ 0.f, 0.f, 1.f }, forward));
+
+		const AABB globalAABB(globalCenter, newIi, newIj, newIk);
+
+
+		return (globalAABB.isOnOrForwardPlane(mCamFrustum->leftFace) &&
+				globalAABB.isOnOrForwardPlane(mCamFrustum->rightFace) &&
+				globalAABB.isOnOrForwardPlane(mCamFrustum->topFace) &&
+				globalAABB.isOnOrForwardPlane(mCamFrustum->bottomFace) &&
+				globalAABB.isOnOrForwardPlane(mCamFrustum->nearFace) &&
+				globalAABB.isOnOrForwardPlane(mCamFrustum->farFace));
 	}
 
 	void cModel::SetAABB(glm::vec3& Scale)

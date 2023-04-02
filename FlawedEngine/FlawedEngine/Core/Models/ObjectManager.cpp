@@ -18,11 +18,12 @@ namespace FlawedEngine
 	{
 	}
 
-	void cObjectManager::Init(void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes)
+	void cObjectManager::Init(void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* CamFrustum)
 	{
 		mPhysicsWorld = PhysicsWorld;
 		mCollisionShapesArray = CollisionShapes;
 		SetupSkybox();
+		mCamFrustum = CamFrustum;
 	}
 
 	void cObjectManager::RenderObjects(sTransform& tCamera)
@@ -113,7 +114,7 @@ namespace FlawedEngine
 
 	void cObjectManager::LoadObject(const char* FilePath, const char* Name)
 	{
-		SceneObjects[Name] = std::make_shared<cModel>(FilePath, Name, mPhysicsWorld, mCollisionShapesArray);
+		SceneObjects[Name] = std::make_shared<cModel>(FilePath, Name, mPhysicsWorld, mCollisionShapesArray, (Frustum*)mCamFrustum);
 		sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 		SceneObjects[Name]->ModelTransform(DefaultModel);
 		sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };

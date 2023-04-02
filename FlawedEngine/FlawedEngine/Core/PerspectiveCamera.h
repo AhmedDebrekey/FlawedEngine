@@ -1,8 +1,12 @@
 #pragma once
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "Core.h"
+
 namespace FlawedEngine
 {
+
+
 	class cpCamera
 	{
 	public:
@@ -20,6 +24,8 @@ namespace FlawedEngine
 		void UpdateProjection(glm::mat4 Proj);
 		void DisableInput() { isInputEnabled = false; }
 		void EnableInput() { isInputEnabled = true; }
+		Frustum CreateFrustum();
+		Frustum mCamFrustum;
 	private:
 		void* mWindow;
 		glm::mat4 mProjectionMatrix;
@@ -27,11 +33,15 @@ namespace FlawedEngine
 
 		glm::vec3 mPostion = glm::vec3(-5, 3, -5);
 		glm::vec3 mDirection = glm::vec3(0);
+		glm::vec3 mRight = glm::vec3(0);
+		glm::vec3 mUp = glm::vec3(0);
 		
 		float mHorizontalAngle = 0.0f;
 		float mVerticalAngle = 0.0f;
 
 		float mFOV = 80.0f;
+		float aspect = 4.0f / 3.0f;
+		float near = .1f, far = 10000.f;
 
 		float mSpeed = 10.f;
 		float mMouseSpeed = 0.003f;

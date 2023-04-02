@@ -44,6 +44,7 @@ uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int LightSize;
 
 float alpha = 0.1;
+float gamma = 2.2;
 
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
@@ -62,20 +63,21 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
      vec3 ambient;
      vec3 diffuse;
      vec3 specular = vec3(0);
+
     if(length(texDiffuseCol) == 0.0)
     {
         ambient = light.ambient * vec3(material.ambient);
-        diffuse = light.diffuse * diff * vec3(material.diffuse);
+        diffuse = light.diffuse * diff * pow(vec3(material.diffuse), vec3(gamma));
         specular = light.specular * spec * vec3(material.specular);
     }
     else
     { 
-        if (texture(texture_diffuse1, TexCoords).a > alpha)
+        if (texture(texture_diffuse1, TexCoords).a < alpha)
         {
             discard;
         }
         ambient = light.ambient * vec3(texture(texture_diffuse1, TexCoords));
-        diffuse = light.diffuse * diff * vec3(texture(texture_diffuse1, TexCoords));        
+        diffuse = light.diffuse * diff * pow(texture(texture_diffuse1, TexCoords).rgb, vec3(gamma));        
         specular = light.specular * spec * vec3(texture(texture_specular1, TexCoords));
     }
     ambient *= attenuation;
@@ -108,10 +110,12 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir)
      vec3 ambient;
      vec3 diffuse;
      vec3 specular = vec3(0);
+
+     
     if(length(texDiffuseCol) == 0.0)
     {
         ambient = DirLight.Ambient.xyz * vec3(material.ambient);
-        diffuse = DirLight.Diffuse.xyz * diff * vec3(material.diffuse);
+        diffuse = DirLight.Diffuse.xyz * diff * pow(vec3(material.diffuse), vec3(gamma));
         specular = DirLight.Specular.xyz * spec * vec3(material.specular);
     }
     else
@@ -121,7 +125,7 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir)
             discard;
         }
         ambient = DirLight.Ambient.xyz * vec3(texture(texture_diffuse1, TexCoords));
-        diffuse = DirLight.Diffuse.xyz * diff * vec3(texture(texture_diffuse1, TexCoords));        
+        diffuse = DirLight.Diffuse.xyz * diff *  pow(texture(texture_diffuse1, TexCoords).rgb, vec3(gamma));        
         specular = DirLight.Specular.xyz * spec * vec3(texture(texture_specular1, TexCoords));
     }
 

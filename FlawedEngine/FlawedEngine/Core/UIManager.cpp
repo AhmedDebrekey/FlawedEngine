@@ -54,6 +54,7 @@ namespace FlawedEngine
 
 		glViewport(0, 0, ViewportSize.x, ViewportSize.y);
 
+
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 			assert(false);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
