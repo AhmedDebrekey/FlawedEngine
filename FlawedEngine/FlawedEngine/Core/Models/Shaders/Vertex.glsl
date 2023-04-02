@@ -2,10 +2,10 @@
 layout (location = 0) in vec3 aPos;   
 layout (location = 1) in vec3 aNormal;
 layout (location = 2) in vec2 aTexCoords;
-layout (location = 3) in vec3 tangent;
-layout (location = 4) in vec3 bitangent;
-layout (location = 5) in ivec4 boneIds; 
-layout (location = 6) in vec4 weights;
+layout (location = 3) in vec3 aTangent;
+layout (location = 4) in vec3 aBitangent;
+layout (location = 5) in ivec4 aBoneIds; 
+layout (location = 6) in vec4 aWeights;
 
 uniform mat4 Projection;
 uniform mat4 View;
@@ -19,58 +19,56 @@ layout(std140) uniform BonesBlock {
     mat4 finalBonesMatrices[MAX_BONES];
 };
 
-
 out vec3 Normal;
 out vec3 FragPos;
 out vec3 Position;
 out vec2 TexCoords;
-out mat3 tbn;
+out mat3 TBN;
+
+void CalculatePosition(vec4 Position, vec3 Normals, bool Animation = false)
+{
+    gl_Position = Projection * View * Model * Position;
+    Normal = normalize(mat3(transpose(inverse(Model))) * Normals);
+
+    if(Animation)
+    {
+        vec4 worldPosition = Model * Position;
+        FragPos = worldPosition.xyz;
+    }
+    else
+        FragPos = vec3(Model * Position);
+}
 
 void main()
 {
-
-//    vec3 T = normalize(vec3(Model * vec4(tangent,   0.0)));
-//    vec3 B = normalize(vec3(Model * vec4(bitangent, 0.0)));
-//    vec3 N = normalize(vec3(Model * vec4(aNormal,    0.0)));
-//    mat3 TBN = transpose(mat3(T, B, N));
-//    tbn = TBN;
-
-
-    mat3 normalMatrix = transpose(inverse(mat3(Model))); // correct normal transform as learned in previous tutorials here
+    mat3 normalMatrix = transpose(inverse(mat3(Model))); 
     vec3 N = normalize(normalMatrix * aNormal);
-    vec3 T = normalize(normalMatrix * tangent);
+    vec3 T = normalize(normalMatrix * aTangent);
     vec3 B = normalize(cross(N, T));
-    tbn = mat3(T, B, N);
+    TBN = mat3(T, B, N);
 
     if(UBOSET)
     {
-        vec4 totalPosition = vec4(0.0f);
-        vec3 totalNormal = vec3(0.0f);
+        vec4 totalPosition  = vec4(0.0f);
+        vec3 totalNormal    = vec3(0.0f);
         for(int i = 0 ; i < MAX_BONE_INFLUENCE ; i++)
         {
-            if(boneIds[i] == -1) 
+            if(aBoneIds[i] == -1) 
                 continue;
-            if(boneIds[i] >=MAX_BONES) 
+            if(aBoneIds[i] >=MAX_BONES) 
             {
                 totalPosition = vec4(aPos,1.0f);
                 break;
             }
-            vec4 localPosition = finalBonesMatrices[boneIds[i]] * vec4(aPos,1.0f);
-            totalPosition += localPosition * weights[i];
-             mat3 localRotation = mat3(finalBonesMatrices[boneIds[i]]);
-            totalNormal += weights[i] * (localRotation * aNormal);
+            vec4 localPosition = finalBonesMatrices[aBoneIds[i]] * vec4(aPos,1.0f);
+            totalPosition += localPosition * aWeights[i];
+             mat3 localRotation = mat3(finalBonesMatrices[aBoneIds[i]]);
+            totalNormal += aWeights[i] * (localRotation * aNormal);
        }
-           gl_Position = Projection * View * Model * totalPosition;
-           vec4 worldPosition = Model * totalPosition;
-           FragPos = worldPosition.xyz;
-           Normal = normalize(mat3(transpose(inverse(Model))) * totalNormal);
+           CalculatePosition(totalPosition, totalNormal, true);
     }
     else
-    {
-        gl_Position = Projection * View * Model * vec4(aPos,1.0f);
-        FragPos = vec3(Model * vec4(aPos, 1.0));
-        Normal = mat3(transpose(inverse(Model))) * aNormal;
-    }
+        CalculatePosition(vec4(aPos,1.0f), aNormal, false);
 
     Position = vec3(Model * vec4(aPos, 1.0));
     TexCoords = aTexCoords;

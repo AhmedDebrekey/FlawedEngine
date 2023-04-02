@@ -33,7 +33,7 @@ namespace FlawedEngine
 		virtual void SetAABB(glm::vec3& Scale) = 0;
 		virtual ~cEntity() = 0;
 
-		glm::vec3 GetAABB() { return mhalfExtents; }
+		glm::vec3 GetAABB() { return mAABB.mExtents; }
 		sModel GetModel() { return mTransformation; }
 		glm::mat4* GetModelMatrix() { return &mModel; }
 		glm::vec3* GetColor() { return &mMaterial.Color; }
@@ -55,11 +55,8 @@ namespace FlawedEngine
 		float mFricton = 0.5;
 		float mRestitution = 0.0f;
 		bool mDead = false;
-		glm::vec3 mOverallMin, mOverallMax;
-		glm::vec3 mCenter;
-		glm::vec3 mExtents;
-		glm::vec3 mhalfExtents;
 		eBasicObject Type = Cube;
+		sAABB mAABB;
 
 		//Rendering
 		sMaterial mMaterial;

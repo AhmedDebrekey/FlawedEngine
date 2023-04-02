@@ -88,9 +88,6 @@ namespace FlawedEngine
         Shader.SetVec3("material.specular", Mat.Specular);
         Shader.SetFloat("material.shininess", Mat.Shininess);
 
-        /*for (int i = 0; i < FinalBoneMatricies.size(); ++i)
-            Shader.SetMat4f("finalBonesMatrices[" + std::to_string(i) + "]", FinalBoneMatricies[i]);*/
-
        
         if (!FinalBoneMatricies.empty()) {
             glBindBuffer(GL_UNIFORM_BUFFER, AnimationUBO);

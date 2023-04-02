@@ -55,7 +55,6 @@ namespace FlawedEngine
 
 		if (mShouldRender)
 		{
-			std::cout << "Rendering " << mName << std::endl;
 			for (uint32_t i = 0; i < mMeshes.size(); i++)
 			{
 				std::vector<glm::mat4>	emptyVector;
@@ -88,8 +87,8 @@ namespace FlawedEngine
 		{
 		case FlawedEngine::Cube:
 		{
-			mCollisionShape = new btBoxShape(btVector3(mhalfExtents.x, mhalfExtents.y, mhalfExtents.z));
-		}
+			mCollisionShape = new btBoxShape(btVector3(mAABB.mExtents.x, mAABB.mExtents.y, mAABB.mExtents.z));
+		} 
 		break;
 		case FlawedEngine::Sphere:
 		{
@@ -413,23 +412,19 @@ namespace FlawedEngine
 			if (max.z() > overallMax.z) overallMax.z = (max.z());
 		}
 
-		mOverallMin = overallMin;
-		mOverallMax = overallMax;
-		mhalfExtents = (overallMax - overallMin) / 2.f;
-		mCenter = (overallMax + overallMin) * 0.5f;
-		mExtents = { overallMax.x - mCenter.x, overallMax.y - mCenter.y, overallMax.z - mCenter.z };
+		mAABB = sAABB(overallMin, overallMax);
 	}
 
 	// Function to test if an AABB is inside the frustum
 	bool cModel::isModelInFrustum()
 	{
 		//Get global scale thanks to our transform
-		const glm::vec3 globalCenter{ mModel * glm::vec4(mCenter, 1.f) };
+		const glm::vec3 globalCenter{ mModel * glm::vec4(mAABB.mCenter, 1.f) };
 
 		// Scaled orientation
-		const glm::vec3 right = mModel[0] * mExtents.x;
-		const glm::vec3 up = mModel[1] * mExtents.y;
-		const glm::vec3 forward = (-mModel[2]) * mExtents.z;
+		const glm::vec3 right = mModel[0] * mAABB.mExtents.x;
+		const glm::vec3 up = mModel[1] * mAABB.mExtents.y;
+		const glm::vec3 forward = (-mModel[2]) * mAABB.mExtents.z;
 
 		const float newIi = std::abs(glm::dot(glm::vec3{ 1.f, 0.f, 0.f }, right)) +
 			std::abs(glm::dot(glm::vec3{ 1.f, 0.f, 0.f }, up)) +
@@ -443,7 +438,7 @@ namespace FlawedEngine
 			std::abs(glm::dot(glm::vec3{ 0.f, 0.f, 1.f }, up)) +
 			std::abs(glm::dot(glm::vec3{ 0.f, 0.f, 1.f }, forward));
 
-		const AABB globalAABB(globalCenter, newIi, newIj, newIk);
+		const sAABB globalAABB(globalCenter, newIi, newIj, newIk);
 
 
 		return (globalAABB.isOnOrForwardPlane(mCamFrustum->leftFace) &&
@@ -563,10 +558,10 @@ namespace FlawedEngine
 		
 		aiMaterial* Material = scene->mMaterials[mesh->mMaterialIndex];
 
-		std::cout << scene->mMaterials[mesh->mMaterialIndex]->GetName().C_Str() << std::endl;
+		/*std::cout << scene->mMaterials[mesh->mMaterialIndex]->GetName().C_Str() << std::endl;
 		std::cout << "Diffuse :" << scene->mMaterials[mesh->mMaterialIndex]->GetTextureCount(aiTextureType_DIFFUSE) << std::endl;
 		std::cout << "Specular:" << scene->mMaterials[mesh->mMaterialIndex]->GetTextureCount(aiTextureType_SPECULAR) << std::endl;
-		std::cout << "Normal  :" << scene->mMaterials[mesh->mMaterialIndex]->GetTextureCount(aiTextureType_NORMALS) << std::endl << std::endl;
+		std::cout << "Normal  :" << scene->mMaterials[mesh->mMaterialIndex]->GetTextureCount(aiTextureType_NORMALS) << std::endl << std::endl;*/
 
 		std::vector<sTexture> diffuseMaps = loadMaterialTextures(Material, aiTextureType_DIFFUSE, "texture_diffuse");
 		Textures.insert(Textures.end(), diffuseMaps.begin(), diffuseMaps.end());

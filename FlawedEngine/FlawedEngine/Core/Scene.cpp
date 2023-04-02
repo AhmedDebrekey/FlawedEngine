@@ -23,11 +23,6 @@ namespace FlawedEngine
 	{
 		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray, &Camera.mCamFrustum);
 		glfwSetWindowUserPointer((GLFWwindow*)mWindow, this);
-
-		/*ObjectMan.AddObject(Cube, "Scripting");
-		auto Entity = ObjectMan.GetObjectByName("Scripting");
-		Entity->SetColor(glm::vec3(1.0f, 0.0f, 0.0f));
-		Entity->SetupScripting("FunctionalScripting.Lua");*/
 	}
 
 	bool cScene::isKeyDown(int key)

@@ -90,8 +90,8 @@ namespace FlawedEngine
 
 	struct Plane
 	{
-		glm::vec3 normal = { 0.f, 1.f, 0.f }; // unit vector
-		float     distance = 0.f;        // Distance with origin
+		glm::vec3 normal = { 0.f, 1.f, 0.f };	// unit vector
+		float distance = 0.f;					// Distance with origin
 
 		Plane() = default;
 
@@ -116,5 +116,32 @@ namespace FlawedEngine
 
 		Plane farFace;
 		Plane nearFace;
+	};
+
+	struct sAABB
+	{
+		glm::vec3 mCenter{ 0.f, 0.f, 0.f };
+		glm::vec3 mExtents{ 0.f, 0.f, 0.f };
+
+		sAABB()
+		{}
+
+		sAABB(const glm::vec3& min, const glm::vec3& max)
+			: mCenter{ (max + min) * 0.5f }, mExtents{ max.x - mCenter.x, max.y - mCenter.y, max.z - mCenter.z }
+		{}
+
+		sAABB(const glm::vec3& inCenter, float iI, float iJ, float iK)
+			: mCenter{ inCenter }, mExtents{ iI, iJ, iK }
+		{}
+
+		//see https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plane.html
+		bool isOnOrForwardPlane(const Plane& plane) const
+		{
+			// Compute the projection interval radius of b onto L(t) = b.c + t * p.n
+			const float r = mExtents.x * std::abs(plane.normal.x) + mExtents.y * std::abs(plane.normal.y) +
+				mExtents.z * std::abs(plane.normal.z);
+
+			return -r <= plane.getSignedDistanceToPlane(mCenter);
+		}
 	};
 }

@@ -82,7 +82,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 
 	if (fileDialog.HasSelected())
 	{
-		std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+		//std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
 		char buffer[20];
 		sprintf_s(buffer, "Object(%i)", Objects);
 		ObjectMan->LoadObject(fileDialog.GetSelected().string().c_str(), buffer);

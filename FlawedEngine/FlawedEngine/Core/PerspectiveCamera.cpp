@@ -93,13 +93,6 @@ namespace FlawedEngine
 		LastTime = CurrentTime;
 	}
 
-	glm::mat4 cpCamera::Projection()				{ return mProjectionMatrix; }
-	glm::mat4 cpCamera::View()						{ return mViewMatrix; }
-	glm::vec3 cpCamera::Postion()					{ return mPostion; }
-	glm::vec3 cpCamera::Front()						{ return mDirection; }
-	float cpCamera::FoV()							{ return mFOV;}
-	void cpCamera::UpdateProjection(glm::mat4 Proj) { mProjectionMatrix = Proj; }
-
 	Frustum cpCamera::CreateFrustum()
 	{
 		Frustum     frustum;
@@ -115,4 +108,12 @@ namespace FlawedEngine
 		frustum.bottomFace	= Plane(mPostion, glm::cross(frontMultFar + mUp * halfVSide, mRight));
 		return frustum;
 	}
+
+	glm::mat4	cpCamera::Projection()						{ return mProjectionMatrix; }
+	glm::mat4	cpCamera::View()							{ return mViewMatrix; }
+	glm::vec3	cpCamera::Postion()							{ return mPostion; }
+	glm::vec3	cpCamera::Front()							{ return mDirection; }
+	float		cpCamera::FoV()								{ return mFOV;}
+	void		cpCamera::UpdateProjection(glm::mat4 Proj)	{ mProjectionMatrix = Proj; }
+
 }
