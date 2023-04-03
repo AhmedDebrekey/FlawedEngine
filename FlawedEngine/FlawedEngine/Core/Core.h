@@ -10,6 +10,8 @@ namespace FlawedEngine
 	typedef unsigned int uint32_t;
 #define MAX_BONE_INFLUENCE 4
 
+	static glm::vec3 DirectionalLightPos = glm::vec3(-2.0f, 10.0f, -1.0f);
+
 	struct sMaterial
 	{
 		glm::vec3 Color = glm::vec3(1.0f);
@@ -134,7 +136,7 @@ namespace FlawedEngine
 			: mCenter{ inCenter }, mExtents{ iI, iJ, iK }
 		{}
 
-		//see https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plane.html
+		//https://gdbooks.gitbooks.io/3dcollisions/content/Chapter2/static_aabb_plane.html
 		bool isOnOrForwardPlane(const Plane& plane) const
 		{
 			// Compute the projection interval radius of b onto L(t) = b.c + t * p.n
@@ -143,5 +145,19 @@ namespace FlawedEngine
 
 			return -r <= plane.getSignedDistanceToPlane(mCenter);
 		}
+	};
+
+	struct sFrameBuffer
+	{
+		sFrameBuffer()
+		{}
+		sFrameBuffer(uint32_t fbo, glm::vec2 Size, glm::vec2 Pos, glm::vec2 PrevSize)
+			:FBO(fbo), ViewportSize(Size), ViewportPos(Pos), PrevViewportSize(PrevSize)
+		{}
+
+		uint32_t FBO;
+		glm::vec2 ViewportSize;
+		glm::vec2 ViewportPos;
+		glm::vec2 PrevViewportSize;
 	};
 }

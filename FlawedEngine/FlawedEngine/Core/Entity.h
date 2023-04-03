@@ -15,6 +15,7 @@ namespace FlawedEngine
 	{
 	public:
 		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox) = 0;
+		virtual void ShadowRender(sTransform& Trans, glm::mat4& LightSpaecMatrix, uint32_t DepthMap) = 0;
 		virtual void Update(/*Should be taking in the timestep*/) = 0;
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) = 0;
 		virtual void UnSetPhysics() = 0;

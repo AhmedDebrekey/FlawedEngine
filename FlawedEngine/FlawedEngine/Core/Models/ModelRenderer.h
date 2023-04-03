@@ -24,7 +24,7 @@ namespace FlawedEngine
 	{
 	public:
 		void Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox);
-
+		void ShadowDraw(sTransform& Trans, cShader& Shader, glm::mat4& LightSpaceMatrix, uint32_t DepthMap);
 		void Init(std::vector<sVertex>& Vertecies, std::vector<sTexture>& Textures, std::vector<uint32_t>& Indices);
 
 	public:
@@ -46,5 +46,9 @@ namespace FlawedEngine
 			glm::vec4(0.5f, 0.5f, 0.5f, 1.0f)         // Specular
 		};
 		cShader Shader;
+
+	private:
+		glm::mat4 mLightSpaceMatrix;
+		uint32_t mDepthMap;
 	};
 }

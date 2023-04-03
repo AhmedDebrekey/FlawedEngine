@@ -82,6 +82,8 @@ namespace FlawedEngine
         Shader.SetMat4f("View", Trans.View);
         Shader.SetMat4f("Model", Trans.Model);
         Shader.SetVec3("viewPos", Trans.Position);
+        
+        Shader.SetMat4f("lightSpaceMatrix", mLightSpaceMatrix);
 
         Shader.SetVec3("material.ambient", Mat.Color);
         Shader.SetVec3("material.diffuse", Mat.Diffuse);
@@ -101,10 +103,22 @@ namespace FlawedEngine
 
         glBindBufferBase(GL_UNIFORM_BUFFER, 0, AnimationUBO);
         glBindBufferBase(GL_UNIFORM_BUFFER, 1, DirectionalLightUBO);
+
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glActiveTexture(GL_TEXTURE0 + mTextures.size());
+
+        glActiveTexture(GL_TEXTURE0 + mTextures.size()); 
         glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
+        Shader.SetInt("skybox", mTextures.size());
+
+        glActiveTexture(GL_TEXTURE0 + mTextures.size() + 1); //depth
+        glBindTexture(GL_TEXTURE_2D, mDepthMap);
+        Shader.SetInt("shadowMap", mTextures.size() + 1);
+
         glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+
+        glActiveTexture(GL_TEXTURE0 + mTextures.size() + 1); //depth
+        glBindTexture(GL_TEXTURE_2D, 0);
+
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
         for (unsigned int i = 0; i < mTextures.size(); i++)
         {
@@ -115,6 +129,23 @@ namespace FlawedEngine
         glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind the UBO after drawing the object
         glBindBufferBase(GL_UNIFORM_BUFFER, 1, 0); // unbind the UBO after drawing the object
         glBindVertexArray(0);
+        Shader.Unbind();
+    }
+
+    void cMesh::ShadowDraw(sTransform& Trans, cShader& Shader, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
+    {
+        Shader.Bind();
+        mLightSpaceMatrix = LightSpaceMatrix;
+        mDepthMap = DepthMap;
+        glBindVertexArray(VAO);
+
+        Shader.SetMat4f("lightSpaceMatrix", LightSpaceMatrix);
+        Shader.SetMat4f("model", Trans.Model);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+
         Shader.Unbind();
     }
 

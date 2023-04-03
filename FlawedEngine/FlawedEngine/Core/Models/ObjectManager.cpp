@@ -26,6 +26,14 @@ namespace FlawedEngine
 		mCamFrustum = CamFrustum;
 	}
 
+	void cObjectManager::ShadowRender(sTransform& LightPerspective, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
+	{
+		for (auto& Object : SceneObjects)
+		{
+			Object.second->ShadowRender(LightPerspective, LightSpaceMatrix, DepthMap);
+		}
+	}
+
 	void cObjectManager::RenderObjects(sTransform& tCamera)
 	{
 		this->tCamera = tCamera;

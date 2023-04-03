@@ -63,6 +63,23 @@ namespace FlawedEngine
     #endif //OPENGL
 	}
 
+    void cModelRenderer::ShadowDraw(sTransform& Trans, cShader& Shader, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
+    {
+        Shader.Bind();
+        mLightSpaceMatrix = LightSpaceMatrix;
+        mDepthMap = DepthMap;
+        glBindVertexArray(VAO);
+
+        Shader.SetMat4f("lightSpaceMatrix", LightSpaceMatrix);
+        Shader.SetMat4f("model", Trans.Model);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+
+        Shader.Unbind();
+    }
+
 	void cModelRenderer::Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox)
 	{
     #ifdef OPENGL
@@ -116,7 +133,11 @@ namespace FlawedEngine
 		glBindVertexArray(VAO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
-		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, mDepthMap);
+        glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, 0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
         glBindVertexArray(0);
         glBindBufferBase(GL_UNIFORM_BUFFER, 1, 0); // unbind the UBO after drawing the object

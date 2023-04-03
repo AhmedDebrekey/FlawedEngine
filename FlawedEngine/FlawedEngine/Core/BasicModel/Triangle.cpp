@@ -24,6 +24,10 @@ namespace FlawedEngine
 		Renderer.Draw(Trans, mMaterial, LightPositions, SkyBox);
 	}
 
+	void cTriangle::ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
+	{
+	}
+
 	void cTriangle::Update()
 	{
 		//TODO: Should have an Input System here

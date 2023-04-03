@@ -24,6 +24,7 @@ namespace FlawedEngine
 		void UpdateUI();
 		void RenderUI();
 		std::string& GetSelectedEntity() { return mSelectedEntity; }
+		sFrameBuffer& GetFrameBuffer() { return mUIFramebuffer; }
 		glm::vec2 GetViewportSize() { return ViewportSize; };
 		glm::vec2 GetViewportPos() { return ViewportPos; };
 	private:
@@ -38,6 +39,7 @@ namespace FlawedEngine
 		uint32_t FrameBuffer;
 		uint32_t TextureColorBuffer;
 		uint32_t RenderBufferObject;
+		sFrameBuffer mUIFramebuffer;
 		glm::vec2 PrevViewportSize = {1600, 900};
 		glm::vec2 ViewportSize = {1600, 900};
 		glm::vec2 ViewportPos = { 1600, 900 };

@@ -57,6 +57,9 @@ namespace FlawedEngine
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 			assert(false);
+
+		mUIFramebuffer = sFrameBuffer(FrameBuffer, ViewportSize, ViewportPos, PrevViewportSize);
+
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
@@ -139,6 +142,12 @@ namespace FlawedEngine
 			ObjectMan->mMousePicking = mMousePicking;
 			if(ImGui::Button("RenderSkyBox"))
 				ObjectMan->ToggleSkyBox();
+			ImGui::Separator();
+			if (ImGui::Button("Switch Perspective"))
+				mCamera->ToggleShadowPerspective();
+			ImGui::Separator();
+
+
 
 			static char Path[20] = "";
 			{

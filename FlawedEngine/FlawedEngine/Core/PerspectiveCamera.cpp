@@ -83,12 +83,23 @@ namespace FlawedEngine
 		}
 		
 		float FoV = mFOV;
-		mProjectionMatrix = glm::perspective(glm::radians(FoV), aspect, near, far);
-		mViewMatrix = glm::lookAt(
-			mPostion,
-			mPostion + mDirection,
-			mUp
-		);
+
+		if(DirLightPerspective)
+		{
+			mProjectionMatrix = glm::perspective(glm::radians(FoV), aspect, near, far);
+			mViewMatrix = glm::lookAt(
+				mPostion,
+				mPostion + mDirection,
+				mUp
+			);
+		}
+		else
+		{
+			float near_plane = .5f, far_plane = 100.f;
+			mProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+			mViewMatrix = glm::lookAt(DirectionalLightPos, glm::vec3(1.0f), glm::vec3(0.0, 1.0, 0.0));
+		}
+
 
 		LastTime = CurrentTime;
 	}

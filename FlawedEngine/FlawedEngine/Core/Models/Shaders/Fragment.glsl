@@ -9,6 +9,7 @@ uniform sampler2D texture_specular1;
 uniform sampler2D texture_specular2;
 uniform sampler2D texture_normal1;
 uniform samplerCube skybox;
+uniform sampler2D shadowMap;
 
 out vec4 FragColor;
 
@@ -19,6 +20,8 @@ in vec3 FragPos;
 
 in vec3 Position;
 in mat3 TBN;
+
+in vec4 FragPosLightSpace;
 
 struct Material {
     vec3 ambient;
@@ -45,9 +48,48 @@ uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int LightSize;
 uniform vec3 viewPos;
 
+layout(binding = 1) uniform DirectionalLight {
+     vec4 Direction;
+     vec4 Ambient;
+     vec4 Diffuse;
+     vec4 Specular;
+} DirLight;
+
 float alpha = 0.1;
 float gamma = 2.2;
 bool IsNoTexture = true;
+
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal)
+{
+    // perform perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // transform to [0,1] range
+    projCoords = projCoords * 0.5 + 0.5;
+    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // get depth of current fragment from light's perspective
+    float currentDepth = projCoords.z;
+    // calculate bias (based on depth map resolution and slope)
+    vec3 norm = normalize(normal);
+    vec3 lightDir = normalize(DirLight.Direction.xyz - FragPos);
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    // PCF
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(shadowMap, 0);
+    for(int x = -1; x <= 1; ++x)
+    {
+        for(int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+            shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;        
+        }    
+    }
+    shadow /= 9.0;
+    if(projCoords.z > 1.0)
+        shadow = 0.0;
+    
+    return shadow;
+}
 
 void CalcLighting(vec3 Direction, vec3 normal, vec3 viewDir, inout float diff, inout float spec)
 {
@@ -99,13 +141,6 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     return (ambient + diffuse + specular);
 } 
 
-layout(binding = 1) uniform DirectionalLight {
-     vec4 Direction;
-     vec4 Ambient;
-     vec4 Diffuse;
-     vec4 Specular;
-} DirLight;
-
 vec3 CalcDirLight(vec3 normal, vec3 viewDir)
 { 
     vec3 lightDir = normalize(DirLight.Direction.xyz);
@@ -120,7 +155,10 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir)
 
     CalcADS(ambient, diffuse, specular, diff, spec, DirLight.Ambient, DirLight.Diffuse, DirLight.Specular);
 
-    return (ambient + diffuse + specular);
+    float shadow = ShadowCalculation(FragPosLightSpace, normal);                      
+    vec3 color = texture(texture_diffuse1, TexCoords).rgb;
+
+    return (ambient + (1.0 - shadow) * (diffuse + specular)) * color;
 }
 
 

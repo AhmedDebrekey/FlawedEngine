@@ -26,6 +26,7 @@ namespace FlawedEngine
 		cpCamera* GetCamera() { return &Camera; }
 		void UpdateViewport(glm::vec2 Size, glm::vec2 Pos) { ViewportSize = Size; ViewportPos = Pos; }
 		void SetSelectedEntity(std::string& SelectedEntity) { mSelectedEntity = &SelectedEntity; }
+		void SetUIFrameBuffer(sFrameBuffer& FrameBuffer) { mUIFrameBuffer = &FrameBuffer; }
 
 		bool isKeyDown(int key);
 	private:
@@ -42,5 +43,11 @@ namespace FlawedEngine
 		void onCursorPos(glm::vec2 pos) { CursorPos = pos; }
 	private:
 		std::string* mSelectedEntity;
+	private:
+
+		const uint32_t SHADOW_WIDTH = 2048, SHADOW_HEIGHT = 2048;
+		uint32_t mDepthMapFBO	= 0;
+		uint32_t mDepthMap		= 0;
+		sFrameBuffer* mUIFrameBuffer = nullptr;
 	};
 }

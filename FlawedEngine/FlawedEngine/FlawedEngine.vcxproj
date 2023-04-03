@@ -190,6 +190,7 @@
     <ClCompile Include="Core\ScriptingManager.cpp" />
     <ClCompile Include="Core\AssimpLoader\Mesh.cpp" />
     <ClCompile Include="Core\AssimpLoader\Model.cpp" />
+    <ClCompile Include="Core\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\AssimpLoader\Animations\Animation.h" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Core\ScriptingManager.h" />
     <ClInclude Include="Core\AssimpLoader\Mesh.h" />
     <ClInclude Include="Core\AssimpLoader\Model.h" />
+    <ClInclude Include="Core\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Fragment.glsl" />

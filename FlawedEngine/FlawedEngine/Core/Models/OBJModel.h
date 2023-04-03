@@ -17,6 +17,7 @@ namespace FlawedEngine
 		cOBJModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes);
 		~cOBJModel();
 		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox) override;
+		virtual void ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap) override;
 		virtual void Update() override;
 		virtual void setDynamic(bool isDynamic) override;
 		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
@@ -52,5 +53,7 @@ namespace FlawedEngine
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
 
 		int ScriptingId;
+	private:
+		cShader ShadowShader;
 	};
 }

@@ -53,6 +53,7 @@ namespace FlawedEngine
             delete mAnimator;
         }
         virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox) override;
+        virtual void ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap) override;
         virtual void Update(/*Should be taking in the timestep*/) override;
         void SetCollisionShape(eBasicObject Object);
         virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
@@ -105,6 +106,7 @@ namespace FlawedEngine
         std::string mDirectory;
         bool gammaCorrection;
         cShader Shader;
+        cShader mShadowShader;
     private:
         std::string mName;
         bool isPhysicsSet = false;

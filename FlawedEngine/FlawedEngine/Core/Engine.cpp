@@ -16,6 +16,7 @@ namespace FlawedEngine
 
 		UI.Init(EngineWindow.GetWindow(), mActiveScene->GetCamera(), mActiveScene->GetObjectManager());
 		mActiveScene->SetSelectedEntity(UI.GetSelectedEntity());
+		mActiveScene->SetUIFrameBuffer(UI.GetFrameBuffer());
 	}
 
 	void cEngine::Run()

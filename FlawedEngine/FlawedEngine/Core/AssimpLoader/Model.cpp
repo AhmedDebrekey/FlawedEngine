@@ -70,6 +70,44 @@ namespace FlawedEngine
 		}
 	}
 
+	void cModel::ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
+	{
+		if (mRigidBody != nullptr && mRigidBody->getMotionState() && isPhysicsSet)
+		{
+			btTransform btTrans;
+			mRigidBody->getMotionState()->getWorldTransform(btTrans);
+
+			btVector3 ObjectTransform = btTrans.getOrigin();
+			btVector3 Scale = mRigidBody->getCollisionShape()->getLocalScaling();
+
+			glm::vec4 Rotation;
+			btQuaternion quat = mRigidBody->getCenterOfMassTransform().getRotation();
+			btVector3 v = quat.getAxis();
+			Rotation.x = v.x();
+			Rotation.y = v.y();
+			Rotation.z = v.z();
+			Rotation.w = quat.getAngle();
+
+			glm::mat4 Model = glm::mat4(1.0f);
+			Model = glm::translate(Model, glm::vec3(ObjectTransform.getX(), ObjectTransform.getY(), ObjectTransform.getZ()));
+			Model = glm::rotate(Model, Rotation.w, glm::vec3(Rotation.x, Rotation.y, Rotation.z));
+			Model = glm::scale(Model, glm::vec3(Scale.getX(), Scale.getY(), Scale.getZ()));
+			Trans.Model = Model;
+		}
+		else
+			Trans.Model = mModel;
+
+		mShouldRender = isModelInFrustum();
+
+		if (mShouldRender)
+		{
+			for (uint32_t i = 0; i < mMeshes.size(); i++)
+			{
+				mMeshes[i].ShadowDraw(Trans, mShadowShader, LightSpaceMatrix, DepthMap);
+			}
+		}
+	}
+
 	void cModel::Update()
 	{
 		ScriptingManager.RunFunction(ScriptingId, "Update");
@@ -384,6 +422,7 @@ namespace FlawedEngine
 		processNode(scene->mRootNode, scene);
 
 		Shader.Create("Core/Models/Shaders/Vertex.glsl", "Core/Models/Shaders/Fragment.glsl");
+		mShadowShader.Create("Core/Models/Shaders/ShadowVertex.glsl", "Core/Models/Shaders/ShadowFragment.glsl");
 		Shader.Bind();
 		Shader.Unbind();
 	}

@@ -37,6 +37,10 @@ namespace FlawedEngine
 		Renderer.Draw(Trans, mMaterial, LightPositions, SkyBox);
 	}
 
+	void cPointLight::ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
+	{
+	}
+
 	void cPointLight::Update()
 	{
 	}

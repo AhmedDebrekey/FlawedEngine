@@ -20,6 +20,7 @@ namespace FlawedEngine
 		Populate();
 		
 		Renderer.Init(mVertexBuffer, mTextureCoords, mIndices);
+		ShadowShader.Create("Core/Models/Shaders/ShadowVertex.glsl", "Core/Models/Shaders/ShadowFragment.glsl");
 	}
 
 	cOBJModel::~cOBJModel()
@@ -352,6 +353,37 @@ namespace FlawedEngine
 
 		if(mShouldRender)
 			Renderer.Draw(Trans, mMaterial, LightPositions, SkyBox);
+	}
+
+	void cOBJModel::ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
+	{
+		if (mRigidBody != nullptr && mRigidBody->getMotionState() && isPhysicsSet)
+		{
+			btTransform btTrans;
+			mRigidBody->getMotionState()->getWorldTransform(btTrans);
+
+			btVector3 ObjectTransform = btTrans.getOrigin();
+			btVector3 Scale = mRigidBody->getCollisionShape()->getLocalScaling();
+
+			glm::vec4 Rotation;
+			btQuaternion quat = mRigidBody->getCenterOfMassTransform().getRotation();
+			btVector3 v = quat.getAxis();
+			Rotation.x = v.x();
+			Rotation.y = v.y();
+			Rotation.z = v.z();
+			Rotation.w = quat.getAngle();
+
+			glm::mat4 Model = glm::mat4(1.0f);
+			Model = glm::translate(Model, glm::vec3(ObjectTransform.getX(), ObjectTransform.getY(), ObjectTransform.getZ()));
+			Model = glm::rotate(Model, Rotation.w, glm::vec3(Rotation.x, Rotation.y, Rotation.z));
+			Model = glm::scale(Model, glm::vec3(Scale.getX(), Scale.getY(), Scale.getZ()));
+			Trans.Model = Model;
+		}
+		else
+			Trans.Model = mModel;
+
+		if (mShouldRender)
+			Renderer.ShadowDraw(Trans, ShadowShader, LightSpaceMatrix, DepthMap);
 	}
 
 	void cOBJModel::Update()

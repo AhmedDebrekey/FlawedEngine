@@ -10,7 +10,8 @@ namespace FlawedEngine
 	{
 	public:		
 		void Init(void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* CamFrustum);
-
+		
+		void ShadowRender(sTransform& LightPerspective, glm::mat4& LightSpaceMatrix, uint32_t DepthMap);
 		void RenderObjects(sTransform& tCamera);
 
 		void AddObject(eBasicObject ObjectType, const char* Name);

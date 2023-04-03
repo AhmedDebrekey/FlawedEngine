@@ -11,6 +11,7 @@ uniform mat4 Projection;
 uniform mat4 View;
 uniform mat4 Model;
 uniform bool UBOSET;
+uniform mat4 lightSpaceMatrix;
 
 const int MAX_BONES = 100;
 const int MAX_BONE_INFLUENCE = 4;
@@ -24,6 +25,8 @@ out vec3 FragPos;
 out vec3 Position;
 out vec2 TexCoords;
 out mat3 TBN;
+out vec4 FragPosLightSpace;
+
 
 void CalculatePosition(vec4 Position, vec3 Normals, bool Animation = false)
 {
@@ -69,7 +72,8 @@ void main()
     }
     else
         CalculatePosition(vec4(aPos,1.0f), aNormal, false);
-
+    
+    FragPosLightSpace = lightSpaceMatrix * vec4(FragPos, 1.0);
     Position = vec3(Model * vec4(aPos, 1.0));
     TexCoords = aTexCoords;
 }     

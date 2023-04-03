@@ -38,6 +38,10 @@ namespace FlawedEngine
 		Renderer.Draw(Trans, mMaterial, LightPositions, SkyBox);
 	}
 
+	void cCube::ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
+	{
+	}
+
 	void cCube::Update()
 	{
 

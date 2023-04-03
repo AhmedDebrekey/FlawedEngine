@@ -24,8 +24,10 @@ namespace FlawedEngine
 		void UpdateProjection(glm::mat4 Proj);
 		void DisableInput() { isInputEnabled = false; }
 		void EnableInput() { isInputEnabled = true; }
+		void ToggleShadowPerspective() { DirLightPerspective = !DirLightPerspective; } // UI to change the perspective
 		Frustum CreateFrustum();
 		Frustum mCamFrustum;
+
 	private:
 		void* mWindow;
 		glm::mat4 mProjectionMatrix;
@@ -48,5 +50,6 @@ namespace FlawedEngine
 		bool FirstMouse = true;
 		bool isInputEnabled = true;
 		float LastX = 1600, LastY = 900;
+		bool DirLightPerspective = true;
 	};
 }
