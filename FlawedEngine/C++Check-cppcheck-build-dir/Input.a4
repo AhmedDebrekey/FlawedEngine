@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="5839239539104934043">
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Core/Input/Input.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Core\Input\Input.cpp" line="30" column="18"/>
+        </error>
+  <FileInfo check="Class">
+<class name="GLFWvidmode" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/GLFW/glfw3.h" line="1654" col="9" hash="5014978948604091791"/>
+<class name="GLFWgammaramp" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/GLFW/glfw3.h" line="1688" col="9" hash="15759332869564605894"/>
+<class name="GLFWimage" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/GLFW/glfw3.h" line="1717" col="9" hash="18229993221891273149"/>
+<class name="GLFWgamepadstate" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/GLFW/glfw3.h" line="1741" col="9" hash="15865163930354674965"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="get" lineNumber="18"/>
+    <functiondecl functionName="Poll" lineNumber="28"/>
+    <functiondecl functionName="SetKeyPressed" lineNumber="36"/>
+    <functiondecl functionName="GetKeyPressed" lineNumber="38"/>
+    <functioncall functionName="SetKeyPressed"/>
+    <functioncall functionName="cInput"/>
+    <functioncall functionName="glfwGetKey"/>
+    <functioncall functionName="nullptr"/>
+  </FileInfo>
+</analyzerinfo>

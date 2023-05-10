@@ -146,6 +146,7 @@ namespace FlawedEngine
 			if (ImGui::Button("Switch Perspective"))
 				mCamera->ToggleShadowPerspective();
 			ImGui::Separator();
+			DrawVec3("DirectionalLight", GetDirectionalLightPos(), 0.5f);
 
 
 

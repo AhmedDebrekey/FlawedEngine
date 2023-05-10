@@ -89,6 +89,8 @@ namespace FlawedEngine
         Shader.SetVec3("material.diffuse", Mat.Diffuse);
         Shader.SetVec3("material.specular", Mat.Specular);
         Shader.SetFloat("material.shininess", Mat.Shininess);
+        Shader.SetFloat("material.reflectivity", Mat.Reflectivity);
+        
 
        
         if (!FinalBoneMatricies.empty()) {

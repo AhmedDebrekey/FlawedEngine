@@ -100,6 +100,8 @@ void FlawedEngine::cUIManager::RenderProperties()
 			glm::vec3* EntityColor = Entity->GetColor();
 			ImGui::ColorEdit3(std::string("Color:##" + mSelectedEntity).c_str(), &EntityColor->x);
 
+			ImGui::DragFloat(std::string("Reflectivity:##" + mSelectedEntity).c_str(), &Entity->mMaterial.Reflectivity, 0.01f, 0.0f, 1.0f);
+
 			ImGui::Checkbox(std::string("Physics:##" + mSelectedEntity).c_str(), &Entity->mPhysics);
 
 			if (Entity->mPhysics)

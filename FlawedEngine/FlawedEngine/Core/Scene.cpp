@@ -62,10 +62,10 @@ namespace FlawedEngine
 		float near_plane = 1.f, far_plane = 100.f;
 
 		lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-		lightView = glm::lookAt(DirectionalLightPos, glm::vec3(1.0f), glm::vec3(0.0, 1.0, 0.0));
+		lightView = glm::lookAt(GetDirectionalLightPos(), glm::vec3(1.0f), glm::vec3(0.0, 1.0, 0.0));
 		lightSpaceMatrix = lightProjection * lightView;
 
-		sTransform ShadowCam{ DirectionalLightPos, glm::vec3(0.0f), lightProjection, lightView};
+		sTransform ShadowCam{ GetDirectionalLightPos(), glm::vec3(0.0f), lightProjection, lightView};
 
 		glCullFace(GL_FRONT);
 		ObjectMan.ShadowRender(ShadowCam, lightSpaceMatrix, mDepthMap);

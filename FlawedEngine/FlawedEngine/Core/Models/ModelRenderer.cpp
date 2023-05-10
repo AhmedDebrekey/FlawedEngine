@@ -124,7 +124,8 @@ namespace FlawedEngine
         Shader.SetVec3("material.diffuse", Mat.Diffuse);
         Shader.SetVec3("material.specular", Mat.Specular);
         Shader.SetFloat("material.shininess", Mat.Shininess);
-        
+        Shader.SetFloat("material.reflectivity", Mat.Reflectivity);
+
         glBindBuffer(GL_UNIFORM_BUFFER, DirectionalLightUBO);
         glBufferSubData(GL_UNIFORM_BUFFER, 0, DirectionalLights.size() * sizeof(glm::vec4), &DirectionalLights[0]);
 

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="15979894451031227850">
+        <error id="syntaxError" severity="error" msg="syntax error" verbose="syntax error" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Core/BasicModel/Cube.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\Bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexArray.h" line="25" column="27"/>
+        </error>
+</analyzerinfo>

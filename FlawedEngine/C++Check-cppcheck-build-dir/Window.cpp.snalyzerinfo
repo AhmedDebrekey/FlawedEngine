@@ -1,0 +1,12 @@
+GetWindow
+cWindow
+cWindow call:[glfwDestroyWindow,glfwTerminate] noreturn:[glfwTerminate]
+get call:[cWindow] noreturn:[cWindow]
+Init call:[glfwInit,glfwWindowHint] noreturn:[glfwWindowHint]
+CreateWindow global:[glad_glBlendFuncSeparate,glad_glCullFace,glad_glEnable] call:[UpdateViewPort,gladLoadGL,glad_glBlendFuncSeparate,glad_glCullFace,glad_glEnable,glfwCreateWindow,glfwMakeContextCurrent,glfwSwapInterval,glfwTerminate] noreturn:[glad_glCullFace]
+UpdateViewPort global:[glad_glViewport] call:[glad_glViewport] noreturn:[glad_glViewport]
+GetWindowSize
+Update global:[glad_glClear] call:[UpdateViewPort,glad_glClear,glfwGetWindowSize] noreturn:[UpdateViewPort]
+PollEvents call:[glfwPollEvents] noreturn:[glfwPollEvents]
+EndFrame global:[glad_glClearColor] call:[glad_glClearColor,glfwSwapBuffers] noreturn:[glad_glClearColor]
+ShouldClose call:[glfwWindowShouldClose]

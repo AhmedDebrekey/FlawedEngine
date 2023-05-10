@@ -28,6 +28,7 @@ struct Material {
     vec3 diffuse;
     vec3 specular;
     float shininess;
+    float reflectivity;
 }; 
 uniform Material material;
 
@@ -183,5 +184,5 @@ void main()
     vec3 I = normalize(Position - viewPos);
     vec3 R = reflect(I, normalize(Normal));
 
-    FragColor = vec4(mix(texture(skybox, R).rgb, (result), 0.9), 1.0);
+    FragColor = vec4(mix(texture(skybox, R).rgb, (result), material.reflectivity), 1.0);
 }

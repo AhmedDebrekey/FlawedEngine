@@ -24,7 +24,7 @@ namespace FlawedEngine
         // they are vec4 not vec3 because ubo restirictions
         std::vector<glm::vec4> DirectionalLights
         {
-            glm::vec4(DirectionalLightPos, 1.0f),    // Direction
+            glm::vec4(GetDirectionalLightPos(), 1.0f),    // Direction
             glm::vec4(0.2f, 0.2f, 0.2f, 1.0f),        // Ambient
             glm::vec4(0.8f, 0.8f, 0.8f, 1.0f),        // Diffuse
             glm::vec4(0.5f, 0.5f, 0.5f, 1.0f)         // Specular

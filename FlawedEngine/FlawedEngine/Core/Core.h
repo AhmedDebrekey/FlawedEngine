@@ -9,8 +9,9 @@ namespace FlawedEngine
 {
 	typedef unsigned int uint32_t;
 #define MAX_BONE_INFLUENCE 4
-
-	static glm::vec3 DirectionalLightPos = glm::vec3(-2.0f, 10.0f, -1.0f);
+	
+	void SetDirectionalLightPos(const glm::vec3& Position);
+	glm::vec3& GetDirectionalLightPos();
 
 	struct sMaterial
 	{
@@ -19,6 +20,7 @@ namespace FlawedEngine
 		glm::vec3 Specular = glm::vec3(0.5f);
 		float Shininess = 32.0f;
 		float Roughness;
+		float Reflectivity = 1.0f;
 		uint32_t TextureID;
 	};
 

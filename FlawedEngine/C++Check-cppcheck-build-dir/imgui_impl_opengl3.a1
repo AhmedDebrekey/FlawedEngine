@@ -1,0 +1,506 @@
+<?xml version="1.0"?>
+<analyzerinfo hash="12337330709643020070">
+        <error id="memsetClassFloat" severity="portability" msg="Using memset() on struct which contains a floating point number." verbose="Using memset() on struct which contains a floating point number. This is not portable because memset() sets each byte of a block of memory to a specific value and the actual representation of a floating-point value is implementation defined. Note: In case of an IEEE754-1985 compatible implementation setting all bits to zero results in the value 0.0." cwe="758" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2429" column="76"/>
+        </error>
+        <error id="memsetClassFloat" severity="portability" msg="Using memset() on struct which contains a floating point number." verbose="Using memset() on struct which contains a floating point number. This is not portable because memset() sets each byte of a block of memory to a specific value and the actual representation of a floating-point value is implementation defined. Note: In case of an IEEE754-1985 compatible implementation setting all bits to zero results in the value 0.0." cwe="758" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2518" column="19"/>
+        </error>
+        <error id="memsetClassFloat" severity="portability" msg="Using memset() on struct which contains a floating point number." verbose="Using memset() on struct which contains a floating point number. This is not portable because memset() sets each byte of a block of memory to a specific value and the actual representation of a floating-point value is implementation defined. Note: In case of an IEEE754-1985 compatible implementation setting all bits to zero results in the value 0.0." cwe="758" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2635" column="53"/>
+        </error>
+        <error id="memsetClassFloat" severity="portability" msg="Using memset() on struct which contains a floating point number." verbose="Using memset() on struct which contains a floating point number. This is not portable because memset() sets each byte of a block of memory to a specific value and the actual representation of a floating-point value is implementation defined. Note: In case of an IEEE754-1985 compatible implementation setting all bits to zero results in the value 0.0." cwe="758" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="3066" column="27"/>
+        </error>
+        <error id="memsetClassFloat" severity="portability" msg="Using memset() on struct which contains a floating point number." verbose="Using memset() on struct which contains a floating point number. This is not portable because memset() sets each byte of a block of memory to a specific value and the actual representation of a floating-point value is implementation defined. Note: In case of an IEEE754-1985 compatible implementation setting all bits to zero results in the value 0.0." cwe="758" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="3202" column="30"/>
+        </error>
+        <error id="useInitializationList" severity="performance" msg="Variable &apos;GlyphOffset&apos; is assigned in constructor body. Consider performing initialization in initialization list." verbose="When an object of a class is created, the constructors of all member variables are called consecutively in the order the variables are declared, even if you don&apos;t explicitly write them to the initialization list. You could avoid assigning &apos;GlyphOffset&apos; a value by passing the value to the constructor in the initialization list." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2828" column="110"/>
+            <symbol>GlyphOffset</symbol>
+        </error>
+        <error id="useInitializationList" severity="performance" msg="Variable &apos;WorkSize&apos; is assigned in constructor body. Consider performing initialization in initialization list." verbose="When an object of a class is created, the constructors of all member variables are called consecutively in the order the variables are declared, even if you don&apos;t explicitly write them to the initialization list. You could avoid assigning &apos;WorkSize&apos; a value by passing the value to the constructor in the initialization list." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="3192" column="70"/>
+            <symbol>WorkSize</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Struct &apos;ImGuiTextFilter&apos; has a constructor with 1 argument that is not explicit." verbose="Struct &apos;ImGuiTextFilter&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2293" column="25"/>
+            <symbol>ImGuiTextFilter</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Struct &apos;ImGuiListClipper&apos; has a constructor with 1 argument that is not explicit." verbose="Struct &apos;ImGuiListClipper&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2429" column="12"/>
+            <symbol>ImGuiListClipper</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Struct &apos;ImColor&apos; has a constructor with 1 argument that is not explicit." verbose="Struct &apos;ImColor&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2465" column="15"/>
+            <symbol>ImColor</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Struct &apos;ImColor&apos; has a constructor with 1 argument that is not explicit." verbose="Struct &apos;ImColor&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2467" column="5"/>
+            <symbol>ImColor</symbol>
+        </error>
+        <error id="noExplicitConstructor" severity="style" msg="Struct &apos;ImDrawList&apos; has a constructor with 1 argument that is not explicit." verbose="Struct &apos;ImDrawList&apos; has a constructor with 1 argument that is not explicit. Such constructors should in general be explicit for type safety reasons. Using the explicit keyword in the constructor means some mistakes when using the class can be avoided." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2635" column="5"/>
+            <symbol>ImDrawList</symbol>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="210" column="39"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="217" column="41"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="265" column="34"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="277" column="35"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="335" column="34"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="437" column="5"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="438" column="5"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="439" column="5"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="534" column="13"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="535" column="13"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="539" column="13"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="540" column="13"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="550" column="43"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="570" column="21"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="573" column="17"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="644" column="24"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="677" column="57"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui_impl_opengl3.cpp" line="696" column="58"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="1882" column="115"/>
+        </error>
+        <error id="cstyleCast" severity="style" msg="C-style pointer casting" verbose="C-style pointer casting detected. C++ offers four different kinds of casts as replacements: static_cast, const_cast, dynamic_cast and reinterpret_cast. A C-style cast could evaluate to any of those automatically, thus it is considered safer if the programmer explicitly states which kind of cast is expected. See also: https://www.securecoding.cert.org/confluence/display/cplusplus/EXP05-CPP.+Do+not+use+C-style+casts." cwe="398" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp">
+            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="1883" column="133"/>
+        </error>
+  <FileInfo check="ctu">
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2668:21" call-funcname="AddConvexPolyFilled" call-argnr="3" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2685" col="102" call-argexpr="col" call-argvaluetype="0" call-argvalue="0">
+  <path file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2685" col="42" info="Safe checks: Assuming argument has value 0"/>
+</function-call><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2667:21" call-funcname="AddPolyline" call-argnr="3" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2686" col="103" call-argexpr="col" call-argvaluetype="0" call-argvalue="0">
+  <path file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2686" col="38" info="Safe checks: Assuming argument has value 0"/>
+</function-call><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2667:21" call-funcname="AddPolyline" call-argnr="4" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2686" col="103" call-argexpr="flags" call-argvaluetype="0" call-argvalue="0" warning="true"/><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2716:21" call-funcname="PrimWriteVtx" call-argnr="3" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2718" col="140" call-argexpr="col" call-argvaluetype="0" call-argvalue="0">
+  <path file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2718" col="72" info="Safe checks: Assuming argument has value 0"/>
+</function-call><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2669:21" call-funcname="AddBezierCubic" call-argnr="5" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2721" col="174" call-argexpr="col" call-argvaluetype="0" call-argvalue="0">
+  <path file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2721" col="114" info="Safe checks: Assuming argument has value 0"/>
+</function-call><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2669:21" call-funcname="AddBezierCubic" call-argnr="7" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2721" col="174" call-argexpr="num_segments" call-argvaluetype="0" call-argvalue="0" warning="true"/><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2689:21" call-funcname="PathBezierCubicCurveTo" call-argnr="4" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2722" col="139" call-argexpr="num_segments" call-argvaluetype="0" call-argvalue="0" warning="true"/><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2812:21" call-funcname="SetBit" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2813" col="53" call-argexpr="c" call-argvaluetype="0" call-argvalue="0">
+  <path file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="2813" col="37" info="Safe checks: Assuming argument has value 0"/>
+</function-call><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:263:15" call-funcname="ImVec2" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2828" col="130" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:263:15" call-funcname="ImVec2" call-argnr="2" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2828" col="130" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:263:15" call-funcname="ImVec2" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="3192" col="87" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:263:15" call-funcname="ImVec2" call-argnr="2" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="3192" col="87" call-argexpr="0" call-argvaluetype="0" call-argvalue="0"/><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1894:25" call-funcname="find" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="81" call-argexpr="v" call-argvaluetype="0" call-argvalue="0">
+  <path file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="1896" col="45" info="Safe checks: Assuming argument has value 0"/>
+</function-call><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1894:25" call-funcname="find" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="81" call-argexpr="v" call-argvaluetype="0" call-argvalue="0">
+  <path file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="1897" col="54" info="Safe checks: Assuming argument has value 0"/>
+</function-call><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1894:25" call-funcname="find" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="81" call-argexpr="v" call-argvaluetype="0" call-argvalue="0">
+  <path file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="1896" col="45" info="Safe checks: Assuming argument has value 0"/>
+</function-call><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1894:25" call-funcname="find" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="81" call-argexpr="v" call-argvaluetype="0" call-argvalue="0">
+  <path file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\ImGui\imgui.h" line="1897" col="54" info="Safe checks: Assuming argument has value 0"/>
+</function-call><function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:642:29" call-funcname="BeginListBox" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="3234" col="102" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:3234:25" my-argnr="1"/>
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3_loader.h:625:19" call-funcname="get_proc" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3_loader.h" line="719" col="60" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3_loader.h:461:21" my-argnr="1"/>
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" call-funcname="push_back" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1888" col="78" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1888:25" my-argnr="1"/>
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1894:25" call-funcname="find" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="77" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1896:25" my-argnr="1"/>
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1894:25" call-funcname="find" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="77" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1897:25" my-argnr="1"/>
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" call-funcname="push_back" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1888" col="78" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1888:25" my-argnr="1"/>
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1894:25" call-funcname="find" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="77" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1896:25" my-argnr="1"/>
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1894:25" call-funcname="find" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="77" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1897:25" my-argnr="1"/>
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" call-funcname="push_back" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1888" col="78" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1888:25" my-argnr="1"/>
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1894:25" call-funcname="find" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="77" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1896:25" my-argnr="1"/>
+<function-call call-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1894:25" call-funcname="find" call-argnr="1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="77" my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1897:25" my-argnr="1"/>
+  </FileInfo>
+  <FileInfo check="Class">
+<class name="ImVec4" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="272" col="1" hash="2638745889090663251"/>
+<class name="ImNewWrapper" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1817" col="1" hash="3019713718933798540"/>
+<class name="ImGuiKeyData" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1967" col="1" hash="13198916508763683467"/>
+<class name="ImGuiSizeCallbackData" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2194" col="1" hash="3836992928234533740"/>
+<class name="ImGuiWindowClass" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2209" col="1" hash="16808964343653360601"/>
+<class name="ImGuiPayload" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2224" col="1" hash="9896330161713859034"/>
+<class name="ImGuiTableColumnSortSpecs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2246" col="1" hash="3930973637895948143"/>
+<class name="ImGuiTableSortSpecs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2260" col="1" hash="16935686469706441589"/>
+<class name="ImGuiOnceUponAFrame" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2283" col="1" hash="17061671302169700533"/>
+<class name="ImGuiStorage::ImGuiStoragePair" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2348" col="5" hash="5271627044329041000"/>
+<class name="ImColor" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2459" col="1" hash="1085501871729598354"/>
+<class name="ImDrawCmd" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2508" col="1" hash="16289618710539581724"/>
+<class name="ImDrawVert" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2526" col="1" hash="5985319611615192797"/>
+<class name="ImDrawCmdHeader" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2541" col="1" hash="11544910580545660781"/>
+<class name="ImDrawChannel" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2549" col="1" hash="1150667561009341972"/>
+<class name="ImFontGlyph" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2793" col="1" hash="6479738750517622594"/>
+<class name="ImFontAtlasCustomRect" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2820" col="1" hash="4888973743524531770"/>
+<class name="ImGuiViewport" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="3041" col="1" hash="18271799867589719987"/>
+<class name="ImGuiPlatformIO" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="3124" col="1" hash="12153899100953271190"/>
+<class name="ImGuiPlatformMonitor" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="3187" col="1" hash="11216600544881857622"/>
+<class name="ImGuiPlatformImeData" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="3196" col="1" hash="10601168594280413856"/>
+<class name="ImGui_ImplOpenGL3_Data" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp" line="193" col="1" hash="7881306482353090239"/>
+<class name="ImVector &lt; unsigned short &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="12650648868636218799"/>
+<class name="ImVector &lt; ImGuiTextRange &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="8506981380086400184"/>
+<class name="ImVector &lt; char &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="13313406011819381079"/>
+<class name="ImVector &lt; ImGuiStoragePair &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="13017870620643687829"/>
+<class name="ImVector &lt; ImDrawCmd &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="16083958328287423947"/>
+<class name="ImVector &lt; ImDrawChannel &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="17298438143083522782"/>
+<class name="ImVector &lt; ImDrawVert &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="14026541391614686308"/>
+<class name="ImVector &lt; ImVec4 &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="17827566428466821359"/>
+<class name="ImVector &lt; void * &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="17077371190216624595"/>
+<class name="ImVector &lt; ImVec2 &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="11233110547936139633"/>
+<class name="ImVector &lt; unsigned int &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="8852964763228345686"/>
+<class name="ImVector &lt; ImFont * &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="3470169584555241714"/>
+<class name="ImVector &lt; ImFontAtlasCustomRect &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="11786517650844415190"/>
+<class name="ImVector &lt; ImFontConfig &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="11888291917378146654"/>
+<class name="ImVector &lt; float &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="17137487868639360837"/>
+<class name="ImVector &lt; ImFontGlyph &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="270853757466726594"/>
+<class name="ImVector &lt; ImGuiPlatformMonitor &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="7364922954758580103"/>
+<class name="ImVector &lt; ImGuiViewport * &gt;" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1839" col="1" hash="10364839303993070164"/>
+  </FileInfo>
+  <FileInfo check="Null pointer">
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp:369:13" my-argnr="1" my-argname="draw_data" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp" line="403" col="15" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.h:28:25" my-argnr="1" my-argname="draw_data" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp" line="448" col="26" value="0"/>
+  </FileInfo>
+  <FileInfo check="Uninitialized variables">
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2683:21" my-argnr="1" my-argname="pos" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2683" col="99" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2718:21" my-argnr="1" my-argname="pos" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2718" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2718:21" my-argnr="2" my-argname="uv" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2718" col="146" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2721:21" my-argnr="1" my-argname="p1" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2721" col="175" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2721:21" my-argnr="2" my-argname="p2" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2721" col="179" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2721:21" my-argnr="3" my-argname="p3" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2721" col="183" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2721:21" my-argnr="4" my-argname="p4" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2721" col="187" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2722:21" my-argnr="1" my-argname="p2" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2722" col="140" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2722:21" my-argnr="2" my-argname="p3" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2722" col="144" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:2722:21" my-argnr="3" my-argname="p4" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="2722" col="148" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp:369:13" my-argnr="1" my-argname="draw_data" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp" line="403" col="15" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.h:28:25" my-argnr="1" my-argname="draw_data" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp" line="448" col="26" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp:905:13" my-argnr="1" my-argname="viewport" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui_impl_opengl3.cpp" line="907" col="11" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1896:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1897:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1896:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1897:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1896:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1897:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1896:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1897:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1896:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1897:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1896:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1897:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1896:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1896" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1897:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1897" col="82" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1853:25" my-argnr="1" my-argname="src" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1853" col="79" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1876:25" my-argnr="1" my-argname="rhs" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1876" col="78" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1886:25" my-argnr="1" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1886" col="141" value="0"/>
+    <unsafe-usage my-id="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h:1892:25" my-argnr="2" my-argname="v" file="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Libraries/include/ImGui/imgui.h" line="1892" col="317" value="0"/>
+  </FileInfo>
+  <FileInfo check="CheckUnusedFunctions">
+    <functiondecl functionName="ImGui_ImplOpenGL3_GetBackendData" lineNumber="215"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_Init" lineNumber="249"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_Shutdown" lineNumber="347"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_NewFrame" lineNumber="360"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_SetupRenderState" lineNumber="369"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_RenderDrawData" lineNumber="445"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_CreateFontsTexture" lineNumber="620"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_DestroyFontsTexture" lineNumber="652"/>
+    <functiondecl functionName="CheckShader" lineNumber="665"/>
+    <functiondecl functionName="CheckProgram" lineNumber="684"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_CreateDeviceObjects" lineNumber="702"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_DestroyDeviceObjects" lineNumber="890"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_RenderWindow" lineNumber="905"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_InitPlatformInterface" lineNumber="916"/>
+    <functiondecl functionName="ImGui_ImplOpenGL3_ShutdownPlatformInterface" lineNumber="922"/>
+    <functioncall functionName="ActiveTexture"/>
+    <functioncall functionName="AddBezierCubic"/>
+    <functioncall functionName="AddConvexPolyFilled"/>
+    <functioncall functionName="AddPolyline"/>
+    <functioncall functionName="AttachShader"/>
+    <functioncall functionName="BackendRendererUserData"/>
+    <functioncall functionName="Begin"/>
+    <functioncall functionName="BeginListBox"/>
+    <functioncall functionName="BindBuffer"/>
+    <functioncall functionName="BindSampler"/>
+    <functioncall functionName="BindTexture"/>
+    <functioncall functionName="BindVertexArray"/>
+    <functioncall functionName="BlendEquation"/>
+    <functioncall functionName="BlendEquationSeparate"/>
+    <functioncall functionName="BlendFuncSeparate"/>
+    <functioncall functionName="BufferData"/>
+    <functioncall functionName="BufferSubData"/>
+    <functioncall functionName="Build"/>
+    <functioncall functionName="CheckProgram"/>
+    <functioncall functionName="CheckShader"/>
+    <functioncall functionName="Clear"/>
+    <functioncall functionName="ClearColor"/>
+    <functioncall functionName="ClearFreeMemory"/>
+    <functioncall functionName="ColorConvertFloat4ToU32"/>
+    <functioncall functionName="ColorConvertHSVtoRGB"/>
+    <functioncall functionName="CompileShader"/>
+    <functioncall functionName="CreateProgram"/>
+    <functioncall functionName="CreateShader"/>
+    <functioncall functionName="DeleteBuffers"/>
+    <functioncall functionName="DeleteProgram"/>
+    <functioncall functionName="DeleteShader"/>
+    <functioncall functionName="DeleteTextures"/>
+    <functioncall functionName="DeleteVertexArrays"/>
+    <functioncall functionName="DestroyPlatformWindows"/>
+    <functioncall functionName="DetachShader"/>
+    <functioncall functionName="Disable"/>
+    <functioncall functionName="DrawElements"/>
+    <functioncall functionName="DrawElementsBaseVertex"/>
+    <functioncall functionName="Enable"/>
+    <functioncall functionName="EnableVertexAttribArray"/>
+    <functioncall functionName="EndListBox"/>
+    <functioncall functionName="FLT_MAX"/>
+    <functioncall functionName="FLT_MIN"/>
+    <functioncall functionName="FreeLibrary"/>
+    <functioncall functionName="GL3WglGetProcAddr"/>
+    <functioncall functionName="GL3WglProc"/>
+    <functioncall functionName="GenBuffers"/>
+    <functioncall functionName="GenTextures"/>
+    <functioncall functionName="GenVertexArrays"/>
+    <functioncall functionName="GetAttribLocation"/>
+    <functioncall functionName="GetCurrentContext"/>
+    <functioncall functionName="GetFrameCount"/>
+    <functioncall functionName="GetIO"/>
+    <functioncall functionName="GetIntegerv"/>
+    <functioncall functionName="GetPlatformIO"/>
+    <functioncall functionName="GetProcAddress"/>
+    <functioncall functionName="GetProgramInfoLog"/>
+    <functioncall functionName="GetProgramiv"/>
+    <functioncall functionName="GetShaderInfoLog"/>
+    <functioncall functionName="GetShaderiv"/>
+    <functioncall functionName="GetString"/>
+    <functioncall functionName="GetStringi"/>
+    <functioncall functionName="GetTexDataAsRGBA32"/>
+    <functioncall functionName="GetTexID"/>
+    <functioncall functionName="GetUniformLocation"/>
+    <functioncall functionName="GetWindowContentRegionMax"/>
+    <functioncall functionName="GetWindowContentRegionMin"/>
+    <functioncall functionName="IM_DELETE"/>
+    <functioncall functionName="ImColor"/>
+    <functioncall functionName="ImDrawChannel"/>
+    <functioncall functionName="ImDrawCmd"/>
+    <functioncall functionName="ImDrawData"/>
+    <functioncall functionName="ImDrawList"/>
+    <functioncall functionName="ImDrawListSplitter"/>
+    <functioncall functionName="ImDrawVert"/>
+    <functioncall functionName="ImFont"/>
+    <functioncall functionName="ImFontAtlas"/>
+    <functioncall functionName="ImFontAtlasCustomRect"/>
+    <functioncall functionName="ImFontConfig"/>
+    <functioncall functionName="ImFontGlyph"/>
+    <functioncall functionName="ImFontGlyphRangesBuilder"/>
+    <functioncall functionName="ImGuiCol_COUNT"/>
+    <functioncall functionName="ImGuiIO"/>
+    <functioncall functionName="ImGuiInputTextCallbackData"/>
+    <functioncall functionName="ImGuiKey_COUNT"/>
+    <functioncall functionName="ImGuiKey_KeysData_SIZE"/>
+    <functioncall functionName="ImGuiListClipper"/>
+    <functioncall functionName="ImGuiNavInput_COUNT"/>
+    <functioncall functionName="ImGuiOnceUponAFrame"/>
+    <functioncall functionName="ImGuiPayload"/>
+    <functioncall functionName="ImGuiPlatformIO"/>
+    <functioncall functionName="ImGuiPlatformImeData"/>
+    <functioncall functionName="ImGuiPlatformMonitor"/>
+    <functioncall functionName="ImGuiStoragePair"/>
+    <functioncall functionName="ImGuiStyle"/>
+    <functioncall functionName="ImGuiTableColumnSortSpecs"/>
+    <functioncall functionName="ImGuiTableSortSpecs"/>
+    <functioncall functionName="ImGuiTextBuffer"/>
+    <functioncall functionName="ImGuiTextFilter"/>
+    <functioncall functionName="ImGuiTextRange"/>
+    <functioncall functionName="ImGuiViewport"/>
+    <functioncall functionName="ImGuiWindowClass"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_CreateDeviceObjects"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_CreateFontsTexture"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_Data"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_DestroyDeviceObjects"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_DestroyFontsTexture"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_GetBackendData"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_InitPlatformInterface"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_RenderDrawData"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_RenderWindow"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_SetupRenderState"/>
+    <functioncall functionName="ImGui_ImplOpenGL3_ShutdownPlatformInterface"/>
+    <functioncall functionName="ImNewWrapper"/>
+    <functioncall functionName="ImVec2"/>
+    <functioncall functionName="ImVec4"/>
+    <functioncall functionName="ImVector"/>
+    <functioncall functionName="IsEnabled"/>
+    <functioncall functionName="LinkProgram"/>
+    <functioncall functionName="LoadLibraryA"/>
+    <functioncall functionName="MemAlloc"/>
+    <functioncall functionName="MemFree"/>
+    <functioncall functionName="Merge"/>
+    <functioncall functionName="NULL"/>
+    <functioncall functionName="PathBezierCubicCurveTo"/>
+    <functioncall functionName="PixelStorei"/>
+    <functioncall functionName="PolygonMode"/>
+    <functioncall functionName="PrimWriteIdx"/>
+    <functioncall functionName="PrimWriteVtx"/>
+    <functioncall functionName="Scissor"/>
+    <functioncall functionName="SetBit"/>
+    <functioncall functionName="SetCurrentChannel"/>
+    <functioncall functionName="SetNextFrameWantCaptureKeyboard"/>
+    <functioncall functionName="SetNextFrameWantCaptureMouse"/>
+    <functioncall functionName="SetTexID"/>
+    <functioncall functionName="ShaderSource"/>
+    <functioncall functionName="Split"/>
+    <functioncall functionName="T"/>
+    <functioncall functionName="TexImage2D"/>
+    <functioncall functionName="TexParameteri"/>
+    <functioncall functionName="Uniform1i"/>
+    <functioncall functionName="UniformMatrix4fv"/>
+    <functioncall functionName="UseProgram"/>
+    <functioncall functionName="UserCallback"/>
+    <functioncall functionName="VertexAttribPointer"/>
+    <functioncall functionName="Viewport"/>
+    <functioncall functionName="_ClearFreeMemory"/>
+    <functioncall functionName="__pragma"/>
+    <functioncall functionName="_grow_capacity"/>
+    <functioncall functionName="assert"/>
+    <functioncall functionName="atexit"/>
+    <functioncall functionName="back"/>
+    <functioncall functionName="begin"/>
+    <functioncall functionName="check_stack"/>
+    <functioncall functionName="clear"/>
+    <functioncall functionName="clip_max"/>
+    <functioncall functionName="clip_min"/>
+    <functioncall functionName="close_libgl"/>
+    <functioncall functionName="col"/>
+    <functioncall functionName="empty"/>
+    <functioncall functionName="erase"/>
+    <functioncall functionName="erase_unsorted"/>
+    <functioncall functionName="false"/>
+    <functioncall functionName="find"/>
+    <functioncall functionName="fprintf"/>
+    <functioncall functionName="front"/>
+    <functioncall functionName="get_proc"/>
+    <functioncall functionName="imgl3wInit"/>
+    <functioncall functionName="imgl3wInit2"/>
+    <functioncall functionName="insert"/>
+    <functioncall functionName="khronos_ssize_t"/>
+    <functioncall functionName="load_procs"/>
+    <functioncall functionName="memcmp"/>
+    <functioncall functionName="memcpy"/>
+    <functioncall functionName="memmove"/>
+    <functioncall functionName="memset"/>
+    <functioncall functionName="nullptr"/>
+    <functioncall functionName="off"/>
+    <functioncall functionName="offsetof"/>
+    <functioncall functionName="open_libgl"/>
+    <functioncall functionName="operator="/>
+    <functioncall functionName="operatorImVec4"/>
+    <functioncall functionName="operatorbool"/>
+    <functioncall functionName="operatorint"/>
+    <functioncall functionName="parse_version"/>
+    <functioncall functionName="pop"/>
+    <functioncall functionName="pos"/>
+    <functioncall functionName="proc"/>
+    <functioncall functionName="push"/>
+    <functioncall functionName="push_back"/>
+    <functioncall functionName="reserve"/>
+    <functioncall functionName="resize"/>
+    <functioncall functionName="restore"/>
+    <functioncall functionName="runtime_checks"/>
+    <functioncall functionName="sscanf"/>
+    <functioncall functionName="stderr"/>
+    <functioncall functionName="strcat"/>
+    <functioncall functionName="strcmp"/>
+    <functioncall functionName="strcpy"/>
+    <functioncall functionName="strict_gs_check"/>
+    <functioncall functionName="strlen"/>
+    <functioncall functionName="true"/>
+    <functioncall functionName="uv"/>
+    <functioncall functionName="wgl_get_proc_address"/>
+    <functioncall functionName="x"/>
+  </FileInfo>
+</analyzerinfo>
