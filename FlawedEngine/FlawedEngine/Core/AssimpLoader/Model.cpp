@@ -407,7 +407,9 @@ namespace FlawedEngine
 
 	void cModel::loadModel(std::string path)
 	{
-		scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph);
+		scene = importer.ReadFile(path, 
+			aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals |
+			aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph);
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
@@ -699,12 +701,27 @@ namespace FlawedEngine
 		}
 	}
 
+	void display_v3(const std::string& tag, const glm::vec3& v3)
+	{
+		std::cout
+			<< tag
+			<< "\n| "
+			<< v3.x << '\t'
+			<< v3.y << '\t'
+			<< v3.z << '\t'
+			<< "\n"
+			;
+	}
+
 	void cModel::SetVertexBoneData(sVertex& vertex, int boneID, float weight)
 	{
 		for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
 		{
 			if (vertex.mBoneIDs[i] < 0)
 			{
+				if (weight == 0)
+					break;
+
 				vertex.mWeights[i] = weight;
 				vertex.mBoneIDs[i] = boneID;
 				break;

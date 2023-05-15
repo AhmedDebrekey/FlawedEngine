@@ -58,7 +58,7 @@ void main()
         {
             if(aBoneIds[i] == -1) 
                 continue;
-            if(aBoneIds[i] >=MAX_BONES) 
+            if(aBoneIds[i] >= MAX_BONES) 
             {
                 totalPosition = vec4(aPos,1.0f);
                 break;

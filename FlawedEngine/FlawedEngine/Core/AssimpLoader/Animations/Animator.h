@@ -2,6 +2,7 @@
 
 #include "Animation.h"
 
+
 namespace FlawedEngine
 {
     //Animator.....................................................................................................
@@ -59,6 +60,7 @@ namespace FlawedEngine
             {
                 int index = boneInfoMap.at(nodeName).id;
                 m_FinalBoneMatrices[index] = globalTransformation * boneInfoMap.at(nodeName).offset;
+                //display_4x4("Final: ", m_FinalBoneMatrices[index]);
             }
 
             for (int i = 0; i < node->childrenCount; i++)
@@ -68,6 +70,19 @@ namespace FlawedEngine
         std::vector<glm::mat4> GetFinalBoneMatrices()
         {
             return m_FinalBoneMatrices;
+        }
+
+        void display_4x4(std::string tag, glm::mat4& m4)
+        {
+            std::cout << tag << '\n';
+            for (int col = 0; col < 4; ++col) {
+                std::cout << "| ";
+                for (int row = 0; row < 4; ++row) {
+                    std::cout << m4[row][col] << '\t';
+                }
+                std::cout << '\n';
+            }
+            std::cout << '\n';
         }
 
     private:

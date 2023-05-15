@@ -1,0 +1,316 @@
+{
+    "objects": {
+        "Ground": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                0.8262548446655273,
+                0.4370536804199219,
+                0.4370536804199219
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    25.436019897460938,
+                    1.0,
+                    33.40729904174805
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Light(0)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    -5.897887706756592,
+                    7.109485149383545,
+                    0.0002545677125453949
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Pilot": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\pilot_avatar\\scene.gltf"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\pilot_avatar\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    3.235593795776367,
+                    1.0691646337509155,
+                    -5.56085729598999
+                ],
+                "rotation": [
+                    0.0,
+                    -51.52458953857422,
+                    0.0
+                ],
+                "scale": [
+                    2.194303512573242,
+                    2.194303512573242,
+                    2.194303512573242
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Storm": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\dancing_stormtrooper\\scene.gltf"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\dancing_stormtrooper\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    -2.6843879222869873,
+                    0.9356750249862671,
+                    0.2906067371368408
+                ],
+                "rotation": [
+                    -179.99935913085938,
+                    5.6003947257995605,
+                    -179.9989776611328
+                ],
+                "scale": [
+                    1.8599998950958252,
+                    1.8599998950958252,
+                    1.8599998950958252
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Storm2": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\dancing_stormtrooper\\scene.gltf"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\dancing_stormtrooper\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    1.3769837617874146,
+                    0.9421926736831665,
+                    -2.6106810569763184
+                ],
+                "rotation": [
+                    -179.9990997314453,
+                    -62.19093322753906,
+                    -179.99989318847656
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Vampire": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\vampire\\dancing_vampire.dae"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\vampire\\dancing_vampire.dae"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    ""
+                ]
+            },
+            "transform": {
+                "position": [
+                    -6.472400665283203,
+                    0.950082004070282,
+                    0.4792037010192871
+                ],
+                "rotation": [
+                    -179.99989318847656,
+                    26.32712745666504,
+                    179.99989318847656
+                ],
+                "scale": [
+                    1.4199978113174438,
+                    1.4199999570846558,
+                    1.4199978113174438
+                ]
+            },
+            "type": [
+                0
+            ]
+        }
+    }
+}

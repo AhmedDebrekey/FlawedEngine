@@ -157,7 +157,12 @@ vec3 CalcDirLight(vec3 normal, vec3 viewDir)
     CalcADS(ambient, diffuse, specular, diff, spec, DirLight.Ambient, DirLight.Diffuse, DirLight.Specular);
 
     float shadow = ShadowCalculation(FragPosLightSpace, normal);                      
-    vec3 color = texture(texture_diffuse1, TexCoords).rgb;
+    vec3 color = vec3(1.0);
+
+    if(!IsNoTexture)
+    { 
+        color = texture(texture_diffuse1, TexCoords).rgb;
+    }
 
     return (ambient + (1.0 - shadow) * (diffuse + specular)) * color;
 }
