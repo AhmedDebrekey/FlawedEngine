@@ -136,8 +136,8 @@ void FlawedEngine::cUIManager::RenderProperties()
 			if (ScriptDialog.HasSelected())
 			{
 				std::cout << "Selected filename" << ScriptDialog.GetSelected().string() << std::endl;
-				Entity->SetupScripting(ScriptDialog.GetSelected().string().c_str());
-				Entity->SendInputToScripting(std::bind(&cUIManager::isKeyDown, this, std::placeholders::_1));
+				std::function<bool(int)> InputFunc = std::bind(&cUIManager::isKeyDown, this, std::placeholders::_1);
+				Entity->SetupScripting(ScriptDialog.GetSelected().string().c_str(), InputFunc);
 				ScriptDialog.ClearSelected();
 			}
 		}

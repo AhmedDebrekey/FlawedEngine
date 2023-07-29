@@ -230,9 +230,7 @@ namespace FlawedEngine
 
 	void cModel::SendInputToScripting(std::function<bool(int)> func)
 	{
-		using namespace luabridge;
-		getGlobalNamespace(LuaState)
-			.addFunction("IsKeyDown", func);
+		std::cout << "[C++] SendInputToScripting was called." << std::endl;
 	}
 
 	void cModel::AddAnimation(const char* Path)
@@ -372,24 +370,26 @@ namespace FlawedEngine
 		return mName;
 	}
 
-	void cModel::SetupScripting(const char* Path)
+	void cModel::SetupScripting(const char* Path, std::function<bool(int)>& InputFunc)
 	{
 		ScriptingId = ScriptingManager.InitScripting();
 		LuaState = ScriptingManager.GetLuaState(ScriptingId);
 
-		ScriptingManager.RegisterFunction(ScriptingId, "Move", std::bind(&cModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "SetPos", std::bind(&cModel::LSetPosition, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "Rotate", std::bind(&cModel::LRotate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "Scale", std::bind(&cModel::LScale, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce", std::bind(&cModel::LApplyForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce", std::bind(&cModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor", std::bind(&cModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getX", std::bind(&cModel::LGetX, this));
-		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getY", std::bind(&cModel::LGetY, this));
-		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getZ", std::bind(&cModel::LGetZ, this));
+		ScriptingManager.RegisterFunction(ScriptingId, "Move",						std::bind(&cModel::LMove,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "SetPos",					std::bind(&cModel::LSetPosition,		this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "Rotate",					std::bind(&cModel::LRotate,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "Scale",						std::bind(&cModel::LScale,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce",				std::bind(&cModel::LApplyForce,			this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce",		std::bind(&cModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor",				std::bind(&cModel::LSetColor,			this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getX",	std::bind(&cModel::LGetX,				this));
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getY",	std::bind(&cModel::LGetY,				this));
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getZ",	std::bind(&cModel::LGetZ,				this));
 
 		std::function<std::string()> Func = std::bind(&cModel::LGetName, this);
 		luabridge::getGlobalNamespace(LuaState).addFunction("GetName", Func);
+
+		luabridge::getGlobalNamespace(LuaState).addFunction("IsKeyDown", InputFunc);
 
 		ScriptingManager.LoadFile(ScriptingId, Path);
 

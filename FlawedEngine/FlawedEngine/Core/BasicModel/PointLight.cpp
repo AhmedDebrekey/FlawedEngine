@@ -53,7 +53,7 @@ namespace FlawedEngine
 	void cPointLight::UnSetPhysics()
 	{
 	}
-	void cPointLight::SetupScripting(const char*)
+	void cPointLight::SetupScripting(const char*, std::function<bool(int)>&)
 	{
 	}
 

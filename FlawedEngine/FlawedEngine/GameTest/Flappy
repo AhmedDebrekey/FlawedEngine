@@ -156,7 +156,7 @@
                 0
             ]
         },
-        "Player": {
+        "Something": {
             "animation": {
                 "animationPath": [
                     "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\GameTest\\Assets\\Bird\\phoenix_bird\\scene.gltf"

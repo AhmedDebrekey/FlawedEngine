@@ -122,7 +122,7 @@ namespace FlawedEngine
 			std::cout << "[ERROR] Couldn't Register Function, Lua State is undefined" << std::endl;
 			return;
 		}
-		getGlobalNamespace(L).beginNamespace(Namespace.c_str()).addFunction(FuncName.c_str(), Func);
+		getGlobalNamespace(L).beginNamespace(Namespace.c_str()).addFunction(FuncName.c_str(), Func).endNamespace();
 	}
 	
 

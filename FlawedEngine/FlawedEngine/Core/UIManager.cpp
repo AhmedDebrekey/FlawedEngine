@@ -314,6 +314,7 @@ namespace FlawedEngine
 
 	bool cUIManager::isKeyDown(int key)
 	{
-		if (ImGui::IsKeyDown((ImGuiKey)key)) { return true; }
+		if (ImGui::IsKeyDown((ImGuiKey)key)) {	return true; }
+		return false;
 	}
 }

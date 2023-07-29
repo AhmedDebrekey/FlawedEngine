@@ -324,8 +324,8 @@ namespace FlawedEngine
 			if (object["scripting"]["hasScript"][0] == true)
 			{
 				std::string ScriptPath = object["scripting"]["scriptPath"][0];
-				Entity->SetupScripting(ScriptPath.c_str());
-				Entity->SendInputToScripting(std::bind(&cObjectManager::isKeyDown, this, std::placeholders::_1));
+				std::function<bool(int)> InputFunc = std::bind(&cObjectManager::isKeyDown, this, std::placeholders::_1);
+				Entity->SetupScripting(ScriptPath.c_str(), InputFunc);
 			}
 
 			if (object["animation"]["hasAnimation"][0] == true)
@@ -338,7 +338,8 @@ namespace FlawedEngine
 
 	bool cObjectManager::isKeyDown(int key)
 	{
-		if (ImGui::IsKeyDown((ImGuiKey)key)) { return true; }
+		if (ImGui::IsKeyDown((ImGuiKey)key)) {	return true; }
+		return false;
 	}
 
 	void cObjectManager::AddLight(const char* Name, sLight& Props)

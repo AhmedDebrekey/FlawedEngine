@@ -292,7 +292,7 @@ namespace FlawedEngine
 	}
 
 
-	void cOBJModel::SetupScripting(const char* Path)
+	void cOBJModel::SetupScripting(const char* Path, std::function<bool(int)>&)
 	{
 		ScriptingId = ScriptingManager.InitScripting();
 		LuaState = ScriptingManager.GetLuaState(ScriptingId);
