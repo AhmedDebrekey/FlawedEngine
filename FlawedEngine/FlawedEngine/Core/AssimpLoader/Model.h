@@ -49,8 +49,8 @@ namespace FlawedEngine
             mMeshes.clear();
             mMeshes.shrink_to_fit();
 
-            delete mAnimation;
-            delete mAnimator;
+            mAnimationsMap.clear();
+
         }
         virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox) override;
         virtual void ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap) override;
@@ -63,6 +63,7 @@ namespace FlawedEngine
         virtual void SendEntity(cEntity* Entity) override;
         virtual void SendInputToScripting(std::function<bool(int)>) override;
         virtual void AddAnimation(const char*) override;
+        virtual void ChangeAnimation(const char*) override;
 
         void LSetColor(float x, float y, float z);
 
@@ -83,6 +84,8 @@ namespace FlawedEngine
         float LGetZ();
 
         std::string LGetName();
+
+        void LChangeAnim(const char* Path);
 
         std::map<std::string, sBoneInfo>& GetBoneInfoMap() { return m_BoneInfoMap; }
         int& GetBoneCount() { return m_BoneCounter; }
@@ -125,8 +128,11 @@ namespace FlawedEngine
         void SetVertexBoneDataToDefault(sVertex& vertex);
         void SetVertexBoneData(sVertex& vertex, int boneID, float weight);
         void ExtractBoneWeightForVertices(std::vector<sVertex>& vertices, aiMesh* mesh, const aiScene* scene);
-        Animation* mAnimation = nullptr;
-        Animator* mAnimator = nullptr;
+        std::unordered_map<std::string, std::shared_ptr<Animation>> mAnimationsMap;
+
+        std::shared_ptr<Animator> mAnimator;
+        std::shared_ptr<Animation> mCurrentAnimation;
+
         float mDeltaTime = 0, mLastFrame = 0;
     };
 }

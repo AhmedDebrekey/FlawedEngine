@@ -26,6 +26,7 @@ namespace FlawedEngine
 		virtual void SendEntity(cEntity* Entity) override;
 		virtual void SendInputToScripting(std::function<bool(int)>) override;
 		virtual void AddAnimation(const char*) override;
+		virtual void ChangeAnimation(const char*) override;
 		virtual void SetAABB(glm::vec3& Scale) override;
 		bool LoadModel(const char* FilePath);
 		void Populate();

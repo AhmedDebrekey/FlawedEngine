@@ -24,6 +24,7 @@ namespace FlawedEngine
 		virtual void SendEntity(cEntity* Entity) = 0;
 		virtual void SendInputToScripting(std::function<bool(int)>) = 0;
 		virtual void AddAnimation(const char*) = 0;
+		virtual void ChangeAnimation(const char*) = 0;
 		void ModelTransform(sModel& model);
 		void SetColor(glm::vec3 Color);
 		void SetMaterial(sMaterial& Mat);

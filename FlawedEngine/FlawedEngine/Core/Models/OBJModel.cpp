@@ -168,6 +168,10 @@ namespace FlawedEngine
 	{
 	}
 
+	void cOBJModel::ChangeAnimation(const char*)
+	{
+	}
+
 	void cOBJModel::SetAABB(glm::vec3& Scale)
 	{
 	}

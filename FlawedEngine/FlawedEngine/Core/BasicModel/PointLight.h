@@ -23,6 +23,8 @@ namespace FlawedEngine
 		virtual void SendInputToScripting(std::function<bool(int)>) override;
 		virtual void SetAABB(glm::vec3& Scale) override;
 		virtual void AddAnimation(const char*) override;
+		virtual void ChangeAnimation(const char*) override;
+
 		glm::vec3 mPosition;
 
 	private:

@@ -72,5 +72,9 @@ namespace FlawedEngine
 	void cPointLight::AddAnimation(const char*)
 	{
 	}
+
+	void cPointLight::ChangeAnimation(const char*)
+	{
+	}
 	
 }

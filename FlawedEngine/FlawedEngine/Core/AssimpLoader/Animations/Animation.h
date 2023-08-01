@@ -10,6 +10,8 @@ namespace FlawedEngine
 
         ~Animation()
         {
+            m_BoneInfoMap.clear();
+            mBones.clear();
         }
 
         void Setup(const std::string& animationPath, cModel* model, Assimp::Importer* importer)

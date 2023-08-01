@@ -114,7 +114,10 @@ namespace FlawedEngine
 		float currentFrame = glfwGetTime();
 		mDeltaTime = currentFrame - mLastFrame;
 		mLastFrame = currentFrame;
-		if (mAnimator)
+
+		mShouldRender = isModelInFrustum();
+
+		if (mAnimator && mShouldRender)
 			mAnimator->UpdateAnimation(mDeltaTime);
 
 	}
@@ -235,16 +238,46 @@ namespace FlawedEngine
 
 	void cModel::AddAnimation(const char* Path)
 	{
-		if (mAnimation == nullptr)
+		if (mCurrentAnimation == nullptr)
 		{
-			mAnimation = new Animation;
-			mAnimation->Setup(Path, this, &importer);
-			mAnimator = new Animator;
-			mAnimator->Setup(mAnimation);
+			mAnimationsMap[Path] = std::make_shared<Animation>();
+			mAnimationsMap[Path]->Setup(Path, this, &importer);
+
+			mCurrentAnimation = mAnimationsMap[Path];
+
+			mAnimator = std::make_shared<Animator>();
+			mAnimator->Setup(mAnimationsMap[Path].get());
+
 			mHasAnimation = true;
 			mAnimationPath = Path;
 		}
 	}
+
+	void cModel::ChangeAnimation(const char* Path)
+	{
+		if (mAnimator != nullptr)
+		{
+			if (mAnimationsMap.find(Path) != mAnimationsMap.end())
+			{
+				if (mCurrentAnimation == mAnimationsMap[Path])
+					return;
+
+
+				mAnimator->ChangeAnim(mAnimationsMap[Path]);
+				mCurrentAnimation = mAnimationsMap[Path];
+				return;
+			}
+
+			mAnimationsMap[Path] = std::make_shared<Animation>();
+			mAnimationsMap[Path]->Setup(Path, this, &importer);
+
+			mCurrentAnimation = mAnimationsMap[Path];
+
+			mAnimator->ChangeAnim(mAnimationsMap[Path]);
+			return;
+		}
+	}
+
 
 	void cModel::LSetColor(float x, float y, float z)
 	{
@@ -370,6 +403,11 @@ namespace FlawedEngine
 		return mName;
 	}
 
+	void cModel::LChangeAnim(const char* Path)
+	{
+		ChangeAnimation(Path);
+	}
+
 	void cModel::SetupScripting(const char* Path, std::function<bool(int)>& InputFunc)
 	{
 		ScriptingId = ScriptingManager.InitScripting();
@@ -390,6 +428,9 @@ namespace FlawedEngine
 		luabridge::getGlobalNamespace(LuaState).addFunction("GetName", Func);
 
 		luabridge::getGlobalNamespace(LuaState).addFunction("IsKeyDown", InputFunc);
+
+		std::function<void(const char*)> ChangeAnimFunc = std::bind(&cModel::LChangeAnim, this, std::placeholders::_1);
+		luabridge::getGlobalNamespace(LuaState).addFunction("ChangeAnimation", ChangeAnimFunc);
 
 		ScriptingManager.LoadFile(ScriptingId, Path);
 

@@ -172,10 +172,20 @@ void main()
 {
     vec3 DiffuseTex = vec3(texture(texture_diffuse1, TexCoords));
     IsNoTexture = (length(DiffuseTex) == 0.0); 
+    
+    vec3 norm = vec3(0);
 
-    vec3 norm = texture(texture_normal1, TexCoords).rgb;
-    norm = norm * 2.0 - 1.0;   
-    norm = normalize(TBN * norm);
+    if(!IsNoTexture)
+    {
+        norm = texture(texture_normal1, TexCoords).rgb;
+        norm = norm * 2.0 - 1.0;   
+        norm = normalize(TBN * norm);
+    }
+    else
+    {
+        norm = normalize(Normal);
+    }
+    
 
     vec3 viewDir = normalize(viewPos - FragPos);
     

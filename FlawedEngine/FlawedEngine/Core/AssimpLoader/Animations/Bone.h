@@ -95,6 +95,7 @@ namespace FlawedEngine
 			glm::mat4 scale = InterpolateScaling(animationTime);
 			m_LocalTransform = translation * rotation * scale;
 		}
+
 		glm::mat4 GetLocalTransform() { return m_LocalTransform; }
 		std::string GetBoneName() const { return m_Name; }
 		int GetBoneID() { return m_ID; }
@@ -189,6 +190,7 @@ namespace FlawedEngine
 				, scaleFactor);
 			return glm::scale(glm::mat4(1.0f), finalScale);
 		}
+
 
 		std::vector<KeyPosition> m_Positions;
 		std::vector<KeyRotation> m_Rotations;

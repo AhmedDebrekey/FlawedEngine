@@ -158,6 +158,24 @@ void FlawedEngine::cUIManager::RenderProperties()
 			}
 		}
 
+		static ImGui::FileBrowser ChangeAnimDialog;
+
+		{
+			if (ImGui::Button("Change Animation"))
+				ChangeAnimDialog.Open();
+
+			ChangeAnimDialog.Display();
+			ChangeAnimDialog.SetTypeFilters({ ".obj", ".gltf", ".fbx", ".dae" });
+
+			if (ChangeAnimDialog.HasSelected())
+			{
+				std::cout << "Selected filename" << ChangeAnimDialog.GetSelected().string() << std::endl;
+				Entity->ChangeAnimation(ChangeAnimDialog.GetSelected().string().c_str());
+				ChangeAnimDialog.ClearSelected();
+			}
+		}
+
+
 	}
 	ImGui::End();
 }
