@@ -14,8 +14,7 @@ namespace FlawedEngine
 			mActiveScene = mScenes.at(mScenes.size() - 1);
 		}
 
-		UI.Init(EngineWindow.GetWindow(), mActiveScene->GetCamera(), mActiveScene->GetObjectManager());
-		mActiveScene->SetSelectedEntity(UI.GetSelectedEntity());
+		UI.Init(EngineWindow.GetWindow(), mActiveScene->GetCamera(), mActiveScene->GetObjectManager(), mPhysicsWorld);
 		mActiveScene->SetUIFrameBuffer(UI.GetFrameBuffer());
 	}
 
@@ -32,7 +31,6 @@ namespace FlawedEngine
 			EngineWindow.Update();
 			
 			UI.UpdateUI();
-			mActiveScene->UpdateViewport(UI.GetViewportSize(), UI.GetViewportPos());
 			OnEvent();
 			
 			Physics.Update(DeltaTime);

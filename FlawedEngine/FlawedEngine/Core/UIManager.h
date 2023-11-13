@@ -20,20 +20,16 @@ namespace FlawedEngine
 	class cUIManager
 	{
 	public:
-		void Init(void* Window, void* Camera, void* Manager);
+		void Init(void* Window, void* Camera, void* Manager, void* PhysicsWorld);
 		void UpdateUI();
 		void RenderUI();
-		std::string& GetSelectedEntity() { return mSelectedEntity; }
 		sFrameBuffer& GetFrameBuffer() { return mUIFramebuffer; }
-		glm::vec2 GetViewportSize() { return ViewportSize; };
-		glm::vec2 GetViewportPos() { return ViewportPos; };
+
 	private:
 		void InitRendering();
 		void InitFrameBuffer();
 		void DrawVec3(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
-
 		bool isKeyDown(int key);
-
 
 	private:
 		uint32_t FrameBuffer;
@@ -48,16 +44,21 @@ namespace FlawedEngine
 		std::string mSelectedEntity;
 		int mGizmoType = ImGuizmo::OPERATION::TRANSLATE;
 		bool mMousePicking = false;
+
 	private:
 		cObjectManager* ObjectMan;
 		cpCamera* mCamera;
+		void* mPhysicsWorld;
+
 	private:
 		void RenderGizmo();
 		void RenderViewport();
 		void RenderSceneHierarchy();
 		void RenderProperties();
+		void SelectEntity();
 
 		float mTmpMatrix[16];
+
 	public:
 		static cUIManager& get();
 		~cUIManager();

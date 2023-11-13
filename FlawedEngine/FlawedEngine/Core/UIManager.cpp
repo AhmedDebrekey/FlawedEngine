@@ -63,11 +63,12 @@ namespace FlawedEngine
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
-	void cUIManager::Init(void* Window, void* Camera, void* Manager)
+	void cUIManager::Init(void* Window, void* Camera, void* Manager, void* PhysicsWorld)
 	{
 		mCamera = (cpCamera*)Camera;
 		mWindow = Window;
 		ObjectMan = (cObjectManager*)Manager;
+		mPhysicsWorld = PhysicsWorld;
 		InitFrameBuffer();
 
 		IMGUI_CHECKVERSION();
@@ -205,6 +206,7 @@ namespace FlawedEngine
 			RenderViewport(); 
 			RenderSceneHierarchy();
 			RenderProperties();
+			SelectEntity();
  		}
 
 		ImGui::End();
