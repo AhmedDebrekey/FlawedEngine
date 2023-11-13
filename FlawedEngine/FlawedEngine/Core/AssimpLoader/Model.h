@@ -7,6 +7,7 @@
 #include <iostream>
 #include "../Shader.h"
 #include "Animations/Bone.h"
+#include "../Graphics/GraphicsAPI.h"
 
 
 namespace FlawedEngine
@@ -35,7 +36,7 @@ namespace FlawedEngine
     class cModel : public cEntity
     {
     public:
-        cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum);
+        cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API);
             
         ~cModel()
         {
@@ -92,6 +93,8 @@ namespace FlawedEngine
         std::map<std::string, sBoneInfo>& GetBoneInfoMap() { return m_BoneInfoMap; }
         int& GetBoneCount() { return m_BoneCounter; }
     
+    private:
+        cGraphicsAPI* mGraphics_API = nullptr;
     private:
         bool isModelInFrustum();
         Frustum* mCamFrustum = nullptr;

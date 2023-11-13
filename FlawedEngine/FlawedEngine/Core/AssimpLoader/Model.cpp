@@ -13,8 +13,8 @@
 
 namespace FlawedEngine
 {
-	cModel::cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum)
-		:mCollisionShapesArray(CollisionShapes), mName(Name)
+	cModel::cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API)
+		:mCollisionShapesArray(CollisionShapes), mName(Name), mGraphics_API((cGraphicsAPI*)Graphics_API)
 	{
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
 		loadModel(FilePath);
@@ -661,38 +661,20 @@ namespace FlawedEngine
 
 		ExtractBoneWeightForVertices(Vertecies, mesh, scene);
 
-		return cMesh(Vertecies, Indecides, Textures);
+		return cMesh(Vertecies, Indecides, Textures, mGraphics_API);
 	}
 
-	unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma)
+	unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma, cGraphicsAPI* Graphics_API)
 	{
 		std::string filename = std::string(path);
 		filename = directory + '\\' + filename;
 
-		unsigned int textureID;
-		glGenTextures(1, &textureID);
-
 		int width = 0, height = 0, nrComponents = 0;
 		unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+		unsigned int textureID;
 		if (data)
 		{
-			GLenum format;
-			if (nrComponents == 1)
-				format = GL_RED;
-			else if (nrComponents == 3)
-				format = GL_RGB;
-			else if (nrComponents == 4)
-				format = GL_RGBA;
-
-			glBindTexture(GL_TEXTURE_2D, textureID);
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+			textureID = Graphics_API->CreateTexture(width, height, false, data, nrComponents);
 			stbi_image_free(data);
 		}
 		else
@@ -725,7 +707,7 @@ namespace FlawedEngine
 			if (!skip)
 			{
 				sTexture Texture;
- 				Texture.ID = TextureFromFile(str.C_Str(), mDirectory, false);
+ 				Texture.ID = TextureFromFile(str.C_Str(), mDirectory, false, mGraphics_API);
 				Texture.Type = typeName;
 				Texture.Path = str.C_Str();
 				Textures.push_back(Texture);

@@ -164,4 +164,37 @@ namespace FlawedEngine
 		glm::vec2 ViewportPos;
 		glm::vec2 PrevViewportSize;
 	};
+
+	struct sColor
+	{
+		float Red;
+		float Green;
+		float Blue;
+		float Alpha;
+	};
+
+	enum class eBufferType
+	{
+		Vertex,
+		Index,
+		Uniform,
+		Frame,
+		Depth,
+		Stencil
+	};
+
+	enum class eBlendMode
+	{
+		Opaque,
+		Additive,
+		Subtractive,
+		Multiply,
+		AlphaBlend
+	};
+
+	enum class eTextureType
+	{
+		Texture2D,
+		CubeMap
+	};
 }

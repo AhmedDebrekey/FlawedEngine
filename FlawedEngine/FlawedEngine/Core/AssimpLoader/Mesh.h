@@ -2,6 +2,7 @@
 #include "../Core.h"
 #include "../Shader.h"
 #include <unordered_map>
+#include "../Graphics/GraphicsAPI.h"
 
 namespace FlawedEngine
 {
@@ -14,7 +15,9 @@ namespace FlawedEngine
         std::vector<unsigned int> mIndices;
         std::vector<sTexture> mTextures;
 
-        cMesh(std::vector<sVertex> vertices, std::vector<unsigned int> indices, std::vector<sTexture> textures);
+        cGraphicsAPI* mGraphics_API = nullptr;
+
+        cMesh(std::vector<sVertex> vertices, std::vector<unsigned int> indices, std::vector<sTexture> textures, cGraphicsAPI* Graphics_API);
         void Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox, cShader& Shader, std::vector<glm::mat4> FinalBoneMatricies);
         void ShadowDraw(sTransform& Trans, cShader& Shader, glm::mat4& LightSpaceMatrix, uint32_t DepthMap);
         void DeleteTextures();

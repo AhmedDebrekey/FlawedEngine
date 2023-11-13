@@ -5,12 +5,12 @@ namespace FlawedEngine
 {
 #define MAX_BONES 100
 
-	cMesh::cMesh(std::vector<sVertex> vertices, std::vector<unsigned int> indices, std::vector<sTexture> textures)
+	cMesh::cMesh(std::vector<sVertex> vertices, std::vector<unsigned int> indices, std::vector<sTexture> textures, cGraphicsAPI* Graphics_API)
 	{
 		mVertices = vertices;
 		mIndices  = indices;
 		mTextures = textures;
-
+        mGraphics_API = Graphics_API;
 		setupMesh();
 	}
 
@@ -18,13 +18,12 @@ namespace FlawedEngine
 	{
         
         Shader.Bind();
-        glBindVertexArray(VAO);
+        mGraphics_API->BindVertexArray(VAO);
         unsigned int diffuseNr = 1;
         unsigned int specularNr = 1;
         unsigned int normalNr = 1;
         for (unsigned int i = 0; i < mTextures.size(); i++)
         {
-            glActiveTexture(GL_TEXTURE0 + i); // activate proper texture unit before binding
             // retrieve texture number (the N in diffuse_textureN)
             std::string number;
             std::string& name = mTextures[i].Type;
@@ -36,7 +35,8 @@ namespace FlawedEngine
                 number = std::to_string(normalNr++);
 
             Shader.SetInt((name + number), i);
-            glBindTexture(GL_TEXTURE_2D, mTextures[i].ID);
+            mGraphics_API->ActiveTexture(i);
+            mGraphics_API->BindTexture(mTextures[i].ID);
             //std::cout << "Name: " << (name + number) << " ActiveTexture0 + " << i  << " Texture ID: " << mTextures[i].ID << std::endl << std::endl;
         }
         
@@ -75,8 +75,8 @@ namespace FlawedEngine
 
         //create a struct, populate that struct, then use that struct to populate the uniform buffer. Does not have to be a struct obv.
 
-        glBindBuffer(GL_UNIFORM_BUFFER, DirectionalLightUBO);
-        glBufferSubData(GL_UNIFORM_BUFFER, 0, DirectionalLights.size() * sizeof(glm::vec4), &DirectionalLights[0]);
+        mGraphics_API->BindBuffer(eBufferType::Uniform, DirectionalLightUBO);
+        mGraphics_API->BindBufferSubData(eBufferType::Uniform, 0, DirectionalLights.size() * sizeof(glm::vec4), &DirectionalLights[0]);
 
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);
@@ -90,12 +90,11 @@ namespace FlawedEngine
         Shader.SetVec3("material.specular", Mat.Specular);
         Shader.SetFloat("material.shininess", Mat.Shininess);
         Shader.SetFloat("material.reflectivity", Mat.Reflectivity);
-        
-
        
-        if (!FinalBoneMatricies.empty()) {
-            glBindBuffer(GL_UNIFORM_BUFFER, AnimationUBO);
-            glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4) * MAX_BONES, &FinalBoneMatricies[0]);
+        if (!FinalBoneMatricies.empty())
+        {
+            mGraphics_API->BindBuffer(eBufferType::Uniform, AnimationUBO);
+            mGraphics_API->BindBufferSubData(eBufferType::Uniform, 0, sizeof(glm::mat4) * MAX_BONES, &FinalBoneMatricies[0]);
             Shader.SetBool("UBOSET", true);
         }
         else
@@ -103,34 +102,35 @@ namespace FlawedEngine
             Shader.SetBool("UBOSET", false);
         }
 
-        glBindBufferBase(GL_UNIFORM_BUFFER, 0, AnimationUBO);
-        glBindBufferBase(GL_UNIFORM_BUFFER, 1, DirectionalLightUBO);
+        mGraphics_API->BindBufferBase(eBufferType::Uniform, 0, AnimationUBO);
+        mGraphics_API->BindBufferBase(eBufferType::Uniform, 1, DirectionalLightUBO);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        mGraphics_API->BindBuffer(eBufferType::Index, EBO);
+        mGraphics_API->ActiveTexture(mTextures.size());
 
-        glActiveTexture(GL_TEXTURE0 + mTextures.size()); 
-        glBindTexture(GL_TEXTURE_CUBE_MAP, *SkyBox);
+        mGraphics_API->BindTexture(*SkyBox, eTextureType::CubeMap);
         Shader.SetInt("skybox", mTextures.size());
 
-        glActiveTexture(GL_TEXTURE0 + mTextures.size() + 1); //depth
-        glBindTexture(GL_TEXTURE_2D, mDepthMap);
+        mGraphics_API->ActiveTexture(mTextures.size() + 1); //depth
+        mGraphics_API->BindTexture(mDepthMap);
         Shader.SetInt("shadowMap", mTextures.size() + 1);
 
-        glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+        mGraphics_API->DrawElements(mIndices.size());
 
-        glActiveTexture(GL_TEXTURE0 + mTextures.size() + 1); //depth
-        glBindTexture(GL_TEXTURE_2D, 0);
+        mGraphics_API->ActiveTexture(mTextures.size() + 1); //depth
+        mGraphics_API->BindTexture(0);
 
-        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+        mGraphics_API->BindTexture(0, eTextureType::CubeMap);
         for (unsigned int i = 0; i < mTextures.size(); i++)
         {
-            glActiveTexture(GL_TEXTURE0 + i);
-            glBindTexture(GL_TEXTURE_2D, 0);
+            mGraphics_API->ActiveTexture(i);
+            mGraphics_API->BindTexture(0);
         }
-        glActiveTexture(GL_TEXTURE0);
-        glBindBufferBase(GL_UNIFORM_BUFFER, 0, 0); // unbind the UBO after drawing the object
-        glBindBufferBase(GL_UNIFORM_BUFFER, 1, 0); // unbind the UBO after drawing the object
-        glBindVertexArray(0);
+
+        mGraphics_API->ActiveTexture(0);
+        mGraphics_API->BindBufferBase(eBufferType::Uniform, 0, 0); // unbind the UBO after drawing the object
+        mGraphics_API->BindBufferBase(eBufferType::Uniform, 1, 0); // unbind the UBO after drawing the object
+        mGraphics_API->BindVertexArray(0);
         Shader.Unbind();
     }
 
@@ -139,14 +139,14 @@ namespace FlawedEngine
         Shader.Bind();
         mLightSpaceMatrix = LightSpaceMatrix;
         mDepthMap = DepthMap;
-        glBindVertexArray(VAO);
+        mGraphics_API->BindVertexArray(VAO);
 
         Shader.SetMat4f("lightSpaceMatrix", LightSpaceMatrix);
         Shader.SetMat4f("model", Trans.Model);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+        mGraphics_API->BindBuffer(eBufferType::Index, EBO);
+        mGraphics_API->DrawElements(mIndices.size());
+        mGraphics_API->BindVertexArray(0);
 
         Shader.Unbind();
     }

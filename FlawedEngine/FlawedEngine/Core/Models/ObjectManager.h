@@ -9,7 +9,7 @@ namespace FlawedEngine
 	class cObjectManager
 	{
 	public:		
-		void Init(void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* CamFrustum);
+		void Init(void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* CamFrustum, void* Graphics_API);
 		
 		void ShadowRender(sTransform& LightPerspective, glm::mat4& LightSpaceMatrix, uint32_t DepthMap);
 		void RenderObjects(sTransform& tCamera);
@@ -59,6 +59,7 @@ namespace FlawedEngine
 	private:
 
 		void* mCamFrustum = nullptr;
+		void* mGraphics_API = nullptr;
 
 	private:
 		void SetupSkybox();

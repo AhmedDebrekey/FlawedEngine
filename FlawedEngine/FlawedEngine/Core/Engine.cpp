@@ -8,9 +8,10 @@ namespace FlawedEngine
 		EngineWindow.CreateWindow();
 		
 		mPhysicsWorld = Physics.Init();
-
+		mGraphics_API = std::make_shared<cOpenGLAPI>();
+		mGraphics_API->EnableFaceCulling(true);
 		{
-			mScenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), mPhysicsWorld, Physics.GetCollisionShapesArray()));
+			mScenes.push_back(std::make_shared<cScene>(EngineWindow.GetWindow(), mPhysicsWorld, Physics.GetCollisionShapesArray(), mGraphics_API.get()));
 			mActiveScene = mScenes.at(mScenes.size() - 1);
 		}
 

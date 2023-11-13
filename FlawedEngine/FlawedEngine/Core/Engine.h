@@ -5,6 +5,8 @@
 #include "Window.h"
 #include "UIManager.h"
 #include "Physics/Physics.h"
+#include "Graphics/GraphicsAPI.h"
+#include "Graphics/OpenGLAPI.h"
 
 namespace FlawedEngine
 {
@@ -28,6 +30,7 @@ namespace FlawedEngine
 
 		std::vector<std::shared_ptr<cScene>> mScenes;
 		std::shared_ptr<cScene> mActiveScene;
+		std::shared_ptr<cGraphicsAPI> mGraphics_API;
 		void* mPhysicsWorld = nullptr;
 	};
 }

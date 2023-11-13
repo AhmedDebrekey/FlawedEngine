@@ -17,7 +17,7 @@ namespace FlawedEngine
 	class cScene
 	{
 	public:
-		cScene(void* Window, void* Physics, btAlignedObjectArray<btCollisionShape*>* CollisionShapes);
+		cScene(void* Window, void* Physics, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* Graphic_API);
 		~cScene();
 		void Setup();
 		void Render();
@@ -32,6 +32,7 @@ namespace FlawedEngine
 
 		void* mWindow;
 		void* PhysicsWorld = nullptr;
+		void* mGraphics_API = nullptr;
 		cpCamera Camera;
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
 	private:

@@ -9,8 +9,8 @@
 #include <glm/gtc/matrix_inverse.hpp>
 namespace FlawedEngine
 {
-	cScene::cScene(void* Window, void* Physics, btAlignedObjectArray<btCollisionShape*>* CollisionShapes)
-		:mWindow(Window), Camera(mWindow), PhysicsWorld(Physics), mCollisionShapesArray(CollisionShapes)
+	cScene::cScene(void* Window, void* Physics, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* Graphic_API)
+		:mWindow(Window), Camera(mWindow), PhysicsWorld(Physics), mCollisionShapesArray(CollisionShapes), mGraphics_API(Graphic_API)
 	{
 		Setup();
 	}
@@ -21,9 +21,8 @@ namespace FlawedEngine
 
 	void cScene::Setup()
 	{
-		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray, &Camera.mCamFrustum);
-		glfwSetWindowUserPointer((GLFWwindow*)mWindow, this);
-
+		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray, &Camera.mCamFrustum, mGraphics_API);
+		ObjectMan.LoadSave("KnightAnim");
 		glGenFramebuffers(1, &mDepthMapFBO);
 
 		glGenTextures(1, &mDepthMap);

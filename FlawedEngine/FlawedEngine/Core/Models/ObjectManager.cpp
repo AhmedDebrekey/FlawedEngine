@@ -18,12 +18,13 @@ namespace FlawedEngine
 	{
 	}
 
-	void cObjectManager::Init(void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* CamFrustum)
+	void cObjectManager::Init(void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* CamFrustum, void* Graphics_API)
 	{
 		mPhysicsWorld = PhysicsWorld;
 		mCollisionShapesArray = CollisionShapes;
 		SetupSkybox();
 		mCamFrustum = CamFrustum;
+		mGraphics_API = Graphics_API;
 	}
 
 	void cObjectManager::ShadowRender(sTransform& LightPerspective, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
@@ -122,7 +123,7 @@ namespace FlawedEngine
 
 	void cObjectManager::LoadObject(const char* FilePath, const char* Name)
 	{
-		SceneObjects[Name] = std::make_shared<cModel>(FilePath, Name, mPhysicsWorld, mCollisionShapesArray, (Frustum*)mCamFrustum);
+		SceneObjects[Name] = std::make_shared<cModel>(FilePath, Name, mPhysicsWorld, mCollisionShapesArray, (Frustum*)mCamFrustum, mGraphics_API);
 		sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 		SceneObjects[Name]->ModelTransform(DefaultModel);
 		sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
