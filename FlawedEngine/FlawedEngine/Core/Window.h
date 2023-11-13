@@ -36,6 +36,7 @@ namespace FlawedEngine
 		struct sWindowSize GetWindowSize();
 
 		GLFWwindow* GetWindow() { return mWindow; }
+		double GetTime() { return glfwGetTime(); }
 
 	private:
 		GLFWwindow* mWindow;

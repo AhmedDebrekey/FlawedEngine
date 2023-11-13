@@ -24,7 +24,7 @@ namespace FlawedEngine
 		float LastFrame = 0;
 		while (!EngineWindow.ShouldClose())
 		{
-			float currentFrame = glfwGetTime();
+			float currentFrame = EngineWindow.GetTime();
 			DeltaTime = currentFrame - LastFrame;
 			LastFrame = currentFrame;
 
@@ -46,7 +46,6 @@ namespace FlawedEngine
 	void cEngine::OnEvent()
 	{
 		EngineWindow.PollEvents();
-		//To be continued
 	}
 
 	cEngine::~cEngine()
