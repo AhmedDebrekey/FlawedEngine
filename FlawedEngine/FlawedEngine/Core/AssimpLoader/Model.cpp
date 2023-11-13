@@ -424,6 +424,7 @@ namespace FlawedEngine
 		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getY",	std::bind(&cModel::LGetY,				this));
 		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getZ",	std::bind(&cModel::LGetZ,				this));
 
+		
 		std::function<std::string()> Func = std::bind(&cModel::LGetName, this);
 		luabridge::getGlobalNamespace(LuaState).addFunction("GetName", Func);
 
@@ -450,7 +451,8 @@ namespace FlawedEngine
 	{
 		scene = importer.ReadFile(path, 
 			aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals |
-			aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph);
+			aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph | aiProcess_GlobalScale | aiProcess_ValidateDataStructure);
+
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{

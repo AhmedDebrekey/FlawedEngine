@@ -192,7 +192,7 @@ namespace FlawedEngine
 
         float m_BlendingFactor;
 
-        float m_BlendingDuration = 0.5f; 
+        float m_BlendingDuration = 0.25f; 
         float m_ElapsedBlendingTime = 0.0f; 
         float m_BlendingCurrentTime = 0.0f;
     };

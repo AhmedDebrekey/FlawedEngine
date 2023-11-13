@@ -13,9 +13,6 @@ void FlawedEngine::cUIManager::RenderViewport()
 	int framebufferWidth, framebufferHeight;
 	glfwGetFramebufferSize((GLFWwindow*)mWindow, &framebufferWidth, &framebufferHeight);
 
-	ViewportSize = { std::min(gwindowWidth, framebufferWidth), std::min(gwindowHeight, framebufferHeight) };
-	ViewportPos = { (gwindowWidth - framebufferWidth) / 2, (gwindowHeight - framebufferHeight) / 2 };
-
 	ViewportSize = { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() };
 	ViewportPos = { ImGui::GetWindowPos().x, ImGui::GetWindowPos().y };
 
@@ -23,8 +20,9 @@ void FlawedEngine::cUIManager::RenderViewport()
 	{
 		//resize framebuffer
 		InitFrameBuffer();
-		mCamera->UpdateProjection(glm::perspective(glm::radians(mCamera->FoV()), ViewportSize.x / ViewportSize.y, 0.1f, 100.0f));
+		mCamera->UpdateProjection(glm::perspective(glm::radians(mCamera->FoV()), ViewportSize.x / ViewportSize.y, mCamera->NearPlane(), mCamera->FarPlane()));
 	}
+
 	PrevViewportSize = ViewportSize;
 	ImGui::Image((void*)TextureColorBuffer, { ViewportSize.x, ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
 

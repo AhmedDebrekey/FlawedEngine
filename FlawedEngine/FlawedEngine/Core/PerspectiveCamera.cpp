@@ -95,7 +95,6 @@ namespace FlawedEngine
 		}
 		else
 		{
-			float near_plane = .5f, far_plane = 100.f;
 			mProjectionMatrix = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
 			mViewMatrix = glm::lookAt(GetDirectionalLightPos(), glm::vec3(1.0f), glm::vec3(0.0, 1.0, 0.0));
 		}

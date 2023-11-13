@@ -12,8 +12,8 @@
 namespace FlawedEngine
 {
 	///<summary>Scene contains all objects in the world, every world has it's object manager, 
-	/// managing the 3d models. Every scene should in the future be able to seralize its self and 
-	/// deserialize as well, however this has not been implemented yet.</summary>
+	/// managing the 3d models. Every Scene is serialized on command, but there are no differentiation
+	/// between different scenes.</summary>
 	class cScene
 	{
 	public:

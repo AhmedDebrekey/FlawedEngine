@@ -79,6 +79,8 @@ namespace FlawedEngine
 
         void LApplyRelativeForce(float x, float y, float z);
 
+        void LSpawnObject();
+
         float LGetX();
         float LGetY();
         float LGetZ();
