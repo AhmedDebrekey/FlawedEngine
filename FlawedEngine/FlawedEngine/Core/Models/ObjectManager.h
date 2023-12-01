@@ -59,7 +59,7 @@ namespace FlawedEngine
 	private:
 
 		void* mCamFrustum = nullptr;
-		void* mGraphics_API = nullptr;
+		void* mGfxAPI = nullptr;
 
 	private:
 		void SetupSkybox();

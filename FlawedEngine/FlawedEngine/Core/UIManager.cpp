@@ -1,11 +1,5 @@
 #include "UIManager.h"
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-
-
-
 static bool opt_fullscreen = true;
 static bool opt_padding = false;
 static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
@@ -20,55 +14,46 @@ namespace FlawedEngine
 
 	cUIManager::~cUIManager()
 	{
-		glDeleteFramebuffers(1, &FrameBuffer);
-		glDeleteTextures(1, &TextureColorBuffer);
-		glDeleteRenderbuffers(1, &RenderBufferObject);
+		mGfxAPI->DeleteFramebuffer(mFrameBuffer);
+		mGfxAPI->DeleteTexture(mTextureColorBuffer);
+		mGfxAPI->BindRenderBuffer(mRenderBufferObject);
 	}
 
 	void cUIManager::InitFrameBuffer()
 	{
-		if (FrameBuffer)
+		if (mFrameBuffer)
 		{
-			glDeleteFramebuffers(1, &FrameBuffer);
-			glDeleteTextures(1, &TextureColorBuffer);
-			glDeleteRenderbuffers(1, &RenderBufferObject);
+			mGfxAPI->DeleteFramebuffer(mFrameBuffer);
+			mGfxAPI->DeleteTexture(mTextureColorBuffer);
+			mGfxAPI->BindRenderBuffer(mRenderBufferObject);
 		}
-		glGenFramebuffers(1, &FrameBuffer);
-		glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
 
-		glGenTextures(1, &TextureColorBuffer);
-		glBindTexture(GL_TEXTURE_2D, TextureColorBuffer);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, ViewportSize.x, ViewportSize.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glBindTexture(GL_TEXTURE_2D, 0);
+		sTextureProps FrameBufferTextureProps(eTextureProperties::None, eTextureProperties::None,
+			eTextureProperties::Linear, eTextureProperties::Linear);
+		mTextureColorBuffer = mGfxAPI->CreateTexture(mViewportSize.x, mViewportSize.y, 3, NULL, FrameBufferTextureProps);
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, TextureColorBuffer, 0);
-
-		glGenRenderbuffers(1, &RenderBufferObject);
-		glBindRenderbuffer(GL_RENDERBUFFER, RenderBufferObject);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, ViewportSize.x, ViewportSize.y);
-		glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RenderBufferObject);
-
-		glViewport(0, 0, ViewportSize.x, ViewportSize.y);
+		mFrameBuffer = mGfxAPI->CreateFramebuffer(mTextureColorBuffer);
+		mGfxAPI->BindFramebuffer(mFrameBuffer);
 
 
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-			assert(false);
+		mRenderBufferObject = mGfxAPI->CreateRenderBuffer(mViewportSize.x, mViewportSize.y);
+		
+		mGfxAPI->AttachRenderBufferToFrameBuffer(mRenderBufferObject);
 
-		mUIFramebuffer = sFrameBuffer(FrameBuffer, ViewportSize, ViewportPos, PrevViewportSize);
+		mGfxAPI->SetViewport(0, 0, mViewportSize.x, mViewportSize.y);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		mUIFramebuffer = sFrameBuffer(mFrameBuffer, mViewportSize, mViewportPos, mPrevViewportSize);
+
+		mGfxAPI->BindFramebuffer(0);
 	}
 
-	void cUIManager::Init(void* Window, void* Camera, void* Manager, void* PhysicsWorld)
+	void cUIManager::Init(void* Window, void* Camera, void* Manager, void* PhysicsWorld, void* GfxAPI)
 	{
 		mCamera = (cpCamera*)Camera;
 		mWindow = Window;
-		ObjectMan = (cObjectManager*)Manager;
+		mObjectMan = (cObjectManager*)Manager;
 		mPhysicsWorld = PhysicsWorld;
+		mGfxAPI = (cGraphicsAPI*)GfxAPI;
 		InitFrameBuffer();
 
 		IMGUI_CHECKVERSION();
@@ -98,16 +83,16 @@ namespace FlawedEngine
 		//IK this doesn't make a lot of sense being here, but this is basically going to the wrapper around the Scene rendering and to be rendered on the other framebuffer
 		// RenderUI() will reset the frame buffer back to zero so it renders on the default one as usual
 
-		glBindFramebuffer(GL_FRAMEBUFFER, FrameBuffer);
-		glClearColor(0.365f, 0.506f, 0.635f, 1.0f); //This also could be found in the window class, TODO: Refactor it
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glViewport(0, 0, ViewportSize.x, ViewportSize.y);
-		glEnable(GL_DEPTH_TEST);
+		mGfxAPI->BindFramebuffer(mFrameBuffer);
+		mGfxAPI->ClearColorBuffer(sColor(0.365f, 0.506f, 0.635f, 1.0f)); //This also could be found in the window class, TODO: Refactor it
+		mGfxAPI->ClearDepthBuffer();
+		mGfxAPI->SetViewport(0, 0, mViewportSize.x, mViewportSize.y);
+		mGfxAPI->SetDepthTest(true);
 	}
 
 	void cUIManager::RenderUI()
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		mGfxAPI->BindFramebuffer(0);
 		InitRendering();
 
 		if (ImGui::BeginMenuBar())
@@ -140,9 +125,9 @@ namespace FlawedEngine
 			ImGui::Text("Press TAB And Move Gizmo To \nCopy Selected Entity");
 			ImGui::Separator();
 			ImGui::Checkbox("Mouse Picking *Buggy*", &mMousePicking);
-			ObjectMan->mMousePicking = mMousePicking;
+			mObjectMan->mMousePicking = mMousePicking;
 			if(ImGui::Button("RenderSkyBox"))
-				ObjectMan->ToggleSkyBox();
+				mObjectMan->ToggleSkyBox();
 			ImGui::Separator();
 			if (ImGui::Button("Switch Perspective"))
 				mCamera->ToggleShadowPerspective();
@@ -172,7 +157,7 @@ namespace FlawedEngine
 				{
 					if (!((Path != NULL) && (Path[0] == '\0')))
 					{
-						ObjectMan->Save(Path);
+						mObjectMan->Save(Path);
 					}
 				}
 			}
@@ -197,7 +182,7 @@ namespace FlawedEngine
 				{
 					if (!((Path != NULL) && (Path[0] == '\0')))
 					{
-						ObjectMan->LoadSave(Path);
+						mObjectMan->LoadSave(Path);
 					}
 				}
 			}

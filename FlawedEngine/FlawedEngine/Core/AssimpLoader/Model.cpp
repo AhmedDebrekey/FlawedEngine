@@ -14,7 +14,7 @@
 namespace FlawedEngine
 {
 	cModel::cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API)
-		:mCollisionShapesArray(CollisionShapes), mName(Name), mGraphics_API((cGraphicsAPI*)Graphics_API)
+		:mCollisionShapesArray(CollisionShapes), mName(Name), mGfxAPI((cGraphicsAPI*)Graphics_API)
 	{
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
 		loadModel(FilePath);
@@ -661,7 +661,7 @@ namespace FlawedEngine
 
 		ExtractBoneWeightForVertices(Vertecies, mesh, scene);
 
-		return cMesh(Vertecies, Indecides, Textures, mGraphics_API);
+		return cMesh(Vertecies, Indecides, Textures, mGfxAPI);
 	}
 
 	unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma, cGraphicsAPI* Graphics_API)
@@ -674,7 +674,14 @@ namespace FlawedEngine
 		unsigned int textureID;
 		if (data)
 		{
-			textureID = Graphics_API->CreateTexture(width, height, false, data, nrComponents);
+			sTextureProps props;
+			props.Wrap_s = eTextureProperties::Repeat;
+			props.Wrap_t = eTextureProperties::Repeat;
+			props.Min_Filter = eTextureProperties::MIPMAP_Linear;
+			props.Mag_Filter = eTextureProperties::Linear;
+
+			textureID = Graphics_API->CreateTexture(width, height, nrComponents, data, props);
+
 			stbi_image_free(data);
 		}
 		else
@@ -707,7 +714,7 @@ namespace FlawedEngine
 			if (!skip)
 			{
 				sTexture Texture;
- 				Texture.ID = TextureFromFile(str.C_Str(), mDirectory, false, mGraphics_API);
+ 				Texture.ID = TextureFromFile(str.C_Str(), mDirectory, false, mGfxAPI);
 				Texture.Type = typeName;
 				Texture.Path = str.C_Str();
 				Textures.push_back(Texture);

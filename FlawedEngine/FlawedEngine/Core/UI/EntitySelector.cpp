@@ -16,11 +16,11 @@ void FlawedEngine::cUIManager::SelectEntity()
 		// Camera position in world space
 		glm::vec3 cameraPos = mCamera->Postion();
 
-		float viewportX = ViewportPos.x; // The x coordinate of the top left corner of the viewport in pixels
-		float viewportY = ViewportPos.y; // The y coordinate of the top left corner of the viewport in pixels
+		float viewportX = mViewportPos.x; // The x coordinate of the top left corner of the viewport in pixels
+		float viewportY = mViewportPos.y; // The y coordinate of the top left corner of the viewport in pixels
 		// Viewport dimensions
-		int viewportWidth = ViewportSize.x;
-		int viewportHeight = ViewportSize.y;
+		int viewportWidth = mViewportSize.x;
+		int viewportHeight = mViewportSize.y;
 
 		// Normalize the mouse position to the range [0, 1]
 		float normalizedMouseX = (mouseX - viewportX) / viewportWidth;
@@ -60,7 +60,7 @@ void FlawedEngine::cUIManager::SelectEntity()
 
 		btCollisionWorld::ClosestRayResultCallback rayCallback(RayBegin, RayEnd);
 		dynamicWorld->rayTest(RayBegin, RayEnd, rayCallback);
-		if (ObjectMan->mMousePicking)
+		if (mObjectMan->mMousePicking)
 		{
 			if (rayCallback.hasHit())
 			{

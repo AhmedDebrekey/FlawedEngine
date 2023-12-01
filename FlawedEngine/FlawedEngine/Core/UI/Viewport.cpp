@@ -13,18 +13,18 @@ void FlawedEngine::cUIManager::RenderViewport()
 	int framebufferWidth, framebufferHeight;
 	glfwGetFramebufferSize((GLFWwindow*)mWindow, &framebufferWidth, &framebufferHeight);
 
-	ViewportSize = { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() };
-	ViewportPos = { ImGui::GetWindowPos().x, ImGui::GetWindowPos().y };
+	mViewportSize = { ImGui::GetWindowWidth(), ImGui::GetWindowHeight() };
+	mViewportPos = { ImGui::GetWindowPos().x, ImGui::GetWindowPos().y };
 
-	if (PrevViewportSize != ViewportSize)
+	if (mPrevViewportSize != mViewportSize)
 	{
 		//resize framebuffer
 		InitFrameBuffer();
-		mCamera->UpdateProjection(glm::perspective(glm::radians(mCamera->FoV()), ViewportSize.x / ViewportSize.y, mCamera->NearPlane(), mCamera->FarPlane()));
+		mCamera->UpdateProjection(glm::perspective(glm::radians(mCamera->FoV()), mViewportSize.x / mViewportSize.y, mCamera->NearPlane(), mCamera->FarPlane()));
 	}
 
-	PrevViewportSize = ViewportSize;
-	ImGui::Image((void*)TextureColorBuffer, { ViewportSize.x, ViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
+	mPrevViewportSize = mViewportSize;
+	ImGui::Image((void*)mTextureColorBuffer, { mViewportSize.x, mViewportSize.y }, ImVec2(0, 1), ImVec2(1, 0));
 
 	if (ImGui::IsMouseDown(2) && ImGui::IsWindowHovered())
 		mSelectedEntity = "";

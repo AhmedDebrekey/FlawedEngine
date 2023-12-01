@@ -10,16 +10,24 @@ namespace FlawedEngine
         virtual void Shutdown() = 0;
 
         // Framebuffer operations
-        virtual unsigned int CreateFramebuffer() = 0;
+        virtual unsigned int CreateFramebuffer(unsigned int texturebuffer) = 0;
         virtual void DeleteFramebuffer(unsigned int framebuffer) = 0;
         virtual void BindFramebuffer(unsigned int framebuffer) = 0;
+        virtual void AttachRenderBufferToFrameBuffer(unsigned int renderbuffer) = 0;
+
+        // Renderbuffer operations
+        virtual unsigned int CreateRenderBuffer(int width, int height) = 0;
+        virtual void BindRenderBuffer(unsigned int renderbuffer) = 0;
+        virtual void DeleteRenderBuffer(unsigned int renderBuffer) = 0;
 
         // Texture operations
-        virtual unsigned int CreateTexture(int width, int height, bool isDepth = false, unsigned char* data = nullptr, int nrComponents = 0) = 0;
+        virtual unsigned int CreateTexture(int width, int height, int nrComponents, unsigned char* data, sTextureProps props) = 0;
+        virtual unsigned int CreateDepthTexture(int width, int height) = 0;
         virtual void DeleteTexture(unsigned int texture) = 0;
         virtual void BindTexture(unsigned int texture, eTextureType type = eTextureType::Texture2D) = 0;
         virtual void ActiveTexture(unsigned int unit) = 0;
         virtual unsigned int GetTextureType(eTextureType type) = 0;
+        virtual unsigned int GetTextureProp(eTextureProperties prop) = 0;
 
         // Drawing operations
         virtual void SetViewport(int x, int y, int width, int height) = 0;

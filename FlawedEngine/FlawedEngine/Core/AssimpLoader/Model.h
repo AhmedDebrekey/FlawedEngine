@@ -94,7 +94,7 @@ namespace FlawedEngine
         int& GetBoneCount() { return m_BoneCounter; }
     
     private:
-        cGraphicsAPI* mGraphics_API = nullptr;
+        cGraphicsAPI* mGfxAPI = nullptr;
     private:
         bool isModelInFrustum();
         Frustum* mCamFrustum = nullptr;

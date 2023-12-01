@@ -14,13 +14,14 @@
 #include <glm/gtx/string_cast.hpp>
 #include <string>
 #include "PerspectiveCamera.h"
+#include "Graphics/GraphicsAPI.h"
 
 namespace FlawedEngine
 {
 	class cUIManager
 	{
 	public:
-		void Init(void* Window, void* Camera, void* Manager, void* PhysicsWorld);
+		void Init(void* Window, void* Camera, void* Manager, void* PhysicsWorld, void* GfxAPI);
 		void UpdateUI();
 		void RenderUI();
 		sFrameBuffer& GetFrameBuffer() { return mUIFramebuffer; }
@@ -32,23 +33,26 @@ namespace FlawedEngine
 		bool isKeyDown(int key);
 
 	private:
-		uint32_t FrameBuffer;
-		uint32_t TextureColorBuffer;
-		uint32_t RenderBufferObject;
+		uint32_t mFrameBuffer;
+		uint32_t mTextureColorBuffer;
+		uint32_t mRenderBufferObject;
 		sFrameBuffer mUIFramebuffer;
-		glm::vec2 PrevViewportSize = {1600, 900};
-		glm::vec2 ViewportSize = {1600, 900};
-		glm::vec2 ViewportPos = { 1600, 900 };
+		glm::vec2 mPrevViewportSize = {1600, 900};
+		glm::vec2 mViewportSize = {1600, 900};
+		glm::vec2 mViewportPos = { 1600, 900 };
 		void* mWindow = nullptr;
 		glm::vec2 m_ViewportBounds[2];
 		std::string mSelectedEntity;
 		int mGizmoType = ImGuizmo::OPERATION::TRANSLATE;
 		bool mMousePicking = false;
 
+		cGraphicsAPI* mGfxAPI = nullptr;
+		
+
 	private:
-		cObjectManager* ObjectMan;
-		cpCamera* mCamera;
-		void* mPhysicsWorld;
+		cObjectManager* mObjectMan = nullptr;
+		cpCamera* mCamera = nullptr;
+		void* mPhysicsWorld = nullptr;
 
 	private:
 		void RenderGizmo();

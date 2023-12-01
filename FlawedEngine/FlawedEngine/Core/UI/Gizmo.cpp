@@ -20,7 +20,7 @@ void FlawedEngine::cUIManager::RenderGizmo()
 	ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
 	{
-		auto Entity = ObjectMan->GetObjectByName(mSelectedEntity.c_str());
+		auto Entity = mObjectMan->GetObjectByName(mSelectedEntity.c_str());
 		if (Entity)
 		{
 			sModel Model = Entity->GetModel();
@@ -42,11 +42,11 @@ void FlawedEngine::cUIManager::RenderGizmo()
 					{
 						char buffer[20];
 						sprintf_s(buffer, "Copy(%i)", Copies);
-						ObjectMan->LoadObject(Entity->mFilePath.c_str(), buffer);
+						mObjectMan->LoadObject(Entity->mFilePath.c_str(), buffer);
 						mSelectedEntity = buffer;
 						Copies++;
 
-						auto newEntity = ObjectMan->GetObjectByName(buffer);
+						auto newEntity = mObjectMan->GetObjectByName(buffer);
 						newEntity->mTransformation = Entity->mTransformation;
 
 					}
@@ -54,11 +54,11 @@ void FlawedEngine::cUIManager::RenderGizmo()
 					{
 						char buffer[20];
 						sprintf_s(buffer, "Copy(%i)", Copies);
-						ObjectMan->AddObject(Entity->Type, buffer);
+						mObjectMan->AddObject(Entity->Type, buffer);
 						mSelectedEntity = buffer;
 						Copies++;
 
-						auto newEntity = ObjectMan->GetObjectByName(buffer);
+						auto newEntity = mObjectMan->GetObjectByName(buffer);
 						newEntity->mTransformation = Entity->mTransformation;
 					}
 				}

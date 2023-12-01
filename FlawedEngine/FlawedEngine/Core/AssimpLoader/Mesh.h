@@ -15,7 +15,7 @@ namespace FlawedEngine
         std::vector<unsigned int> mIndices;
         std::vector<sTexture> mTextures;
 
-        cGraphicsAPI* mGraphics_API = nullptr;
+        cGraphicsAPI* mGfxAPI = nullptr;
 
         cMesh(std::vector<sVertex> vertices, std::vector<unsigned int> indices, std::vector<sTexture> textures, cGraphicsAPI* Graphics_API);
         void Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox, cShader& Shader, std::vector<glm::mat4> FinalBoneMatricies);

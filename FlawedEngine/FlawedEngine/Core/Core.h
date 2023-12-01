@@ -173,7 +173,7 @@ namespace FlawedEngine
 		float Alpha;
 	};
 
-	enum class eBufferType
+	enum eBufferType
 	{
 		Vertex,
 		Index,
@@ -183,7 +183,7 @@ namespace FlawedEngine
 		Stencil
 	};
 
-	enum class eBlendMode
+	enum eBlendMode
 	{
 		Opaque,
 		Additive,
@@ -192,9 +192,39 @@ namespace FlawedEngine
 		AlphaBlend
 	};
 
-	enum class eTextureType
+	enum eTextureType
 	{
 		Texture2D,
 		CubeMap
+	};
+
+	enum eTextureProperties
+	{
+		Linear,
+		Repeat,
+		MIPMAP_Linear,
+		None
+	};
+
+	struct sTextureProps
+	{
+		sTextureProps()
+		{}
+		sTextureProps
+		(
+			eTextureProperties _Wrap_s,
+			eTextureProperties _Wrap_t,
+			eTextureProperties _Min_Filter,
+			eTextureProperties _Mag_Filter
+		)
+			:Wrap_s(_Wrap_s),
+			 Wrap_t(_Wrap_t),
+			 Min_Filter(_Min_Filter),
+			 Mag_Filter(_Mag_Filter)
+		{}
+		eTextureProperties Wrap_s = None;
+		eTextureProperties Wrap_t = None;
+		eTextureProperties Min_Filter = None;
+		eTextureProperties Mag_Filter = None;
 	};
 }

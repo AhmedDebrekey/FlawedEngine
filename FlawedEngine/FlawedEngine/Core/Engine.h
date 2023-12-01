@@ -24,13 +24,13 @@ namespace FlawedEngine
 		void OnEvent();
 
 	private:
-		cWindow& EngineWindow = cWindow::get();
-		cUIManager& UI = cUIManager::get();
-		cPhysics Physics;//make into singleton
+		cWindow& mEngineWindow = cWindow::get();
+		cUIManager& mUI = cUIManager::get();
+		cPhysics mPhysics;//make into singleton
 
 		std::vector<std::shared_ptr<cScene>> mScenes;
 		std::shared_ptr<cScene> mActiveScene;
-		std::shared_ptr<cGraphicsAPI> mGraphics_API;
+		std::shared_ptr<cGraphicsAPI> mGfxAPI;
 		void* mPhysicsWorld = nullptr;
 	};
 }

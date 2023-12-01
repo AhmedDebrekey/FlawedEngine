@@ -32,7 +32,7 @@ namespace FlawedEngine
 
 		void* mWindow;
 		void* PhysicsWorld = nullptr;
-		void* mGraphics_API = nullptr;
+		void* mGfxAPI = nullptr;
 		cpCamera Camera;
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
 	private:

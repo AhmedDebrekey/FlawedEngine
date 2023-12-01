@@ -11,7 +11,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 	static int Triangles = 0;
 	static int Lights = 0;
 
-	for (auto& Object : *ObjectMan->GetObjectsPointer())
+	for (auto& Object : *mObjectMan->GetObjectsPointer())
 	{
 		auto Entity = Object.second;
 		if (ImGui::Selectable(Object.first.c_str(), (Object.first == mSelectedEntity) ? true : false))
@@ -28,7 +28,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			char buffer[20];
 			sprintf_s(buffer, "Light(%i)", Lights);
-			ObjectMan->AddObject(PointLight, buffer);
+			mObjectMan->AddObject(PointLight, buffer);
 			mSelectedEntity = buffer;
 			Lights++;
 		}
@@ -37,7 +37,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			char buffer[20];
 			sprintf_s(buffer, "Cube(%i)", Cubes);
-			ObjectMan->AddObject(Cube, buffer);
+			mObjectMan->AddObject(Cube, buffer);
 			mSelectedEntity = buffer;
 			Cubes++;
 		}
@@ -46,7 +46,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			char buffer[20];
 			sprintf_s(buffer, "Sphere(%i)", Spheres);
-			ObjectMan->AddObject(Sphere, buffer);
+			mObjectMan->AddObject(Sphere, buffer);
 			mSelectedEntity = buffer;
 			Spheres++;
 		}
@@ -55,7 +55,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			char buffer[20];
 			sprintf_s(buffer, "Cone(%i)", Cones);
-			ObjectMan->AddObject(Cone, buffer);
+			mObjectMan->AddObject(Cone, buffer);
 			mSelectedEntity = buffer;
 			Cones++;
 		}
@@ -64,7 +64,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			char buffer[20];
 			sprintf_s(buffer, "Torus(%i)", Toruses);
-			ObjectMan->AddObject(Torus, buffer);
+			mObjectMan->AddObject(Torus, buffer);
 			mSelectedEntity = buffer;
 			Toruses++;
 		} //Left out the Trianlge for no reason, It was just a proof of concept.
@@ -85,7 +85,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		//std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
 		char buffer[20];
 		sprintf_s(buffer, "Object(%i)", Objects);
-		ObjectMan->LoadObject(fileDialog.GetSelected().string().c_str(), buffer);
+		mObjectMan->LoadObject(fileDialog.GetSelected().string().c_str(), buffer);
 		mSelectedEntity = buffer;
 		Objects++;
 		fileDialog.ClearSelected();

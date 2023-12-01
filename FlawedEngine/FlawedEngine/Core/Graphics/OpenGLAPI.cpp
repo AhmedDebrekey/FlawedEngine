@@ -18,17 +18,54 @@ namespace FlawedEngine
     {
     }
 
-    unsigned int cOpenGLAPI::CreateFramebuffer()
+    unsigned int cOpenGLAPI::CreateFramebuffer(unsigned int TextureBuffer)
     {
-        return 0;
+        GLuint frameBufferId;
+
+        glGenFramebuffers(1, &frameBufferId);
+        glBindFramebuffer(GL_FRAMEBUFFER, frameBufferId);
+
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+            assert("FrameBuffer Is Not Complete");
+
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, TextureBuffer, 0);
+        return frameBufferId;
     }
 
     void cOpenGLAPI::DeleteFramebuffer(unsigned int framebuffer)
     {
+        glDeleteFramebuffers(1, &framebuffer);
     }
 
     void cOpenGLAPI::BindFramebuffer(unsigned int framebuffer)
     {
+        glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+    }
+
+    void cOpenGLAPI::AttachRenderBufferToFrameBuffer(unsigned int renderbuffer)
+    {
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
+    }
+
+    // This function bind and unbinds the renderbuffer, Do not forget to bind it again if needed
+    unsigned int cOpenGLAPI::CreateRenderBuffer(int width, int height)
+    {
+        GLuint renderBufferId;
+        glGenRenderbuffers(1, &renderBufferId);
+        BindRenderBuffer(renderBufferId);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+        BindRenderBuffer(0);
+        return renderBufferId;
+    }
+
+    void cOpenGLAPI::BindRenderBuffer(unsigned int renderbuffer)
+    {
+        glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+    }
+
+    void cOpenGLAPI::DeleteRenderBuffer(unsigned int renderBuffer)
+    {
+        glDeleteRenderbuffers(1, &renderBuffer);
     }
 
     unsigned int cOpenGLAPI::CreateBuffer(eBufferType type, const void* data, size_t size)
@@ -101,43 +138,59 @@ namespace FlawedEngine
         return target;
     }
 
-    unsigned int cOpenGLAPI::CreateTexture(int width, int height, bool isDepth, unsigned char* data, int nrComponents)
+    unsigned int cOpenGLAPI::CreateTexture(int width, int height, int nrComponents, unsigned char* data, sTextureProps props)
     {
         GLuint textureID;
-        GLenum target = isDepth ? GL_TEXTURE_DEPTH : GL_TEXTURE_2D; //Not Sure If Necessary
+        GLenum target = GL_TEXTURE_2D; //Not Sure If Necessary
         
         glGenTextures(1, &textureID);
     
         glBindTexture(target, textureID);
-        if (isDepth)
-        {
-            glTexImage2D(target, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-            glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-            glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-            float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
-            glTexParameterfv(target, GL_TEXTURE_BORDER_COLOR, borderColor);
-        }
-        else
-        {
-            GLenum format;
-            if (nrComponents == 1)
-                format = GL_RED;
-            else if (nrComponents == 3)
-                format = GL_RGB;
-            else if (nrComponents == 4)
-                format = GL_RGBA;
-            glTexImage2D(target, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-            glGenerateMipmap(target);
-            glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
-            glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
-            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        }
+
+        GLenum format = 0;
+        if (nrComponents == 1)
+            format = GL_RED;
+        else if (nrComponents == 3)
+            format = GL_RGB;
+        else if (nrComponents == 4)
+            format = GL_RGBA;
+
+        glTexImage2D(target, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(target);
+
+        GLint Wrap_s = GetTextureProp(props.Wrap_s);
+        GLint Wrap_t = GetTextureProp(props.Wrap_t);
+        GLint Min_Filter = GetTextureProp(props.Min_Filter);
+        GLint Mag_Filter = GetTextureProp(props.Mag_Filter);
+        if (Wrap_s != 0)
+            glTexParameteri(target, GL_TEXTURE_WRAP_S, Wrap_s);
+        if (Wrap_t != 0)
+            glTexParameteri(target, GL_TEXTURE_WRAP_T, Wrap_t);
+        if (Min_Filter != 0)
+            glTexParameteri(target, GL_TEXTURE_MIN_FILTER, Min_Filter);
+        if (Mag_Filter != 0)
+            glTexParameteri(target, GL_TEXTURE_MAG_FILTER, Mag_Filter);
 
         glBindTexture(target, 0);
         return textureID;
+    }
+
+    unsigned int cOpenGLAPI::CreateDepthTexture(int width, int height)
+    {
+        GLuint depthTextureID;
+        GLenum target = GL_TEXTURE_2D;
+
+        glGenTextures(1, &depthTextureID);
+        glBindTexture(target, depthTextureID);
+
+        glTexImage2D(target, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+        glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+        glTexParameterfv(target, GL_TEXTURE_BORDER_COLOR, borderColor);
+        return depthTextureID;
     }
 
     void cOpenGLAPI::DeleteTexture(unsigned int texture)
@@ -172,6 +225,28 @@ namespace FlawedEngine
         return target;
     }
 
+    unsigned int cOpenGLAPI::GetTextureProp(eTextureProperties prop)
+    {
+        GLint param;
+        switch (prop) {
+        case eTextureProperties::Linear:
+            param = GL_LINEAR;
+            break;
+        case eTextureProperties::Repeat:
+            param = GL_REPEAT;
+            break;
+        case eTextureProperties::MIPMAP_Linear:
+            param = GL_LINEAR_MIPMAP_LINEAR;
+            break;
+        case eTextureProperties::None:
+            param = 0;
+            break;
+        default:
+            assert(false && "Unsupported buffer type");
+        }
+        return param;
+    }
+
     void cOpenGLAPI::SetViewport(int x, int y, int width, int height)
     {
         glViewport(x, y, width, height);
@@ -195,7 +270,9 @@ namespace FlawedEngine
 
     void cOpenGLAPI::SetDepthTest(bool enabled)
     {
+        glEnable(GL_DEPTH_TEST);
     }
+
     void cOpenGLAPI::SetBlendMode(eBlendMode mode)
     {
     }

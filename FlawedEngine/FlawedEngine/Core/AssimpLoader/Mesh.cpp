@@ -10,7 +10,7 @@ namespace FlawedEngine
 		mVertices = vertices;
 		mIndices  = indices;
 		mTextures = textures;
-        mGraphics_API = Graphics_API;
+        mGfxAPI = Graphics_API;
 		setupMesh();
 	}
 
@@ -18,7 +18,7 @@ namespace FlawedEngine
 	{
         
         Shader.Bind();
-        mGraphics_API->BindVertexArray(VAO);
+        mGfxAPI->BindVertexArray(VAO);
         unsigned int diffuseNr = 1;
         unsigned int specularNr = 1;
         unsigned int normalNr = 1;
@@ -35,8 +35,8 @@ namespace FlawedEngine
                 number = std::to_string(normalNr++);
 
             Shader.SetInt((name + number), i);
-            mGraphics_API->ActiveTexture(i);
-            mGraphics_API->BindTexture(mTextures[i].ID);
+            mGfxAPI->ActiveTexture(i);
+            mGfxAPI->BindTexture(mTextures[i].ID);
             //std::cout << "Name: " << (name + number) << " ActiveTexture0 + " << i  << " Texture ID: " << mTextures[i].ID << std::endl << std::endl;
         }
         
@@ -75,8 +75,8 @@ namespace FlawedEngine
 
         //create a struct, populate that struct, then use that struct to populate the uniform buffer. Does not have to be a struct obv.
 
-        mGraphics_API->BindBuffer(eBufferType::Uniform, DirectionalLightUBO);
-        mGraphics_API->BindBufferSubData(eBufferType::Uniform, 0, DirectionalLights.size() * sizeof(glm::vec4), &DirectionalLights[0]);
+        mGfxAPI->BindBuffer(eBufferType::Uniform, DirectionalLightUBO);
+        mGfxAPI->BindBufferSubData(eBufferType::Uniform, 0, DirectionalLights.size() * sizeof(glm::vec4), &DirectionalLights[0]);
 
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);
@@ -93,8 +93,8 @@ namespace FlawedEngine
        
         if (!FinalBoneMatricies.empty())
         {
-            mGraphics_API->BindBuffer(eBufferType::Uniform, AnimationUBO);
-            mGraphics_API->BindBufferSubData(eBufferType::Uniform, 0, sizeof(glm::mat4) * MAX_BONES, &FinalBoneMatricies[0]);
+            mGfxAPI->BindBuffer(eBufferType::Uniform, AnimationUBO);
+            mGfxAPI->BindBufferSubData(eBufferType::Uniform, 0, sizeof(glm::mat4) * MAX_BONES, &FinalBoneMatricies[0]);
             Shader.SetBool("UBOSET", true);
         }
         else
@@ -102,35 +102,35 @@ namespace FlawedEngine
             Shader.SetBool("UBOSET", false);
         }
 
-        mGraphics_API->BindBufferBase(eBufferType::Uniform, 0, AnimationUBO);
-        mGraphics_API->BindBufferBase(eBufferType::Uniform, 1, DirectionalLightUBO);
+        mGfxAPI->BindBufferBase(eBufferType::Uniform, 0, AnimationUBO);
+        mGfxAPI->BindBufferBase(eBufferType::Uniform, 1, DirectionalLightUBO);
 
-        mGraphics_API->BindBuffer(eBufferType::Index, EBO);
-        mGraphics_API->ActiveTexture(mTextures.size());
+        mGfxAPI->BindBuffer(eBufferType::Index, EBO);
+        mGfxAPI->ActiveTexture(mTextures.size());
 
-        mGraphics_API->BindTexture(*SkyBox, eTextureType::CubeMap);
+        mGfxAPI->BindTexture(*SkyBox, eTextureType::CubeMap);
         Shader.SetInt("skybox", mTextures.size());
 
-        mGraphics_API->ActiveTexture(mTextures.size() + 1); //depth
-        mGraphics_API->BindTexture(mDepthMap);
+        mGfxAPI->ActiveTexture(mTextures.size() + 1); //depth
+        mGfxAPI->BindTexture(mDepthMap);
         Shader.SetInt("shadowMap", mTextures.size() + 1);
 
-        mGraphics_API->DrawElements(mIndices.size());
+        mGfxAPI->DrawElements(mIndices.size());
 
-        mGraphics_API->ActiveTexture(mTextures.size() + 1); //depth
-        mGraphics_API->BindTexture(0);
+        mGfxAPI->ActiveTexture(mTextures.size() + 1); //depth
+        mGfxAPI->BindTexture(0);
 
-        mGraphics_API->BindTexture(0, eTextureType::CubeMap);
+        mGfxAPI->BindTexture(0, eTextureType::CubeMap);
         for (unsigned int i = 0; i < mTextures.size(); i++)
         {
-            mGraphics_API->ActiveTexture(i);
-            mGraphics_API->BindTexture(0);
+            mGfxAPI->ActiveTexture(i);
+            mGfxAPI->BindTexture(0);
         }
 
-        mGraphics_API->ActiveTexture(0);
-        mGraphics_API->BindBufferBase(eBufferType::Uniform, 0, 0); // unbind the UBO after drawing the object
-        mGraphics_API->BindBufferBase(eBufferType::Uniform, 1, 0); // unbind the UBO after drawing the object
-        mGraphics_API->BindVertexArray(0);
+        mGfxAPI->ActiveTexture(0);
+        mGfxAPI->BindBufferBase(eBufferType::Uniform, 0, 0); // unbind the UBO after drawing the object
+        mGfxAPI->BindBufferBase(eBufferType::Uniform, 1, 0); // unbind the UBO after drawing the object
+        mGfxAPI->BindVertexArray(0);
         Shader.Unbind();
     }
 
@@ -139,14 +139,14 @@ namespace FlawedEngine
         Shader.Bind();
         mLightSpaceMatrix = LightSpaceMatrix;
         mDepthMap = DepthMap;
-        mGraphics_API->BindVertexArray(VAO);
+        mGfxAPI->BindVertexArray(VAO);
 
         Shader.SetMat4f("lightSpaceMatrix", LightSpaceMatrix);
         Shader.SetMat4f("model", Trans.Model);
 
-        mGraphics_API->BindBuffer(eBufferType::Index, EBO);
-        mGraphics_API->DrawElements(mIndices.size());
-        mGraphics_API->BindVertexArray(0);
+        mGfxAPI->BindBuffer(eBufferType::Index, EBO);
+        mGfxAPI->DrawElements(mIndices.size());
+        mGfxAPI->BindVertexArray(0);
 
         Shader.Unbind();
     }
