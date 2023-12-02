@@ -26,8 +26,6 @@ namespace FlawedEngine
         virtual void DeleteTexture(unsigned int texture) = 0;
         virtual void BindTexture(unsigned int texture, eTextureType type = eTextureType::Texture2D) = 0;
         virtual void ActiveTexture(unsigned int unit) = 0;
-        virtual unsigned int GetTextureType(eTextureType type) = 0;
-        virtual unsigned int GetTextureProp(eTextureProperties prop) = 0;
 
         // Drawing operations
         virtual void SetViewport(int x, int y, int width, int height) = 0;
@@ -41,7 +39,7 @@ namespace FlawedEngine
         virtual void EnableFaceCulling(bool enabled) = 0;
 
         // Buffer operations
-        virtual unsigned int CreateBuffer(eBufferType type, const void* data, size_t size) = 0;
+        virtual unsigned int CreateBuffer(eBufferType type, const void* data, size_t size, eDrawType draw) = 0;
         virtual void DeleteBuffer(unsigned int buffer) = 0;
         virtual void BindBuffer(eBufferType type, unsigned int buffer) = 0;
         virtual void BindBufferBase(eBufferType type, unsigned int index, unsigned int buffer) = 0;
@@ -56,5 +54,8 @@ namespace FlawedEngine
 
         // Type management
         virtual unsigned int GetBufferType(eBufferType type) = 0;
+        virtual unsigned int GetTextureType(eTextureType type) = 0;
+        virtual unsigned int GetTextureProp(eTextureProperties prop) = 0;
+        virtual unsigned int GetDrawType(eDrawType type) = 0;
     };
 }

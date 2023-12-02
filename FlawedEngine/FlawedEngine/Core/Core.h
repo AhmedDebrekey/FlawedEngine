@@ -183,6 +183,12 @@ namespace FlawedEngine
 		Stencil
 	};
 
+	enum eDrawType
+	{
+		Static,
+		Dynmaic
+	};
+
 	enum eBlendMode
 	{
 		Opaque,

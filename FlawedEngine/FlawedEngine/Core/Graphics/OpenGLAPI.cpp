@@ -68,14 +68,15 @@ namespace FlawedEngine
         glDeleteRenderbuffers(1, &renderBuffer);
     }
 
-    unsigned int cOpenGLAPI::CreateBuffer(eBufferType type, const void* data, size_t size)
+    unsigned int cOpenGLAPI::CreateBuffer(eBufferType type, const void* data, size_t size, eDrawType draw)
     {
         GLuint bufferId;
         GLenum target = GetBufferType(type);
+        GLenum usage = GetDrawType(draw);
 
         glGenBuffers(1, &bufferId);
         glBindBuffer(target, bufferId);
-        glBufferData(target, size, data, GL_STATIC_DRAW);
+        glBufferData(target, size, data, usage);
 
         return bufferId;
     }
@@ -245,6 +246,22 @@ namespace FlawedEngine
             assert(false && "Unsupported buffer type");
         }
         return param;
+    }
+
+    unsigned int cOpenGLAPI::GetDrawType(eDrawType type)
+    {
+        GLenum usage;
+        switch (type) {
+        case eDrawType::Static:
+            usage = GL_STATIC_DRAW;
+            break;
+        case eDrawType::Dynmaic:
+            usage = GL_DYNAMIC_DRAW;
+            break;
+        default:
+            assert(false && "Unsupported draw type");
+        }
+        return usage;
     }
 
     void cOpenGLAPI::SetViewport(int x, int y, int width, int height)

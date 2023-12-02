@@ -5,7 +5,6 @@
 
 namespace FlawedEngine
 {
-    //Animator.....................................................................................................
     class Animator
     {
     public:
@@ -29,7 +28,8 @@ namespace FlawedEngine
 
         void ChangeAnim(std::shared_ptr<Animation> animation)
         {
-            
+            m_ElapsedBlendingTime = 0.0f;
+            m_BlendingCurrentTime = 0.0f;
             m_BlendingAnimation = animation;
         }
 
@@ -147,8 +147,6 @@ namespace FlawedEngine
             }
             std::cout << '\n';
         }
-
-        
 
         void UpdateBlendingFactor(float deltaTime)
         {

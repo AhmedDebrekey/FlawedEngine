@@ -161,26 +161,17 @@ namespace FlawedEngine
 
 	void cMesh::setupMesh()
 	{
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
+        VAO = mGfxAPI->CreateVertexArray();
+        mGfxAPI->BindVertexArray(VAO);
 
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, mVertices.size() * sizeof(sVertex), &mVertices[0], GL_STATIC_DRAW);
+        VBO = mGfxAPI->CreateBuffer(eBufferType::Vertex, &mVertices[0], mVertices.size() * sizeof(sVertex), eDrawType::Static);
+        EBO = mGfxAPI->CreateBuffer(eBufferType::Index, &mIndices[0], mIndices.size() * sizeof(unsigned int), eDrawType::Static);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mIndices.size() * sizeof(unsigned int), &mIndices[0], GL_STATIC_DRAW);
+        AnimationUBO = mGfxAPI->CreateBuffer(eBufferType::Uniform, nullptr, (sizeof(glm::mat4) * MAX_BONES), eDrawType::Dynmaic);
+        mGfxAPI->BindBufferBase(eBufferType::Uniform, 0, AnimationUBO);
 
-        glGenBuffers(1, &AnimationUBO);
-        glBindBuffer(GL_UNIFORM_BUFFER, AnimationUBO);
-        glBufferData(GL_UNIFORM_BUFFER, (sizeof(glm::mat4) * MAX_BONES), nullptr, GL_DYNAMIC_DRAW);
-        glBindBufferBase(GL_UNIFORM_BUFFER, 0, AnimationUBO);
-
-        glGenBuffers(1, &DirectionalLightUBO);
-        glBindBuffer(GL_UNIFORM_BUFFER, DirectionalLightUBO);
-        glBufferData(GL_UNIFORM_BUFFER, DirectionalLights.size() * sizeof(glm::vec4), nullptr, GL_DYNAMIC_DRAW);
-        glBindBufferBase(GL_UNIFORM_BUFFER, 1, DirectionalLightUBO);
+        DirectionalLightUBO = mGfxAPI->CreateBuffer(eBufferType::Uniform, nullptr, DirectionalLights.size() * sizeof(glm::vec4), eDrawType::Dynmaic);
+        mGfxAPI->BindBufferBase(eBufferType::Uniform, 1, DirectionalLightUBO);
 
         // vertex Positions
         glEnableVertexAttribArray(0);
@@ -204,6 +195,7 @@ namespace FlawedEngine
         // weights
         glEnableVertexAttribArray(6);
         glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(sVertex), (void*)offsetof(sVertex, mWeights));
-        glBindVertexArray(0);
-	}
+
+        mGfxAPI->BindVertexArray(0);
+    }
 }
