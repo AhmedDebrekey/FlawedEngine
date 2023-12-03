@@ -139,6 +139,19 @@ namespace FlawedEngine
         return target;
     }
 
+    void cOpenGLAPI::VertexAttribProps(unsigned int index, size_t size, eVertexType type, bool normalized, size_t stride, const void* data)
+    {
+        if (type == eVertexType::Int)
+        {
+            glEnableVertexAttribArray(index);
+            glVertexAttribIPointer(index, size, GL_INT, stride, (void*)data);
+            return;
+        }
+        GLenum vertextype = GetVertexType(type);
+        glEnableVertexAttribArray(index);
+        glVertexAttribPointer(index, size, vertextype, normalized, stride, (void*)data);
+    }
+
     unsigned int cOpenGLAPI::CreateTexture(int width, int height, int nrComponents, unsigned char* data, sTextureProps props)
     {
         GLuint textureID;
@@ -260,6 +273,22 @@ namespace FlawedEngine
             break;
         default:
             assert(false && "Unsupported draw type");
+        }
+        return usage;
+    }
+
+    unsigned int cOpenGLAPI::GetVertexType(eVertexType type)
+    {
+        GLenum usage;
+        switch (type) {
+        case eVertexType::Float:
+            usage = GL_FLOAT;
+            break;
+        case eVertexType::Int:
+            usage = GL_INT;
+            break;
+        default:
+            assert(false && "Unsupported vertex type");
         }
         return usage;
     }

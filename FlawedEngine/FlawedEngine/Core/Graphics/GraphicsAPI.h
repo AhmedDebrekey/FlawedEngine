@@ -44,6 +44,7 @@ namespace FlawedEngine
         virtual void BindBuffer(eBufferType type, unsigned int buffer) = 0;
         virtual void BindBufferBase(eBufferType type, unsigned int index, unsigned int buffer) = 0;
         virtual void BindBufferSubData(eBufferType type, int offset, size_t size, void* data) = 0;
+        virtual void VertexAttribProps(unsigned int index, size_t size, eVertexType type, bool normalized, size_t stride, const void* data) = 0;
 
         // Vertex array management
         virtual unsigned int CreateVertexArray() = 0;
@@ -57,5 +58,6 @@ namespace FlawedEngine
         virtual unsigned int GetTextureType(eTextureType type) = 0;
         virtual unsigned int GetTextureProp(eTextureProperties prop) = 0;
         virtual unsigned int GetDrawType(eDrawType type) = 0;
+        virtual unsigned int GetVertexType(eVertexType type) = 0;
     };
 }

@@ -189,6 +189,13 @@ namespace FlawedEngine
 		Dynmaic
 	};
 
+	enum eVertexType
+	{
+		Float,
+		Int,
+		UInt
+	};
+
 	enum eBlendMode
 	{
 		Opaque,

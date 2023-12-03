@@ -155,7 +155,7 @@ namespace FlawedEngine
     {
         for (auto Texture : mTextures)
         {
-            glDeleteTextures(1, &Texture.ID);
+            mGfxAPI->DeleteTexture(Texture.ID);
         }
     }
 
@@ -174,27 +174,22 @@ namespace FlawedEngine
         mGfxAPI->BindBufferBase(eBufferType::Uniform, 1, DirectionalLightUBO);
 
         // vertex Positions
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(sVertex), (void*)0);
+        mGfxAPI->VertexAttribProps(0, 3, eVertexType::Float, false, sizeof(sVertex), (void*)0);
         // vertex normals
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(sVertex), (void*)offsetof(sVertex, Normal));
+        mGfxAPI->VertexAttribProps(1, 3, eVertexType::Float, false, sizeof(sVertex), (void*)offsetof(sVertex, Normal));
+
         // vertex texture coords
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(sVertex), (void*)offsetof(sVertex, TexCoords));
+        mGfxAPI->VertexAttribProps(2, 2, eVertexType::Float, false, sizeof(sVertex), (void*)offsetof(sVertex, TexCoords));
         // vertex tangent
-        glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(sVertex), (void*)offsetof(sVertex, Tangent));
+        mGfxAPI->VertexAttribProps(3, 3, eVertexType::Float, false, sizeof(sVertex), (void*)offsetof(sVertex, Tangent));
         // vertex bitangent
-        glEnableVertexAttribArray(4);
-        glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(sVertex), (void*)offsetof(sVertex, BiTangent));
+        mGfxAPI->VertexAttribProps(4, 3, eVertexType::Float, false, sizeof(sVertex), (void*)offsetof(sVertex, BiTangent));
         // ids
-        glEnableVertexAttribArray(5);
-        glVertexAttribIPointer(5, 4, GL_INT, sizeof(sVertex), (void*)offsetof(sVertex, mBoneIDs));
+        mGfxAPI->VertexAttribProps(5, 4, eVertexType::Int, false, sizeof(sVertex), (void*)offsetof(sVertex, mBoneIDs));
 
         // weights
-        glEnableVertexAttribArray(6);
-        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(sVertex), (void*)offsetof(sVertex, mWeights));
+        mGfxAPI->VertexAttribProps(6, 4, eVertexType::Float, false, sizeof(sVertex), (void*)offsetof(sVertex, mWeights));
+
 
         mGfxAPI->BindVertexArray(0);
     }
