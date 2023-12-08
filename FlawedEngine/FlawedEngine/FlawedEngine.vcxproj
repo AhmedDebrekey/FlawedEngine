@@ -163,6 +163,7 @@
     <ClCompile Include="Core\Engine.cpp" />
     <ClCompile Include="Core\Graphics\OpenGLAPI.cpp" />
     <ClCompile Include="Core\Input\Input.cpp" />
+    <ClCompile Include="Core\Models\skybox\Skybox.cpp" />
     <ClCompile Include="Core\Shader.cpp" />
     <ClCompile Include="Core\UI\EntitySelector.cpp" />
     <ClCompile Include="Core\UI\Gizmo.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="Core\Graphics\OpenGLAPI.h" />
     <ClInclude Include="Core\Input\Input.h" />
     <ClInclude Include="Core\Models\OBJ_Loader.h" />
+    <ClInclude Include="Core\Models\skybox\Skybox.h" />
     <ClInclude Include="Core\Models\stb_image.h" />
     <ClInclude Include="Core\Shader.h" />
     <ClInclude Include="Core\Window.h" />

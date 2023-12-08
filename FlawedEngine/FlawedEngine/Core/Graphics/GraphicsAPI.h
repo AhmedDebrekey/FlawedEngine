@@ -26,17 +26,20 @@ namespace FlawedEngine
         virtual void DeleteTexture(unsigned int texture) = 0;
         virtual void BindTexture(unsigned int texture, eTextureType type = eTextureType::Texture2D) = 0;
         virtual void ActiveTexture(unsigned int unit) = 0;
+        virtual unsigned int CreateCubeMapTexture(const std::vector<std::string>& faces) = 0;
 
         // Drawing operations
         virtual void SetViewport(int x, int y, int width, int height) = 0;
         virtual void ClearColorBuffer(const sColor& color) = 0;
         virtual void ClearDepthBuffer() = 0;
         virtual void DrawElements(size_t count) = 0;
+        virtual void DrawArrays(size_t count) = 0;
 
         // State management
         virtual void SetDepthTest(bool enabled) = 0;
         virtual void SetBlendMode(eBlendMode mode) = 0;
         virtual void EnableFaceCulling(bool enabled) = 0;
+        virtual void SetDepthFunc(eGLFuncType func) = 0;
 
         // Buffer operations
         virtual unsigned int CreateBuffer(eBufferType type, const void* data, size_t size, eDrawType draw) = 0;
@@ -59,5 +62,6 @@ namespace FlawedEngine
         virtual unsigned int GetTextureProp(eTextureProperties prop) = 0;
         virtual unsigned int GetDrawType(eDrawType type) = 0;
         virtual unsigned int GetVertexType(eVertexType type) = 0;
+        virtual unsigned int GetFuncType(eGLFuncType func) = 0;
     };
 }

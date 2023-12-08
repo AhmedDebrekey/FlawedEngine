@@ -240,4 +240,16 @@ namespace FlawedEngine
 		eTextureProperties Min_Filter = None;
 		eTextureProperties Mag_Filter = None;
 	};
+
+	enum eGLFuncType
+	{
+		Always,
+		Never,
+		Less,
+		Equal,
+		LessEqual,
+		Greater,
+		NotEqual,
+		GreateOrEqual
+	};
 }

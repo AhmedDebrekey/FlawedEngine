@@ -22,9 +22,11 @@ namespace FlawedEngine
 	{
 		mPhysicsWorld = PhysicsWorld;
 		mCollisionShapesArray = CollisionShapes;
-		SetupSkybox();
+
 		mCamFrustum = CamFrustum;
 		mGfxAPI = Graphics_API;
+
+		mSkybox.Setup(mGfxAPI);
 	}
 
 	void cObjectManager::ShadowRender(sTransform& LightPerspective, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
@@ -38,13 +40,13 @@ namespace FlawedEngine
 	void cObjectManager::RenderObjects(sTransform& tCamera)
 	{
 		this->tCamera = tCamera;
-		if(mShouldRenderSkyBox)
-			RenderSkyBox();
+		mSkybox.RenderSkyBox(tCamera);
+		uint32_t CubeMapTexture = mSkybox.GetSkyTexture();
 
 		for (auto& Object : SceneObjects)
 		{
 			Object.second->Update();
-			Object.second->Render(tCamera, PointLights, &mCubeMapTexture);
+			Object.second->Render(tCamera, PointLights, &CubeMapTexture);
 		}
 	}
 
@@ -362,161 +364,6 @@ namespace FlawedEngine
 
 		return &Light->second;
 	}
-
-	void cObjectManager::SetupSkybox()
-	{
-		std::vector<std::string> Faces
-		{
-			"Core\\Models\\skybox\\skybox\\Sky\\px.png",
-			"Core\\Models\\skybox\\skybox\\Sky\\nx.png",
-			"Core\\Models\\skybox\\skybox\\Sky\\py.png",
-			"Core\\Models\\skybox\\skybox\\Sky\\ny.png",
-			"Core\\Models\\skybox\\skybox\\Sky\\pz.png",
-			"Core\\Models\\skybox\\skybox\\Sky\\nz.png"
-		};
-		mCubeMapTexture = loadCubemap(Faces);
-		//mCubeMapTexture = loadCubemapFromHDRI("Core\\Models\\skybox\\skybox\\scythian_tombs_2_4k.hdr");
-		float skyboxVertices[] = {
-			// positions          
-			-1.0f,  1.0f, -1.0f,
-			-1.0f, -1.0f, -1.0f,
-			 1.0f, -1.0f, -1.0f,
-			 1.0f, -1.0f, -1.0f,
-			 1.0f,  1.0f, -1.0f,
-			-1.0f,  1.0f, -1.0f,
-
-			-1.0f, -1.0f,  1.0f,
-			-1.0f, -1.0f, -1.0f,
-			-1.0f,  1.0f, -1.0f,
-			-1.0f,  1.0f, -1.0f,
-			-1.0f,  1.0f,  1.0f,
-			-1.0f, -1.0f,  1.0f,
-
-			 1.0f, -1.0f, -1.0f,
-			 1.0f, -1.0f,  1.0f,
-			 1.0f,  1.0f,  1.0f,
-			 1.0f,  1.0f,  1.0f,
-			 1.0f,  1.0f, -1.0f,
-			 1.0f, -1.0f, -1.0f,
-
-			-1.0f, -1.0f,  1.0f,
-			-1.0f,  1.0f,  1.0f,
-			 1.0f,  1.0f,  1.0f,
-			 1.0f,  1.0f,  1.0f,
-			 1.0f, -1.0f,  1.0f,
-			-1.0f, -1.0f,  1.0f,
-
-			-1.0f,  1.0f, -1.0f,
-			 1.0f,  1.0f, -1.0f,
-			 1.0f,  1.0f,  1.0f,
-			 1.0f,  1.0f,  1.0f,
-			-1.0f,  1.0f,  1.0f,
-			-1.0f,  1.0f, -1.0f,
-
-			-1.0f, -1.0f, -1.0f,
-			-1.0f, -1.0f,  1.0f,
-			 1.0f, -1.0f, -1.0f,
-			 1.0f, -1.0f, -1.0f,
-			-1.0f, -1.0f,  1.0f,
-			 1.0f, -1.0f,  1.0f
-		};
-		glGenVertexArrays(1, &mskyboxVAO);
-		glGenBuffers(1, &mskyboxVBO);
-		glBindVertexArray(mskyboxVAO);
-		glBindBuffer(GL_ARRAY_BUFFER, mskyboxVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-		mSkyboxShader.Create("Core\\Models\\Shaders\\SkyboxVertex.glsl", "Core\\Models\\Shaders\\SkyboxFragment.glsl");
-		mSkyboxShader.Bind();
-		mSkyboxShader.SetInt("skybox", 0);
-		mSkyboxShader.Unbind();
-	}
-
-	void cObjectManager::RenderSkyBox()
-	{
-		glDepthFunc(GL_LEQUAL);
-		mSkyboxShader.Bind();
-		glm::mat4 view = glm::mat4(glm::mat3(tCamera.View));
-		mSkyboxShader.SetMat4f("view", view);
-		mSkyboxShader.SetMat4f("projection", tCamera.Projection);
-		glBindVertexArray(mskyboxVAO);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mCubeMapTexture);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-		glBindVertexArray(0);
-		glDepthFunc(GL_LESS);
-	}
-
-	uint32_t cObjectManager::loadCubemap(std::vector<std::string> faces)
-	{
-		unsigned int textureID;
-		glGenTextures(1, &textureID);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-		int width, height, nrChannels;
-		for (unsigned int i = 0; i < faces.size(); i++)
-		{
-			unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
-			if (data)
-			{
-				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-					0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data
-				);
-				stbi_image_free(data);
-			}
-			else
-			{
-				std::cout << "Cubemap tex failed to load at path: " << faces[i] << std::endl;
-				stbi_image_free(data);
-			}
-		}
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-		return textureID;
-	}
-
-	uint32_t cObjectManager::loadCubemapFromHDRI(const char* path)
-	{
-		unsigned int textureID;
-		glGenTextures(1, &textureID);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-
-		int width, height, nrChannels;
-		unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
-		if (data)
-		{
-			int faceSize = width / 4;
-			for (int i = 0; i < 6; i++)
-			{
-				int x = faceSize * (i % 4);
-				int y = height - (faceSize * (i / 4) + faceSize);
-				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-					0, GL_RGB, faceSize, faceSize, 0, GL_RGB, GL_UNSIGNED_BYTE, data + (y * width + x) * 3);
-			}
-			stbi_image_free(data);
-		}
-		else
-		{
-			std::cout << "Cubemap tex failed to load at path: " << path << std::endl;
-			stbi_image_free(data);
-		}
-
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-		return textureID;
-
-	}
-
 
 	cObjectManager& cObjectManager::get()
 	{

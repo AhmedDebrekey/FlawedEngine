@@ -3,6 +3,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "../Models/stb_image.h"
+
+
 namespace FlawedEngine
 {
     cOpenGLAPI::cOpenGLAPI()
@@ -86,6 +89,7 @@ namespace FlawedEngine
         glDeleteBuffers(1, &buffer);
     }
 
+
     void cOpenGLAPI::BindBuffer(eBufferType type, unsigned int buffer)
     {
         GLenum target = GetBufferType(type);
@@ -116,6 +120,12 @@ namespace FlawedEngine
         glBindVertexArray(VAO);
     }
 
+    void cOpenGLAPI::SetDepthFunc(eGLFuncType func)
+    {
+        GLenum functype = GetFuncType(func);
+        glDepthFunc(functype);
+    }
+
     void cOpenGLAPI::Present()
     {
     }
@@ -141,14 +151,14 @@ namespace FlawedEngine
 
     void cOpenGLAPI::VertexAttribProps(unsigned int index, size_t size, eVertexType type, bool normalized, size_t stride, const void* data)
     {
+        glEnableVertexAttribArray(index);
         if (type == eVertexType::Int)
         {
-            glEnableVertexAttribArray(index);
             glVertexAttribIPointer(index, size, GL_INT, stride, (void*)data);
             return;
         }
+
         GLenum vertextype = GetVertexType(type);
-        glEnableVertexAttribArray(index);
         glVertexAttribPointer(index, size, vertextype, normalized, stride, (void*)data);
     }
 
@@ -293,6 +303,22 @@ namespace FlawedEngine
         return usage;
     }
 
+    unsigned int cOpenGLAPI::GetFuncType(eGLFuncType func)
+    {
+        GLenum functype;
+        switch (func) {
+        case eGLFuncType::LessEqual:
+            functype = GL_LEQUAL;
+            break;
+        case eGLFuncType::Less:
+            functype = GL_LESS;
+            break;
+        default:
+            assert(false && "Unsupported vertex type");
+        }
+        return functype;
+    }
+
     void cOpenGLAPI::SetViewport(int x, int y, int width, int height)
     {
         glViewport(x, y, width, height);
@@ -309,9 +335,46 @@ namespace FlawedEngine
         glClear(GL_DEPTH_BUFFER_BIT);
     }
 
+    unsigned int cOpenGLAPI::CreateCubeMapTexture(const std::vector<std::string>& faces)
+    {
+        GLuint textureID;
+        glGenTextures(1, &textureID);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+        int width, height, nrChannels;
+        for (unsigned int i = 0; i < faces.size(); i++)
+        {
+            unsigned char* data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, STBI_rgb_alpha);
+            if (data)
+            {
+                glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+                    0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data
+                );
+                stbi_image_free(data);
+            }
+            else
+            {
+                printf("Cubemap tex failed to load at path:");
+                stbi_image_free(data);
+            }
+        }
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+        return textureID;
+    }
+
     void cOpenGLAPI::DrawElements(size_t count)
     {
         glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
+    }
+
+    void cOpenGLAPI::DrawArrays(size_t count)
+    {
+        glDrawArrays(GL_TRIANGLES, 0, count);
     }
 
     void cOpenGLAPI::SetDepthTest(bool enabled)

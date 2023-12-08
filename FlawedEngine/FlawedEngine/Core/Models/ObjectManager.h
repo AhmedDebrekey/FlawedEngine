@@ -3,6 +3,7 @@
 #include "../Core.h"
 #include "../Entity.h"
 #include "OBJModel.h"
+#include "skybox/Skybox.h"
 
 namespace FlawedEngine
 {
@@ -34,7 +35,7 @@ namespace FlawedEngine
 		void ChangeLightLinear(const char* Name, float Linear);
 		void ChangeName(const char* OldName, const char* NewName);
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
-		void ToggleSkyBox() { mShouldRenderSkyBox = !mShouldRenderSkyBox; };
+		void ToggleSkyBox() { mSkybox.ToggleSkyBox(); };
 
 		void Save(const std::string& FileName);
 		void LoadSave(const std::string& FileName);
@@ -62,14 +63,7 @@ namespace FlawedEngine
 		void* mGfxAPI = nullptr;
 
 	private:
-		void SetupSkybox();
-		void RenderSkyBox();
-		uint32_t loadCubemap(std::vector<std::string> faces);
-		uint32_t loadCubemapFromHDRI(const char* panoramicPath);
-		cShader mSkyboxShader;
-		unsigned int mskyboxVAO, mskyboxVBO;
-		uint32_t mCubeMapTexture;
-		bool mShouldRenderSkyBox = true;
+		cSkybox mSkybox;
 
 	public:
 		static cObjectManager& get();
