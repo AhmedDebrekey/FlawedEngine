@@ -165,6 +165,7 @@
     <ClCompile Include="Core\Input\Input.cpp" />
     <ClCompile Include="Core\Models\skybox\Skybox.cpp" />
     <ClCompile Include="Core\Shader.cpp" />
+    <ClCompile Include="Core\UI\ContentBrowser.cpp" />
     <ClCompile Include="Core\UI\EntitySelector.cpp" />
     <ClCompile Include="Core\UI\Gizmo.cpp" />
     <ClCompile Include="Core\UI\Properties.cpp" />

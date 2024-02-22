@@ -184,12 +184,18 @@ namespace FlawedEngine
 
 			int p0Index = GetScaleIndex(animationTime);
 			int p1Index = p0Index + 1;
+
+			// Ensure indices are within bounds
+			p0Index = glm::clamp(p0Index, 0, m_NumScalings - 1);
+			p1Index = glm::clamp(p1Index, 0, m_NumScalings - 1);
+
 			float scaleFactor = GetScaleFactor(m_Scales[p0Index].timeStamp,
 				m_Scales[p1Index].timeStamp, animationTime);
-			glm::vec3 finalScale = glm::mix(m_Scales[p0Index].scale, m_Scales[p1Index].scale
-				, scaleFactor);
+			glm::vec3 finalScale = glm::mix(m_Scales[p0Index].scale, m_Scales[p1Index].scale, scaleFactor);
+
 			return glm::scale(glm::mat4(1.0f), finalScale);
 		}
+
 
 
 		std::vector<KeyPosition> m_Positions;

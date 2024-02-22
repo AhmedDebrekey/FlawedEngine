@@ -14,8 +14,18 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 	for (auto& Object : *mObjectMan->GetObjectsPointer())
 	{
 		auto Entity = Object.second;
+
+		glm::vec3 textcolor(40, 140, 170);
+		if (!Entity->mShouldRender)
+		{
+			textcolor = glm::vec3(200, 100, 100);
+		}
+
+		ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(textcolor.r, textcolor.g, textcolor.b, 255));
 		if (ImGui::Selectable(Object.first.c_str(), (Object.first == mSelectedEntity) ? true : false))
 			mSelectedEntity = Object.first;
+		ImGui::PopStyleColor();
+
 	}
 	if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
 		mSelectedEntity = "";
@@ -67,7 +77,8 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 			mObjectMan->AddObject(Torus, buffer);
 			mSelectedEntity = buffer;
 			Toruses++;
-		} //Left out the Trianlge for no reason, It was just a proof of concept.
+		}
+		//Left out the Trianlge for no reason, It was just a proof of concept.
 		// later could be used as a billbord, (rectangles ofc)
 
 		if (ImGui::MenuItem("Custome"))

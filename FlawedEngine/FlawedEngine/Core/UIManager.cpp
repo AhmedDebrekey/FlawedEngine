@@ -62,9 +62,12 @@ namespace FlawedEngine
 		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+
 		ImGui::StyleColorsDark();
+		//ImGui::StyleColorsClassic();
 
 		io.Fonts->AddFontFromFileTTF("RobotoSlabRegular-w1GE3.ttf", 18);
+
 
 		ImGuiStyle& style = ImGui::GetStyle();
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -94,6 +97,7 @@ namespace FlawedEngine
 	{
 		mGfxAPI->BindFramebuffer(0);
 		InitRendering();
+		//ImGui::ShowStyleEditor();
 
 		if (ImGui::BeginMenuBar())
 		{
@@ -117,6 +121,8 @@ namespace FlawedEngine
 		}
 
 		{
+			ImGuiStyle& style = ImGui::GetStyle();
+			ImGuiIO& io = ImGui::GetIO(); (void)io;
 			ImGui::Begin("Settings");
 			ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::Text("Move: W,A,S,D,E,Q");
@@ -133,7 +139,9 @@ namespace FlawedEngine
 				mCamera->ToggleShadowPerspective();
 			ImGui::Separator();
 			DrawVec3("DirectionalLight", GetDirectionalLightPos(), 0.5f);
-
+			ImGui::Text("FontScale");
+			ImGui::SameLine();
+			ImGui::SliderFloat("##FontScale", &io.FontGlobalScale, 0.3, 2.0, "%.2f");
 
 
 			static char Path[20] = "";
@@ -191,6 +199,7 @@ namespace FlawedEngine
 			RenderViewport(); 
 			RenderSceneHierarchy();
 			RenderProperties();
+			RenderContentBrowser();
 			SelectEntity();
  		}
 
@@ -219,23 +228,28 @@ namespace FlawedEngine
 
 		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
-
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.5f, 0.0f, 0.0f, 1.0f));
 		if (ImGui::Button("X", ImVec2(25, 25)))	
 			values.x = resetValue;
+		ImGui::PopStyleColor();
 		ImGui::SameLine();
 		ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.5f, 0.0f, 1.0f));
 		if (ImGui::Button("Y", ImVec2(25, 25)))	
 			values.y = resetValue;
+		ImGui::PopStyleColor();
 		ImGui::SameLine();
 		ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.5f, 1.0f));
 		if (ImGui::Button("Z", ImVec2(25, 25)))	
 			values.z = resetValue;
+		ImGui::PopStyleColor();
 		ImGui::SameLine();
 		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
 		ImGui::PopItemWidth();

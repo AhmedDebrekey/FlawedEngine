@@ -20,7 +20,7 @@ void FlawedEngine::cUIManager::RenderViewport()
 	{
 		//resize framebuffer
 		InitFrameBuffer();
-		mCamera->UpdateProjection(glm::perspective(glm::radians(mCamera->FoV()), mViewportSize.x / mViewportSize.y, mCamera->NearPlane(), mCamera->FarPlane()));
+		mCamera->SetAspectRatio(static_cast<float>(mViewportSize.x) / mViewportSize.y);
 	}
 
 	mPrevViewportSize = mViewportSize;

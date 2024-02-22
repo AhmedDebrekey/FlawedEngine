@@ -22,7 +22,7 @@ namespace FlawedEngine
 		float NearPlane() { return near_plane; }
 		float FarPlane() { return far_plane; }
 		float FoV();
-		void UpdateProjection(glm::mat4 Proj);
+		void SetAspectRatio(float ratio);
 		void DisableInput() { isInputEnabled = false; }
 		void EnableInput() { isInputEnabled = true; }
 		void ToggleShadowPerspective() { DirLightPerspective = !DirLightPerspective; } // UI to change the perspective
@@ -45,8 +45,8 @@ namespace FlawedEngine
 		float mHorizontalAngle = 0.0f;
 		float mVerticalAngle = 0.0f;
 
-		float mFOV = 80.0f;
-		float aspect = 4.0f / 3.0f;
+		float mFOV = 90.0f;
+		float mAspectRatio = 16.0f / 9.0f;
 		float near = .1f, far = 10000.f;
 
 		float mSpeed = 10.f;

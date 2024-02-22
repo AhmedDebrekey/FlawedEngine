@@ -449,9 +449,12 @@ namespace FlawedEngine
 
 	void cModel::loadModel(std::string path)
 	{
+		importer.SetPropertyFloat(AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY, 0.1f);
+
 		scene = importer.ReadFile(path, 
 			aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals |
-			aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph | aiProcess_GlobalScale | aiProcess_ValidateDataStructure);
+			aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph | aiProcess_GlobalScale |
+			aiProcess_ValidateDataStructure);
 
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)

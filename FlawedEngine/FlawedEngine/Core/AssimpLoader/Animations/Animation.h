@@ -13,10 +13,20 @@ namespace FlawedEngine
             m_BoneInfoMap.clear();
             mBones.clear();
         }
+        
+        void ApplyGlobalScale(aiNode* node, float scale)
+        {
+            aiMatrix4x4::Scaling(aiVector3D(scale, scale, scale), node->mTransformation);
+
+            for (unsigned int i = 0; i < node->mNumChildren; ++i) {
+                ApplyGlobalScale(node->mChildren[i], scale);
+            }
+        }
 
         void Setup(const std::string& animationPath, cModel* model, Assimp::Importer* importer)
         {
-            const aiScene* scene = importer->ReadFile(animationPath, aiProcess_Triangulate);
+            const aiScene* scene = importer->ReadFile(animationPath, aiProcess_Triangulate | aiProcess_GlobalScale);
+            ApplyGlobalScale(scene->mRootNode, 1);
             assert(scene && scene->mRootNode);
             auto animation = scene->mAnimations[0];
             m_Duration = animation->mDuration;

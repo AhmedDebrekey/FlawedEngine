@@ -86,7 +86,7 @@ namespace FlawedEngine
 
 		if(DirLightPerspective)
 		{
-			mProjectionMatrix = glm::perspective(glm::radians(FoV), aspect, near, far);
+			mProjectionMatrix = glm::perspective(glm::radians(FoV), mAspectRatio, near, far);
 			mViewMatrix = glm::lookAt(
 				mPostion,
 				mPostion + mDirection,
@@ -107,7 +107,7 @@ namespace FlawedEngine
 	{
 		Frustum     frustum;
 		const float halfVSide = far * tanf(glm::radians(mFOV * .5f));
-		const float halfHSide = halfVSide * aspect;
+		const float halfHSide = halfVSide * mAspectRatio;
 		const glm::vec3 frontMultFar = far * mDirection;
 
 		frustum.nearFace	= Plane(mPostion + near * mDirection, mDirection);
@@ -124,6 +124,5 @@ namespace FlawedEngine
 	glm::vec3	cpCamera::Postion()							{ return mPostion; }
 	glm::vec3	cpCamera::Front()							{ return mDirection; }
 	float		cpCamera::FoV()								{ return mFOV;}
-	void		cpCamera::UpdateProjection(glm::mat4 Proj)	{ mProjectionMatrix = Proj; }
-
+	void		cpCamera::SetAspectRatio(float ratio)		{ mAspectRatio = ratio; }
 }
