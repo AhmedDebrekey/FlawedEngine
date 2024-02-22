@@ -1,87 +1,83 @@
 #include "../UIManager.h"
-#include <filesystem>
+
+void RenderIcons(const std::vector<std::filesystem::directory_entry>& entries, std::filesystem::path& currentDir, bool isFile, uint32_t fileIcon, uint32_t dirIcon, float size)
+{
+	for (const auto& directoryEntry : entries) {
+		const auto& path = directoryEntry.path();
+		std::string filenameString = path.filename().string();
+
+		ImGui::PushID(filenameString.c_str());
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		uint32_t icon = isFile ? fileIcon : dirIcon;
+		ImGui::ImageButton((ImTextureID)icon, { size, size });
+
+		if (ImGui::BeginDragDropSource())
+		{
+			std::filesystem::path relativePath(path);
+			const wchar_t* itemPath = relativePath.c_str();
+			ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+			ImGui::EndDragDropSource();
+		}
+
+		ImGui::PopStyleColor();
+		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+		{
+			if (directoryEntry.is_directory())
+				currentDir /= path.filename();
+
+		}
+		ImGui::TextWrapped(filenameString.c_str());
+
+		ImGui::NextColumn();
+
+		ImGui::PopID();
+	}
+}
 
 void FlawedEngine::cUIManager::RenderContentBrowser()
 {
-	// Get the project path and the current directory
-	std::string projectPath = std::filesystem::current_path().string(); // Change this to your actual project path
-	static std::string currentDir = projectPath;
-
-	// Begin the content browser panel
 	ImGui::Begin("Content Browser");
 
-	// Display the current directory as a text input
-	char dirInput[256];
-	strcpy(dirInput, currentDir.c_str());
-	if (ImGui::InputText("##Directory", dirInput, IM_ARRAYSIZE(dirInput)))
+
+	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+	if (ImGui::ImageButton((ImTextureID)mBackIcon, { 20, 20 }))
 	{
-		// If the user edits the text input, change the current directory
-		currentDir = std::string(dirInput);
+		if (mCurrentDir != std::filesystem::path(mBaseDir))
+			mCurrentDir = mCurrentDir.parent_path();
 	}
 
-	// Display the parent directory button
-	if (currentDir != projectPath)
-	{
-		// If the current directory is not the root, show a button to go back to the parent directory
-		if (ImGui::Button("<-"))
-		{
-			// Remove the last folder from the current directory
-			currentDir = currentDir.substr(0, currentDir.find_last_of("/\\"));
-		}
-		ImGui::SameLine();
-	}
+	ImGui::PopStyleColor();
 
-	// Display the refresh button
-	if (ImGui::Button("Refresh"))
-	{
-		// Refresh the content browser by doing nothing
-	}
+	ImGui::SameLine();
 
-	// Get the list of files and folders in the current directory
-	std::vector<std::string> files;
-	std::vector<std::string> folders;
-	for (const auto& entry : std::filesystem::directory_iterator(currentDir))
-	{
-		// For each entry in the directory, check if it is a file or a folder
-		if (entry.is_directory())
-		{
-			// If it is a folder, add it to the folders vector
-			folders.push_back(entry.path().filename().string());
-		}
+	std::string directory = "Assets\\" + std::filesystem::relative(mCurrentDir, mBaseDir).string();
+	ImGui::Text(directory.c_str());
+
+	static float padding = 16.0f;
+	static float thumbnailSize = 128.0f;
+	float cellSize = thumbnailSize + padding;
+
+	float panelWidth = ImGui::GetContentRegionAvail().x;
+	int columnCount = (int)(panelWidth / cellSize);
+	if (columnCount < 1)
+		columnCount = 1;
+
+	ImGui::Columns(columnCount, 0, false);
+
+	std::vector<std::filesystem::directory_entry> directories;
+	std::vector<std::filesystem::directory_entry> files;
+
+	for (const auto& directoryEntry : std::filesystem::directory_iterator(mCurrentDir)) {
+		if (directoryEntry.is_directory())
+			directories.push_back(directoryEntry);
 		else
-		{
-			// If it is a file, add it to the files vector
-			files.push_back(entry.path().filename().string());
-		}
+			files.push_back(directoryEntry);
 	}
 
-	// Sort the files and folders alphabetically
-	std::sort(files.begin(), files.end());
-	std::sort(folders.begin(), folders.end());
+	RenderIcons(directories, mCurrentDir, false, mFileIcon, mDirIcon, thumbnailSize);
+	RenderIcons(files, mCurrentDir, true, mFileIcon, mDirIcon, thumbnailSize);
 
-	// Display the folders as buttons
-	for (const auto& folder : folders)
-	{
-		// For each folder, create a button with its name
-		if (ImGui::Button(folder.c_str()))
-		{
-			// If the user clicks on the button, change the current directory to the folder
-			currentDir += "/" + folder;
-		}
-	}
 
-	// Display the files as selectable labels
-	static int selected = -1; // The index of the selected file, -1 if none
-	for (int i = 0; i < files.size(); i++)
-	{
-		// For each file, create a selectable label with its name
-		if (ImGui::Selectable(files[i].c_str(), i == selected))
-		{
-			// If the user clicks on the label, change the selected index to the file index
-			selected = i;
-		}
-	}
-
-	// End the content browser panel
+	ImGui::Columns(1);
 	ImGui::End();
 }

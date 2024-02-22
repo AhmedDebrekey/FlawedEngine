@@ -29,8 +29,20 @@ void FlawedEngine::cUIManager::RenderViewport()
 	if (ImGui::IsMouseDown(2) && ImGui::IsWindowHovered())
 		mSelectedEntity = "";
 
-	//Gizmo
-	RenderGizmo(); 
+	RenderGizmo();
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+		{
+			const wchar_t* path = (const wchar_t*)payload->Data;
+			std::filesystem::path objectPath(path);
+			mObjectMan->LoadObject(objectPath.string().c_str(), objectPath.filename().string().c_str());
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+
 	ImGui::End();
 	ImGui::PopStyleVar();
 }

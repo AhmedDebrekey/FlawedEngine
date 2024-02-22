@@ -22,7 +22,7 @@ namespace FlawedEngine
 	void cScene::Setup()
 	{
 		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray, &Camera.mCamFrustum, mGfxAPI);
-		ObjectMan.LoadSave("KnightAnim");
+		//ObjectMan.LoadSave("KnightAnim");
 		glGenFramebuffers(1, &mDepthMapFBO);
 
 		glGenTextures(1, &mDepthMap);

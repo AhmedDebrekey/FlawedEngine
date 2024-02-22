@@ -1,4 +1,5 @@
 #include "UIManager.h"
+#include "Models/stb_image.h"
 
 static bool opt_fullscreen = true;
 static bool opt_padding = false;
@@ -6,6 +7,8 @@ static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
 namespace FlawedEngine
 {
+
+
 	cUIManager* cUIManager::sUIInstance = nullptr;
 
 	cUIManager::cUIManager()
@@ -54,6 +57,30 @@ namespace FlawedEngine
 		mObjectMan = (cObjectManager*)Manager;
 		mPhysicsWorld = PhysicsWorld;
 		mGfxAPI = (cGraphicsAPI*)GfxAPI;
+		mBaseDir = std::filesystem::current_path()/"Assets";
+		mCurrentDir = std::filesystem::current_path()/"Assets";
+
+		sTextureProps props;
+		props.Wrap_s = eTextureProperties::Repeat;
+		props.Wrap_t = eTextureProperties::Repeat;
+		props.Min_Filter = eTextureProperties::MIPMAP_Linear;
+		props.Mag_Filter = eTextureProperties::Linear;
+		int width, height, nrChannels;
+		unsigned char* data = stbi_load("Resources/DirIcon.png", &width, &height, &nrChannels, 0);
+		if(data)
+			mDirIcon = mGfxAPI->CreateTexture(width, height, nrChannels, data, props);
+		stbi_image_free(data);
+
+		data = stbi_load("Resources/FileIcon.png", &width, &height, &nrChannels, 0);
+		if (data)
+			mFileIcon = mGfxAPI->CreateTexture(width, height, nrChannels, data, props);
+		stbi_image_free(data);
+
+		data = stbi_load("Resources/BackIcon.png", &width, &height, &nrChannels, 0);
+		if (data)
+			mBackIcon = mGfxAPI->CreateTexture(width, height, nrChannels, data, props);
+		stbi_image_free(data);
+
 		InitFrameBuffer();
 
 		IMGUI_CHECKVERSION();
@@ -63,8 +90,9 @@ namespace FlawedEngine
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 		io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 
-		ImGui::StyleColorsDark();
+		//ImGui::StyleColorsDark();
 		//ImGui::StyleColorsClassic();
+		SetImGuiStyle();
 
 		io.Fonts->AddFontFromFileTTF("RobotoSlabRegular-w1GE3.ttf", 18);
 
@@ -98,7 +126,7 @@ namespace FlawedEngine
 		mGfxAPI->BindFramebuffer(0);
 		InitRendering();
 		//ImGui::ShowStyleEditor();
-
+		
 		if (ImGui::BeginMenuBar())
 		{
 			if (ImGui::BeginMenu("Options"))
@@ -318,4 +346,7 @@ namespace FlawedEngine
 		if (ImGui::IsKeyDown((ImGuiKey)key)) {	return true; }
 		return false;
 	}
+
+
+
 }

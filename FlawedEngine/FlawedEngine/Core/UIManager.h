@@ -13,6 +13,8 @@
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <string>
+#include <filesystem>
+
 #include "PerspectiveCamera.h"
 #include "Graphics/GraphicsAPI.h"
 
@@ -31,6 +33,7 @@ namespace FlawedEngine
 		void InitFrameBuffer();
 		void DrawVec3(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
 		bool isKeyDown(int key);
+		void SetImGuiStyle();
 
 	private:
 		uint32_t mFrameBuffer;
@@ -45,6 +48,12 @@ namespace FlawedEngine
 		std::string mSelectedEntity;
 		int mGizmoType = ImGuizmo::OPERATION::TRANSLATE;
 		bool mMousePicking = false;
+
+		std::filesystem::path mBaseDir;
+		std::filesystem::path mCurrentDir;
+		uint32_t mDirIcon;
+		uint32_t mFileIcon;
+		uint32_t mBackIcon;
 
 		cGraphicsAPI* mGfxAPI = nullptr;
 		
