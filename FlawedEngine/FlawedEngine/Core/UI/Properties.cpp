@@ -11,18 +11,6 @@ void FlawedEngine::cUIManager::RenderProperties()
 		static char NewName[20] = "";
 		ImGui::SameLine();
 		ImGui::InputTextWithHint(std::string("##Name" + mSelectedEntity).c_str(), "Name", NewName, IM_ARRAYSIZE(NewName));
-		if (ImGui::IsItemActive())
-		{
-			// The text box is  highlighted
-			mCamera->DisableInput();
-			ImGui::GetIO().WantCaptureKeyboard = true;
-		}
-		else
-		{
-			// The text box is not being edited or highlighted
-			mCamera->EnableInput();
-			ImGui::GetIO().WantCaptureKeyboard = false;
-		}
 		if (ChangeName)
 		{
 			if (!((NewName != NULL) && (NewName[0] == '\0')))
@@ -140,6 +128,25 @@ void FlawedEngine::cUIManager::RenderProperties()
 				Entity->SetupScripting(ScriptDialog.GetSelected().string().c_str(), InputFunc);
 				ScriptDialog.ClearSelected();
 			}
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path dataPath(path);
+
+					std::string ext = dataPath.extension().string();
+					std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+
+					if (ext == ".lua")
+					{
+						std::function<bool(int)> InputFunc = std::bind(&cUIManager::isKeyDown, this, std::placeholders::_1);
+						Entity->SetupScripting(dataPath.string().c_str(), InputFunc);
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
 		}
 
 		static ImGui::FileBrowser AnimationDialog;
@@ -155,6 +162,25 @@ void FlawedEngine::cUIManager::RenderProperties()
 				std::cout << "Selected filename" << AnimationDialog.GetSelected().string() << std::endl;
 				Entity->AddAnimation(AnimationDialog.GetSelected().string().c_str());
 				AnimationDialog.ClearSelected();
+			}
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path dataPath(path);
+
+					std::string ext = dataPath.extension().string();
+					std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+
+					if (ext == ".fbx" || ext == ".gltf" || ext == ".dae")
+					{
+						Entity->AddAnimation(dataPath.string().c_str());
+
+					}
+				}
+				ImGui::EndDragDropTarget();
 			}
 		}
 

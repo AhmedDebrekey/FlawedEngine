@@ -296,21 +296,43 @@ namespace FlawedEngine
 	}
 
 
-	void cOBJModel::SetupScripting(const char* Path, std::function<bool(int)>&)
+	void cOBJModel::SetupScripting(const char* Path, std::function<bool(int)>& InputFunc)
 	{
 		ScriptingId = ScriptingManager.InitScripting();
 		LuaState = ScriptingManager.GetLuaState(ScriptingId);
 
-		ScriptingManager.RegisterFunction(ScriptingId, "Move",						std::bind(&cOBJModel::LMove,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "SetPos",					std::bind(&cOBJModel::LSetPosition,			this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "Rotate",					std::bind(&cOBJModel::LRotate,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "Scale",						std::bind(&cOBJModel::LScale,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce",				std::bind(&cOBJModel::LApplyForce,			this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce",		std::bind(&cOBJModel::LApplyRelativeForce,	this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor",				std::bind(&cOBJModel::LSetColor,			this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getX",	std::bind(&cOBJModel::LGetX,				this));
-		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getY",	std::bind(&cOBJModel::LGetY,				this));
-		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getZ",	std::bind(&cOBJModel::LGetZ,				this));
+		std::function<void(float, float, float)> funcptr = std::bind(&cOBJModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "Move", funcptr);
+
+		funcptr = std::bind(&cOBJModel::LSetPosition, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "SetPos", funcptr);
+
+		funcptr = std::bind(&cOBJModel::LRotate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "Rotate", funcptr);
+
+		funcptr = std::bind(&cOBJModel::LScale, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "Scale", funcptr);
+
+		funcptr = std::bind(&cOBJModel::LApplyForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce", funcptr);
+
+		funcptr = std::bind(&cOBJModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce", funcptr);
+
+		funcptr = std::bind(&cOBJModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor", funcptr);
+
+		ScriptingManager.RegisterFunction(ScriptingId, "IsKeyDown", InputFunc);
+
+		std::function<float()> posFunc = std::bind(&cOBJModel::LGetX, this);
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getX", posFunc);
+
+		posFunc = std::bind(&cOBJModel::LGetY, this);
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getY", posFunc);
+
+		posFunc = std::bind(&cOBJModel::LGetZ, this);
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getZ", posFunc);
+
 
 		ScriptingManager.LoadFile(ScriptingId, Path);
 

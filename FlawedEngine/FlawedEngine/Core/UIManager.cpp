@@ -1,5 +1,4 @@
 #include "UIManager.h"
-#include "Models/stb_image.h"
 
 static bool opt_fullscreen = true;
 static bool opt_padding = false;
@@ -57,29 +56,7 @@ namespace FlawedEngine
 		mObjectMan = (cObjectManager*)Manager;
 		mPhysicsWorld = PhysicsWorld;
 		mGfxAPI = (cGraphicsAPI*)GfxAPI;
-		mBaseDir = std::filesystem::current_path()/"Assets";
-		mCurrentDir = std::filesystem::current_path()/"Assets";
-
-		sTextureProps props;
-		props.Wrap_s = eTextureProperties::Repeat;
-		props.Wrap_t = eTextureProperties::Repeat;
-		props.Min_Filter = eTextureProperties::MIPMAP_Linear;
-		props.Mag_Filter = eTextureProperties::Linear;
-		int width, height, nrChannels;
-		unsigned char* data = stbi_load("Resources/DirIcon.png", &width, &height, &nrChannels, 0);
-		if(data)
-			mDirIcon = mGfxAPI->CreateTexture(width, height, nrChannels, data, props);
-		stbi_image_free(data);
-
-		data = stbi_load("Resources/FileIcon.png", &width, &height, &nrChannels, 0);
-		if (data)
-			mFileIcon = mGfxAPI->CreateTexture(width, height, nrChannels, data, props);
-		stbi_image_free(data);
-
-		data = stbi_load("Resources/BackIcon.png", &width, &height, &nrChannels, 0);
-		if (data)
-			mBackIcon = mGfxAPI->CreateTexture(width, height, nrChannels, data, props);
-		stbi_image_free(data);
+		LoadIcons();
 
 		InitFrameBuffer();
 
@@ -126,7 +103,7 @@ namespace FlawedEngine
 		mGfxAPI->BindFramebuffer(0);
 		InitRendering();
 		//ImGui::ShowStyleEditor();
-		
+		ImGui::ShowDemoWindow();
 		if (ImGui::BeginMenuBar())
 		{
 			if (ImGui::BeginMenu("Options"))
@@ -172,53 +149,17 @@ namespace FlawedEngine
 			ImGui::SliderFloat("##FontScale", &io.FontGlobalScale, 0.3, 2.0, "%.2f");
 
 
-			static char Path[20] = "";
 			{
+				static char Path[20] = "";
 				bool Save = ImGui::Button("Save");
 				ImGui::SameLine();
 				ImGui::InputTextWithHint(std::string("##Save" + mSelectedEntity).c_str(), "File Name", Path, IM_ARRAYSIZE(Path));
-				if (ImGui::IsItemActive())
-				{
-					// The text box is  highlighted
-					mCamera->DisableInput();
-					ImGui::GetIO().WantCaptureKeyboard = true;
-				}
-				else
-				{
-					// The text box is not being edited or highlighted
-					mCamera->EnableInput();
-					ImGui::GetIO().WantCaptureKeyboard = false;
-				}
 				if (Save)
 				{
 					if (!((Path != NULL) && (Path[0] == '\0')))
 					{
-						mObjectMan->Save(Path);
-					}
-				}
-			}
-
-			{
-				bool Load = ImGui::Button("Load");
-				ImGui::SameLine();
-				ImGui::InputTextWithHint(std::string("##Load" + mSelectedEntity).c_str(), "File Name", Path, IM_ARRAYSIZE(Path));
-				if (ImGui::IsItemActive())
-				{
-					// The text box is  highlighted
-					mCamera->DisableInput();
-					ImGui::GetIO().WantCaptureKeyboard = true;
-				}
-				else
-				{
-					// The text box is not being edited or highlighted
-					mCamera->EnableInput();
-					ImGui::GetIO().WantCaptureKeyboard = false;
-				}
-				if (Load)
-				{
-					if (!((Path != NULL) && (Path[0] == '\0')))
-					{
-						mObjectMan->LoadSave(Path);
+						std::string path = "Assets\\SaveFiles\\" + std::string(Path) + ".json";
+						mObjectMan->Save(path);
 					}
 				}
 			}

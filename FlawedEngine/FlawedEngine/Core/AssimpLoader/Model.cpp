@@ -413,25 +413,45 @@ namespace FlawedEngine
 		ScriptingId = ScriptingManager.InitScripting();
 		LuaState = ScriptingManager.GetLuaState(ScriptingId);
 
-		ScriptingManager.RegisterFunction(ScriptingId, "Move",						std::bind(&cModel::LMove,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "SetPos",					std::bind(&cModel::LSetPosition,		this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "Rotate",					std::bind(&cModel::LRotate,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "Scale",						std::bind(&cModel::LScale,				this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce",				std::bind(&cModel::LApplyForce,			this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce",		std::bind(&cModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor",				std::bind(&cModel::LSetColor,			this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getX",	std::bind(&cModel::LGetX,				this));
-		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getY",	std::bind(&cModel::LGetY,				this));
-		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getZ",	std::bind(&cModel::LGetZ,				this));
+		std::function<void(float, float, float)> funcptr = std::bind(&cModel::LMove, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "Move", funcptr);
 
+		funcptr = std::bind(&cModel::LSetPosition, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "SetPos", funcptr);
+
+		funcptr = std::bind(&cModel::LRotate, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "Rotate", funcptr);
 		
-		std::function<std::string()> Func = std::bind(&cModel::LGetName, this);
-		luabridge::getGlobalNamespace(LuaState).addFunction("GetName", Func);
+		funcptr = std::bind(&cModel::LScale, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "Scale", funcptr);
 
-		luabridge::getGlobalNamespace(LuaState).addFunction("IsKeyDown", InputFunc);
+		funcptr = std::bind(&cModel::LApplyForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyForce", funcptr);
+
+		funcptr = std::bind(&cModel::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "ApplyRelativeForce", funcptr);
+
+		funcptr = std::bind(&cModel::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(ScriptingId, "ChangeColor", funcptr);
 
 		std::function<void(const char*)> ChangeAnimFunc = std::bind(&cModel::LChangeAnim, this, std::placeholders::_1);
-		luabridge::getGlobalNamespace(LuaState).addFunction("ChangeAnimation", ChangeAnimFunc);
+		ScriptingManager.RegisterFunction(ScriptingId, "ChangeAnimation", ChangeAnimFunc);
+
+		std::function<std::string()> Func = std::bind(&cModel::LGetName, this);
+		ScriptingManager.RegisterFunction(ScriptingId, "GetName", Func);
+
+		ScriptingManager.RegisterFunction(ScriptingId, "IsKeyDown", InputFunc);
+
+		std::function<float()> posFunc = std::bind(&cModel::LGetX, this);
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getX", posFunc);
+
+		posFunc = std::bind(&cModel::LGetY, this);
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getY", posFunc);
+
+		posFunc = std::bind(&cModel::LGetZ, this);
+		ScriptingManager.RegisterFunctionInNamespace(ScriptingId, "Pos", "getZ", posFunc);
+
+
 
 		ScriptingManager.LoadFile(ScriptingId, Path);
 

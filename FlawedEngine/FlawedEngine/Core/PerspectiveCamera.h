@@ -23,8 +23,7 @@ namespace FlawedEngine
 		float FarPlane() { return far_plane; }
 		float FoV();
 		void SetAspectRatio(float ratio);
-		void DisableInput() { isInputEnabled = false; }
-		void EnableInput() { isInputEnabled = true; }
+		void ToggleAllowInput() { isInputEnabled = !isInputEnabled; }
 		void ToggleShadowPerspective() { DirLightPerspective = !DirLightPerspective; } // UI to change the perspective
 		Frustum CreateFrustum();
 		Frustum mCamFrustum;

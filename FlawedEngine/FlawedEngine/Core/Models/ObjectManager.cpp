@@ -281,6 +281,11 @@ namespace FlawedEngine
 	{
 		using json = nlohmann::json;
 		std::ifstream file(FileName);
+		if (file.fail())
+		{
+			std::perror("Error");
+			return;
+		}
 		if (!file.is_open())
 		{
 			std::cout << "{ERROR} Can't Load " << FileName << std::endl;

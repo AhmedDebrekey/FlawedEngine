@@ -11,7 +11,6 @@ namespace FlawedEngine
 		int Width, Height;
 		auto GLFW_Window = (GLFWwindow*)mWindow;
 		glfwGetWindowSize(GLFW_Window, &Width, &Height);
-		glfwSetCursorPos(GLFW_Window, double(Width/2), double(Height/2));
 		mCamFrustum = CreateFrustum();
 	}
 

@@ -55,7 +55,7 @@
         "Knight": {
             "animation": {
                 "animationPath": [
-                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\Knight\\Idle.dae"
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\Knight\\Idle.dae"
                 ],
                 "hasAnimation": [
                     true
@@ -67,7 +67,7 @@
                 0.0
             ],
             "filepath": [
-                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\Knight\\Knight.dae"
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\Knight\\Knight.dae"
             ],
             "isCostume": [
                 true
@@ -80,7 +80,7 @@
                     true
                 ],
                 "scriptPath": [
-                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\Knight\\PlayerScript.Lua"
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\Knight\\PlayerScript.Lua"
                 ]
             },
             "transform": {

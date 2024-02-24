@@ -13,6 +13,7 @@
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/string_cast.hpp>
 #include <string>
+#include <deque>
 #include <filesystem>
 
 #include "PerspectiveCamera.h"
@@ -54,7 +55,19 @@ namespace FlawedEngine
 		uint32_t mDirIcon;
 		uint32_t mFileIcon;
 		uint32_t mBackIcon;
+		uint32_t mRefreshIcon;
+		uint32_t mImageIcon;
+		uint32_t mModelIcon;
+		uint32_t mLuaIcon;
+		uint32_t mSaveIcon;
+		uint32_t mTrashIcon;
+		std::vector<std::filesystem::directory_entry> mDirectories;
 
+		void LoadIcons();
+		void LoadTexture(const std::string& path, uint32_t& TextureID, const sTextureProps& props);
+		void GetFilesandFolders(const std::filesystem::path& path);
+		uint32_t GetFileIcon(const std::filesystem::path& path);
+		
 		cGraphicsAPI* mGfxAPI = nullptr;
 		
 

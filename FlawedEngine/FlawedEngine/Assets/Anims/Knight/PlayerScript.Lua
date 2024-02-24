@@ -38,7 +38,7 @@ function Update()
         SpawnObject("Object", 0)
     end
 
-    local animationPath = "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Anims\\Knight\\"
+    local animationPath = "Assets\\Anims\\Knight\\"
     local animationName = "Idle.dae"
 
     local animations = {
@@ -75,6 +75,5 @@ function Update()
     end
 
     ChangeAnimation(animationName)
-	Move(moveX, 0, moveZ)
-    
+	Move(moveX, 0, moveZ)    
 end

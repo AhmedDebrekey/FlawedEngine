@@ -29,8 +29,31 @@ namespace FlawedEngine
 
 		void RunFunction(int ID, const std::string& FuncName);
 
-		void RegisterFunction(int ID, const std::string& FuncName, std::function<void(float, float, float)> Func);
-		void RegisterFunctionInNamespace(int ID, const std::string& Namespace, const std::string& FuncName, std::function<float()> Func);
+		template<typename Function>
+		void RegisterFunctionInNamespace(int ID, const std::string& Namespace, const std::string& FuncName, Function funcptr)
+		{
+			using namespace luabridge;
+			lua_State* L = GetLuaState(ID);
+			if (!L)
+			{
+				std::cout << "[ERROR] Couldn't Register Function, Lua State is undefined" << std::endl;
+				return;
+			}
+			getGlobalNamespace(L).beginNamespace(Namespace.c_str()).addFunction(FuncName.c_str(), funcptr).endNamespace();
+		}
+
+		template<typename Function>
+		void RegisterFunction(int ID, const std::string& FuncName, Function funcptr)
+		{
+			using namespace luabridge;
+			lua_State* L = GetLuaState(ID);
+			if (!L)
+			{
+				std::cout << "[ERROR] Couldn't Register Function, Lua State is undefined" << std::endl;
+				return;
+			}
+			getGlobalNamespace(L).addFunction(FuncName.c_str(), funcptr);
+		}
 	private:
 		int mNextStateId;
 		std::unordered_map<int, lua_State*> mStates;

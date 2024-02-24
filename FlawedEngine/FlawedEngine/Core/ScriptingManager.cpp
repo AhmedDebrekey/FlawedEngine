@@ -99,33 +99,6 @@ namespace FlawedEngine
 		lua_pcall(L, 0, 0, 0);
 	}
 
-	//TODO: Make it templated
-	void cScriptingManager::RegisterFunction(int ID, const std::string& FuncName, std::function<void(float, float, float)> Func)
-	{
-		using namespace luabridge;
-		lua_State* L = GetLuaState(ID);
-		if (!L)
-		{
-			std::cout << "[ERROR] Couldn't Register Function, Lua State is undefined" << std::endl;
-			return;
-		}
-		getGlobalNamespace(L).addFunction(FuncName.c_str(), Func);
-	}
-
-	//TODO: Make it templated
-	void cScriptingManager::RegisterFunctionInNamespace(int ID, const std::string& Namespace, const std::string& FuncName, std::function<float()> Func)
-	{
-		using namespace luabridge;
-		lua_State* L = GetLuaState(ID);
-		if (!L)
-		{
-			std::cout << "[ERROR] Couldn't Register Function, Lua State is undefined" << std::endl;
-			return;
-		}
-		getGlobalNamespace(L).beginNamespace(Namespace.c_str()).addFunction(FuncName.c_str(), Func).endNamespace();
-	}
-	
-
 	void cScriptingManager::SpawnObject(const char* Name, int Type)
 	{
 		cObjectManager& ObjectMan = cObjectManager::get();

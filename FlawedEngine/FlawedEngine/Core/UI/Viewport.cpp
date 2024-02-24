@@ -36,8 +36,21 @@ void FlawedEngine::cUIManager::RenderViewport()
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
 		{
 			const wchar_t* path = (const wchar_t*)payload->Data;
-			std::filesystem::path objectPath(path);
-			mObjectMan->LoadObject(objectPath.string().c_str(), objectPath.filename().string().c_str());
+			std::filesystem::path dataPath(path);
+
+			std::string ext = dataPath.extension().string();
+			std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+
+			if (ext == ".json")
+			{
+				mObjectMan->LoadSave(dataPath.string());
+			}
+			else if (ext == ".fbx" || ext == ".gltf" || ext == ".obj" || ext == ".dae")
+			{
+				mObjectMan->LoadObject(dataPath.string().c_str(), dataPath.stem().string().c_str());
+				mSelectedEntity = dataPath.stem().string();
+			}
+
 		}
 		ImGui::EndDragDropTarget();
 	}
