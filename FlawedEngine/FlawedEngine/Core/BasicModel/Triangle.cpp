@@ -27,28 +27,9 @@ namespace FlawedEngine
 	void cTriangle::ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
 	{
 	}
-
 	void cTriangle::Update()
 	{
 		//TODO: Should have an Input System here
-	}
-	void cTriangle::setDynamic(bool isDynamic)
-	{
-	}
-	void cTriangle::SetPhysics(eBasicObject Object, void* PhysicsWorld)
-	{
-	}
-	void cTriangle::UnSetPhysics()
-	{
-	}
-	void cTriangle::SetupScripting(const char*, std::function<bool(int)>&)
-	{
-	}
-	void cTriangle::SendEntity(cEntity* Entity)
-	{
-	}
-	void cTriangle::SendInputToScripting(std::function<bool(int)>)
-	{
 	}
 	void cTriangle::AddAnimation(const char*)
 	{
@@ -58,5 +39,9 @@ namespace FlawedEngine
 	}
 	void cTriangle::SetAABB(glm::vec3& Scale)
 	{
+	}
+	bool cTriangle::isModelInFrustum()
+	{
+		return true;
 	}
 }

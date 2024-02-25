@@ -130,7 +130,7 @@ namespace FlawedEngine
 		SceneObjects[Name]->ModelTransform(DefaultModel);
 		sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 		SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
-		SceneObjects[Name]->Type = Cube;
+		SceneObjects[Name]->Type = Custom;
 	}
 
 	void cObjectManager::RemoveObject(const char* Name)

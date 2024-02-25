@@ -91,7 +91,8 @@ namespace FlawedEngine
 		Torus,
 		Triangle,
 		PointLight,
-		SpotLight
+		SpotLight,
+		Custom
 	};
 
 	struct Plane

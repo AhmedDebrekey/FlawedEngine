@@ -44,26 +44,6 @@ namespace FlawedEngine
 	void cPointLight::Update()
 	{
 	}
-	void cPointLight::setDynamic(bool isDynamic)
-	{
-	}
-	void cPointLight::SetPhysics(eBasicObject Object, void* PhysicsWorld)
-	{
-	}
-	void cPointLight::UnSetPhysics()
-	{
-	}
-	void cPointLight::SetupScripting(const char*, std::function<bool(int)>&)
-	{
-	}
-
-	void cPointLight::SendEntity(cEntity* Entity)
-	{
-	}
-
-	void cPointLight::SendInputToScripting(std::function<bool(int)>)
-	{
-	}
 
 	void cPointLight::SetAABB(glm::vec3& Scale)
 	{
@@ -75,6 +55,11 @@ namespace FlawedEngine
 
 	void cPointLight::ChangeAnimation(const char*)
 	{
+	}
+
+	bool cPointLight::isModelInFrustum()
+	{
+		return true;
 	}
 	
 }

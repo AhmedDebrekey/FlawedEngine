@@ -19,41 +19,17 @@ namespace FlawedEngine
 		virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox) override;
 		virtual void ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap) override;
 		virtual void Update() override;
-		virtual void setDynamic(bool isDynamic) override;
-		virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
-		virtual void UnSetPhysics() override;
-		virtual void SetupScripting(const char*, std::function<bool(int)>&) override;
-		virtual void SendEntity(cEntity* Entity) override;
-		virtual void SendInputToScripting(std::function<bool(int)>) override;
 		virtual void AddAnimation(const char*) override;
 		virtual void ChangeAnimation(const char*) override;
 		virtual void SetAABB(glm::vec3& Scale) override;
+		virtual bool isModelInFrustum() override;
+
 		bool LoadModel(const char* FilePath);
 		void Populate();
-		void SetCollisionShape(eBasicObject Object);
-		bool isPhysicsSet = false;
-		std::string mName;
-
-		void LMove(float x, float y, float z);
-		void LSetPosition(float x, float y, float z);
-		void LSetColor(float x, float y, float z);
-		void LRotate(float x, float y, float z);
-		void LScale(float x, float y, float z);
-		void LApplyForce(float x, float y, float z);
-		void LApplyRelativeForce(float x, float y, float z);
-		float LGetX();
-		float LGetY();
-		float LGetZ();
-		lua_State* LuaState = nullptr;
 
 	private:
-		btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
-		btCollisionShape* mCollisionShape;
 		cModelRenderer Renderer;
 		objl::Loader mLoader;
-		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
-
-		int ScriptingId;
 	private:
 		cShader ShadowShader;
 	};

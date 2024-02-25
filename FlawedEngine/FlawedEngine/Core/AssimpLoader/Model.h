@@ -56,39 +56,12 @@ namespace FlawedEngine
         virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox) override;
         virtual void ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap) override;
         virtual void Update(/*Should be taking in the timestep*/) override;
-        void SetCollisionShape(eBasicObject Object);
-        virtual void SetPhysics(eBasicObject Object, void* PhysicsWorld) override;
-        virtual void UnSetPhysics() override;
-        virtual void setDynamic(bool IsDynamic) override;
-        virtual void SetupScripting(const char*, std::function<bool(int)>&) override;
-        virtual void SendEntity(cEntity* Entity) override;
-        virtual void SendInputToScripting(std::function<bool(int)>) override;
+
         virtual void AddAnimation(const char*) override;
         virtual void ChangeAnimation(const char*) override;
+        virtual bool isModelInFrustum() override;
 
-        void LSetColor(float x, float y, float z);
-
-        void LMove(float x, float y, float z);
-
-        void LSetPosition(float x, float y, float z);
-
-        void LRotate(float x, float y, float z);
-
-        void LScale(float x, float y, float z);
-
-        void LApplyForce(float x, float y, float z);
-
-        void LApplyRelativeForce(float x, float y, float z);
-
-        void LSpawnObject();
-
-        float LGetX();
-        float LGetY();
-        float LGetZ();
-
-        std::string LGetName();
-
-        void LChangeAnim(const char* Path);
+        
 
         std::map<std::string, sBoneInfo>& GetBoneInfoMap() { return m_BoneInfoMap; }
         int& GetBoneCount() { return m_BoneCounter; }
@@ -96,8 +69,7 @@ namespace FlawedEngine
     private:
         cGraphicsAPI* mGfxAPI = nullptr;
     private:
-        bool isModelInFrustum();
-        Frustum* mCamFrustum = nullptr;
+        Frustum* mCamFrustum = nullptr; // Add Another one for the shadow camera
 
     private:
         void loadModel(std::string path);
@@ -115,16 +87,7 @@ namespace FlawedEngine
         bool gammaCorrection;
         cShader Shader;
         cShader mShadowShader;
-    private:
-        std::string mName;
-        bool isPhysicsSet = false;
-        btVector3 mInertia;
-        btCollisionShape* mCollisionShape;
-        btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
-        btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
-    private:
-        int ScriptingId;
-        lua_State* LuaState = nullptr;
+
     private:
         Assimp::Importer importer;
         const aiScene* scene;

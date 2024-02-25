@@ -46,12 +46,6 @@ namespace FlawedEngine
 	{
 
 	}
-	void cCube::setDynamic(bool isDynamic)
-	{
-	}
-	void cCube::SetPhysics(eBasicObject Object, void* PhysicsWorld)
-	{
-	}
 	void cCube::SetAABB(glm::vec3& Scale)
 	{
 	}
