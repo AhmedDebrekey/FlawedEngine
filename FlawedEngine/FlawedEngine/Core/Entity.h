@@ -31,6 +31,7 @@ namespace FlawedEngine
 
 		//LuaFunctions
 		void SetupScripting(const char*, std::function<bool(int)>&);
+		void ReloadScript();
 		void LSetColor(float x, float y, float z);
 		void LMove(float x, float y, float z);
 		void LSetPosition(float x, float y, float z);
@@ -52,7 +53,7 @@ namespace FlawedEngine
 		bool mHasScripting = false;
 		bool mHasAnimation = false;
 		std::string mFilePath;
-		std::string mScriptPath;
+		std::string mScriptPath = "Empty";
 		std::string mAnimationPath;
 
 		//Physics
@@ -321,6 +322,16 @@ namespace FlawedEngine
 		ScriptingManager.RunFunction(mScriptingId, "Create");
 	}
 
+	inline void cEntity::ReloadScript()
+	{
+		if (mHasScripting)
+		{
+			ScriptingManager.LoadFile(mScriptingId, mScriptPath);
+			lua_pcall(mLuaState, 0, 0, 0);
+			ScriptingManager.RunFunction(mScriptingId, "Create");
+		}
+	}
+
 	inline void cEntity::LSetColor(float x, float y, float z)
 	{
 		SetColor(glm::vec3(x, y, z));
@@ -368,18 +379,33 @@ namespace FlawedEngine
 
 	inline void cEntity::LRotate(float x, float y, float z)
 	{
+		// Update the rotation
 		mTransformation.Rotation += glm::vec3(x, y, z);
+
+		// Ensure that the rotation values are within the range of 0 to 360 degrees
+		mTransformation.Rotation.x = fmod(mTransformation.Rotation.x, 360.0f);
+		mTransformation.Rotation.y = fmod(mTransformation.Rotation.y, 360.0f);
+		mTransformation.Rotation.z = fmod(mTransformation.Rotation.z, 360.0f);
+
 		ModelTransform(mTransformation);
+
 		if (mPhysics)
 		{
 			btTransform Trans;
 			mRigidBody->getMotionState()->getWorldTransform(Trans);
+
+			// Create a quaternion for rotation
 			btQuaternion rot;
 			rot.setEuler(mTransformation.Rotation.x, mTransformation.Rotation.y, mTransformation.Rotation.z);
+
+			// Set the rotation of the transformation
 			Trans.setRotation(rot);
+
+			// Set the world transform
 			mRigidBody->getMotionState()->setWorldTransform(Trans);
 		}
 	}
+
 
 	inline void cEntity::LScale(float x, float y, float z)
 	{

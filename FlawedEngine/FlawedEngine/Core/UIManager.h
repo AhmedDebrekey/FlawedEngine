@@ -33,6 +33,7 @@ namespace FlawedEngine
 		void InitRendering();
 		void InitFrameBuffer();
 		void DrawVec3(const std::string& label, glm::vec3& values, float resetValue = 0.0f, float columnWidth = 100.0f);
+		void DrawDragDropPanel(const std::string& label, const std::string& text, PanelRefreshCallback refreshCallbackFunc, DragDropCallback callbackFunc, float columnWidth = 100.0f);
 		bool isKeyDown(int key);
 		void SetImGuiStyle();
 

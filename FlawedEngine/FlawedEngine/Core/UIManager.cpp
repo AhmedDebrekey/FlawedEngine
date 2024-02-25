@@ -228,6 +228,48 @@ namespace FlawedEngine
 		ImGui::PopID();
 	}
 
+	void cUIManager::DrawDragDropPanel(const std::string& label, const std::string& text, PanelRefreshCallback refreshCallbackFunc, DragDropCallback callbackFunc, float columnWidth)
+	{
+		ImGui::PushID(label.c_str());
+
+		ImGui::Columns(2);
+		{
+			ImGui::SetColumnWidth(0, columnWidth);
+			ImGui::Text(label.c_str());
+			ImGui::NextColumn();
+
+			ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
+
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 5, 0 });
+			{
+				ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+				if (ImGui::ImageButton((ImTextureID)mRefreshIcon, { 20, 20 }))
+				{
+					refreshCallbackFunc();
+				}
+				ImGui::PopStyleColor();
+
+				ImGui::PopItemWidth();
+				ImGui::SameLine();
+
+				ImGui::Text(text.c_str());
+
+				if (ImGui::BeginDragDropTarget())
+				{
+					callbackFunc();
+					ImGui::EndDragDropTarget();
+				}
+
+				ImGui::PopItemWidth();
+			}
+
+			ImGui::PopStyleVar();
+		}
+		ImGui::Columns(1);
+
+		ImGui::PopID();
+	}
+
 	void cUIManager::InitRendering()
 	{
 		ImGui_ImplOpenGL3_NewFrame();

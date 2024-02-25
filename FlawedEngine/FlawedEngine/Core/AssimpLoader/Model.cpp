@@ -166,8 +166,6 @@ namespace FlawedEngine
 		}
 	}
 
-
-
 	void cModel::loadModel(std::string path)
 	{
 		importer.SetPropertyFloat(AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY, 0.1f);

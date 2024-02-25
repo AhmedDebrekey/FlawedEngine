@@ -6,6 +6,8 @@
 
 #include <string>
 #include <vector>
+#include <functional>
+
 
 namespace FlawedEngine
 {
@@ -14,6 +16,8 @@ namespace FlawedEngine
 	
 	void SetDirectionalLightPos(const glm::vec3& Position);
 	glm::vec3& GetDirectionalLightPos();
+	using DragDropCallback = std::function<void()>;
+	using PanelRefreshCallback = std::function<void()>;
 
 	struct sMaterial
 	{

@@ -117,25 +117,14 @@ void FlawedEngine::cUIManager::RenderProperties()
 		static ImGui::FileBrowser ScriptDialog;
 
 		{
-			if (ImGui::Button("Add Script"))	
-				ScriptDialog.Open();
-
-			ScriptDialog.Display();
-			if (ScriptDialog.HasSelected())
-			{
-				std::cout << "Selected filename" << ScriptDialog.GetSelected().string() << std::endl;
-				std::function<bool(int)> InputFunc = std::bind(&cUIManager::isKeyDown, this, std::placeholders::_1);
-				Entity->SetupScripting(ScriptDialog.GetSelected().string().c_str(), InputFunc);
-				ScriptDialog.ClearSelected();
-			}
-
-			if (ImGui::BeginDragDropTarget())
-			{
+			PanelRefreshCallback refreshCallback = [&]() {
+				Entity->ReloadScript();
+			};
+			DragDropCallback dragDropCallback = [&]() {
 				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
 				{
 					const wchar_t* path = (const wchar_t*)payload->Data;
 					std::filesystem::path dataPath(path);
-
 					std::string ext = dataPath.extension().string();
 					std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
 
@@ -145,8 +134,11 @@ void FlawedEngine::cUIManager::RenderProperties()
 						Entity->SetupScripting(dataPath.string().c_str(), InputFunc);
 					}
 				}
-				ImGui::EndDragDropTarget();
-			}
+			};
+
+			std::filesystem::path scriptPath= Entity->mScriptPath;
+
+			DrawDragDropPanel("Script", scriptPath.filename().string().c_str(), refreshCallback, dragDropCallback, 75);
 		}
 
 		static ImGui::FileBrowser AnimationDialog;
