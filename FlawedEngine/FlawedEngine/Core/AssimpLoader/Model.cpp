@@ -10,6 +10,7 @@
 #include <GLFW/glfw3.h>
 #include "Animations/Animation.h"
 #include "Animations/Animator.h"
+#include "../Models/ObjectManager.h"
 
 namespace FlawedEngine
 {
@@ -23,6 +24,7 @@ namespace FlawedEngine
 		mFilePath = FilePath;
 		mIsCostume = true;
 		mCamFrustum = CamFrustum;
+		mObjectManager = (void*)(cObjectManager*)&cObjectManager::get();
 	}
 	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
 	{

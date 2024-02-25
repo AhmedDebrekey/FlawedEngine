@@ -8,12 +8,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <functional>
 #include "ScriptingManager.h"
-
 namespace FlawedEngine
 {
 	class cEntity
 	{
 	public:
+		void* mObjectManager; 
 		virtual void Render(sTransform&, std::unordered_map<std::string, sLight>&, uint32_t*) = 0;
 		virtual void ShadowRender(sTransform&, glm::mat4&, uint32_t) = 0;
 		virtual void Update(/*Should be taking in the timestep*/) = 0;
@@ -39,7 +39,7 @@ namespace FlawedEngine
 		void LScale(float x, float y, float z);
 		void LApplyForce(float x, float y, float z);
 		void LApplyRelativeForce(float x, float y, float z);
-		void LSpawnObject();
+		cEntity* LSpawnObject(const char* name, uint8_t type);
 		float LGetX();
 		float LGetY();
 		float LGetZ();
@@ -47,6 +47,7 @@ namespace FlawedEngine
 		void LChangeAnim(const char* Path);
 		int mScriptingId;
 		lua_State* mLuaState = nullptr;
+		cEntity* GetEntityByName(const char* name);
 
 		//Serlizalizations
 		bool mIsCostume = false;
@@ -297,8 +298,15 @@ namespace FlawedEngine
 		funcptr = std::bind(&cEntity::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		ScriptingManager.RegisterFunction(mScriptingId, "ChangeColor", funcptr);
 
-		std::function<void(const char*)> ChangeAnimFunc = std::bind(&cEntity::LChangeAnim, this, std::placeholders::_1);
-		ScriptingManager.RegisterFunction(mScriptingId, "ChangeAnimation", ChangeAnimFunc);
+		std::function<void(const char*)> charInputfunc = std::bind(&cEntity::LChangeAnim, this, std::placeholders::_1);
+		ScriptingManager.RegisterFunction(mScriptingId, "ChangeAnimation", charInputfunc);
+
+
+		std::function<cEntity* (const char*)> entityfunc = std::bind(&cEntity::GetEntityByName, this, std::placeholders::_1);
+		ScriptingManager.RegisterFunction(mScriptingId, "GetEntity", entityfunc);
+
+		std::function < cEntity* (const char*, uint8_t)> spawnEntityfunc = std::bind(&cEntity::LSpawnObject, this, std::placeholders::_1, std::placeholders::_2);
+		ScriptingManager.RegisterFunction(mScriptingId, "SpawnObject", spawnEntityfunc);
 
 		ScriptingManager.RegisterFunction(mScriptingId, "IsKeyDown", InputFunc);
 
@@ -311,8 +319,19 @@ namespace FlawedEngine
 		posFunc = std::bind(&cEntity::LGetZ, this);
 		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Pos", "getZ", posFunc);
 
-
 		ScriptingManager.LoadFile(mScriptingId, Path);
+
+		luabridge::getGlobalNamespace(mLuaState)
+			.beginClass<cEntity>("cEntity")
+			.addFunction("Move", &cEntity::LMove)
+			.addFunction("SetPos", &cEntity::LSetPosition)
+			.addFunction("Rotate", &cEntity::LRotate)
+			.addFunction("Scale", &cEntity::LScale)
+			.addFunction("ApplyForce", &cEntity::LApplyForce)
+			.addFunction("ApplyRelativeForce", &cEntity::LApplyRelativeForce)
+			.addFunction("ChangeColor", &cEntity::LSetColor)
+			.addFunction("ChangeAnimation", &cEntity::LChangeAnim)
+			.endClass();
 
 		mScriptPath = Path;
 		mHasScripting = true;
@@ -332,9 +351,21 @@ namespace FlawedEngine
 		}
 	}
 
+	inline cEntity* cEntity::GetEntityByName(const char* name)
+	{
+		cEntity* ptr = (cEntity*)GetEntity(name);			
+		return ptr;
+	}
+
 	inline void cEntity::LSetColor(float x, float y, float z)
 	{
 		SetColor(glm::vec3(x, y, z));
+	}
+
+	inline cEntity* cEntity::LSpawnObject(const char* name, uint8_t type)
+	{
+		cEntity* ptr = (cEntity*)SpawnEntity(name, (eBasicObject)type);
+		return ptr;
 	}
 
 	inline void cEntity::LMove(float x, float y, float z)// L for Lua

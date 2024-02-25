@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "stb_image.h"
+#include "ObjectManager.h"
 
 namespace FlawedEngine
 {
@@ -13,13 +14,14 @@ namespace FlawedEngine
 		mCollisionShapesArray = CollisionShapes;
 		mName = Name;
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
+		mObjectManager = (void*)(cObjectManager*)&cObjectManager::get();
+
 		if (!LoadModel(FilePath))
 		{
 			std::cout << "Failed To Load 3D Model from: " << FilePath << std::endl;
 		}
 
 		Populate();
-		
 		Renderer.Init(mVertexBuffer, mTextureCoords, mIndices);
 		ShadowShader.Create("Core/Models/Shaders/ShadowVertex.glsl", "Core/Models/Shaders/ShadowFragment.glsl");
 	}

@@ -14,10 +14,7 @@ namespace FlawedEngine
 	typedef unsigned int uint32_t;
 #define MAX_BONE_INFLUENCE 4
 	
-	void SetDirectionalLightPos(const glm::vec3& Position);
-	glm::vec3& GetDirectionalLightPos();
-	using DragDropCallback = std::function<void()>;
-	using PanelRefreshCallback = std::function<void()>;
+
 
 	struct sMaterial
 	{
@@ -257,4 +254,12 @@ namespace FlawedEngine
 		NotEqual,
 		GreateOrEqual
 	};
+
+	void* GetEntity(const char* name);
+	void* SpawnEntity(const char* name, eBasicObject type);
+
+	void SetDirectionalLightPos(const glm::vec3& Position);
+	glm::vec3& GetDirectionalLightPos();
+	using DragDropCallback = std::function<void()>;
+	using PanelRefreshCallback = std::function<void()>;
 }

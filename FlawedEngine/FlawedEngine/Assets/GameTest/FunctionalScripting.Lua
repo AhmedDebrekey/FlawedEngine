@@ -4,6 +4,12 @@ function Create()
 	ChangeColor(1, 1, 1)
 	movementSpeed = 0.1
 	Force = 10
+	
+	firstSphere = SpawnObject("Deb", 1)
+	secondSphere = SpawnObject("Reky", 1)
+
+	firstSphere:SetPos(2, 4, 1)
+	secondSphere:SetPos(-2, 5, 1)
 end
 
 function Update()
@@ -13,6 +19,8 @@ function Update()
 	end
 
 	if IsKeyDown(73) then
+		firstSphere:Rotate(0.2, 0.1, 0.4)
+		secondSphere:Rotate(0.4, 0.1, 0.2)
 		--Move(0, 0.0, movementSpeed)
 		ApplyForce(0, 0.0, Force)
 	end
@@ -49,6 +57,6 @@ function Update()
 	end
 
 	if IsKeyDown(90) then
-		SpawnObject("Debreky", Sphere)
+		SpawnObject("Debreky", 1)
 	end
 end
