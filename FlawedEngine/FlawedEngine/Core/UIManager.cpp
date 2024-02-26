@@ -49,11 +49,9 @@ namespace FlawedEngine
 		mGfxAPI->BindFramebuffer(0);
 	}
 
-	void cUIManager::Init(void* Window, void* Camera, void* Manager, void* PhysicsWorld, void* GfxAPI)
+	void cUIManager::Init(void* Window, void* PhysicsWorld, void* GfxAPI)
 	{
-		mCamera = (cpCamera*)Camera;
 		mWindow = Window;
-		mObjectMan = (cObjectManager*)Manager;
 		mPhysicsWorld = PhysicsWorld;
 		mGfxAPI = (cGraphicsAPI*)GfxAPI;
 		LoadIcons();
@@ -136,12 +134,12 @@ namespace FlawedEngine
 			ImGui::Text("Press TAB And Move Gizmo To \nCopy Selected Entity");
 			ImGui::Separator();
 			ImGui::Checkbox("Mouse Picking *Buggy*", &mMousePicking);
-			mObjectMan->mMousePicking = mMousePicking;
+			mObjectMan.mMousePicking = mMousePicking;
 			if(ImGui::Button("RenderSkyBox"))
-				mObjectMan->ToggleSkyBox();
+				mObjectMan.ToggleSkyBox();
 			ImGui::Separator();
 			if (ImGui::Button("Switch Perspective"))
-				mCamera->ToggleShadowPerspective();
+				mCamera.ToggleShadowPerspective();
 			ImGui::Separator();
 			DrawVec3("DirectionalLight", GetDirectionalLightPos(), 0.5f);
 			ImGui::Text("FontScale");
@@ -159,7 +157,7 @@ namespace FlawedEngine
 					if (!((Path != NULL) && (Path[0] == '\0')))
 					{
 						std::string path = "Assets\\SaveFiles\\" + std::string(Path) + ".json";
-						mObjectMan->Save(path);
+						mObjectMan.Save(path);
 					}
 				}
 			}

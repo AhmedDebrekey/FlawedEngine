@@ -20,7 +20,7 @@ void FlawedEngine::cUIManager::RenderViewport()
 	{
 		//resize framebuffer
 		InitFrameBuffer();
-		mCamera->SetAspectRatio(static_cast<float>(mViewportSize.x) / mViewportSize.y);
+		mCamera.SetAspectRatio(static_cast<float>(mViewportSize.x) / mViewportSize.y);
 	}
 
 	mPrevViewportSize = mViewportSize;
@@ -43,11 +43,11 @@ void FlawedEngine::cUIManager::RenderViewport()
 
 			if (ext == ".json")
 			{
-				mObjectMan->LoadSave(dataPath.string());
+				mObjectMan.LoadSave(dataPath.string());
 			}
 			else if (ext == ".fbx" || ext == ".gltf" || ext == ".obj" || ext == ".dae")
 			{
-				mObjectMan->LoadObject(dataPath.string().c_str(), dataPath.stem().string().c_str());
+				mObjectMan.LoadObject(dataPath.string().c_str(), dataPath.stem().string().c_str());
 				mSelectedEntity = dataPath.stem().string();
 			}
 

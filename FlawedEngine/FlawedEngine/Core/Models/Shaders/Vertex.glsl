@@ -28,7 +28,7 @@ out mat3 TBN;
 out vec4 FragPosLightSpace;
 
 
-void CalculatePosition(vec4 Position, vec3 Normals, bool Animation = false)
+void CalculatePosition(vec4 Position, vec3 Normals, bool Animation)
 {
     gl_Position = Projection * View * Model * Position;
     Normal = normalize(mat3(transpose(inverse(Model))) * Normals);

@@ -1,9 +1,9 @@
 #include "Core.h"
 #include "Models/ObjectManager.h"
+#include "PerspectiveCamera.h"
 namespace FlawedEngine
 {
 	glm::vec3 DirectionalLightPos = glm::vec3(-2.0f, 10.0f, -1.0f);
-
 
 	void SetDirectionalLightPos(const glm::vec3& Position)
 	{
@@ -21,6 +21,18 @@ namespace FlawedEngine
 		cObjectManager& manager = cObjectManager::get();
 		manager.AddObject(type, name);
 		return manager.GetObjectByName(name).get();
+	}
+
+	void MoveCamera(float dx, float dy, float dz)
+	{
+		cpCamera& camera = cpCamera::get();
+		camera.MoveCamera(dx, dy, dz);
+	}
+
+	void SetCameraPos(float x, float y, float z)
+	{
+		cpCamera& camera = cpCamera::get();
+		camera.SetPosition(x, y, z);
 	}
 
 	glm::vec3& GetDirectionalLightPos()

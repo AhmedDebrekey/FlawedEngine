@@ -11,7 +11,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 	static int Triangles = 0;
 	static int Lights = 0;
 
-	for (auto& Object : *mObjectMan->GetObjectsPointer())
+	for (auto& Object : *mObjectMan.GetObjectsPointer())
 	{
 		auto Entity = Object.second;
 
@@ -38,7 +38,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			char buffer[20];
 			sprintf_s(buffer, "Light(%i)", Lights);
-			mObjectMan->AddObject(PointLight, buffer);
+			mObjectMan.AddObject(PointLight, buffer);
 			mSelectedEntity = buffer;
 			Lights++;
 		}
@@ -47,7 +47,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			char buffer[20];
 			sprintf_s(buffer, "Cube(%i)", Cubes);
-			mObjectMan->AddObject(Cube, buffer);
+			mObjectMan.AddObject(Cube, buffer);
 			mSelectedEntity = buffer;
 			Cubes++;
 		}
@@ -56,7 +56,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			char buffer[20];
 			sprintf_s(buffer, "Sphere(%i)", Spheres);
-			mObjectMan->AddObject(Sphere, buffer);
+			mObjectMan.AddObject(Sphere, buffer);
 			mSelectedEntity = buffer;
 			Spheres++;
 		}
@@ -65,7 +65,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			char buffer[20];
 			sprintf_s(buffer, "Cone(%i)", Cones);
-			mObjectMan->AddObject(Cone, buffer);
+			mObjectMan.AddObject(Cone, buffer);
 			mSelectedEntity = buffer;
 			Cones++;
 		}
@@ -74,7 +74,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			char buffer[20];
 			sprintf_s(buffer, "Torus(%i)", Toruses);
-			mObjectMan->AddObject(Torus, buffer);
+			mObjectMan.AddObject(Torus, buffer);
 			mSelectedEntity = buffer;
 			Toruses++;
 		}
@@ -96,7 +96,7 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		//std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
 		char buffer[20];
 		sprintf_s(buffer, "Object(%i)", Objects);
-		mObjectMan->LoadObject(fileDialog.GetSelected().string().c_str(), buffer);
+		mObjectMan.LoadObject(fileDialog.GetSelected().string().c_str(), buffer);
 		mSelectedEntity = buffer;
 		Objects++;
 		fileDialog.ClearSelected();

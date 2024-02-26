@@ -10,7 +10,7 @@
 namespace FlawedEngine
 {
 	cScene::cScene(void* Window, void* Physics, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* Graphic_API)
-		:mWindow(Window), Camera(mWindow), PhysicsWorld(Physics), mCollisionShapesArray(CollisionShapes), mGfxAPI(Graphic_API)
+		:mWindow(Window), PhysicsWorld(Physics), mCollisionShapesArray(CollisionShapes), mGfxAPI(Graphic_API)
 	{
 		Setup();
 	}
@@ -22,6 +22,7 @@ namespace FlawedEngine
 	void cScene::Setup()
 	{
 		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray, &Camera.mCamFrustum, mGfxAPI);
+		Camera.InitCamera(mWindow);
 		//ObjectMan.LoadSave("KnightAnim");
 		glGenFramebuffers(1, &mDepthMapFBO);
 

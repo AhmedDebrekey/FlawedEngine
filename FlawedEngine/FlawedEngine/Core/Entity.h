@@ -13,7 +13,6 @@ namespace FlawedEngine
 	class cEntity
 	{
 	public:
-		void* mObjectManager; 
 		virtual void Render(sTransform&, std::unordered_map<std::string, sLight>&, uint32_t*) = 0;
 		virtual void ShadowRender(sTransform&, glm::mat4&, uint32_t) = 0;
 		virtual void Update(/*Should be taking in the timestep*/) = 0;
@@ -45,6 +44,8 @@ namespace FlawedEngine
 		float LGetZ();
 		std::string LGetName();
 		void LChangeAnim(const char* Path);
+		void LMoveCamera(float x, float y, float z);
+		void LSetCameraPos(float x, float y, float z);
 		int mScriptingId;
 		lua_State* mLuaState = nullptr;
 		cEntity* GetEntityByName(const char* name);
@@ -297,6 +298,12 @@ namespace FlawedEngine
 
 		funcptr = std::bind(&cEntity::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		ScriptingManager.RegisterFunction(mScriptingId, "ChangeColor", funcptr);
+		
+		funcptr = std::bind(&cEntity::LMoveCamera, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(mScriptingId, "MoveCamera", funcptr);
+		
+		funcptr = std::bind(&cEntity::LSetCameraPos, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(mScriptingId, "SetCameraPos", funcptr);
 
 		std::function<void(const char*)> charInputfunc = std::bind(&cEntity::LChangeAnim, this, std::placeholders::_1);
 		ScriptingManager.RegisterFunction(mScriptingId, "ChangeAnimation", charInputfunc);
@@ -507,5 +514,13 @@ namespace FlawedEngine
 		ChangeAnimation(Path);
 	}
 
+	inline void cEntity::LMoveCamera(float dx, float dy, float dz)
+	{
+		MoveCamera(dx, dy, dz);
+	}
 
+	inline void cEntity::LSetCameraPos(float x, float y, float z)
+	{
+		SetCameraPos(x, y, z);
+	}
 }

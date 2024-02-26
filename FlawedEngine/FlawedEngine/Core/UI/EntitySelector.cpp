@@ -10,11 +10,11 @@ void FlawedEngine::cUIManager::SelectEntity()
 		float mouseY = CursorPos.y;
 
 		// Projection and view matrices
-		glm::mat4 projection = mCamera->Projection();
-		glm::mat4 view = mCamera->View();
+		glm::mat4 projection = mCamera.Projection();
+		glm::mat4 view = mCamera.View();
 
 		// Camera position in world space
-		glm::vec3 cameraPos = mCamera->Postion();
+		glm::vec3 cameraPos = mCamera.Postion();
 
 		float viewportX = mViewportPos.x; // The x coordinate of the top left corner of the viewport in pixels
 		float viewportY = mViewportPos.y; // The y coordinate of the top left corner of the viewport in pixels
@@ -60,7 +60,7 @@ void FlawedEngine::cUIManager::SelectEntity()
 
 		btCollisionWorld::ClosestRayResultCallback rayCallback(RayBegin, RayEnd);
 		dynamicWorld->rayTest(RayBegin, RayEnd, rayCallback);
-		if (mObjectMan->mMousePicking)
+		if (mObjectMan.mMousePicking)
 		{
 			if (rayCallback.hasHit())
 			{

@@ -5,19 +5,19 @@
 
 namespace FlawedEngine
 {
-
-
 	class cpCamera
 	{
 	public:
-		cpCamera(void* Window);
-		~cpCamera();
 
+		void InitCamera(void* Window);
 		void Compute();
+
 
 		glm::mat4 Projection();
 		glm::mat4 View();
 		glm::vec3 Postion();
+		void MoveCamera(float dx, float dy, float dz);
+		void SetPosition(float x, float y, float z);
 		glm::vec3 Front();
 		float NearPlane() { return near_plane; }
 		float FarPlane() { return far_plane; }
@@ -32,6 +32,8 @@ namespace FlawedEngine
 		void* mWindow;
 		glm::mat4 mProjectionMatrix;
 		glm::mat4 mViewMatrix;
+
+		float mDeltaTime;
 
 		float near_plane = .5f;
 		float far_plane = 100.f;
@@ -54,5 +56,19 @@ namespace FlawedEngine
 		bool isInputEnabled = true;
 		float LastX = 1600, LastY = 900;
 		bool DirLightPerspective = true;
+
+	public:
+		static cpCamera& get();
+		~cpCamera();
+
+		cpCamera(cpCamera const&) = delete;
+		void operator=(cpCamera const&) = delete;
+
+	private:
+		static cpCamera* sCameraInstance;
+
+		cpCamera();
+		cpCamera(cpCamera&);
+
 	};
 }

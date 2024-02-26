@@ -255,8 +255,15 @@ namespace FlawedEngine
 		GreateOrEqual
 	};
 
+	//ObjectManager
 	void* GetEntity(const char* name);
 	void* SpawnEntity(const char* name, eBasicObject type);
+
+	//Perspective Camera
+	void MoveCamera(float dx, float dy, float dz);
+	void SetCameraPos(float x, float y, float z);
+
+	//Physics
 
 	void SetDirectionalLightPos(const glm::vec3& Position);
 	glm::vec3& GetDirectionalLightPos();

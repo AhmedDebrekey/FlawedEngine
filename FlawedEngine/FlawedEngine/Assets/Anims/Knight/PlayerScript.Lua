@@ -1,7 +1,14 @@
 function Create()
     print("Knight Created")
     ChangeColor(0, 0, 0)
-    Movement = 0.03
+    x = Pos.getX()
+    y = Pos.getY()
+    z = Pos.getZ()
+
+    print(x, y, z)
+    SetCameraPos(x, y + 15, z - 15)
+
+    Movement = 0.3
     isMoving = false
 end
 
@@ -38,7 +45,7 @@ function Update()
         SpawnObject("Object", 0)
     end
 
-    local animationPath = "Assets\\Anims\\Knight\\"
+    local animationPath = "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\Knight\\"
     local animationName = "Idle.dae"
 
     local animations = {
@@ -75,5 +82,6 @@ function Update()
     end
 
     ChangeAnimation(animationName)
-	Move(moveX, 0, moveZ)    
+	Move(moveX, 0, moveZ)
+    MoveCamera(-moveX, 0, moveZ)
 end

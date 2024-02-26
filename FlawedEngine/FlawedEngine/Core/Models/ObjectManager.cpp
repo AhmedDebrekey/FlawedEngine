@@ -16,6 +16,7 @@ namespace FlawedEngine
 
 	cObjectManager::~cObjectManager()
 	{
+		delete sObjectManagerInstance;
 	}
 
 	void cObjectManager::Init(void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* CamFrustum, void* Graphics_API)

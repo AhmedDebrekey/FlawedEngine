@@ -26,6 +26,7 @@ function Update()
 	end
 
 	if IsKeyDown(75) then
+		MoveCamera(0.0, 0.0, -movementSpeed)
 		--Move(0, 0.0, -movementSpeed)
 		ApplyForce(0, 0.0, -Force)
 	end

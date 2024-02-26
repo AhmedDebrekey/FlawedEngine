@@ -4,7 +4,7 @@
 void FlawedEngine::cUIManager::RenderProperties()
 {
 	ImGui::Begin("Properties");
-	auto Entity = mObjectMan->GetObjectByName(mSelectedEntity.c_str());
+	auto Entity = mObjectMan.GetObjectByName(mSelectedEntity.c_str());
 	if (Entity)
 	{
 		bool ChangeName = ImGui::Button("Name");
@@ -15,7 +15,7 @@ void FlawedEngine::cUIManager::RenderProperties()
 		{
 			if (!((NewName != NULL) && (NewName[0] == '\0')))
 			{
-				mObjectMan->ChangeName(mSelectedEntity.c_str(), NewName);
+				mObjectMan.ChangeName(mSelectedEntity.c_str(), NewName);
 				mSelectedEntity = NewName;
 			}
 		}
@@ -24,10 +24,10 @@ void FlawedEngine::cUIManager::RenderProperties()
 			sModel LightModel = Entity->GetModel();
 			DrawVec3("Translation", LightModel.Translation, 0.0f);
 			Entity->ModelTransform(LightModel);
-			mObjectMan->ChangeLightPosition(mSelectedEntity.c_str(), LightModel.Translation);
+			mObjectMan.ChangeLightPosition(mSelectedEntity.c_str(), LightModel.Translation);
 
 			sLight* LightProps = nullptr;
-			LightProps = mObjectMan->GetLightProps(mSelectedEntity.c_str());
+			LightProps = mObjectMan.GetLightProps(mSelectedEntity.c_str());
 
 			ImGui::ColorEdit3(std::string("LightColor:##" + mSelectedEntity).c_str(), &LightProps->ambient.x);
 			Entity->SetColor(LightProps->ambient);
@@ -95,7 +95,7 @@ void FlawedEngine::cUIManager::RenderProperties()
 			if (Entity->mPhysics)
 			{
 				ImGui::Checkbox(std::string("Dynamic:##" + mSelectedEntity).c_str(), &Entity->mDynamic);
-				Entity->SetPhysics(Entity->Type, mObjectMan->GetPhysicsWorld());
+				Entity->SetPhysics(Entity->Type, mObjectMan.GetPhysicsWorld());
 				Entity->setDynamic(Entity->mDynamic);
 			}
 			else
@@ -109,10 +109,10 @@ void FlawedEngine::cUIManager::RenderProperties()
 
 		if (ImGui::Button("Remove"))
 		{
-			mObjectMan->RemoveObject(mSelectedEntity.c_str());
+			mObjectMan.RemoveObject(mSelectedEntity.c_str());
 		}
 
-		if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_Delete)) { mObjectMan->RemoveObject(mSelectedEntity.c_str()); }
+		if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_Delete)) { mObjectMan.RemoveObject(mSelectedEntity.c_str()); }
 
 		static ImGui::FileBrowser ScriptDialog;
 

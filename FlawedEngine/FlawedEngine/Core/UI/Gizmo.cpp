@@ -20,14 +20,14 @@ void FlawedEngine::cUIManager::RenderGizmo()
 	ImGuizmo::SetRect(m_ViewportBounds[0].x, m_ViewportBounds[0].y, m_ViewportBounds[1].x - m_ViewportBounds[0].x, m_ViewportBounds[1].y - m_ViewportBounds[0].y);
 
 	{
-		auto Entity = mObjectMan->GetObjectByName(mSelectedEntity.c_str());
+		auto Entity = mObjectMan.GetObjectByName(mSelectedEntity.c_str());
 		if (Entity)
 		{
 			sModel Model = Entity->GetModel();
 			ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(Model.Translation), glm::value_ptr(Model.Rotation), glm::value_ptr(Model.Scale), mTmpMatrix);
 
 			glm::mat4* Transform = Entity->GetModelMatrix();
-			ImGuizmo::Manipulate(glm::value_ptr(mCamera->View()), glm::value_ptr(mCamera->Projection()),
+			ImGuizmo::Manipulate(glm::value_ptr(mCamera.View()), glm::value_ptr(mCamera.Projection()),
 				(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, mTmpMatrix);
 
 			
@@ -42,11 +42,11 @@ void FlawedEngine::cUIManager::RenderGizmo()
 					{
 						char buffer[20];
 						sprintf_s(buffer, "Copy(%i)", Copies);
-						mObjectMan->LoadObject(Entity->mFilePath.c_str(), buffer);
+						mObjectMan.LoadObject(Entity->mFilePath.c_str(), buffer);
 						mSelectedEntity = buffer;
 						Copies++;
 
-						auto newEntity = mObjectMan->GetObjectByName(buffer);
+						auto newEntity = mObjectMan.GetObjectByName(buffer);
 						newEntity->mTransformation = Entity->mTransformation;
 
 					}
@@ -54,11 +54,11 @@ void FlawedEngine::cUIManager::RenderGizmo()
 					{
 						char buffer[20];
 						sprintf_s(buffer, "Copy(%i)", Copies);
-						mObjectMan->AddObject(Entity->Type, buffer);
+						mObjectMan.AddObject(Entity->Type, buffer);
 						mSelectedEntity = buffer;
 						Copies++;
 
-						auto newEntity = mObjectMan->GetObjectByName(buffer);
+						auto newEntity = mObjectMan.GetObjectByName(buffer);
 						newEntity->mTransformation = Entity->mTransformation;
 					}
 				}

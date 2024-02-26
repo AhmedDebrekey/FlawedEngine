@@ -1,6 +1,14 @@
 function Create()
     print("Knight Created")
     ChangeColor(0, 0, 0)
+    x = Pos.getX()
+    y = Pos.getY()
+    z = Pos.getZ()
+
+    print(x, y, z)
+    SetCameraPos(x, y + 20, z - 10)
+
+
     Movement = 0.03
     isMoving = false
 end
@@ -76,5 +84,5 @@ function Update()
 
     ChangeAnimation(animationName)
 	Move(moveX, 0, moveZ)
-    
+    MoveCamera(moveX, 0, moveZ)
 end

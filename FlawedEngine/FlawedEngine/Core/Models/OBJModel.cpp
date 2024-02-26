@@ -14,7 +14,6 @@ namespace FlawedEngine
 		mCollisionShapesArray = CollisionShapes;
 		mName = Name;
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
-		mObjectManager = (void*)(cObjectManager*)&cObjectManager::get();
 
 		if (!LoadModel(FilePath))
 		{

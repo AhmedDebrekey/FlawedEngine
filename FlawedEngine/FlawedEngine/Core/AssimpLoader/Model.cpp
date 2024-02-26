@@ -24,7 +24,6 @@ namespace FlawedEngine
 		mFilePath = FilePath;
 		mIsCostume = true;
 		mCamFrustum = CamFrustum;
-		mObjectManager = (void*)(cObjectManager*)&cObjectManager::get();
 	}
 	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
 	{

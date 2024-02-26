@@ -5,17 +5,25 @@
 
 namespace FlawedEngine
 {
-	cpCamera::cpCamera(void* Window)
-		:mWindow(Window)/*VOID PTR, convert to GLFWwindow later*/, mProjectionMatrix(glm::mat4(1.0f)), mViewMatrix(glm::mat4(1.0f))
+	cpCamera* cpCamera::sCameraInstance = nullptr;
+
+	cpCamera::cpCamera()
+		:mProjectionMatrix(glm::mat4(1.0f)), mViewMatrix(glm::mat4(1.0f))
 	{
-		int Width, Height;
-		auto GLFW_Window = (GLFWwindow*)mWindow;
-		glfwGetWindowSize(GLFW_Window, &Width, &Height);
-		mCamFrustum = CreateFrustum();
 	}
 
 	cpCamera::~cpCamera()
 	{
+		delete sCameraInstance;
+	}
+
+	void cpCamera::InitCamera(void* Window)
+	{
+		mWindow = Window;
+		int Width, Height;
+		auto GLFW_Window = (GLFWwindow*)mWindow;
+		glfwGetWindowSize(GLFW_Window, &Width, &Height);
+		mCamFrustum = CreateFrustum();
 	}
 
 	void cpCamera::Compute()
@@ -23,7 +31,7 @@ namespace FlawedEngine
 		auto GLFW_Window = (GLFWwindow*)mWindow;
 		static double LastTime = glfwGetTime();
 		double CurrentTime = glfwGetTime();
-		float DeltaTime = float(CurrentTime - LastTime);
+		mDeltaTime = float(CurrentTime - LastTime);
 
 		double xPos, yPos;
 		glfwGetCursorPos(GLFW_Window, &xPos, &yPos);
@@ -69,16 +77,16 @@ namespace FlawedEngine
 		glm::vec3 Upwards = glm::vec3(0.0f, 1.0f, 0.0f);
 		if (isInputEnabled)
 		{
-			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) { mPostion += mDirection * DeltaTime * mSpeed; }
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) { mPostion += mDirection * mDeltaTime * mSpeed; }
 
-			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) mPostion += mDirection * DeltaTime * mSpeed;
-			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_S)) mPostion -= mDirection * DeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_W)) mPostion += mDirection * mDeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_S)) mPostion -= mDirection * mDeltaTime * mSpeed;
 
-			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_D)) mPostion += mRight * DeltaTime * mSpeed;
-			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_A)) mPostion -= mRight * DeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_D)) mPostion += mRight * mDeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_A)) mPostion -= mRight * mDeltaTime * mSpeed;
 
-			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_E)) mPostion += Upwards * DeltaTime * mSpeed;
-			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_Q)) mPostion -= Upwards * DeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_E)) mPostion += Upwards * mDeltaTime * mSpeed;
+			if (ImGui::IsKeyDown(ImGuiKey::ImGuiKey_Q)) mPostion -= Upwards * mDeltaTime * mSpeed;
 		}
 		
 		float FoV = mFOV;
@@ -102,6 +110,7 @@ namespace FlawedEngine
 		LastTime = CurrentTime;
 	}
 
+
 	Frustum cpCamera::CreateFrustum()
 	{
 		Frustum     frustum;
@@ -124,4 +133,34 @@ namespace FlawedEngine
 	glm::vec3	cpCamera::Front()							{ return mDirection; }
 	float		cpCamera::FoV()								{ return mFOV;}
 	void		cpCamera::SetAspectRatio(float ratio)		{ mAspectRatio = ratio; }
+
+	void cpCamera::MoveCamera(float dx, float dy, float dz)
+	{
+		glm::vec3 forwardVector = glm::normalize(mDirection);
+		glm::vec3 rightVector = glm::normalize(mRight);
+		glm::vec3 upVector = glm::normalize(mUp);
+
+		glm::vec3 movementForward = forwardVector * dz;
+		glm::vec3 movementRight = rightVector * dx;
+		glm::vec3 movementUp = upVector * dy;
+
+		glm::vec3 totalMovement = movementForward + movementRight + movementUp;
+
+		mPostion += totalMovement;
+	}
+
+
+	void cpCamera::SetPosition(float x, float y, float z)
+	{
+		mPostion = glm::vec3(x, y, z);
+	}
+
+	cpCamera& cpCamera::get()
+	{
+		if (sCameraInstance == nullptr)
+		{
+			sCameraInstance = new cpCamera();
+		}
+		return *sCameraInstance;
+	}
 }

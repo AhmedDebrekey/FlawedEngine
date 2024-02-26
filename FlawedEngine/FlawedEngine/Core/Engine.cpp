@@ -15,7 +15,7 @@ namespace FlawedEngine
 			mActiveScene = mScenes.at(mScenes.size() - 1);
 		}
 
-		mUI.Init(mEngineWindow.GetWindow(), mActiveScene->GetCamera(), mActiveScene->GetObjectManager(), mPhysicsWorld, mGfxAPI.get());
+		mUI.Init(mEngineWindow.GetWindow(), mPhysicsWorld, mGfxAPI.get());
 		mActiveScene->SetUIFrameBuffer(mUI.GetFrameBuffer());
 	}
 

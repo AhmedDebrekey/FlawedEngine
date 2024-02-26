@@ -24,7 +24,7 @@ namespace FlawedEngine
 	class cUIManager
 	{
 	public:
-		void Init(void* Window, void* Camera, void* Manager, void* PhysicsWorld, void* GfxAPI);
+		void Init(void* Window, void* PhysicsWorld, void* GfxAPI);
 		void UpdateUI();
 		void RenderUI();
 		sFrameBuffer& GetFrameBuffer() { return mUIFramebuffer; }
@@ -73,8 +73,8 @@ namespace FlawedEngine
 		
 
 	private:
-		cObjectManager* mObjectMan = nullptr;
-		cpCamera* mCamera = nullptr;
+		cObjectManager& mObjectMan = cObjectManager::get();
+		cpCamera& mCamera = cpCamera::get();
 		void* mPhysicsWorld = nullptr;
 
 	private:

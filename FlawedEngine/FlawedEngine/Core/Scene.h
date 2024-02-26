@@ -33,7 +33,7 @@ namespace FlawedEngine
 		void* mWindow;
 		void* PhysicsWorld = nullptr;
 		void* mGfxAPI = nullptr;
-		cpCamera Camera;
+		cpCamera& Camera = cpCamera::get();
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
 	private:
 		std::string* mSelectedEntity;
