@@ -8,7 +8,7 @@ function Create()
     print(x, y, z)
     SetCameraPos(x, y + 15, z - 15)
 
-    Movement = 0.3
+    Movement = 0.1
     isMoving = false
 end
 

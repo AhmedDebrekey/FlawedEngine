@@ -83,6 +83,6 @@ function Update()
     end
 
     ChangeAnimation(animationName)
-	Move(moveX, 0, moveZ)
+	Apply(moveX, 0, moveZ)
     MoveCamera(moveX, 0, moveZ)
 end

@@ -63,14 +63,18 @@ namespace FlawedEngine
 		bool mDynamic = false;
 		bool mPhysics = false;
 		float mMass = 0.0f;
-		float mFricton = 0.5;
+		float mFricton = 0.5f;
 		float mRestitution = 0.0f;
+		glm::vec3 mAngularForce;
+		glm::vec3 mAABBOffset;
 		bool mDead = false;
 		eBasicObject Type = Cube;
 		sAABB mAABB;
+		bool mShowAABB = false;
 		bool isPhysicsSet = false;
 		btVector3 mInertia;
-		btCollisionShape* mCollisionShape;
+		btCompoundShape* mCollisionShape;
+		btCollisionShape* mOriginalCollisionShape;
 		btDiscreteDynamicsWorld* mPhysicsDynamicWorld;
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray;
 		std::string mName;
@@ -79,6 +83,7 @@ namespace FlawedEngine
 		glm::mat4* GetModelMatrix() { return &mModel; }
 		glm::vec3* GetColor() { return &mMaterial.Color; }
 		int GetActivationState() { return mRigidBody->getActivationState(); }
+		void ApplyAABBOffest(glm::vec3& offset);
 		void SetPhysics(eBasicObject Object, void* PhysicsWorld);
 		void SetCollisionShape(eBasicObject Object);
 		void setDynamic(bool IsDynamic);
@@ -105,6 +110,7 @@ namespace FlawedEngine
 		mVertexBuffer.clear();
 		mTextureCoords.clear();
 		mIndices.clear();
+		UnSetPhysics();
 	}
 
 	inline void cEntity::ModelTransform(sModel& model)
@@ -159,28 +165,34 @@ namespace FlawedEngine
 	inline void cEntity::ApplyForce(glm::vec3 Force)
 	{
 		if (!mRigidBody->isActive())
+		{
 			mRigidBody->activate(true);
+		}
 		btVector3 worldForce = btVector3(Force.x, Force.y, Force.z);
 		mRigidBody->applyCentralForce(worldForce);
 	}
 
 	inline void cEntity::SetCollisionShape(eBasicObject Object)
 	{
-		switch (Object) //if it is not set code will crash ofc
+		btTransform localTrans;
+		localTrans.setIdentity();
+		
+		switch (Object)
 		{
 		case FlawedEngine::Cube:
 		{
-			mCollisionShape = new btBoxShape(btVector3(btScalar(1.), btScalar(1.), btScalar(1.)));
+			mOriginalCollisionShape = new btBoxShape(btVector3(btScalar(1.), btScalar(1.), btScalar(1.)));
 		}
 		break;
 		case FlawedEngine::Sphere:
 		{
-			mCollisionShape = new btSphereShape(1.0);
+			mOriginalCollisionShape = new btSphereShape(1.0);
+
 		}
 		break;
 		case FlawedEngine::Custom:
 		{
-			mCollisionShape = new btBoxShape(btVector3(mAABB.mExtents.x, mAABB.mExtents.y, mAABB.mExtents.z));
+			mOriginalCollisionShape = new btBoxShape(btVector3(mAABB.mExtents.x, mAABB.mExtents.y, mAABB.mExtents.z));
 		}
 		break;
 		case FlawedEngine::Cone:
@@ -189,9 +201,11 @@ namespace FlawedEngine
 		case FlawedEngine::PointLight:
 		case FlawedEngine::SpotLight:
 		default:
-			mCollisionShape = new btBoxShape(btVector3(mAABB.mExtents.x, mAABB.mExtents.y, mAABB.mExtents.z));
+			mOriginalCollisionShape = new btBoxShape(btVector3(mAABB.mExtents.x, mAABB.mExtents.y, mAABB.mExtents.z));
 			break;
 		}
+		mCollisionShape = new btCompoundShape();
+		mCollisionShape->addChildShape(localTrans, mOriginalCollisionShape);
 	}
 
 	inline void cEntity::setDynamic(bool IsDynamic)
@@ -210,67 +224,86 @@ namespace FlawedEngine
 	{
 		if (isPhysicsSet)
 		{
+			mCollisionShapesArray->remove(mCollisionShape);
+			mCollisionShape->removeChildShape(0);
 			delete mRigidBody->getMotionState();
 			delete mRigidBody->getCollisionShape();
 			mPhysicsDynamicWorld->removeRigidBody(mRigidBody);
-			mCollisionShapesArray->remove(mCollisionShape);
+			delete mOriginalCollisionShape;
 			delete mRigidBody;
 			isPhysicsSet = false;
 		}
 	}
 
+	inline void cEntity::ApplyAABBOffest(glm::vec3& offset)
+	{
+		if (!mRigidBody && !mCollisionShape)
+			return;
+
+		mAABBOffset = offset;
+
+		btCollisionShape* child = mCollisionShape->getChildShape(0);
+		btTransform localTransform;
+		localTransform.setIdentity();
+		localTransform.setOrigin(btVector3(offset.x, offset.y, offset.z));
+		mCollisionShape->updateChildTransform(0, localTransform);
+	}
+
 	inline void cEntity::SetPhysics(eBasicObject Object, void* PhysicsWorld)
 	{
-		if (!isPhysicsSet)
-		{
-			glm::vec3 Trans = mTransformation.Translation;
-			glm::vec3 Rotation = mTransformation.Rotation;
-			glm::vec3 Scale = mTransformation.Scale;
+		if (isPhysicsSet)
+			return;
 
-			SetCollisionShape(Object);
-			//mCollisionShape = CalculateMeshCollision(scene);
+		glm::vec3 Trans = mTransformation.Translation;
+		glm::vec3 Rotation = mTransformation.Rotation;
+		glm::vec3 Scale = mTransformation.Scale;
 
-			btTransform ObjectTransform;
-			ObjectTransform.setIdentity();
-			ObjectTransform.setOrigin(btVector3(Trans.x, Trans.y, Trans.z));
+		SetCollisionShape(Object);
+		mAABBOffset = glm::vec3(0.0f);
 
-			btScalar mass(1.0);
+		btTransform ObjectTransform;
+		ObjectTransform.setIdentity();
+		ObjectTransform.setOrigin(btVector3(Trans.x, Trans.y, Trans.z));
 
-			mInertia = btVector3(0, 0, 0);
-			if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, mInertia);
+		btScalar mass(1.0);
 
-			btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
-			btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, mInertia);
-			rbInfo.m_startWorldTransform;
-			mRigidBody = new btRigidBody(rbInfo);
+		mInertia = btVector3(0, 0, 0);
+		if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, mInertia);
 
-			btTransform trans = mRigidBody->getCenterOfMassTransform();
-			btQuaternion transrot;
-			trans.getBasis().getRotation(transrot);
-			btQuaternion rotquat;
-			rotquat = rotquat.getIdentity();
-			rotquat.setEuler(glm::radians(Rotation.z), glm::radians(Rotation.y), glm::radians(Rotation.x));
-			transrot = rotquat * transrot;
-			trans.setRotation(transrot);
-			mRigidBody->setCenterOfMassTransform(trans);
 
-			mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
-			mRigidBody->setActivationState(DISABLE_DEACTIVATION);
-			//mRidigBody->setSleepingThresholds(0.2, 0.2);
-			mRigidBody->setRestitution(mRestitution);
-			mRigidBody->setFriction(mFricton);
+		btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, mInertia);
+		mRigidBody = new btRigidBody(rbInfo);
+		btTransform trans = mRigidBody->getCenterOfMassTransform();
+		btQuaternion transrot;
+		trans.getBasis().getRotation(transrot);
+		btQuaternion rotquat;
+		rotquat = rotquat.getIdentity();
+		rotquat.setEuler(glm::radians(Rotation.z), glm::radians(Rotation.y), glm::radians(Rotation.x));
+		transrot = rotquat * transrot;
+		trans.setRotation(transrot);
+		mRigidBody->setCenterOfMassTransform(trans);
+		
+		mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
+		mRigidBody->setActivationState(DISABLE_DEACTIVATION);
+		//mRidigBody->setSleepingThresholds(0.2, 0.2);
+		mRigidBody->setRestitution(mRestitution);
+		mRigidBody->setFriction(mFricton);
+		mRigidBody->setDamping(0.5, 0.5);
+		mAngularForce = glm::vec3(1.0f);
+		mRigidBody->setAngularFactor(btVector3(mAngularForce.x, mAngularForce.y, mAngularForce.z)); // Stop rotation around 0's
 
-			mPhysicsDynamicWorld->addRigidBody(mRigidBody);
-			mPhysicsDynamicWorld->updateSingleAabb(mRigidBody);
+		mPhysicsDynamicWorld->addRigidBody(mRigidBody);
+		mPhysicsDynamicWorld->updateSingleAabb(mRigidBody);
 
-			mCollisionShapesArray->push_back(mCollisionShape);
+		mCollisionShapesArray->push_back(mCollisionShape);
 
-			mCollisionShape->setUserPointer((void*)mName.data());
+		mCollisionShape->setUserPointer((void*)mName.data());
 
-			isPhysicsSet = true;
-			mPhysics = true;
-			mDynamic = false;
-		}
+		isPhysicsSet = true;
+		mPhysics = true;
+		mDynamic = false;
+		
 	}
 
 	inline void cEntity::SetupScripting(const char* Path, std::function<bool(int)>& InputFunc)
@@ -459,7 +492,9 @@ namespace FlawedEngine
 	inline void cEntity::LApplyForce(float x, float y, float z)
 	{
 		if (mPhysics)
+		{
 			ApplyForce(glm::vec3(x, y, z));
+		}
 	}
 
 	inline void cEntity::LApplyRelativeForce(float x, float y, float z)

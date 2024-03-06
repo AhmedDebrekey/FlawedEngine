@@ -77,11 +77,39 @@ void FlawedEngine::cUIManager::RenderProperties()
 				myscale = btVector3(scale.x, scale.y, scale.z);
 				Entity->mRigidBody->getCollisionShape()->setLocalScaling(myscale);
 
+				//AngularFactor..........
+				static glm::vec3 AngularForce = Entity->mAngularForce;
+				DrawVec3("AngularForce", AngularForce, 1.0f);
+				Entity->mAngularForce = AngularForce;
+				Entity->mRigidBody->setAngularFactor(btVector3(AngularForce.x, AngularForce.y, AngularForce.z));
+
+				glm::vec3 AABBOffset = Entity->mAABBOffset;
+				DrawVec3("AABBOffset", AABBOffset);
+				Entity->ApplyAABBOffest(AABBOffset);
+				
+
 				ImGui::Text("Activation State: %i", Entity->GetActivationState());
 
 				if (!Entity->mDynamic)
 				{
 					Entity->mRigidBody->setWorldTransform(Trans);
+				}
+
+				if (ImGui::Button(std::string("AABB:##" + mSelectedEntity).c_str()))
+					Entity->mShowAABB = !Entity->mShowAABB;
+
+				if (Entity->mShowAABB)
+				{
+					mObjectMan.AddObject(Cube, std::string("AABB" + Entity->mName).c_str());
+					auto aabb = mObjectMan.GetObjectByName(std::string("AABB" + Entity->mName).c_str());
+					if (aabb)
+					{
+						auto position = Entity->mAABB.mCenter;
+						auto scale = Entity->mAABB.mExtents;
+						sModel DefaultModel = { position + Entity->mTransformation.Translation, glm::vec3(0.0f, 0.0f, 0.0f), scale };
+						aabb->ModelTransform(DefaultModel);
+					}
+					
 				}
 			}
 

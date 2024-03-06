@@ -1,0 +1,160 @@
+{
+    "objects": {
+        "Cube(0)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    35.127899169921875,
+                    1.0,
+                    48.33089065551758
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Cube(1)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                0.800000011920929,
+                0.30000001192092896,
+                0.5
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    true
+                ],
+                "scriptPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\GameTest\\PhysicsMovement\\Controller.lua"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    16.95895004272461,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    2.2108118534088135,
+                    1.0000001192092896
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Light(0)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    12.683555603027344,
+                    14.354548454284668,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        }
+    }
+}
