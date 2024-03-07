@@ -20,6 +20,7 @@ namespace FlawedEngine
 		mCollisionShapesArray = CollisionShapes;
 		mName = Name;
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
+		mAABBOffset = glm::vec3(0.0f);
 		loadModel(FilePath);
 		mFilePath = FilePath;
 		mIsCostume = true;

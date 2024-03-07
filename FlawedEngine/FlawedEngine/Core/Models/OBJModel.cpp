@@ -14,6 +14,7 @@ namespace FlawedEngine
 		mCollisionShapesArray = CollisionShapes;
 		mName = Name;
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
+		mAABBOffset = glm::vec3(0.0f);
 
 		if (!LoadModel(FilePath))
 		{
@@ -27,14 +28,7 @@ namespace FlawedEngine
 
 	cOBJModel::~cOBJModel()
 	{
-		SetPhysics(Cube, mPhysicsDynamicWorld); //EXTREMELY BAD, but at least it makes sure that smth can get deleted and no unable to read memory, very probable that it will lead to memory leak ofc
-		//To recreate error, remove the line above, add an object, give physics then remove physics then delete object.
 
-		delete mRigidBody->getMotionState();
-		mRigidBody->getCollisionShape();
-		mPhysicsDynamicWorld->removeRigidBody(mRigidBody);
-		mCollisionShapesArray->remove(mCollisionShape);
-		delete mRigidBody;
 	}
 
 	bool cOBJModel::LoadModel(const char* FilePath)

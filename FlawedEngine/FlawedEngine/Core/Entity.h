@@ -49,6 +49,7 @@ namespace FlawedEngine
 		int mScriptingId;
 		lua_State* mLuaState = nullptr;
 		cEntity* GetEntityByName(const char* name);
+		void CallOnCollision(cEntity* entity);
 
 		//Serlizalizations
 		bool mIsCostume = false;
@@ -225,7 +226,8 @@ namespace FlawedEngine
 		if (isPhysicsSet)
 		{
 			mCollisionShapesArray->remove(mCollisionShape);
-			mCollisionShape->removeChildShape(0);
+			if (mCollisionShape->getNumChildShapes() > 0)
+				mCollisionShape->removeChildShape(0);
 			delete mRigidBody->getMotionState();
 			delete mRigidBody->getCollisionShape();
 			mPhysicsDynamicWorld->removeRigidBody(mRigidBody);
@@ -259,7 +261,6 @@ namespace FlawedEngine
 		glm::vec3 Scale = mTransformation.Scale;
 
 		SetCollisionShape(Object);
-		mAABBOffset = glm::vec3(0.0f);
 
 		btTransform ObjectTransform;
 		ObjectTransform.setIdentity();
@@ -298,7 +299,7 @@ namespace FlawedEngine
 
 		mCollisionShapesArray->push_back(mCollisionShape);
 
-		mCollisionShape->setUserPointer((void*)mName.data());
+		mCollisionShape->setUserPointer((void*)this);
 
 		isPhysicsSet = true;
 		mPhysics = true;
@@ -395,6 +396,14 @@ namespace FlawedEngine
 	{
 		cEntity* ptr = (cEntity*)GetEntity(name);			
 		return ptr;
+	}
+
+	inline void cEntity::CallOnCollision(cEntity* entity)
+	{
+		if (mHasScripting)
+		{
+			ScriptingManager.RunFunctionWithArgs(mScriptingId, "OnCollision", entity->mName);
+		}
 	}
 
 	inline void cEntity::LSetColor(float x, float y, float z)

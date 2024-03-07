@@ -99,6 +99,27 @@ namespace FlawedEngine
 		lua_pcall(L, 0, 0, 0);
 	}
 
+	void cScriptingManager::RunFunctionWithArgs(int ID, const std::string& FuncName, const std::string& args)
+	{
+		lua_State* L = GetLuaState(ID);
+		if (!L)
+		{
+			return;
+		}
+
+		lua_getglobal(L, FuncName.c_str());
+		if (!lua_isfunction(L, -1))
+		{
+			std::cout << "[ERROR LUA] " << FuncName << " is not a function!" << std::endl;
+			lua_pop(L, 1);
+			return;
+		}
+
+		lua_pushstring(L, args.c_str());
+
+		lua_pcall(L, 1, 0, 0);
+	}
+
 	void cScriptingManager::SpawnObject(const char* Name, int Type)
 	{
 		cObjectManager& ObjectMan = cObjectManager::get();

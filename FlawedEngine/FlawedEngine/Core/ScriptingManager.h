@@ -28,6 +28,7 @@ namespace FlawedEngine
 		bool LoadFile(int ID, const std::string& FileName);
 
 		void RunFunction(int ID, const std::string& FuncName);
+		void RunFunctionWithArgs(int ID, const std::string& FuncName, const std::string& args);
 
 		template<typename Function>
 		void RegisterFunctionInNamespace(int ID, const std::string& Namespace, const std::string& FuncName, Function funcptr)

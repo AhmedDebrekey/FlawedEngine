@@ -1,5 +1,5 @@
 #include "Physics.h"
-
+#include "../Entity.h"
 #include <iostream>
 
 namespace FlawedEngine
@@ -59,17 +59,10 @@ namespace FlawedEngine
 			const btCollisionObject* obA = static_cast<const btCollisionObject*>(contactManifold->getBody0());
 			const btCollisionObject* obB = static_cast<const btCollisionObject*>(contactManifold->getBody1());
 
-			int numContacts = contactManifold->getNumContacts();
-			for (int j = 0; j < numContacts; j++)
-			{
-				btManifoldPoint& pt = contactManifold->getContactPoint(j);
-				if (pt.getDistance() < 0.f)
-				{
-					const btVector3& ptA = pt.getPositionWorldOnA();
-					const btVector3& ptB = pt.getPositionWorldOnB();
-					const btVector3& normalOnB = pt.m_normalWorldOnB;
-				}
-			}
+			cEntity* entityA = (cEntity*)obA->getCollisionShape()->getUserPointer();
+			cEntity* entityB = (cEntity*)obB->getCollisionShape()->getUserPointer();
+			entityA->CallOnCollision(entityB);
+			//entityB->CallOnCollision(entityA);
 		}
 	}
 }

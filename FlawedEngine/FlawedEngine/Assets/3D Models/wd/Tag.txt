@@ -1,6 +1,0 @@
-﻿Game: The Walking Dead (Season 2)
-Subject: Kenny
-Copyright: Telltale Games.
-Model Ripper: Lilothestitch
-Hosting Permissions: The Models Resource
-Notes: Special thanks to Random Talking Bush for supplying the 3ds Max Script for these models! I used 3ds Max 2015 to scale the model 100x larger.

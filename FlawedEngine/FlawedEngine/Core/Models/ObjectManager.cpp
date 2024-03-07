@@ -206,12 +206,15 @@ namespace FlawedEngine
 		SceneObjects.insert(std::move(Type));
 
 		if(auto Entity = GetObjectByName(NewName))
+		{
+			Entity->mName = NewName;
 			if (bool isLight = Entity->Type == PointLight)
 			{
 				auto LightType = PointLights.extract(OldName);
 				LightType.key() = NewName;
 				PointLights.insert(std::move(LightType));
 			}
+		}
 	}
 
 	void cObjectManager::ChangeLightQuadratic(const char* Name, float Quadratic)

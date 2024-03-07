@@ -105,11 +105,11 @@ void FlawedEngine::cUIManager::RenderProperties()
 					if (aabb)
 					{
 						auto position = Entity->mAABB.mCenter;
-						auto scale = Entity->mAABB.mExtents;
+						auto scale = Entity->mAABB.mExtents * Entity->mTransformation.Scale;
 						sModel DefaultModel = { position + Entity->mTransformation.Translation, glm::vec3(0.0f, 0.0f, 0.0f), scale };
 						aabb->ModelTransform(DefaultModel);
 					}
-					
+					Entity->mShowAABB = false;
 				}
 			}
 
