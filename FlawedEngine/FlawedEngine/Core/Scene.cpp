@@ -53,7 +53,7 @@ namespace FlawedEngine
 		Camera.Compute();
 		sTransform tCamera { Camera.Postion() , Camera.Front(), Camera.Projection(), Camera.View()};
 
-		/*glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glBindFramebuffer(GL_FRAMEBUFFER, mDepthMapFBO);
 
 		glClear(GL_DEPTH_BUFFER_BIT);
@@ -72,7 +72,7 @@ namespace FlawedEngine
 		glCullFace(GL_BACK);
 
 		glViewport(0, 0, mUIFrameBuffer->ViewportSize.x, mUIFrameBuffer->ViewportSize.y);
-		glBindFramebuffer(GL_FRAMEBUFFER, mUIFrameBuffer->FBO);*/
+		glBindFramebuffer(GL_FRAMEBUFFER, mUIFrameBuffer->FBO);
 
 		ObjectMan.RenderObjects(tCamera);
 	}
