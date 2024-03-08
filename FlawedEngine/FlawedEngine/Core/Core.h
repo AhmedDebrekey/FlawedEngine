@@ -258,12 +258,15 @@ namespace FlawedEngine
 	//ObjectManager
 	void* GetEntity(const char* name);
 	void* SpawnEntity(const char* name, eBasicObject type);
+	void RemoveEntity(const char* name);
+	std::function<bool(int)>& GetInputFunc();
 
 	//Perspective Camera
 	void MoveCamera(float dx, float dy, float dz);
 	void SetCameraPos(float x, float y, float z);
 
 	//Physics
+	void* GetPhxsWorld();
 
 	void SetDirectionalLightPos(const glm::vec3& Position);
 	glm::vec3& GetDirectionalLightPos();

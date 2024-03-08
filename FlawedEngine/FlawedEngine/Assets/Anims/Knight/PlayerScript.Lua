@@ -45,7 +45,7 @@ function Update()
         SpawnObject("Object", 0)
     end
 
-    local animationPath = "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\Knight\\"
+    local animationPath = "Assets\\Anims\\Knight\\"
     local animationName = "Idle.dae"
 
     local animations = {

@@ -11,6 +11,7 @@ function Create()
 end
 
 function Update()
+
     if IsKeyDown(73) then
         ApplyForce(0, Force, 0)
     end

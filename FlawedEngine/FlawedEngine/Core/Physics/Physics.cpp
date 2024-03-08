@@ -62,7 +62,7 @@ namespace FlawedEngine
 			cEntity* entityA = (cEntity*)obA->getCollisionShape()->getUserPointer();
 			cEntity* entityB = (cEntity*)obB->getCollisionShape()->getUserPointer();
 			entityA->CallOnCollision(entityB);
-			//entityB->CallOnCollision(entityA);
+			entityB->CallOnCollision(entityA);
 		}
 	}
 }

@@ -28,6 +28,7 @@ namespace FlawedEngine
 		mGfxAPI = Graphics_API;
 
 		mSkybox.Setup(mGfxAPI);
+		mInputFunc = std::bind(&cObjectManager::isKeyDown, this, std::placeholders::_1);
 	}
 
 	void cObjectManager::ShadowRender(sTransform& LightPerspective, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
@@ -336,8 +337,7 @@ namespace FlawedEngine
 			if (object["scripting"]["hasScript"][0] == true)
 			{
 				std::string ScriptPath = object["scripting"]["scriptPath"][0];
-				std::function<bool(int)> InputFunc = std::bind(&cObjectManager::isKeyDown, this, std::placeholders::_1);
-				Entity->SetupScripting(ScriptPath.c_str(), InputFunc);
+				Entity->SetupScripting(ScriptPath.c_str(), mInputFunc);
 			}
 
 			if (object["animation"]["hasAnimation"][0] == true)

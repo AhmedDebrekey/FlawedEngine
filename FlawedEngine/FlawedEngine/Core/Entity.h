@@ -38,14 +38,21 @@ namespace FlawedEngine
 		void LScale(float x, float y, float z);
 		void LApplyForce(float x, float y, float z);
 		void LApplyRelativeForce(float x, float y, float z);
+		void LSetPhysicsState(bool state);
+		void LSetDynamic(bool state);
 		cEntity* LSpawnObject(const char* name, uint8_t type);
 		float LGetX();
 		float LGetY();
 		float LGetZ();
+		float LRotGetX();
+		float LRotGetY();
+		float LRotGetZ();
 		std::string LGetName();
 		void LChangeAnim(const char* Path);
 		void LMoveCamera(float x, float y, float z);
 		void LSetCameraPos(float x, float y, float z);
+		void LSetScript(const char* Path);
+		void LRemoveObject();
 		int mScriptingId;
 		lua_State* mLuaState = nullptr;
 		cEntity* GetEntityByName(const char* name);
@@ -163,6 +170,8 @@ namespace FlawedEngine
 		mRigidBody->applyCentralForce(relativeForce);
 	}
 
+
+
 	inline void cEntity::ApplyForce(glm::vec3 Force)
 	{
 		if (!mRigidBody->isActive())
@@ -213,6 +222,9 @@ namespace FlawedEngine
 	{
 		if (!IsDynamic)
 		{
+			mRigidBody->setLinearVelocity(btVector3(0, 0, 0));
+			mRigidBody->setAngularVelocity(btVector3(0, 0, 0));
+
 			mRigidBody->setCollisionFlags(mRigidBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
 		}
 		else
@@ -342,6 +354,8 @@ namespace FlawedEngine
 		std::function<void(const char*)> charInputfunc = std::bind(&cEntity::LChangeAnim, this, std::placeholders::_1);
 		ScriptingManager.RegisterFunction(mScriptingId, "ChangeAnimation", charInputfunc);
 
+		charInputfunc = std::bind(&cEntity::LSetScript, this, std::placeholders::_1);
+		ScriptingManager.RegisterFunction(mScriptingId, "AddScript", charInputfunc);
 
 		std::function<cEntity* (const char*)> entityfunc = std::bind(&cEntity::GetEntityByName, this, std::placeholders::_1);
 		ScriptingManager.RegisterFunction(mScriptingId, "GetEntity", entityfunc);
@@ -360,6 +374,24 @@ namespace FlawedEngine
 		posFunc = std::bind(&cEntity::LGetZ, this);
 		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Pos", "getZ", posFunc);
 
+		posFunc = std::bind(&cEntity::LRotGetX, this);
+		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Rot", "getX", posFunc);
+		
+		posFunc = std::bind(&cEntity::LRotGetY, this);
+		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Rot", "getY", posFunc);
+		
+		posFunc = std::bind(&cEntity::LRotGetZ, this);
+		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Rot", "getZ", posFunc);
+
+		std::function<void(bool)> phxsState = std::bind(&cEntity::LSetPhysicsState, this, std::placeholders::_1);
+		ScriptingManager.RegisterFunction(mScriptingId, "SetPhysics", phxsState);
+
+		phxsState = std::bind(&cEntity::LSetDynamic, this, std::placeholders::_1);
+		ScriptingManager.RegisterFunction(mScriptingId, "SetDynamic", phxsState);
+
+		std::function<void()> removeFunc = std::bind(&cEntity::LRemoveObject, this);
+		ScriptingManager.RegisterFunction(mScriptingId, "Remove", removeFunc);
+
 		ScriptingManager.LoadFile(mScriptingId, Path);
 
 		luabridge::getGlobalNamespace(mLuaState)
@@ -370,8 +402,18 @@ namespace FlawedEngine
 			.addFunction("Scale", &cEntity::LScale)
 			.addFunction("ApplyForce", &cEntity::LApplyForce)
 			.addFunction("ApplyRelativeForce", &cEntity::LApplyRelativeForce)
+			.addFunction("SetPhysics", &cEntity::LSetPhysicsState)
+			.addFunction("SetDynamic", &cEntity::LSetDynamic)
 			.addFunction("ChangeColor", &cEntity::LSetColor)
 			.addFunction("ChangeAnimation", &cEntity::LChangeAnim)
+			.addFunction("AddScript", &cEntity::LSetScript)
+			.addFunction("Remove", &cEntity::LRemoveObject)
+			.addFunction("pgetX", &cEntity::LGetX)
+			.addFunction("pgetY", &cEntity::LGetY)
+			.addFunction("pgetZ", &cEntity::LGetZ)
+			.addFunction("rgetX", &cEntity::LRotGetX)
+			.addFunction("rgetY", &cEntity::LRotGetY)
+			.addFunction("rgetZ", &cEntity::LRotGetZ)
 			.endClass();
 
 		mScriptPath = Path;
@@ -460,7 +502,7 @@ namespace FlawedEngine
 	inline void cEntity::LRotate(float x, float y, float z)
 	{
 		// Update the rotation
-		mTransformation.Rotation += glm::vec3(x, y, z);
+		mTransformation.Rotation = glm::vec3(x, y, z);
 
 		// Ensure that the rotation values are within the range of 0 to 360 degrees
 		mTransformation.Rotation.x = fmod(mTransformation.Rotation.x, 360.0f);
@@ -475,14 +517,14 @@ namespace FlawedEngine
 			mRigidBody->getMotionState()->getWorldTransform(Trans);
 
 			// Create a quaternion for rotation
-			btQuaternion rot;
-			rot.setEuler(mTransformation.Rotation.x, mTransformation.Rotation.y, mTransformation.Rotation.z);
+			btQuaternion quat = btQuaternion(glm::radians(mTransformation.Rotation.y), glm::radians(mTransformation.Rotation.x), glm::radians(mTransformation.Rotation.z));
 
 			// Set the rotation of the transformation
-			Trans.setRotation(rot);
+			Trans.setRotation(quat);
 
 			// Set the world transform
 			mRigidBody->getMotionState()->setWorldTransform(Trans);
+			mRigidBody->setWorldTransform(Trans);
 		}
 	}
 
@@ -510,6 +552,26 @@ namespace FlawedEngine
 	{
 		if (mPhysics)
 			ApplyRelativeForce(glm::vec3(x, y, z));
+	}
+
+	inline void cEntity::LSetPhysicsState(bool state)
+	{
+		mPhysics = state;
+
+		if (mPhysics)
+		{
+			SetPhysics(Type, GetPhxsWorld());
+		}
+		else
+		{
+			UnSetPhysics();
+		}
+	}
+
+	inline void cEntity::LSetDynamic(bool state)
+	{
+		mDynamic = state;
+		setDynamic(mDynamic);
 	}
 
 	inline float cEntity::LGetX()
@@ -548,6 +610,21 @@ namespace FlawedEngine
 		return mTransformation.Translation.z;
 	}
 
+	inline float cEntity::LRotGetX()
+	{
+		return mTransformation.Rotation.x;
+	}	
+	
+	inline float cEntity::LRotGetY()
+	{
+		return mTransformation.Rotation.y;
+	}
+	
+	inline float cEntity::LRotGetZ()
+	{
+		return mTransformation.Rotation.z;
+	}
+
 	inline std::string cEntity::LGetName()
 	{
 		return mName;
@@ -566,5 +643,15 @@ namespace FlawedEngine
 	inline void cEntity::LSetCameraPos(float x, float y, float z)
 	{
 		SetCameraPos(x, y, z);
+	}
+
+	inline void cEntity::LSetScript(const char* Path)
+	{
+		SetupScripting(Path, GetInputFunc());
+	}
+	
+	inline void cEntity::LRemoveObject()
+	{
+		RemoveEntity(mName.c_str());
 	}
 }

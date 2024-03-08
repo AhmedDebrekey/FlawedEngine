@@ -219,6 +219,25 @@ void FlawedEngine::cUIManager::RenderProperties()
 				Entity->ChangeAnimation(ChangeAnimDialog.GetSelected().string().c_str());
 				ChangeAnimDialog.ClearSelected();
 			}
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM"))
+				{
+					const wchar_t* path = (const wchar_t*)payload->Data;
+					std::filesystem::path dataPath(path);
+
+					std::string ext = dataPath.extension().string();
+					std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
+
+					if (ext == ".fbx" || ext == ".gltf" || ext == ".dae")
+					{
+						Entity->ChangeAnimation(dataPath.string().c_str());
+
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
 		}
 
 

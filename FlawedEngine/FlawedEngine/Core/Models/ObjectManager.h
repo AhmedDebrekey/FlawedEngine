@@ -40,6 +40,7 @@ namespace FlawedEngine
 		void Save(const std::string& FileName);
 		void LoadSave(const std::string& FileName);
 		bool isKeyDown(int key);
+		std::function<bool(int)> mInputFunc;
 
 		bool mMousePicking = true;
 
