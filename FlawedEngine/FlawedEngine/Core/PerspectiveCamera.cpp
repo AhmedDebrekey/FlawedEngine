@@ -155,6 +155,39 @@ namespace FlawedEngine
 		mPostion = glm::vec3(x, y, z);
 	}
 
+	void cpCamera::RotateCamera(float pitch, float yaw, float roll)
+	{
+		// Convert the pitch, yaw and roll angles from degrees to radians
+		float pitchRad = glm::radians(pitch);
+		float yawRad = glm::radians(yaw);
+		float rollRad = glm::radians(roll);
+
+		// Update the horizontal and vertical angles based on the yaw and pitch
+		mHorizontalAngle += yawRad;
+		mVerticalAngle += pitchRad;
+
+		// Ensure the vertical angle is within the range [-1.0f, 1.0f]
+		if (mVerticalAngle >= 1.0f) mVerticalAngle = 1.0f;
+		if (mVerticalAngle <= -1.0f) mVerticalAngle = -1.0f;
+	}
+
+	void cpCamera::SetRotation(float pitch, float yaw, float roll)
+	{
+		// Convert the pitch, yaw and roll angles from degrees to radians
+		float pitchRad = glm::radians(pitch);
+		float yawRad = glm::radians(yaw);
+		float rollRad = glm::radians(roll);
+
+		// Update the horizontal and vertical angles based on the yaw and pitch
+		mHorizontalAngle = yawRad;
+		mVerticalAngle = pitchRad;
+
+		// Ensure the vertical angle is within the range [-1.0f, 1.0f]
+		if (mVerticalAngle >= 1.0f) mVerticalAngle = 1.0f;
+		if (mVerticalAngle <= -1.0f) mVerticalAngle = -1.0f;
+	}
+
+
 	cpCamera& cpCamera::get()
 	{
 		if (sCameraInstance == nullptr)

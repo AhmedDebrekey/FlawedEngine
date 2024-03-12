@@ -24,6 +24,10 @@ function Update()
         Rotate(0, rotation, 0)
     end
 
+    if IsKeyDown(66) then --B
+        SetCameraRot(20, -40, 0)
+    end
+
 end
 
 function OnCollision(otherEntity)

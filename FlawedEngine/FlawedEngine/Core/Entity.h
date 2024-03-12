@@ -51,6 +51,8 @@ namespace FlawedEngine
 		void LChangeAnim(const char* Path);
 		void LMoveCamera(float x, float y, float z);
 		void LSetCameraPos(float x, float y, float z);
+		void LRotateCamera(float pitch, float yaw, float roll);
+		void LSetCameraRot(float pitch, float yaw, float roll);
 		void LSetScript(const char* Path);
 		void LRemoveObject();
 		int mScriptingId;
@@ -345,6 +347,12 @@ namespace FlawedEngine
 		funcptr = std::bind(&cEntity::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		ScriptingManager.RegisterFunction(mScriptingId, "ChangeColor", funcptr);
 		
+		funcptr = std::bind(&cEntity::LRotateCamera, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(mScriptingId, "RotateCamera", funcptr);
+		
+		funcptr = std::bind(&cEntity::LSetCameraRot, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(mScriptingId, "SetCameraRot", funcptr);
+
 		funcptr = std::bind(&cEntity::LMoveCamera, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		ScriptingManager.RegisterFunction(mScriptingId, "MoveCamera", funcptr);
 		
@@ -638,6 +646,16 @@ namespace FlawedEngine
 	inline void cEntity::LMoveCamera(float dx, float dy, float dz)
 	{
 		MoveCamera(dx, dy, dz);
+	}
+	
+	inline void cEntity::LRotateCamera(float pitch, float yaw, float roll)
+	{
+		RotateCamera(pitch, yaw, roll);
+	}
+
+	inline void cEntity::LSetCameraRot(float pitch, float yaw, float roll)
+	{
+		SetCameraRotation(pitch, yaw, roll);
 	}
 
 	inline void cEntity::LSetCameraPos(float x, float y, float z)

@@ -264,6 +264,8 @@ namespace FlawedEngine
 	//Perspective Camera
 	void MoveCamera(float dx, float dy, float dz);
 	void SetCameraPos(float x, float y, float z);
+	void RotateCamera(float pitch, float yaw, float roll);
+	void SetCameraRotation(float pitch, float yaw, float roll);
 
 	//Physics
 	void* GetPhxsWorld();
