@@ -36,6 +36,8 @@ namespace FlawedEngine
 		void ChangeName(const char* OldName, const char* NewName);
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
 		void ToggleSkyBox() { mSkybox.ToggleSkyBox(); };
+		void addToRemoveList(const char*);
+		void eraseRemoveList();
 
 		void Save(const std::string& FileName);
 		void LoadSave(const std::string& FileName);
@@ -51,6 +53,7 @@ namespace FlawedEngine
 	private:
 		std::unordered_map<std::string, std::shared_ptr<cEntity>> SceneObjects;
 		std::unordered_map<std::string, sLight> PointLights;
+		std::vector<std::string> mRemoveList;
 
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
 

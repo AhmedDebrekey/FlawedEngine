@@ -32,6 +32,7 @@ end
 function OnCollision(otherEntityName)
     if otherEntityName ~= "Player" then
         resetBullet()
+        Remove()
     end
 end
 

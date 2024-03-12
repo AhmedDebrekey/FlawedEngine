@@ -45,6 +45,8 @@ namespace FlawedEngine
 		mSkybox.RenderSkyBox(tCamera);
 		uint32_t CubeMapTexture = mSkybox.GetSkyTexture();
 
+		eraseRemoveList();
+
 		for (auto& Object : SceneObjects)
 		{
 			Object.second->Update();
@@ -250,6 +252,21 @@ namespace FlawedEngine
 			return nullptr;
 
 		return Object->second;
+	}
+
+	void cObjectManager::addToRemoveList(const char* entityName)
+	{
+		mRemoveList.push_back(entityName);
+	}
+
+	void cObjectManager::eraseRemoveList()
+	{
+		for (auto& entity : mRemoveList)
+		{
+			RemoveObject(entity.c_str());
+		}
+
+		mRemoveList.clear();
 	}
 
 	void cObjectManager::Save(const std::string& FileName)

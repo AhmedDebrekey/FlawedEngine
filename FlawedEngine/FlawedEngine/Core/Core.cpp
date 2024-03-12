@@ -29,6 +29,7 @@ namespace FlawedEngine
 	{
 		cObjectManager& manager = cObjectManager::get();
 		//manager.RemoveObject(name); // Can not remove the object in the middle of everything obvously
+		manager.addToRemoveList(name);
 	}
 
 	std::function<bool(int)>& GetInputFunc()
