@@ -49,7 +49,7 @@
                 </li>
                 <li>
                     <strong>ApplyForce(float x, float y, float z)</strong>
-                    <p class="function-description">Applies a force to the object along the specified direction.</p>
+                    <p class="function-description">Applies a force to the object along the specified world direction.</p>
                     <div class="example-box">
                         <div class="example-label">Example</div>
                         <p class="example-text">ApplyForce(0.0, 10.0, 0.0)</p>
@@ -112,6 +112,22 @@
                     </div>
                 </li>
                 <li>
+                    <strong>CamPitch() - returns float</strong>
+                    <p class="function-description">Returns the pitch of the camera.</p>
+                    <div class="example-box">
+                        <div class="example-label">Example</div>
+                        <p class="example-text">pitch = CamPitch()</p>
+                    </div>
+                </li>
+                <li>
+                    <strong>CamYaw() - returns float</strong>
+                    <p class="function-description">Returns the yaw of the camera.</p>
+                    <div class="example-box">
+                        <div class="example-label">Example</div>
+                        <p class="example-text">yaw = CamYaw()</p>
+                    </div>
+                </li>
+                <li>
                     <strong>SetCameraRot(float pitch, float yaw, float roll)</strong>
                     <p class="function-description">Sets the rotation of the camera to the specified orientation.</p>
                     <div class="example-box">
@@ -147,7 +163,7 @@
                     </div>
                 </li>
                 <li>
-                    <strong>SpawnObject(string, int) - returns entity object</strong>
+                    <strong>SpawnObject(string name, int) - returns entity object</strong>
                     <p class="function-description">Spawns an object of the specified type and returns the entity object.</p>
                     <div class="example-box">
                         <div class="example-label">Example</div>
@@ -157,6 +173,22 @@
                             <br>
                             <br>
                             myEntity:ChangeAnimation("Assets/Anims/myAnimation.dae")
+                        </p>
+                    </div>
+                </li>
+                <li>
+                    <strong>LoadObject(string filepath, string name) - returns entity object</strong>
+                    <p class="function-description">Spawns an object of from the path and returns the entity object.</p>
+                    <div class="example-box">
+                        <div class="example-label">Example</div>
+                        <p class="example-text">
+                            myModel = LoadObject("Assets/Models/myModel.obj", "myModelName")
+                            <br>
+                            . <br>
+                            . <br>
+                            . <br>
+                            <br>
+                            myModel:ChangeColor(0, 0, 0)
                         </p>
                     </div>
                 </li>
@@ -200,6 +232,33 @@
         <section id="Engine Functions">
             <h2>Predfined functions</h2>
             <ul>
+                <li>
+                    <strong>OnCreate()</strong>
+                    <p class="function-description">This function is called once when the script is loaded.</p>
+                    <div class="example-box">
+                        <div class="example-label">Example</div>
+                        <p class="example-text">
+                            function OnCreate() <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;ChangeColor(1, 0, 0) <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;SetPhysics(true) <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;SetDynamic(true) <br>
+                            end
+                        </p>
+                    </div>
+                </li>
+                <li>
+                    <strong>Update()</strong>
+                    <p class="function-description">This function is called once every frame.</p>
+                    <div class="example-box">
+                        <div class="example-label">Example</div>
+                        <p class="example-text">
+                            function Update() <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Move(1, 0, 0) <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;Rotate(0, 1, 0) <br>
+                            end
+                        </p>
+                    </div>
+                </li>
                 <li>
                     <strong>OnCollision(otherEntityName)</strong>
                     <p class="function-description">This function is called when an object collieds with current object.</p>

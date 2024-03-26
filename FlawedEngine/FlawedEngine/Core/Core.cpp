@@ -21,8 +21,13 @@ namespace FlawedEngine
 
 	void* SpawnEntity(const char* name, eBasicObject type)
 	{
-
 		manager.AddObject(type, name);
+		return manager.GetObjectByName(name).get();
+	}
+
+	void* LoadEntity(const char* path, const char* name)
+	{
+		manager.LoadObject(path, name);
 		return manager.GetObjectByName(name).get();
 	}
 
@@ -58,6 +63,16 @@ namespace FlawedEngine
 	void SetCameraRotation(float pitch, float yaw, float roll)
 	{
 		camera.SetRotation(pitch, yaw, roll);
+	}
+
+	float GetCamYaw()
+	{
+		return camera.GetYaw();
+	}
+
+	float GetCamPitch()
+	{
+		return camera.GetPitch();
 	}
 
 	void SetCameraPos(float x, float y, float z)

@@ -367,7 +367,7 @@ namespace FlawedEngine
 
 	bool cObjectManager::isKeyDown(int key)
 	{
-		if (ImGui::IsKeyDown((ImGuiKey)key)) {	return true; }
+		if (ImGui::IsKeyPressed((ImGuiKey)key)) {	return true; }
 		return false;
 	}
 

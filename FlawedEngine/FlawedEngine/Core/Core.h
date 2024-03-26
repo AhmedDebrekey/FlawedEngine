@@ -258,6 +258,7 @@ namespace FlawedEngine
 	//ObjectManager
 	void* GetEntity(const char* name);
 	void* SpawnEntity(const char* name, eBasicObject type);
+	void* LoadEntity(const char* path, const char* name);
 	void RemoveEntity(const char* name);
 	std::function<bool(int)>& GetInputFunc();
 
@@ -266,6 +267,8 @@ namespace FlawedEngine
 	void SetCameraPos(float x, float y, float z);
 	void RotateCamera(float pitch, float yaw, float roll);
 	void SetCameraRotation(float pitch, float yaw, float roll);
+	float GetCamYaw();
+	float GetCamPitch();
 
 	//Physics
 	void* GetPhxsWorld();

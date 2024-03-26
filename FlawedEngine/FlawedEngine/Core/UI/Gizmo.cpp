@@ -85,7 +85,7 @@ void FlawedEngine::cUIManager::RenderGizmo()
 						Trans.setOrigin(FinalTranslation);
 
 						//Rotation........
-						btQuaternion quat = btQuaternion(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
+						btQuaternion quat = btQuaternion(glm::radians(rotation.y), glm::radians(rotation.x), glm::radians(rotation.z));
 						Trans.setRotation(quat);
 						Entity->mRigidBody->getMotionState()->setWorldTransform(Trans);
 

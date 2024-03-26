@@ -20,6 +20,8 @@ namespace FlawedEngine
 		void SetPosition(float x, float y, float z);
 		void RotateCamera(float pitch, float yaw, float roll);
 		void SetRotation(float pitch, float yaw, float roll);
+		float GetYaw();
+		float GetPitch();
 		glm::vec3 Front();
 		float NearPlane() { return near_plane; }
 		float FarPlane() { return far_plane; }

@@ -41,12 +41,16 @@ namespace FlawedEngine
 		void LSetPhysicsState(bool state);
 		void LSetDynamic(bool state);
 		cEntity* LSpawnObject(const char* name, uint8_t type);
+		cEntity* LLoadObject(const char* path, const char* name);
 		float LGetX();
 		float LGetY();
 		float LGetZ();
 		float LRotGetX();
 		float LRotGetY();
 		float LRotGetZ();
+		float LCamPitch();
+		float LCamYaw();
+		float LCamRoll();
 		std::string LGetName();
 		void LChangeAnim(const char* Path);
 		void LMoveCamera(float x, float y, float z);
@@ -222,11 +226,12 @@ namespace FlawedEngine
 
 	inline void cEntity::setDynamic(bool IsDynamic)
 	{
+		if (!isPhysicsSet)
+			return;
 		if (!IsDynamic)
 		{
 			mRigidBody->setLinearVelocity(btVector3(0, 0, 0));
 			mRigidBody->setAngularVelocity(btVector3(0, 0, 0));
-
 			mRigidBody->setCollisionFlags(mRigidBody->getCollisionFlags() | btCollisionObject::CF_STATIC_OBJECT);
 		}
 		else
@@ -294,7 +299,7 @@ namespace FlawedEngine
 		trans.getBasis().getRotation(transrot);
 		btQuaternion rotquat;
 		rotquat = rotquat.getIdentity();
-		rotquat.setEuler(glm::radians(Rotation.z), glm::radians(Rotation.y), glm::radians(Rotation.x));
+		rotquat.setEuler(glm::radians(Rotation.y), glm::radians(Rotation.x), glm::radians(Rotation.z));
 		transrot = rotquat * transrot;
 		trans.setRotation(transrot);
 		mRigidBody->setCenterOfMassTransform(trans);
@@ -371,6 +376,9 @@ namespace FlawedEngine
 		std::function < cEntity* (const char*, uint8_t)> spawnEntityfunc = std::bind(&cEntity::LSpawnObject, this, std::placeholders::_1, std::placeholders::_2);
 		ScriptingManager.RegisterFunction(mScriptingId, "SpawnObject", spawnEntityfunc);
 
+		std::function <cEntity* (const char*, const char*)> loadEntityfunc = std::bind(&cEntity::LLoadObject, this, std::placeholders::_1, std::placeholders::_2);
+		ScriptingManager.RegisterFunction(mScriptingId, "LoadObject", loadEntityfunc);
+
 		ScriptingManager.RegisterFunction(mScriptingId, "IsKeyDown", InputFunc);
 
 		std::function<float()> posFunc = std::bind(&cEntity::LGetX, this);
@@ -390,6 +398,12 @@ namespace FlawedEngine
 		
 		posFunc = std::bind(&cEntity::LRotGetZ, this);
 		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Rot", "getZ", posFunc);
+
+		posFunc = std::bind(&cEntity::LCamPitch, this);
+		ScriptingManager.RegisterFunction(mScriptingId, "CamPitch", posFunc);
+		
+		posFunc = std::bind(&cEntity::LCamYaw, this);
+		ScriptingManager.RegisterFunction(mScriptingId, "CamYaw", posFunc);
 
 		std::function<void(bool)> phxsState = std::bind(&cEntity::LSetPhysicsState, this, std::placeholders::_1);
 		ScriptingManager.RegisterFunction(mScriptingId, "SetPhysics", phxsState);
@@ -464,6 +478,12 @@ namespace FlawedEngine
 	inline cEntity* cEntity::LSpawnObject(const char* name, uint8_t type)
 	{
 		cEntity* ptr = (cEntity*)SpawnEntity(name, (eBasicObject)type);
+		return ptr;
+	}
+
+	inline cEntity* cEntity::LLoadObject(const char* path, const char* name)
+	{
+		cEntity* ptr = (cEntity*)LoadEntity(path, name);
 		return ptr;
 	}
 
@@ -631,6 +651,16 @@ namespace FlawedEngine
 	inline float cEntity::LRotGetZ()
 	{
 		return mTransformation.Rotation.z;
+	}
+
+	inline float cEntity::LCamPitch()
+	{
+		return GetCamPitch();
+	}
+
+	inline float cEntity::LCamYaw()
+	{
+		return GetCamYaw();
 	}
 
 	inline std::string cEntity::LGetName()

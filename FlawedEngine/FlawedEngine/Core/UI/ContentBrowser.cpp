@@ -73,9 +73,22 @@ void FlawedEngine::cUIManager::RenderContentBrowser()
 		if (ImGui::MenuItem("Add Script"))
 		{
 			std::ofstream ofs(mCurrentDir / "New Script.lua");
+			//add script template into the file
+			ofs << "function Create()\n"
+				<< "\n"
+				<< "end\n"
+				<< "\n"
+				<< "function Update()\n"
+				<< "\n"
+				<< "end\n"
+				<< "\n"
+				<< "function OnCollision(otherEntity)\n"
+				<< "\n"
+				<< "end";
 			ofs.close();
 			GetFilesandFolders(mCurrentDir);
 		}
+
 
 		if (ImGui::MenuItem("Paste"))
 		{

@@ -61,14 +61,16 @@ void FlawedEngine::cUIManager::RenderProperties()
 				btVector3 FinalTranslation(Translation.x, Translation.y, Translation.z);
 				Trans.setOrigin(FinalTranslation);
 
-				//Rotation........
-				glm::vec3 untranslation, rotation, unscale;
-				ImGuizmo::DecomposeMatrixToComponents(mTmpMatrix, glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale));
+				//Rotation........ CANT FOR THE LIFE OF ME FIGURE OUT WHY IT DOESNT WORK
+				glm::vec3 rotation = Entity->mTransformation.Rotation;
+				//ImGuizmo::DecomposeMatrixToComponents(mTmpMatrix, glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale));
 				DrawVec3("Rotation", rotation);
-				ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale), mTmpMatrix);
-				btQuaternion quat = btQuaternion(glm::radians(rotation.y), glm::radians(rotation.x), glm::radians(rotation.z));
-				Trans.setRotation(quat);
-				Entity->mRigidBody->getMotionState()->setWorldTransform(Trans);
+				Entity->mTransformation.Rotation = rotation;
+				//ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale), mTmpMatrix);
+				btQuaternion quat = btQuaternion(glm::radians(Entity->mTransformation.Rotation.y), glm::radians(Entity->mTransformation.Rotation.x), glm::radians(Entity->mTransformation.Rotation.z));
+				//Trans.setRotation(quat);
+				//Entity->mRigidBody->getMotionState()->setWorldTransform(Trans);
+				//Entity->mRigidBody->setWorldTransform(Trans);
 
 				//Scale..........
 				btVector3 myscale = Entity->mRigidBody->getCollisionShape()->getLocalScaling();
@@ -76,6 +78,7 @@ void FlawedEngine::cUIManager::RenderProperties()
 				DrawVec3("Scale", scale, 1.0f);
 				myscale = btVector3(scale.x, scale.y, scale.z);
 				Entity->mRigidBody->getCollisionShape()->setLocalScaling(myscale);
+				
 
 				//AngularFactor..........
 				static glm::vec3 AngularForce = Entity->mAngularForce;

@@ -1,0 +1,524 @@
+{
+    "objects": {
+        "Light(0)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    23.685611724853516,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Path0": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    50.0
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Path1": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -10.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    50.0
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "Path2": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    10.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    50.0
+                ]
+            },
+            "type": [
+                0
+            ]
+        },
+        "PoliceCar1": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "filepath": [
+                "Assets\\GameTest\\EndlessRunner\\PoliceCar_1396.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    true
+                ],
+                "scriptPath": [
+                    "Assets\\GameTest\\EndlessRunner\\Obstacle.lua"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -10.0,
+                    5.0,
+                    2.9082822799682617
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.5,
+                    1.5,
+                    1.5
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "PoliceCar2": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                0.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "Assets\\GameTest\\EndlessRunner\\PoliceCar_1396.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    true
+                ],
+                "scriptPath": [
+                    "Assets\\GameTest\\EndlessRunner\\Obstacle.lua"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    5.0,
+                    28.0428466796875
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.5,
+                    1.5,
+                    1.5
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "PoliceCar3": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "filepath": [
+                "Assets\\GameTest\\EndlessRunner\\PoliceCar_1396.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    true
+                ],
+                "scriptPath": [
+                    "Assets\\GameTest\\EndlessRunner\\Obstacle.lua"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    5.0,
+                    1.6274547576904297
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.5,
+                    1.5,
+                    1.5
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "PoliceCar4": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "filepath": [
+                "Assets\\GameTest\\EndlessRunner\\PoliceCar_1396.obj"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    true
+                ],
+                "scriptPath": [
+                    "Assets\\GameTest\\EndlessRunner\\Obstacle.lua"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -10.0,
+                    5.0,
+                    -39.41450500488281
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    1.5,
+                    1.5,
+                    1.5
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "Run Forward": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\GameTest\\EndlessRunner\\player\\Run Forward.dae"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\GameTest\\EndlessRunner\\player\\Run Forward.dae"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    true
+                ],
+                "scriptPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\GameTest\\EndlessRunner\\EndlessPlayer.lua"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    6.0,
+                    -20.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.10000000149011612,
+                    0.10000000149011612,
+                    0.10000000149011612
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "Wall": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    6.0,
+                    -51.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    5.0,
+                    1.0
+                ]
+            },
+            "type": [
+                0
+            ]
+        }
+    }
+}

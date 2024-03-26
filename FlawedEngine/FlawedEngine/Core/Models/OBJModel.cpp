@@ -102,6 +102,10 @@ namespace FlawedEngine
 			Model = glm::rotate(Model, Rotation.w, glm::vec3(Rotation.x, Rotation.y, Rotation.z));
 			Model = glm::scale(Model, glm::vec3(Scale.getX(), Scale.getY(), Scale.getZ()));
 			Trans.Model = Model;
+			mModel = Model;
+			mTransformation.Translation = glm::vec3(ObjectTransform.getX(), ObjectTransform.getY(), ObjectTransform.getZ());
+			mTransformation.Rotation = Rotation;
+			mTransformation.Scale = glm::vec3(Scale.getX(), Scale.getY(), Scale.getZ());
 		}
 		else
 			Trans.Model = mModel;

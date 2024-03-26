@@ -28,14 +28,14 @@
                     false
                 ],
                 "scriptPath": [
-                    ""
+                    "Empty"
                 ]
             },
             "transform": {
                 "position": [
-                    -5.440761089324951,
-                    0.054570771753787994,
-                    4.876770973205566
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "rotation": [
                     0.0,
@@ -43,16 +43,16 @@
                     0.0
                 ],
                 "scale": [
-                    11.319962501525879,
+                    9.869999885559082,
                     1.0,
-                    36.90274429321289
+                    9.869999885559082
                 ]
             },
             "type": [
                 0
             ]
         },
-        "Sphere(0)": {
+        "Cube(1)": {
             "animation": {
                 "animationPath": [
                     ""
@@ -73,87 +73,35 @@
                 false
             ],
             "physics": [
-                true
-            ],
-            "scripting": {
-                "hasScript": [
-                    false
-                ],
-                "scriptPath": [
-                    ""
-                ]
-            },
-            "transform": {
-                "position": [
-                    -2.827495574951172,
-                    8.336068153381348,
-                    1.1762531995773315
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scale": [
-                    4.25,
-                    4.25,
-                    4.25
-                ]
-            },
-            "type": [
-                1
-            ]
-        },
-        "Sphere(1)": {
-            "animation": {
-                "animationPath": [
-                    ""
-                ],
-                "hasAnimation": [
-                    false
-                ]
-            },
-            "color": [
-                1.0,
-                0.0,
-                0.0
-            ],
-            "filepath": [
-                ""
-            ],
-            "isCostume": [
                 false
             ],
-            "physics": [
-                true
-            ],
             "scripting": {
                 "hasScript": [
-                    false
+                    true
                 ],
                 "scriptPath": [
-                    ""
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\GameTest\\Impulse.lua"
                 ]
             },
             "transform": {
                 "position": [
-                    -2.827101230621338,
-                    10.245478630065918,
-                    -5.371171951293945
-                ],
-                "rotation": [
                     0.0,
-                    -0.0,
+                    10.6885986328125,
                     0.0
                 ],
+                "rotation": [
+                    -141.3658447265625,
+                    54.030452728271484,
+                    141.18719482421875
+                ],
                 "scale": [
+                    0.999989926815033,
                     1.0,
-                    1.0,
-                    1.0
+                    0.9999999403953552
                 ]
             },
             "type": [
-                1
+                0
             ]
         }
     }

@@ -171,6 +171,16 @@ namespace FlawedEngine
 		if (mVerticalAngle <= -1.0f) mVerticalAngle = -1.0f;
 	}
 
+	float cpCamera::GetYaw()
+	{
+		return glm::degrees(mHorizontalAngle);
+	}
+
+	float cpCamera::GetPitch()
+	{
+		return glm::degrees(mVerticalAngle);
+	}
+
 	void cpCamera::SetRotation(float pitch, float yaw, float roll)
 	{
 		// Convert the pitch, yaw and roll angles from degrees to radians
