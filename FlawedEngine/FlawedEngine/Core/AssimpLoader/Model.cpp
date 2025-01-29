@@ -26,7 +26,7 @@ namespace FlawedEngine
 		mIsCostume = true;
 		mCamFrustum = CamFrustum;
 	}
-	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
+	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject)
 	{
 
 		if (mRigidBody != nullptr && mRigidBody->getMotionState() && isPhysicsSet)
@@ -68,11 +68,11 @@ namespace FlawedEngine
 				std::vector<glm::mat4>	emptyVector;
 				if (mAnimator)
 				{
-					mMeshes[i].Draw(Trans, mMaterial, LightPositions, SkyBox, Shader, mAnimator->GetFinalBoneMatrices());
+					mMeshes[i].Draw(Trans, mMaterial, LightPositions, SkyBox, mGeometryShader, mLightShader, mAnimator->GetFinalBoneMatrices(), GeometryObject);
 				}
 				else
 				{
-					mMeshes[i].Draw(Trans, mMaterial, LightPositions, SkyBox, Shader, emptyVector);
+					mMeshes[i].Draw(Trans, mMaterial, LightPositions, SkyBox, mGeometryShader, mLightShader, emptyVector, GeometryObject);
 				}
 			}
 		}
@@ -184,7 +184,7 @@ namespace FlawedEngine
 
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 		{
-			std::cout << "ERROR::ASSIMP::" << importer.GetErrorString() << std::endl;
+			EngineLog("ASSIMP: " + std::string(importer.GetErrorString()), Error);
 			return;
 		}
 
@@ -194,10 +194,11 @@ namespace FlawedEngine
 
 		processNode(scene->mRootNode, scene);
 
-		Shader.Create("Core/Models/Shaders/Vertex.glsl", "Core/Models/Shaders/Fragment.glsl");
+		mGeometryShader.Create("Core/Models/Shaders/Vertex.glsl", "Core/Models/Shaders/Fragment.glsl");
+		mLightShader.Create("Core/Models/Shaders/LightVertex.glsl", "Core/Models/Shaders/LightFragment.glsl");
 		mShadowShader.Create("Core/Models/Shaders/ShadowVertex.glsl", "Core/Models/Shaders/ShadowFragment.glsl");
-		Shader.Bind();
-		Shader.Unbind();
+		mGeometryShader.Bind();
+		mGeometryShader.Unbind();
 	}
 
 	void cModel::CalculateAABB(const aiScene* scene)
@@ -414,7 +415,7 @@ namespace FlawedEngine
 		}
 		else
 		{
-			std::cout << "Texture failed to load at path: " << path << std::endl;
+			EngineLog("Texture failed to load at path: " + std::string(path), Error);
 			stbi_image_free(data);
 		}
 

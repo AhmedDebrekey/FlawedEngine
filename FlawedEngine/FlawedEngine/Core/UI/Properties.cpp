@@ -182,7 +182,7 @@ void FlawedEngine::cUIManager::RenderProperties()
 			AnimationDialog.SetTypeFilters({ ".obj", ".gltf", ".fbx", ".dae" });
 			if (AnimationDialog.HasSelected())
 			{
-				std::cout << "Selected filename" << AnimationDialog.GetSelected().string() << std::endl;
+				EngineLog("Selected Filename: " + AnimationDialog.GetSelected().string(), Info);
 				Entity->AddAnimation(AnimationDialog.GetSelected().string().c_str());
 				AnimationDialog.ClearSelected();
 			}
@@ -218,7 +218,8 @@ void FlawedEngine::cUIManager::RenderProperties()
 
 			if (ChangeAnimDialog.HasSelected())
 			{
-				std::cout << "Selected filename" << ChangeAnimDialog.GetSelected().string() << std::endl;
+				EngineLog("Selected Filename: " + ChangeAnimDialog.GetSelected().string(), Info);
+
 				Entity->ChangeAnimation(ChangeAnimDialog.GetSelected().string().c_str());
 				ChangeAnimDialog.ClearSelected();
 			}

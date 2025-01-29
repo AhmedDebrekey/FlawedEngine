@@ -55,6 +55,10 @@ namespace FlawedEngine
         virtual void BindBufferSubData(eBufferType type, int offset, size_t size, void* data) override;
         virtual void VertexAttribProps(unsigned int index, size_t size, eVertexType type, bool normalized, size_t stride, const void* data) override;
 
+        // G-buffer operations
+        virtual sGBufferObjects CreateGeometryBuffer(unsigned int width, unsigned int height) override;
+        virtual void DeleteGeometryBuffer(sGBufferObjects& GBuffer) override;
+
         // Vertex array management
         virtual unsigned int CreateVertexArray() override;
         virtual void BindVertexArray(unsigned int VAO) override;

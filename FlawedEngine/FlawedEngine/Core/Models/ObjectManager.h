@@ -13,7 +13,9 @@ namespace FlawedEngine
 		void Init(void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, void* CamFrustum, void* Graphics_API);
 		
 		void ShadowRender(sTransform& LightPerspective, glm::mat4& LightSpaceMatrix, uint32_t DepthMap);
-		void RenderObjects(sTransform& tCamera);
+		void RenderObjects(sTransform& tCamera, sGBufferObjects* GeometryObject);
+
+		void LightingPass(sTransform& tCamera, sGBufferObjects* GeometryObject);
 
 		void AddObject(eBasicObject ObjectType, const char* Name);
 		void LoadObject(const char* FilePath, const char* Name);
@@ -58,9 +60,11 @@ namespace FlawedEngine
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
 
 		sTransform tCamera;
+		cShader mLightShader;
+		unsigned int quadVAO;
 
 		void* mPhysicsWorld = nullptr;
-	
+
 	private:
 
 		void* mCamFrustum = nullptr;

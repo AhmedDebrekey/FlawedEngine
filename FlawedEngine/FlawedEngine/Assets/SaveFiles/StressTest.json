@@ -1,0 +1,732 @@
+{
+    "objects": {
+        "BigSmoke": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\big_smoke_is_sexy\\scene.gltf"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\big_smoke_is_sexy\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    17.7156925201416,
+                    0.0,
+                    -9.147375106811523
+                ],
+                "rotation": [
+                    -179.99989318847656,
+                    -5.008955668017734e-06,
+                    -179.99989318847656
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "Knight": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\Knight\\Standing Walk Left.dae"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\Knight\\Knight.dae"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    6.065062999725342,
+                    -1.1571091818041168e-05,
+                    -12.423062324523926
+                ],
+                "rotation": [
+                    -179.99989318847656,
+                    -5.008955668017734e-06,
+                    -179.99989318847656
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "Light(0)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -3.8946533203125,
+                    6.04986572265625,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Light(1)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    7.129150867462158,
+                    6.118225574493408,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Light(2)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -16.200681686401367,
+                    16.43310546875,
+                    -2.103121519088745
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Light(3)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Light(4)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    2.476928472518921,
+                    16.8076171875,
+                    -10.509360313415527
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Light(5)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    21.8543701171875,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Light(6)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -13.507801055908203,
+                    0.0,
+                    -16.226781845092773
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Light(7)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    12.276764869689941,
+                    0.00048828125,
+                    -17.296098709106445
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Pilot": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\pilot_avatar\\scene.gltf"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\pilot_avatar\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -25.778181076049805,
+                    -2.773878804873675e-05,
+                    -15.683710098266602
+                ],
+                "rotation": [
+                    -179.99989318847656,
+                    -5.008956122765085e-06,
+                    -179.99989318847656
+                ],
+                "scale": [
+                    10.0,
+                    10.0,
+                    10.0
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "STrooper": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\dancing_stormtrooper\\scene.gltf"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\dancing_stormtrooper\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -16.388334274291992,
+                    0.0,
+                    -11.505056381225586
+                ],
+                "rotation": [
+                    -179.99989318847656,
+                    -5.008955668017734e-06,
+                    -179.99989318847656
+                ],
+                "scale": [
+                    50.0,
+                    50.0,
+                    50.0
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "Swat": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\Swat\\Rifle Idle.dae"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\Swat\\Swat.dae"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -6.182724519021576e-07,
+                    -1.2871391845692415e-05,
+                    -7.072484016418457
+                ],
+                "rotation": [
+                    -179.99989318847656,
+                    -5.008955668017734e-06,
+                    -179.99989318847656
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "dancing_vampire": {
+            "animation": {
+                "animationPath": [
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\vampire\\dancing_vampire.dae"
+                ],
+                "hasAnimation": [
+                    true
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\Anims\\vampire\\dancing_vampire.dae"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -15.498291015625,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    180.0,
+                    0.0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "type": [
+                7
+            ]
+        }
+    }
+}

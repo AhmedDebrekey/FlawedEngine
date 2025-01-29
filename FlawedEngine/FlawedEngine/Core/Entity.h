@@ -13,7 +13,7 @@ namespace FlawedEngine
 	class cEntity
 	{
 	public:
-		virtual void Render(sTransform&, std::unordered_map<std::string, sLight>&, uint32_t*) = 0;
+		virtual void Render(sTransform&, std::unordered_map<std::string, sLight>&, uint32_t*, sGBufferObjects*) = 0;
 		virtual void ShadowRender(sTransform&, glm::mat4&, uint32_t) = 0;
 		virtual void Update(/*Should be taking in the timestep*/) = 0;
 		virtual void AddAnimation(const char*) = 0;

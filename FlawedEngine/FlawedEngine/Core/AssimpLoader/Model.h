@@ -53,7 +53,7 @@ namespace FlawedEngine
             mAnimationsMap.clear();
 
         }
-        virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox) override;
+        virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject) override;
         virtual void ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap) override;
         virtual void Update(/*Should be taking in the timestep*/) override;
 
@@ -85,7 +85,8 @@ namespace FlawedEngine
         std::vector<cMesh>    mMeshes;
         std::string mDirectory;
         bool gammaCorrection;
-        cShader Shader;
+        cShader mGeometryShader;
+        cShader mLightShader;
         cShader mShadowShader;
 
     private:

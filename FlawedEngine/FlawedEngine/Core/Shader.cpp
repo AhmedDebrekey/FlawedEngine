@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include "Core.h"
 
 #include <fstream>
 #include <sstream>
@@ -41,7 +42,7 @@ namespace FlawedEngine
         }
         catch (std::ifstream::failure e)
         {
-            std::cout << "[ERROR] {ShaderFile} Could not be read successfully" << std::endl;
+            EngineLog("Shader File could not be read successfully", Error);
         }
         const char* vShaderCode = vertexCode.c_str();
         const char* fShaderCode = fragmentCode.c_str();
@@ -58,7 +59,7 @@ namespace FlawedEngine
         if (!vertexSuccess)
         {
             glGetShaderInfoLog(vertexShaderObject, 512, NULL, vertexInfoLog);
-            std::cout << "[ERROR] {VertexShader}: " << vertexInfoLog << std::endl;
+            EngineLog("Vertex Shader" + std::string(vertexInfoLog), Error);
         }
 
         fragmentShaderObject = glCreateShader(GL_FRAGMENT_SHADER);
@@ -69,7 +70,7 @@ namespace FlawedEngine
         if (!fragmentSuccess)
         {
             glGetShaderInfoLog(fragmentShaderObject, 512, NULL, fragmentInfoLog);
-            std::cout << "[ERROR] {FragmentShader}: " << fragmentInfoLog << std::endl;
+            EngineLog("Fragment Shader" + std::string(fragmentInfoLog), Error);
         }
 
         m_ShaderObject = glCreateProgram();
@@ -81,7 +82,7 @@ namespace FlawedEngine
         if (!programSuccess)
         {
             glGetProgramInfoLog(m_ShaderObject, 512, NULL, programInfoLog);
-            std::cout << "[ERROR] {ShaderProgram}: " << programInfoLog << std::endl;
+            EngineLog(" Shader Program " + std::string(programInfoLog), Error);
         }
 
         glDeleteShader(vertexShaderObject);
@@ -134,8 +135,9 @@ namespace FlawedEngine
             return m_UniformCache[name];
 
         int location = glGetUniformLocation(m_ShaderObject, name.c_str());
+
         if (location == -1)
-            std::cout << "[Warning]: Uniform '" << name << "' does not exist!" << std::endl;
+            EngineLog("Uniform '" + name + "' does not exist! Shader ID: " + std::to_string(m_ShaderObject), Warning);
 
         m_UniformCache[name] = location;
         return location;

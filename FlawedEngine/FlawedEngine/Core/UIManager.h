@@ -28,6 +28,7 @@ namespace FlawedEngine
 		void UpdateUI();
 		void RenderUI();
 		sFrameBuffer& GetFrameBuffer() { return mUIFramebuffer; }
+		sGBufferObjects& GetGeometryBuffer() { return mGBuffer; }
 
 	private:
 		void InitRendering();
@@ -38,6 +39,8 @@ namespace FlawedEngine
 		void SetImGuiStyle();
 
 	private:
+
+		sGBufferObjects mGBuffer;
 		uint32_t mFrameBuffer;
 		uint32_t mTextureColorBuffer;
 		uint32_t mRenderBufferObject;

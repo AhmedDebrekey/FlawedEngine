@@ -18,7 +18,7 @@ namespace FlawedEngine
 
 		if (!LoadModel(FilePath))
 		{
-			std::cout << "Failed To Load 3D Model from: " << FilePath << std::endl;
+			EngineLog("Fauled to Load 3D Model From" + std::string(FilePath), Error);
 		}
 
 		Populate();
@@ -79,7 +79,7 @@ namespace FlawedEngine
 	}
 
 	float Matrix[16];
-	void cOBJModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
+	void cOBJModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject)
 	{
 		if (mRigidBody != nullptr && mRigidBody->getMotionState() && isPhysicsSet)
 		{

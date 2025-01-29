@@ -14,10 +14,9 @@ namespace FlawedEngine
 		setupMesh();
 	}
 
-	void cMesh::Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox, cShader& Shader, std::vector<glm::mat4> FinalBoneMatricies)
-	{
-        
-        Shader.Bind();
+	void cMesh::Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox, cShader& GeometryShader, cShader& LightShader, std::vector<glm::mat4> FinalBoneMatricies, sGBufferObjects* GeometryObject)
+	{        
+        GeometryShader.Bind();
         mGfxAPI->BindVertexArray(VAO);
         unsigned int diffuseNr = 1;
         unsigned int specularNr = 1;
@@ -34,91 +33,36 @@ namespace FlawedEngine
             else if (name == "texture_normal")
                 number = std::to_string(normalNr++);
 
-            Shader.SetInt((name + number), i);
+            GeometryShader.SetInt((name + number), i);
             mGfxAPI->ActiveTexture(i);
             mGfxAPI->BindTexture(mTextures[i].ID);
             //std::cout << "Name: " << (name + number) << " ActiveTexture0 + " << i  << " Texture ID: " << mTextures[i].ID << std::endl << std::endl;
         }
         
-        //ModelRenderer
-        int Iteration = 0;
 
-        Shader.SetInt("LightSize", Lights.size());
-        for (auto& Light : Lights)
-        {
-            auto CurrLight = Light.second;
+        GeometryShader.SetMat4f("Projection", Trans.Projection);
+        GeometryShader.SetMat4f("View", Trans.View);
+        GeometryShader.SetMat4f("Model", Trans.Model);
 
-            char buffer[64];
-
-            sprintf_s(buffer, "pointLights[%i].position", Iteration);
-            Shader.SetVec3(buffer, CurrLight.position);
-
-            sprintf_s(buffer, "pointLights[%i].ambient", Iteration);
-            Shader.SetVec3(buffer, CurrLight.ambient);
-
-            sprintf_s(buffer, "pointLights[%i].diffuse", Iteration);
-            Shader.SetVec3(buffer, CurrLight.diffuse);
-
-            sprintf_s(buffer, "pointLights[%i].specular", Iteration);
-            Shader.SetVec3(buffer, CurrLight.specular);
-
-            sprintf_s(buffer, "pointLights[%i].constant", Iteration);
-            Shader.SetFloat(buffer, CurrLight.constant);
-
-            sprintf_s(buffer, "pointLights[%i].linear", Iteration);
-            Shader.SetFloat(buffer, CurrLight.linear);
-
-            sprintf_s(buffer, "pointLights[%i].quadratic", Iteration);
-            Shader.SetFloat(buffer, CurrLight.quadratic);
-            Iteration++;
-        }
-
-        //create a struct, populate that struct, then use that struct to populate the uniform buffer. Does not have to be a struct obv.
-
-        mGfxAPI->BindBuffer(eBufferType::Uniform, DirectionalLightUBO);
-        mGfxAPI->BindBufferSubData(eBufferType::Uniform, 0, DirectionalLights.size() * sizeof(glm::vec4), &DirectionalLights[0]);
-
-        Shader.SetMat4f("Projection", Trans.Projection);
-        Shader.SetMat4f("View", Trans.View);
-        Shader.SetMat4f("Model", Trans.Model);
-        Shader.SetVec3("viewPos", Trans.Position);
-        
-        Shader.SetMat4f("lightSpaceMatrix", mLightSpaceMatrix);
-
-        Shader.SetVec3("material.ambient", Mat.Color);
-        Shader.SetVec3("material.diffuse", Mat.Diffuse);
-        Shader.SetVec3("material.specular", Mat.Specular);
-        Shader.SetFloat("material.shininess", Mat.Shininess);
-        Shader.SetFloat("material.reflectivity", Mat.Reflectivity);
-       
         if (!FinalBoneMatricies.empty())
         {
             mGfxAPI->BindBuffer(eBufferType::Uniform, AnimationUBO);
             mGfxAPI->BindBufferSubData(eBufferType::Uniform, 0, sizeof(glm::mat4) * MAX_BONES, &FinalBoneMatricies[0]);
-            Shader.SetBool("UBOSET", true);
+            GeometryShader.SetBool("UBOSET", true);
         }
         else
         {
-            Shader.SetBool("UBOSET", false);
+            GeometryShader.SetBool("UBOSET", false);
         }
 
         mGfxAPI->BindBufferBase(eBufferType::Uniform, 0, AnimationUBO);
-        mGfxAPI->BindBufferBase(eBufferType::Uniform, 1, DirectionalLightUBO);
 
-        mGfxAPI->BindBuffer(eBufferType::Index, EBO);
-        mGfxAPI->ActiveTexture(mTextures.size());
-
-        mGfxAPI->BindTexture(*SkyBox, eTextureType::CubeMap);
-        Shader.SetInt("skybox", mTextures.size());
-
-        mGfxAPI->ActiveTexture(mTextures.size() + 1); //depth
-        mGfxAPI->BindTexture(mDepthMap);
-        Shader.SetInt("shadowMap", mTextures.size() + 1);
-
+        glDisable(GL_BLEND); glEnable(GL_DEPTH_TEST); glDepthFunc(GL_LESS);
         mGfxAPI->DrawElements(mIndices.size());
 
         mGfxAPI->ActiveTexture(mTextures.size() + 1); //depth
         mGfxAPI->BindTexture(0);
+
 
         mGfxAPI->BindTexture(0, eTextureType::CubeMap);
         for (unsigned int i = 0; i < mTextures.size(); i++)
@@ -131,7 +75,9 @@ namespace FlawedEngine
         mGfxAPI->BindBufferBase(eBufferType::Uniform, 0, 0); // unbind the UBO after drawing the object
         mGfxAPI->BindBufferBase(eBufferType::Uniform, 1, 0); // unbind the UBO after drawing the object
         mGfxAPI->BindVertexArray(0);
-        Shader.Unbind();
+        GeometryShader.Unbind();
+
+        // 
     }
 
     void cMesh::ShadowDraw(sTransform& Trans, cShader& Shader, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)

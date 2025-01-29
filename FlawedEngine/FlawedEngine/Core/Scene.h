@@ -8,6 +8,9 @@
 #include "PerspectiveCamera.h"
 #include "Models/ObjectManager.h"
 
+#include "Graphics/OpenGLAPI.h"
+
+
 
 namespace FlawedEngine
 {
@@ -27,6 +30,7 @@ namespace FlawedEngine
 		void SetUIFrameBuffer(sFrameBuffer& FrameBuffer) { mUIFrameBuffer = &FrameBuffer; }
 
 		bool isKeyDown(int key);
+
 	private:
 		cObjectManager& ObjectMan = cObjectManager::get();
 
@@ -43,5 +47,7 @@ namespace FlawedEngine
 		uint32_t mDepthMapFBO	= 0;
 		uint32_t mDepthMap		= 0;
 		sFrameBuffer* mUIFrameBuffer = nullptr;
+	private:
+		sGBufferObjects mGeometryObject;
 	};
 }

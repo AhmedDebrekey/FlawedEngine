@@ -18,7 +18,7 @@ namespace FlawedEngine
         cGraphicsAPI* mGfxAPI = nullptr;
 
         cMesh(std::vector<sVertex> vertices, std::vector<unsigned int> indices, std::vector<sTexture> textures, cGraphicsAPI* Graphics_API);
-        void Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox, cShader& Shader, std::vector<glm::mat4> FinalBoneMatricies);
+        void Draw(sTransform& Trans, sMaterial& Mat, std::unordered_map<std::string, sLight>& Lights, uint32_t* SkyBox, cShader& GeometryShader, cShader& LightShader, std::vector<glm::mat4> FinalBoneMatricies, sGBufferObjects* GeometryObject);
         void ShadowDraw(sTransform& Trans, cShader& Shader, glm::mat4& LightSpaceMatrix, uint32_t DepthMap);
         void DeleteTextures();
     private:
@@ -37,5 +37,7 @@ namespace FlawedEngine
     private:
         glm::mat4 mLightSpaceMatrix;
         uint32_t mDepthMap;
+
+        unsigned int quadVAO;
 	};
 }

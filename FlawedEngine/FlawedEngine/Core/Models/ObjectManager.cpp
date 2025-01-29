@@ -6,6 +6,8 @@
 #include "stb_image.h"
 #include <nlohmann/json.hpp>
 
+#include "../UIManager.h"
+
 namespace FlawedEngine
 {
 	cObjectManager* cObjectManager::sObjectManagerInstance = nullptr;
@@ -29,6 +31,35 @@ namespace FlawedEngine
 
 		mSkybox.Setup(mGfxAPI);
 		mInputFunc = std::bind(&cObjectManager::isKeyDown, this, std::placeholders::_1);
+
+		mLightShader.Create("Core/Models/Shaders/LightVertex.glsl", "Core/Models/Shaders/LightFragment.glsl");
+
+		float quadVertices[] = {
+			// positions    // texture coords
+			-1.0f,  1.0f,   0.0f, 1.0f,
+			-1.0f, -1.0f,   0.0f, 0.0f,
+			 1.0f, -1.0f,   1.0f, 0.0f,
+
+			-1.0f,  1.0f,   0.0f, 1.0f,
+			 1.0f, -1.0f,   1.0f, 0.0f,
+			 1.0f,  1.0f,   1.0f, 1.0f
+		};
+
+		unsigned int quadVBO;
+		glGenVertexArrays(1, &quadVAO);
+		glGenBuffers(1, &quadVBO);
+		glBindVertexArray(quadVAO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+		glBindVertexArray(0);
 	}
 
 	void cObjectManager::ShadowRender(sTransform& LightPerspective, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
@@ -39,7 +70,7 @@ namespace FlawedEngine
 		}
 	}
 
-	void cObjectManager::RenderObjects(sTransform& tCamera)
+	void cObjectManager::RenderObjects(sTransform& tCamera, sGBufferObjects* GeometryObject)
 	{
 		this->tCamera = tCamera;
 		mSkybox.RenderSkyBox(tCamera);
@@ -47,11 +78,71 @@ namespace FlawedEngine
 
 		eraseRemoveList();
 
+		cGraphicsAPI* gfx = (cGraphicsAPI*)mGfxAPI;
+
+		gfx->BindFramebuffer(GeometryObject->GBuffer);
+		gfx->ClearColorBuffer(sColor(0.365f, 0.506f, 0.635f, 1.0f));
+		gfx->ClearDepthBuffer();
+
 		for (auto& Object : SceneObjects)
 		{
 			Object.second->Update();
-			Object.second->Render(tCamera, PointLights, &CubeMapTexture);
+			Object.second->Render(tCamera, PointLights, &CubeMapTexture, GeometryObject);
 		}
+
+		LightingPass(tCamera, GeometryObject);
+	}
+
+	void cObjectManager::LightingPass(sTransform& tCamera, sGBufferObjects* GeometryObject)
+	{
+		cGraphicsAPI* gfx = (cGraphicsAPI*)mGfxAPI;
+
+		cUIManager& ui = cUIManager::get();
+		gfx->BindFramebuffer(ui.GetFrameBuffer().FBO);
+
+		gfx->ClearColorBuffer(sColor(0.365f, 0.506f, 0.635f, 1.0f)); //This also could be found in the window class, TODO: Refactor it
+		gfx->ClearDepthBuffer();
+
+		mLightShader.Bind();
+
+		// Pass G-buffer textures to the shader
+		mLightShader.SetInt("gPosition", 0);
+		mLightShader.SetInt("gNormal", 1);
+		mLightShader.SetInt("gAlbedoSpec", 2);
+
+		gfx->ActiveTexture(0);
+		gfx->BindTexture(GeometryObject->Position);
+
+		gfx->ActiveTexture(1);
+		gfx->BindTexture(GeometryObject->Normal);
+
+		gfx->ActiveTexture(2);
+		gfx->BindTexture(GeometryObject->AlbedoSpec);
+
+		// Pass lights and view position
+		mLightShader.SetInt("LightSize", PointLights.size());
+		int i = 0;
+		for (auto& [name, light] : PointLights) {
+			std::string prefix = "pointLights[" + std::to_string(i) + "]";
+			mLightShader.SetVec3(prefix + ".position", light.position);
+			mLightShader.SetVec3(prefix + ".ambient", light.ambient);
+			mLightShader.SetVec3(prefix + ".diffuse", light.diffuse);
+			mLightShader.SetVec3(prefix + ".specular", light.specular);
+			mLightShader.SetFloat(prefix + ".constant", light.constant);
+			mLightShader.SetFloat(prefix + ".linear", light.linear);
+			mLightShader.SetFloat(prefix + ".quadratic", light.quadratic);
+			i++;
+		}
+
+		mLightShader.SetVec3("viewPos", tCamera.Position);
+
+		// Render the fullscreen quad
+		glBindVertexArray(quadVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
+
+		mLightShader.Unbind();
+
 	}
 
 	void cObjectManager::AddObject(eBasicObject ObjectType, const char* Name)
@@ -310,7 +401,7 @@ namespace FlawedEngine
 		}
 		if (!file.is_open())
 		{
-			std::cout << "{ERROR} Can't Load " << FileName << std::endl;
+			EngineLog("Can not load " + FileName, Error);
 			return;
 		}
 		json data;

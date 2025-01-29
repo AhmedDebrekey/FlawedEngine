@@ -8,12 +8,18 @@
 #include <vector>
 #include <functional>
 
+#include "Logger.h"
+
+
+
 
 namespace FlawedEngine
 {
 	typedef unsigned int uint32_t;
 #define MAX_BONE_INFLUENCE 4
 	
+	// Macro for simplified logging
+#define EngineLog(message, level) Logger::Log(message, LogLevel::level)
 
 
 	struct sMaterial
@@ -253,6 +259,15 @@ namespace FlawedEngine
 		Greater,
 		NotEqual,
 		GreateOrEqual
+	};
+
+	struct sGBufferObjects
+	{
+		uint32_t GBuffer;
+		uint32_t Position;
+		uint32_t Normal;
+		uint32_t AlbedoSpec;
+		uint32_t RenderBuffer;
 	};
 
 	//ObjectManager

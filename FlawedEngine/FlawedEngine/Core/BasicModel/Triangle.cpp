@@ -17,7 +17,7 @@ namespace FlawedEngine
 		//Delete if used other variables than mVertexBuffer and Texture and the indexbuffer
 	}
 
-	void cTriangle::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
+	void cTriangle::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject)
 	{
 		//Rendering of a triangle
 		Trans.Model = mModel;

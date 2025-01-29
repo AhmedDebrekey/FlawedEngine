@@ -1,5 +1,6 @@
 #include "UIManager.h"
 
+
 static bool opt_fullscreen = true;
 static bool opt_padding = false;
 static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
@@ -19,6 +20,7 @@ namespace FlawedEngine
 		mGfxAPI->DeleteFramebuffer(mFrameBuffer);
 		mGfxAPI->DeleteTexture(mTextureColorBuffer);
 		mGfxAPI->BindRenderBuffer(mRenderBufferObject);
+		mGfxAPI->DeleteGeometryBuffer(mGBuffer);
 	}
 
 	void cUIManager::InitFrameBuffer()
@@ -28,6 +30,7 @@ namespace FlawedEngine
 			mGfxAPI->DeleteFramebuffer(mFrameBuffer);
 			mGfxAPI->DeleteTexture(mTextureColorBuffer);
 			mGfxAPI->BindRenderBuffer(mRenderBufferObject);
+			mGfxAPI->DeleteGeometryBuffer(mGBuffer);
 		}
 
 		sTextureProps FrameBufferTextureProps(eTextureProperties::None, eTextureProperties::None,
@@ -45,6 +48,8 @@ namespace FlawedEngine
 		mGfxAPI->SetViewport(0, 0, mViewportSize.x, mViewportSize.y);
 
 		mUIFramebuffer = sFrameBuffer(mFrameBuffer, mViewportSize, mViewportPos, mPrevViewportSize);
+
+		mGBuffer = mGfxAPI->CreateGeometryBuffer(mViewportSize.x, mViewportSize.y);
 
 		mGfxAPI->BindFramebuffer(0);
 	}
@@ -86,7 +91,7 @@ namespace FlawedEngine
 	void cUIManager::UpdateUI()
 	{
 
-		//IK this doesn't make a lot of sense being here, but this is basically going to the wrapper around the Scene rendering and to be rendered on the other framebuffer
+		// IK this doesn't make a lot of sense being here, but this is basically going to the wrapper around the Scene rendering and to be rendered on the other framebuffer
 		// RenderUI() will reset the frame buffer back to zero so it renders on the default one as usual
 
 		mGfxAPI->BindFramebuffer(mFrameBuffer);

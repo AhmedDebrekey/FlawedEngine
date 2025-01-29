@@ -2,6 +2,9 @@
 
 #include "Shader.h"
 
+#include "Graphics/GraphicsAPI.h"
+#include "UIManager.h"
+
 #include <ImGui/imgui.h>
 #include <ImGui/imgui_internal.h>
 
@@ -23,8 +26,13 @@ namespace FlawedEngine
 	{
 		ObjectMan.Init(PhysicsWorld, mCollisionShapesArray, &Camera.mCamFrustum, mGfxAPI);
 		Camera.InitCamera(mWindow);
+
+
+		//cGraphicsAPI* gfxAPI = (cGraphicsAPI*)mGfxAPI;
+		//mGeometryObject = gfxAPI->CreateGeometryBuffer(1600, 900);
+
 		//ObjectMan.LoadSave("KnightAnim");
-		glGenFramebuffers(1, &mDepthMapFBO);
+		/*glGenFramebuffers(1, &mDepthMapFBO);
 
 		glGenTextures(1, &mDepthMap);
 		glBindTexture(GL_TEXTURE_2D, mDepthMap);
@@ -40,7 +48,8 @@ namespace FlawedEngine
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mDepthMap, 0);
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);*/
+
 	}
 
 	bool cScene::isKeyDown(int key)
@@ -48,12 +57,15 @@ namespace FlawedEngine
 		return glfwGetKey((GLFWwindow*)mWindow, key) == GLFW_PRESS;
 	}
 
+
 	void cScene::Render()
 	{
 		Camera.Compute();
-		sTransform tCamera { Camera.Postion() , Camera.Front(), Camera.Projection(), Camera.View()};
 
-		glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+		sTransform tCamera { Camera.Postion() , Camera.Front(), Camera.Projection(), Camera.View()};
+		cUIManager& ui = cUIManager::get();
+		mGeometryObject = ui.GetGeometryBuffer();
+		/*glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
 		glBindFramebuffer(GL_FRAMEBUFFER, mDepthMapFBO);
 
 		glClear(GL_DEPTH_BUFFER_BIT);
@@ -72,8 +84,8 @@ namespace FlawedEngine
 		glCullFace(GL_BACK);
 
 		glViewport(0, 0, mUIFrameBuffer->ViewportSize.x, mUIFrameBuffer->ViewportSize.y);
-		glBindFramebuffer(GL_FRAMEBUFFER, mUIFrameBuffer->FBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, mUIFrameBuffer->FBO);*/
 
-		ObjectMan.RenderObjects(tCamera);
+		ObjectMan.RenderObjects(tCamera, &mGeometryObject);
 	}
 }

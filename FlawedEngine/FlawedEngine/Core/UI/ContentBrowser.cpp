@@ -188,7 +188,7 @@ void FlawedEngine::cUIManager::RenderContentBrowser()
 			std::filesystem::rename(path, newPath, ec);
 			if (ec)
 			{
-				std::cout << "Error renaming file: " << ec.message() << std::endl;
+				EngineLog("Couldn't rename file" + ec.message(), Error);
 			}
 			else
 			{

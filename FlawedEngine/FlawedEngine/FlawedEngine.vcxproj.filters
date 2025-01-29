@@ -120,9 +120,6 @@
     <ClCompile Include="Core\AssimpLoader\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Core.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -139,6 +136,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\UI\ImGuiStyle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -263,9 +263,6 @@
     <ClInclude Include="Core\AssimpLoader\Animations\Animator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Core\Graphics\GraphicsAPI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -273,6 +270,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Models\skybox\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Logger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -283,5 +283,9 @@
     <None Include="Core\Models\Shaders\SkyboxFragment.glsl" />
     <None Include="OnUpdate.lua" />
     <None Include="OnUserCreate.lua" />
+    <None Include="Core\Models\Shaders\ShadowVertex.glsl" />
+    <None Include="Core\Models\Shaders\ShadowFragment.glsl" />
+    <None Include="Core\Models\Shaders\LightVertex.glsl" />
+    <None Include="Core\Models\Shaders\LightFragment.glsl" />
   </ItemGroup>
 </Project>

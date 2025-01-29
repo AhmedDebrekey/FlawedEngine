@@ -162,6 +162,88 @@ namespace FlawedEngine
         glVertexAttribPointer(index, size, vertextype, normalized, stride, (void*)data);
     }
 
+    sGBufferObjects cOpenGLAPI::CreateGeometryBuffer(unsigned int width, unsigned int height)
+    {
+        GLuint gBuffer;
+        glGenFramebuffers(1, &gBuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+        GLuint gPosition, gNormal, gAlbedoSpec;
+
+        // - position color buffer
+        glGenTextures(1, &gPosition);
+        glBindTexture(GL_TEXTURE_2D, gPosition);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPosition, 0);
+
+        // - normal color buffer
+        glGenTextures(1, &gNormal);
+        glBindTexture(GL_TEXTURE_2D, gNormal);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNormal, 0);
+
+        // - color + specular color buffer
+        glGenTextures(1, &gAlbedoSpec);
+        glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gAlbedoSpec, 0);
+
+        // - tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
+        GLuint attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+        glDrawBuffers(3, attachments);
+
+        // create and attach depth buffer (renderbuffer)
+        GLuint rboDepth;
+        glGenRenderbuffers(1, &rboDepth);
+        glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
+        // finally check if framebuffer is complete
+        if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+            assert("FrameBuffer Is Not Complete");
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        return {gBuffer, gPosition, gNormal, gAlbedoSpec, rboDepth};
+    }
+
+    void cOpenGLAPI::DeleteGeometryBuffer(sGBufferObjects& gBuffer)
+    {
+        // Delete the G-buffer's framebuffer
+        if (gBuffer.GBuffer) {
+            glDeleteFramebuffers(1, &gBuffer.GBuffer);
+            gBuffer.GBuffer = 0;
+        }
+
+        // Delete the position texture
+        if (gBuffer.Position) {
+            glDeleteTextures(1, &gBuffer.Position);
+            gBuffer.Position = 0;
+        }
+
+        // Delete the normal texture
+        if (gBuffer.Normal) {
+            glDeleteTextures(1, &gBuffer.Normal);
+            gBuffer.Normal = 0;
+        }
+
+        // Delete the albedo/specular texture
+        if (gBuffer.AlbedoSpec) {
+            glDeleteTextures(1, &gBuffer.AlbedoSpec);
+            gBuffer.AlbedoSpec = 0;
+        }
+
+        // Delete the depth renderbuffer
+        if (gBuffer.RenderBuffer) {
+            glDeleteRenderbuffers(1, &gBuffer.RenderBuffer);
+            gBuffer.RenderBuffer = 0;
+        }
+    }
+
     unsigned int cOpenGLAPI::CreateTexture(int width, int height, int nrComponents, unsigned char* data, sTextureProps props)
     {
         GLuint textureID;

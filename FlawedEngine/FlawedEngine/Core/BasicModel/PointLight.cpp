@@ -30,7 +30,7 @@ namespace FlawedEngine
 	{
 	}
 
-	void cPointLight::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox)
+	void cPointLight::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject)
 	{
 		mColor = mMaterial.Color;
 		Trans.Model = mModel;
