@@ -267,6 +267,7 @@ namespace FlawedEngine
 		uint32_t Position;
 		uint32_t Normal;
 		uint32_t AlbedoSpec;
+		uint32_t Depth;
 		uint32_t RenderBuffer;
 	};
 

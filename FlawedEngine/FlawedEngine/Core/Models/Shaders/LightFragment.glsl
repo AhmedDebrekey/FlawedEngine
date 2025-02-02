@@ -6,6 +6,8 @@ in vec2 TexCoords;
 uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedoSpec;
+uniform sampler2D gDepth;
+uniform samplerCube Skybox;
 
 struct PointLight {    
     vec3 position;
@@ -24,6 +26,17 @@ uniform PointLight pointLights[NR_POINT_LIGHTS];
 uniform int LightSize;
 uniform vec3 viewPos;
 
+uniform mat4 invProjection;
+uniform mat4 invView;
+
+// Reconstruct View Space Position from Depth
+vec3 ReconstructViewPosition(vec2 uv, float depth)
+{
+    vec4 clipSpacePos = vec4(uv.x * 2.0 - 1.0, uv.y * 2.0 - 1.0, depth * 2.0 - 1.0, 1.0);
+    vec4 viewPos = invProjection * clipSpacePos;
+    return viewPos.xyz / viewPos.w; // Perspective division
+}
+
 void main()
 {             
     // retrieve data from gbuffer
@@ -31,10 +44,24 @@ void main()
     vec3 Normal = texture(gNormal, TexCoords).rgb;
     vec3 Diffuse = texture(gAlbedoSpec, TexCoords).rgb;
     float Specular = texture(gAlbedoSpec, TexCoords).a;
+    float depth = texture(gDepth, TexCoords).r;
+
     
     // then calculate lighting as usual
     vec3 lighting  = Diffuse * 0.1; // hard-coded ambient component
     vec3 viewDir  = normalize(viewPos - FragPos);
+
+    if (depth >= 1.0)
+    {
+        vec3 viewDir = normalize(ReconstructViewPosition(TexCoords, depth));
+    
+        // Convert to world space using invView (Inverse View Matrix)
+        vec3 worldDir = (invView * vec4(viewDir, 0.0)).xyz;
+    
+        FragColor = texture(Skybox, worldDir);
+        return;
+    }
+
     for(int i = 0; i < LightSize; ++i)
     {
 

@@ -57,14 +57,17 @@ namespace FlawedEngine
 
         mGfxAPI->BindBufferBase(eBufferType::Uniform, 0, AnimationUBO);
 
-        glDisable(GL_BLEND); glEnable(GL_DEPTH_TEST); glDepthFunc(GL_LESS);
+        mGfxAPI->SetDepthFunc(eGLFuncType::Less);
+        mGfxAPI->SetDepthTest(true);
+        glDisable(GL_BLEND);
+
         mGfxAPI->DrawElements(mIndices.size());
 
         mGfxAPI->ActiveTexture(mTextures.size() + 1); //depth
         mGfxAPI->BindTexture(0);
 
 
-        mGfxAPI->BindTexture(0, eTextureType::CubeMap);
+        //mGfxAPI->BindTexture(0, eTextureType::CubeMap);
         for (unsigned int i = 0; i < mTextures.size(); i++)
         {
             mGfxAPI->ActiveTexture(i);
@@ -76,8 +79,6 @@ namespace FlawedEngine
         mGfxAPI->BindBufferBase(eBufferType::Uniform, 1, 0); // unbind the UBO after drawing the object
         mGfxAPI->BindVertexArray(0);
         GeometryShader.Unbind();
-
-        // 
     }
 
     void cMesh::ShadowDraw(sTransform& Trans, cShader& Shader, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)

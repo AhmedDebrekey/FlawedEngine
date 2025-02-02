@@ -73,6 +73,7 @@ namespace FlawedEngine
 	void cObjectManager::RenderObjects(sTransform& tCamera, sGBufferObjects* GeometryObject)
 	{
 		this->tCamera = tCamera;
+
 		mSkybox.RenderSkyBox(tCamera);
 		uint32_t CubeMapTexture = mSkybox.GetSkyTexture();
 
@@ -87,7 +88,7 @@ namespace FlawedEngine
 		for (auto& Object : SceneObjects)
 		{
 			Object.second->Update();
-			Object.second->Render(tCamera, PointLights, &CubeMapTexture, GeometryObject);
+			Object.second->Render(tCamera, PointLights, nullptr, GeometryObject);
 		}
 
 		LightingPass(tCamera, GeometryObject);
@@ -107,17 +108,25 @@ namespace FlawedEngine
 
 		// Pass G-buffer textures to the shader
 		mLightShader.SetInt("gPosition", 0);
-		mLightShader.SetInt("gNormal", 1);
-		mLightShader.SetInt("gAlbedoSpec", 2);
-
 		gfx->ActiveTexture(0);
 		gfx->BindTexture(GeometryObject->Position);
-
+		
+		mLightShader.SetInt("gNormal", 1);
 		gfx->ActiveTexture(1);
 		gfx->BindTexture(GeometryObject->Normal);
 
+		mLightShader.SetInt("gAlbedoSpec", 2);
 		gfx->ActiveTexture(2);
 		gfx->BindTexture(GeometryObject->AlbedoSpec);
+
+		mLightShader.SetInt("gDepth", 3);
+		gfx->ActiveTexture(3);
+		gfx->BindTexture(GeometryObject->Depth);
+
+		mLightShader.SetInt("Skybox", 4);
+		gfx->ActiveTexture(4);
+		gfx->BindTexture(mSkybox.GetSkyTexture(), CubeMap);
+
 
 		// Pass lights and view position
 		mLightShader.SetInt("LightSize", PointLights.size());
@@ -135,6 +144,8 @@ namespace FlawedEngine
 		}
 
 		mLightShader.SetVec3("viewPos", tCamera.Position);
+		mLightShader.SetMat4f("invProjection", glm::inverse(tCamera.Projection));
+		mLightShader.SetMat4f("invView", glm::inverse(tCamera.View));
 
 		// Render the fullscreen quad
 		glBindVertexArray(quadVAO);

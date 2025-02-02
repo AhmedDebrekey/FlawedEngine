@@ -1,0 +1,108 @@
+{
+    "objects": {
+        "Light(0)": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                ""
+            ],
+            "isCostume": [
+                false
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -6.26025390625,
+                    0.12060540914535522,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Run Forward": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\GameTest\\EndlessRunner\\player\\Run Forward.dae"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    270.0,
+                    0.0,
+                    0.0
+                ],
+                "scale": [
+                    50.0,
+                    50.0,
+                    50.0
+                ]
+            },
+            "type": [
+                7
+            ]
+        }
+    }
+}

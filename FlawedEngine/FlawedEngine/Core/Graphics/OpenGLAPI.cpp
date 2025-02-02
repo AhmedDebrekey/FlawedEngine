@@ -164,51 +164,59 @@ namespace FlawedEngine
 
     sGBufferObjects cOpenGLAPI::CreateGeometryBuffer(unsigned int width, unsigned int height)
     {
-        GLuint gBuffer;
-        glGenFramebuffers(1, &gBuffer);
-        glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
-        GLuint gPosition, gNormal, gAlbedoSpec;
+        sGBufferObjects GBO;
+        glGenFramebuffers(1, &GBO.GBuffer);
+        glBindFramebuffer(GL_FRAMEBUFFER, GBO.GBuffer);
 
         // - position color buffer
-        glGenTextures(1, &gPosition);
-        glBindTexture(GL_TEXTURE_2D, gPosition);
+        glGenTextures(1, &GBO.Position);
+        glBindTexture(GL_TEXTURE_2D, GBO.Position);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, gPosition, 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, GBO.Position, 0);
 
         // - normal color buffer
-        glGenTextures(1, &gNormal);
-        glBindTexture(GL_TEXTURE_2D, gNormal);
+        glGenTextures(1, &GBO.Normal);
+        glBindTexture(GL_TEXTURE_2D, GBO.Normal);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, gNormal, 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, GBO.Normal, 0);
 
         // - color + specular color buffer
-        glGenTextures(1, &gAlbedoSpec);
-        glBindTexture(GL_TEXTURE_2D, gAlbedoSpec);
+        glGenTextures(1, &GBO.AlbedoSpec);
+        glBindTexture(GL_TEXTURE_2D, GBO.AlbedoSpec);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, gAlbedoSpec, 0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, GBO.AlbedoSpec, 0);
+
+        // ------------------- Depth Texture (GL_DEPTH_COMPONENT32F) -------------------
+        glGenTextures(1, &GBO.Depth);
+        glBindTexture(GL_TEXTURE_2D, GBO.Depth);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, GBO.Depth, 0);
 
         // - tell OpenGL which color attachments we'll use (of this framebuffer) for rendering 
         GLuint attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
         glDrawBuffers(3, attachments);
 
         // create and attach depth buffer (renderbuffer)
-        GLuint rboDepth;
-        glGenRenderbuffers(1, &rboDepth);
-        glBindRenderbuffer(GL_RENDERBUFFER, rboDepth);
+        /*glGenRenderbuffers(1, &GBO.RenderBuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, GBO.RenderBuffer);
         glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, rboDepth);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, GBO.RenderBuffer);*/
         // finally check if framebuffer is complete
         if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
             assert("FrameBuffer Is Not Complete");
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        return {gBuffer, gPosition, gNormal, gAlbedoSpec, rboDepth};
+        return GBO;
     }
 
     void cOpenGLAPI::DeleteGeometryBuffer(sGBufferObjects& gBuffer)
@@ -235,6 +243,11 @@ namespace FlawedEngine
         if (gBuffer.AlbedoSpec) {
             glDeleteTextures(1, &gBuffer.AlbedoSpec);
             gBuffer.AlbedoSpec = 0;
+        }
+
+        if (gBuffer.Depth) {
+            glDeleteTextures(1, &gBuffer.Depth);
+            gBuffer.Depth = 0;
         }
 
         // Delete the depth renderbuffer
