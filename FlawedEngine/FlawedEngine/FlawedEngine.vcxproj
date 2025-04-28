@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core\AssimpLoader\ModelLoader.cpp" />
     <ClCompile Include="Core\Core.cpp" />
     <ClCompile Include="Core\Engine.cpp" />
     <ClCompile Include="Core\Graphics\OpenGLAPI.cpp" />
@@ -203,10 +204,11 @@
     <ClCompile Include="Core\AssimpLoader\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\AssimpLoader\ModelLoader.h" />
+    <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\AssimpLoader\Animations\Animation.h" />
     <ClInclude Include="Core\AssimpLoader\Animations\Animator.h" />
     <ClInclude Include="Core\AssimpLoader\Animations\Bone.h" />
-    <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\Engine.h" />
     <ClInclude Include="Core\Entity.h" />
     <ClInclude Include="Core\Graphics\GraphicsAPI.h" />

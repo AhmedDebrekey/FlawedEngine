@@ -19,8 +19,9 @@ namespace FlawedEngine
     }
 
     //Creating the shaders
-    void cShader::Create(const char* vertexPath, const char* fragmentPath)
+    void cShader::Create(const char* vertexPath, const char* fragmentPath, const char* name)
     {
+        m_Name = name;
         std::string vertexCode;
         std::string fragmentCode;
         std::ifstream vShaderFile;
@@ -137,7 +138,7 @@ namespace FlawedEngine
         int location = glGetUniformLocation(m_ShaderObject, name.c_str());
 
         if (location == -1)
-            EngineLog("Uniform '" + name + "' does not exist! Shader ID: " + std::to_string(m_ShaderObject), Warning);
+            EngineLog("Uniform '" + name + "' does not exist! Shader ID: " + std::to_string(m_ShaderObject) + " Name: " + m_Name, Warning);
 
         m_UniformCache[name] = location;
         return location;

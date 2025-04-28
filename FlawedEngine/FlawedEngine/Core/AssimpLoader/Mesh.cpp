@@ -44,6 +44,8 @@ namespace FlawedEngine
         GeometryShader.SetMat4f("View", Trans.View);
         GeometryShader.SetMat4f("Model", Trans.Model);
 
+        GeometryShader.SetBool("hasTexture", true);
+
         if (!FinalBoneMatricies.empty())
         {
             mGfxAPI->BindBuffer(eBufferType::Uniform, AnimationUBO);

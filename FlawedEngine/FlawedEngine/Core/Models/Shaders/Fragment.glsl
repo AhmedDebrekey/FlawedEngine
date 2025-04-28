@@ -7,6 +7,17 @@ in vec2 TexCoords;
 in vec3 FragPos;
 in vec3 Normal;
 
+uniform bool hasTexture;
+
+struct Material {
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+    float shininess;
+    float reflectivity;
+}; 
+uniform Material material;
+
 uniform sampler2D texture_diffuse1;
 uniform sampler2D texture_specular1;
 uniform sampler2D texture_normal1;
@@ -17,8 +28,17 @@ void main()
     gPosition = FragPos;
     // also store the per-fragment normals into the gbuffer
     gNormal = normalize(Normal);
-    // and the diffuse per-fragment color
-    gAlbedoSpec.rgb = texture(texture_diffuse1, TexCoords).rgb;
-    // store specular intensity in gAlbedoSpec's alpha component
-    gAlbedoSpec.a = texture(texture_specular1, TexCoords).r;
+
+    if(hasTexture)
+    {
+        // and the diffuse per-fragment color
+        gAlbedoSpec.rgb = texture(texture_diffuse1, TexCoords).rgb;
+        // store specular intensity in gAlbedoSpec's alpha component
+        gAlbedoSpec.a = texture(texture_specular1, TexCoords).r;
+    }
+    else
+    {
+        gAlbedoSpec.rgb = vec3(material.ambient); // or diffuse idk
+        gAlbedoSpec.a = material.reflectivity;
+    }
 }

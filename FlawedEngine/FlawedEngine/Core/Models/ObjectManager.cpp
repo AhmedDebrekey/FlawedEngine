@@ -32,7 +32,7 @@ namespace FlawedEngine
 		mSkybox.Setup(mGfxAPI);
 		mInputFunc = std::bind(&cObjectManager::isKeyDown, this, std::placeholders::_1);
 
-		mLightShader.Create("Core/Models/Shaders/LightVertex.glsl", "Core/Models/Shaders/LightFragment.glsl");
+		mLightShader.Create("Core/Models/Shaders/LightVertex.glsl", "Core/Models/Shaders/LightFragment.glsl", "{Flawed} Light Shader");
 
 		float quadVertices[] = {
 			// positions    // texture coords

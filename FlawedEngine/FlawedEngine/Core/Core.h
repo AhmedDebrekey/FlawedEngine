@@ -10,14 +10,11 @@
 
 #include "Logger.h"
 
-
-
-
 namespace FlawedEngine
 {
 	typedef unsigned int uint32_t;
 #define MAX_BONE_INFLUENCE 4
-	
+
 	// Macro for simplified logging
 #define EngineLog(message, level) Logger::Log(message, LogLevel::level)
 
@@ -83,6 +80,16 @@ namespace FlawedEngine
 		float mWeights[MAX_BONE_INFLUENCE];
 	};
 
+	struct sBoneInfo
+	{
+		/*id is index in finalBoneMatrices*/
+		int id;
+
+		/*offset matrix transforms vertex from model space to bone space*/
+		glm::mat4 offset;
+
+	};
+
 	struct sTexture
 	{
 		uint32_t ID;
@@ -131,6 +138,7 @@ namespace FlawedEngine
 		Plane farFace;
 		Plane nearFace;
 	};
+
 
 	struct sAABB
 	{
@@ -239,9 +247,9 @@ namespace FlawedEngine
 			eTextureProperties _Mag_Filter
 		)
 			:Wrap_s(_Wrap_s),
-			 Wrap_t(_Wrap_t),
-			 Min_Filter(_Min_Filter),
-			 Mag_Filter(_Mag_Filter)
+			Wrap_t(_Wrap_t),
+			Min_Filter(_Min_Filter),
+			Mag_Filter(_Mag_Filter)
 		{}
 		eTextureProperties Wrap_s = None;
 		eTextureProperties Wrap_t = None;

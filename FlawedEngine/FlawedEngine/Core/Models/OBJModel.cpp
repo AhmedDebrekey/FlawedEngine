@@ -23,7 +23,7 @@ namespace FlawedEngine
 
 		Populate();
 		Renderer.Init(mVertexBuffer, mTextureCoords, mIndices);
-		ShadowShader.Create("Core/Models/Shaders/ShadowVertex.glsl", "Core/Models/Shaders/ShadowFragment.glsl");
+		ShadowShader.Create("Core/Models/Shaders/ShadowVertex.glsl", "Core/Models/Shaders/ShadowFragment.glsl", mName.c_str());
 	}
 
 	cOBJModel::~cOBJModel()

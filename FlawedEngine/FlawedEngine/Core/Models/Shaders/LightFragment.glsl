@@ -48,7 +48,7 @@ void main()
 
     
     // then calculate lighting as usual
-    vec3 lighting  = Diffuse * 0.1; // hard-coded ambient component
+    vec3 lighting  = Diffuse * 0.2; // hard-coded ambient component
     vec3 viewDir  = normalize(viewPos - FragPos);
 
     if (depth >= 1.0)
@@ -75,7 +75,8 @@ void main()
         vec3 specular = pointLights[i].specular * spec * Specular;
         // attenuation
         float distance = length(pointLights[i].position - FragPos);
-        float attenuation = 1.0 / (1.0 + pointLights[i].linear * distance + pointLights[i].quadratic * distance * distance);
+        //float attenuation = 1.0 / (1.0 + pointLights[i].linear * distance + pointLights[i].quadratic * distance * distance);
+        float attenuation = 1.0 / (pointLights[i].constant + pointLights[i].linear * distance + pointLights[i].quadratic * distance);    
 
         ambient *= attenuation;
         diffuse *= attenuation;

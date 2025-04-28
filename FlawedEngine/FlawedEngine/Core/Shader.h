@@ -14,7 +14,7 @@ namespace FlawedEngine
 		cShader();
 		~cShader();
 
-		void Create(const char* vertexPath, const char* fragmentPath);
+		void Create(const char* vertexPath, const char* fragmentPath, const char* name);
 
 		uint32_t GetId() { return m_ShaderObject; }
 
@@ -30,5 +30,6 @@ namespace FlawedEngine
 	private:
 		std::unordered_map<std::string, int> m_UniformCache;
 		uint32_t m_ShaderObject;
+		const char* m_Name;
 	};
 }

@@ -13,7 +13,7 @@ namespace FlawedEngine
         mIndices = Indices;
 
         Setup();
-        Shader.Create("Core/Models/Shaders/Vertex.glsl", "Core/Models/Shaders/Fragment.glsl");
+        Shader.Create("Core/Models/Shaders/Vertex.glsl", "Core/Models/Shaders/Fragment.glsl", "{Flawed} Model Renderer");
         Shader.Bind();
         Shader.Unbind();
     }
@@ -88,6 +88,14 @@ namespace FlawedEngine
         Shader.SetMat4f("Projection", Trans.Projection);
         Shader.SetMat4f("View", Trans.View);
         Shader.SetMat4f("Model", Trans.Model);
+
+        Shader.SetBool("hasTexture", false);
+
+        Shader.SetVec3("material.ambient", Mat.Color);
+        Shader.SetVec3("material.diffuse", Mat.Diffuse);
+        Shader.SetVec3("material.specular", Mat.Specular);
+        Shader.SetFloat("material.shininess", Mat.Shininess);
+        Shader.SetFloat("material.reflectivity", Mat.Reflectivity);
 
 
         glBindBuffer(GL_UNIFORM_BUFFER, DirectionalLightUBO);

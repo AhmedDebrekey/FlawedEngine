@@ -73,7 +73,7 @@ namespace FlawedEngine
 		mSkyBoxVBO = mGfxAPI->CreateBuffer(eBufferType::Vertex, &skyboxVertices, sizeof(skyboxVertices), eDrawType::Static);
 		mGfxAPI->VertexAttribProps(0, 3, eVertexType::Float, false, 3 * sizeof(float), (void*)0);
 
-		mSkyboxShader.Create("Core\\Models\\Shaders\\SkyboxVertex.glsl", "Core\\Models\\Shaders\\SkyboxFragment.glsl");
+		mSkyboxShader.Create("Core\\Models\\Shaders\\SkyboxVertex.glsl", "Core\\Models\\Shaders\\SkyboxFragment.glsl", "{Flawed} Skybox Shader");
 		mSkyboxShader.Bind();
 		mSkyboxShader.SetInt("skybox", 0);
 		mSkyboxShader.Unbind();
