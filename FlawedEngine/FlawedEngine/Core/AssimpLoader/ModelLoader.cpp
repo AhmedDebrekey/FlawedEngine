@@ -17,6 +17,38 @@ namespace FlawedEngine
 		}
 	}
 
+	void PrintMaterialTextures(const aiMaterial* material)
+	{
+		static const std::map<aiTextureType, std::string> textureTypeNames = {
+			{ aiTextureType_DIFFUSE,       "Diffuse" },
+			{ aiTextureType_SPECULAR,      "Specular" },
+			{ aiTextureType_AMBIENT,       "Ambient" },
+			{ aiTextureType_EMISSIVE,      "Emissive" },
+			{ aiTextureType_HEIGHT,        "Height" },
+			{ aiTextureType_NORMALS,       "Normals" },
+			{ aiTextureType_SHININESS,     "Shininess" },
+			{ aiTextureType_OPACITY,       "Opacity" },
+			{ aiTextureType_DISPLACEMENT,  "Displacement" },
+			{ aiTextureType_LIGHTMAP,      "Lightmap" },
+			{ aiTextureType_REFLECTION,    "Reflection" },
+			{ aiTextureType_BASE_COLOR,    "Base Color" },
+			{ aiTextureType_NORMAL_CAMERA, "Normal Camera" },
+			{ aiTextureType_EMISSION_COLOR,"Emission Color" },
+			{ aiTextureType_METALNESS,     "Metalness" },
+			{ aiTextureType_DIFFUSE_ROUGHNESS, "Diffuse Roughness" },
+			{ aiTextureType_AMBIENT_OCCLUSION, "Ambient Occlusion" },
+			{ aiTextureType_UNKNOWN,       "Unknown" }
+		};
+
+		for (const auto& [type, name] : textureTypeNames)
+		{
+			unsigned int count = material->GetTextureCount(type);
+
+			std::cout << name << ": " << count << std::endl;
+		}
+		std::cout << std::endl;
+	}
+
 	cMesh cModel::processMesh(aiMesh* mesh, const aiScene* scene)
 	{
 		std::vector<sVertex> Vertecies;
@@ -81,11 +113,10 @@ namespace FlawedEngine
 		}
 
 		aiMaterial* Material = scene->mMaterials[mesh->mMaterialIndex];
+		
+		std::cout << scene->mMaterials[mesh->mMaterialIndex]->GetName().C_Str() << std::endl;
+		PrintMaterialTextures(scene->mMaterials[mesh->mMaterialIndex]);
 
-		/*std::cout << scene->mMaterials[mesh->mMaterialIndex]->GetName().C_Str() << std::endl;
-		std::cout << "Diffuse :" << scene->mMaterials[mesh->mMaterialIndex]->GetTextureCount(aiTextureType_DIFFUSE) << std::endl;
-		std::cout << "Specular:" << scene->mMaterials[mesh->mMaterialIndex]->GetTextureCount(aiTextureType_SPECULAR) << std::endl;
-		std::cout << "Normal  :" << scene->mMaterials[mesh->mMaterialIndex]->GetTextureCount(aiTextureType_NORMALS) << std::endl << std::endl;*/
 
 		std::vector<sTexture> diffuseMaps = loadMaterialTextures(Material, aiTextureType_DIFFUSE, "texture_diffuse");
 		Textures.insert(Textures.end(), diffuseMaps.begin(), diffuseMaps.end());
@@ -100,6 +131,7 @@ namespace FlawedEngine
 		Textures.insert(Textures.end(), heightMaps.begin(), heightMaps.end());
 
 		ExtractBoneWeightForVertices(Vertecies, mesh, scene);
+
 
 		return cMesh(Vertecies, Indecides, Textures, mGfxAPI);
 	}

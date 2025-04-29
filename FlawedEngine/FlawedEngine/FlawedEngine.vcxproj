@@ -204,7 +204,6 @@
     <ClCompile Include="Core\AssimpLoader\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Core\AssimpLoader\ModelLoader.h" />
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\AssimpLoader\Animations\Animation.h" />
     <ClInclude Include="Core\AssimpLoader\Animations\Animator.h" />

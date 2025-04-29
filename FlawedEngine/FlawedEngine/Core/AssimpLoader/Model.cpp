@@ -12,7 +12,6 @@
 #include "Animations/Animator.h"
 #include "../Models/ObjectManager.h"
 
-#include "ModelLoader.h"
 
 namespace FlawedEngine
 {

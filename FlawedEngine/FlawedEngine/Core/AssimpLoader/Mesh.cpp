@@ -44,7 +44,17 @@ namespace FlawedEngine
         GeometryShader.SetMat4f("View", Trans.View);
         GeometryShader.SetMat4f("Model", Trans.Model);
 
-        GeometryShader.SetBool("hasTexture", true);
+        if (mTextures.size() >= 1)
+        {   GeometryShader.SetBool("hasTexture", true);     }
+        else
+        {
+            GeometryShader.SetBool("hasTexture", false);
+            GeometryShader.SetVec3("material.ambient", Mat.Color);
+            GeometryShader.SetVec3("material.diffuse", Mat.Diffuse);
+            GeometryShader.SetVec3("material.specular", Mat.Specular);
+            GeometryShader.SetFloat("material.shininess", Mat.Shininess);
+            GeometryShader.SetFloat("material.reflectivity", Mat.Reflectivity);
+        }
 
         if (!FinalBoneMatricies.empty())
         {

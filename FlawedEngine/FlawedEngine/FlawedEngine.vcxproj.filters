@@ -278,9 +278,6 @@
     <ClInclude Include="Core\Core.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Core\AssimpLoader\ModelLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\Models\Shaders\Vertex.glsl" />
