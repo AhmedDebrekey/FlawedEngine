@@ -171,6 +171,7 @@
     <ClCompile Include="Core\UI\EntitySelector.cpp" />
     <ClCompile Include="Core\UI\Gizmo.cpp" />
     <ClCompile Include="Core\UI\ImGuiStyle.cpp" />
+    <ClCompile Include="Core\UI\LoggerTab.cpp" />
     <ClCompile Include="Core\UI\Properties.cpp" />
     <ClCompile Include="Core\UI\SceneHierarchy.cpp" />
     <ClCompile Include="Core\UI\Viewport.cpp" />

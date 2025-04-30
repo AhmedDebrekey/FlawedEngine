@@ -86,6 +86,7 @@ namespace FlawedEngine
 		void RenderSceneHierarchy();
 		void RenderProperties();
 		void RenderContentBrowser();
+		void RenderLogger();
 		void SelectEntity();
 
 		float mTmpMatrix[16];

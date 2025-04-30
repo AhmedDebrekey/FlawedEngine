@@ -172,6 +172,7 @@ namespace FlawedEngine
 			RenderSceneHierarchy();
 			RenderProperties();
 			RenderContentBrowser();
+			RenderLogger();
 			SelectEntity();
  		}
 
