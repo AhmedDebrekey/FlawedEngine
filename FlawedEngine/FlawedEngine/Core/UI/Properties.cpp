@@ -1,4 +1,4 @@
-#include "../UIManager.h"
+﻿#include "../UIManager.h"
 #include <ImGui/imfilebrowser.h>
 
 void FlawedEngine::cUIManager::RenderProperties()
@@ -51,34 +51,34 @@ void FlawedEngine::cUIManager::RenderProperties()
 			}
 			else
 			{
-				btTransform Trans;
-				Entity->mRigidBody->getMotionState()->getWorldTransform(Trans);
 
-				//Translation......
-				btVector3 Origin = Trans.getOrigin();
-				glm::vec3 Translation = glm::vec3(Origin.x(), Origin.y(), Origin.z());
+				btTransform trans;
+				Entity->mRigidBody->getMotionState()->getWorldTransform(trans);
+
+				btVector3 position = trans.getOrigin();
+				glm::vec3 Translation = glm::vec3(position.x(), position.y(), position.z());
 				DrawVec3("Translation", Translation);
-				btVector3 FinalTranslation(Translation.x, Translation.y, Translation.z);
-				Trans.setOrigin(FinalTranslation);
+				trans.setOrigin(btVector3(Translation.x, Translation.y, Translation.z));
 
-				//Rotation........ CANT FOR THE LIFE OF ME FIGURE OUT WHY IT DOESNT WORK
-				glm::vec3 rotation = Entity->mTransformation.Rotation;
-				//ImGuizmo::DecomposeMatrixToComponents(mTmpMatrix, glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale));
-				DrawVec3("Rotation", rotation);
-				Entity->mTransformation.Rotation = rotation;
-				//ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(untranslation), glm::value_ptr(rotation), glm::value_ptr(unscale), mTmpMatrix);
-				btQuaternion quat = btQuaternion(glm::radians(Entity->mTransformation.Rotation.y), glm::radians(Entity->mTransformation.Rotation.x), glm::radians(Entity->mTransformation.Rotation.z));
-				//Trans.setRotation(quat);
-				//Entity->mRigidBody->getMotionState()->setWorldTransform(Trans);
-				//Entity->mRigidBody->setWorldTransform(Trans);
+				btQuaternion pxsRotation = trans.getRotation();
+				glm::quat rotationQuat = glm::quat(pxsRotation.w(), pxsRotation.x(), pxsRotation.y(), pxsRotation.z());
+				glm::vec3 rotationEuler = glm::eulerAngles(rotationQuat);
+				glm::vec3 rotationDegrees = glm::degrees(rotationEuler);
+				DrawVec3("Rotation", rotationDegrees);
+				glm::vec3 radians = glm::radians(rotationDegrees);
+				rotationQuat = glm::quat(radians);
+				trans.setRotation(btQuaternion(rotationQuat.x, rotationQuat.y, rotationQuat.z, rotationQuat.w));
 
-				//Scale..........
-				btVector3 myscale = Entity->mRigidBody->getCollisionShape()->getLocalScaling();
-				glm::vec3 scale(myscale.x(), myscale.y(), myscale.z());
-				DrawVec3("Scale", scale, 1.0f);
-				myscale = btVector3(scale.x, scale.y, scale.z);
-				Entity->mRigidBody->getCollisionShape()->setLocalScaling(myscale);
-				
+				btVector3 pxsScale = Entity->mRigidBody->getCollisionShape()->getLocalScaling();
+				glm::vec3 Scale = glm::vec3(pxsScale.x(), pxsScale.y(), pxsScale.z());
+				DrawVec3("Scale", Scale, 1.0f);
+				Entity->mRigidBody->getCollisionShape()->setLocalScaling(btVector3(Scale.x, Scale.y, Scale.z));
+
+				if (!Entity->mDynamic)
+				{
+					Entity->mRigidBody->getMotionState()->setWorldTransform(trans);
+					Entity->mRigidBody->setWorldTransform(trans);
+				}
 
 				//AngularFactor..........
 				static glm::vec3 AngularForce = Entity->mAngularForce;
@@ -93,10 +93,6 @@ void FlawedEngine::cUIManager::RenderProperties()
 
 				ImGui::Text("Activation State: %i", Entity->GetActivationState());
 
-				if (!Entity->mDynamic)
-				{
-					Entity->mRigidBody->setWorldTransform(Trans);
-				}
 
 				if (ImGui::Button(std::string("AABB:##" + mSelectedEntity).c_str()))
 					Entity->mShowAABB = !Entity->mShowAABB;

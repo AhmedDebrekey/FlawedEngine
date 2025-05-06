@@ -85,9 +85,9 @@ void FlawedEngine::cUIManager::RenderGizmo()
 						Trans.setOrigin(FinalTranslation);
 
 						//Rotation........
-						btQuaternion quat = btQuaternion(glm::radians(rotation.y), glm::radians(rotation.x), glm::radians(rotation.z));
+						/*btQuaternion quat = btQuaternion(glm::radians(rotation.y), glm::radians(rotation.x), glm::radians(rotation.z));
 						Trans.setRotation(quat);
-						Entity->mRigidBody->getMotionState()->setWorldTransform(Trans);
+						Entity->mRigidBody->getMotionState()->setWorldTransform(Trans);*/
 
 						//Scale..........
 						btVector3 myscale = btVector3(scale.x, scale.y, scale.z);
@@ -99,6 +99,8 @@ void FlawedEngine::cUIManager::RenderGizmo()
 						}
 						Entity->ModelTransform(Model);
 					}
+					ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(translation), glm::value_ptr(rotation), glm::value_ptr(scale), mTmpMatrix);
+
 				}
 			}
 		}

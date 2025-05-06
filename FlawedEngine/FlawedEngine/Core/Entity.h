@@ -285,6 +285,10 @@ namespace FlawedEngine
 		ObjectTransform.setIdentity();
 		ObjectTransform.setOrigin(btVector3(Trans.x, Trans.y, Trans.z));
 
+		glm::vec3 rotationEuler = glm::radians(Rotation);
+		glm::quat rotationQuat = glm::quat(rotationEuler);
+		ObjectTransform.setRotation(btQuaternion(rotationQuat.x, rotationQuat.y, rotationQuat.z, rotationQuat.w));
+
 		btScalar mass(1.0);
 
 		mInertia = btVector3(0, 0, 0);
@@ -294,16 +298,7 @@ namespace FlawedEngine
 		btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
 		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, mInertia);
 		mRigidBody = new btRigidBody(rbInfo);
-		btTransform trans = mRigidBody->getCenterOfMassTransform();
-		btQuaternion transrot;
-		trans.getBasis().getRotation(transrot);
-		btQuaternion rotquat;
-		rotquat = rotquat.getIdentity();
-		rotquat.setEuler(glm::radians(Rotation.y), glm::radians(Rotation.x), glm::radians(Rotation.z));
-		transrot = rotquat * transrot;
-		trans.setRotation(transrot);
-		mRigidBody->setCenterOfMassTransform(trans);
-		
+
 		mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
 		mRigidBody->setActivationState(DISABLE_DEACTIVATION);
 		//mRidigBody->setSleepingThresholds(0.2, 0.2);
