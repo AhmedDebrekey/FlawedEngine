@@ -17,6 +17,36 @@ namespace FlawedEngine
 
 	// Macro for simplified logging
 #define EngineLog(message, level) Logger::Log(message, LogLevel::level)
+#define EngineLogMatrix(matrixPtr, level)                                      \
+    do {                                                                       \
+        for (int row = 0; row < 4; ++row) {                                    \
+            std::string line = "[ ";                                           \
+            for (int col = 0; col < 4; ++col) {                                \
+                int index = col * 4 + row; /* column-major access */           \
+                line += std::to_string(matrixPtr[index]) + (col < 3 ? ", " : " "); \
+            }                                                                  \
+            line += "]";                                                       \
+            EngineLog("mTmpMatrix Row " + std::to_string(row) + ": " + line, level); \
+        }                                                                      \
+    } while (0)
+#define EngineLogVec3(vec, level)                                              \
+    do {                                                                       \
+        std::string line = "[ " +                                              \
+            std::to_string((vec).x) + ", " +                                   \
+            std::to_string((vec).y) + ", " +                                   \
+            std::to_string((vec).z) + " ]";                                    \
+        EngineLog("Vec3: " + line, level);                                     \
+    } while (0)
+#define EngineLogVec4(vec, level)                                              \
+    do {                                                                       \
+        std::string line = "[ " +                                              \
+            std::to_string((vec).x) + ", " +                                   \
+            std::to_string((vec).y) + ", " +                                   \
+            std::to_string((vec).z) + ", " +                                   \
+            std::to_string((vec).w) + " ]";                                    \
+        EngineLog("Vec4: " + line, level);                                     \
+    } while (0)
+
 
 
 	struct sMaterial

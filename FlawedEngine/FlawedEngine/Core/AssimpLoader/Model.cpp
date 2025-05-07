@@ -55,26 +55,24 @@ namespace FlawedEngine
 			btTransform btTrans;
 			mRigidBody->getMotionState()->getWorldTransform(btTrans);
 
-			btVector3 ObjectTransform = btTrans.getOrigin();
-			btVector3 Scale = mRigidBody->getCollisionShape()->getLocalScaling();
-
-			glm::vec4 Rotation;
+			btVector3 pos = btTrans.getOrigin();
+			btVector3 scl = mRigidBody->getCollisionShape()->getLocalScaling();
 			btQuaternion quat = mRigidBody->getCenterOfMassTransform().getRotation();
-			btVector3 v = quat.getAxis();
-			Rotation.x = v.x();
-			Rotation.y = v.y();
-			Rotation.z = v.z();
-			Rotation.w = quat.getAngle();
 
-			glm::mat4 Model = glm::mat4(1.0f);
-			Model = glm::translate(Model, glm::vec3(ObjectTransform.getX(), ObjectTransform.getY(), ObjectTransform.getZ()));
-			Model = glm::rotate(Model, Rotation.w, glm::vec3(Rotation.x, Rotation.y, Rotation.z));
-			Model = glm::scale(Model, glm::vec3(Scale.getX(), Scale.getY(), Scale.getZ()));
+			glm::quat glmQuat(quat.w(), quat.x(), quat.y(), quat.z());
+			glm::vec3 eulerDegrees = glm::degrees(glm::eulerAngles(glmQuat));
+
+			glm::mat4 Model = glm::translate(glm::mat4(1.0f), glm::vec3(pos.x(), pos.y(), pos.z()));
+			Model *= glm::mat4_cast(glmQuat);
+			Model = glm::scale(Model, glm::vec3(scl.x(), scl.y(), scl.z()));
+
 			Trans.Model = Model;
 			mModel = Model;
-			mTransformation.Translation = glm::vec3(ObjectTransform.getX(), ObjectTransform.getY(), ObjectTransform.getZ());
-			mTransformation.Rotation = Rotation;
-			mTransformation.Scale = glm::vec3(Scale.getX(), Scale.getY(), Scale.getZ());
+
+			mTransformation.Translation = glm::vec3(pos.x(), pos.y(), pos.z());
+			mTransformation.Rotation = glm::vec4(eulerDegrees, 0.0f); // W unused in this case
+			mTransformation.Scale = glm::vec3(scl.x(), scl.y(), scl.z());
+
 		}
 		else
 			Trans.Model = mModel;

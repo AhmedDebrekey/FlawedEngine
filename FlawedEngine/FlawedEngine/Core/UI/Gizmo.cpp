@@ -1,5 +1,6 @@
 #include "../UIManager.h"
 
+
 void FlawedEngine::cUIManager::RenderGizmo()
 {
 	if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_T)) { mGizmoType = ImGuizmo::OPERATION::TRANSLATE; }
@@ -25,7 +26,6 @@ void FlawedEngine::cUIManager::RenderGizmo()
 		{
 			sModel Model = Entity->GetModel();
 			ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(Model.Translation), glm::value_ptr(Model.Rotation), glm::value_ptr(Model.Scale), mTmpMatrix);
-
 			glm::mat4* Transform = Entity->GetModelMatrix();
 			ImGuizmo::Manipulate(glm::value_ptr(mCamera.View()), glm::value_ptr(mCamera.Projection()),
 				(ImGuizmo::OPERATION)mGizmoType, ImGuizmo::LOCAL, mTmpMatrix);
@@ -85,9 +85,9 @@ void FlawedEngine::cUIManager::RenderGizmo()
 						Trans.setOrigin(FinalTranslation);
 
 						//Rotation........
-						/*btQuaternion quat = btQuaternion(glm::radians(rotation.y), glm::radians(rotation.x), glm::radians(rotation.z));
-						Trans.setRotation(quat);
-						Entity->mRigidBody->getMotionState()->setWorldTransform(Trans);*/
+						glm::quat rotationQuat = glm::quat(glm::radians(rotation));
+						Trans.setRotation(btQuaternion(rotationQuat.x, rotationQuat.y, rotationQuat.z, rotationQuat.w));
+						Entity->mRigidBody->getMotionState()->setWorldTransform(Trans);
 
 						//Scale..........
 						btVector3 myscale = btVector3(scale.x, scale.y, scale.z);
