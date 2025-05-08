@@ -71,7 +71,7 @@ namespace FlawedEngine
 	{
 	}
 
-	void cPointLight::Update()
+	void cPointLight::Update(float deltaTime)
 	{
 	}
 

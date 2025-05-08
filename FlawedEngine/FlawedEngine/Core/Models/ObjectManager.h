@@ -65,6 +65,8 @@ namespace FlawedEngine
 
 		void* mPhysicsWorld = nullptr;
 
+		float mDeltaTime = 0, mLastFrame = 0;
+
 	private:
 
 		void* mCamFrustum = nullptr;

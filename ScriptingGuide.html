@@ -1,303 +1,450 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlawedEngine Scripting Guide</title>
-    <link rel="stylesheet" href="styles.css">
-    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scripting API Documentation</title>
+  <style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f7;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  header {
+    background-color: #1e1e2f;
+    color: white;
+    padding: 1rem 2rem;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+    padding: 2rem;
+  }
+  
+  .function-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+  }
+  
+  .function-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .function-card h2 {
+    color: #2b4b80;
+    margin-bottom: 0.5rem;
+  }
+  
+  .function-card .desc {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 0.5rem;
+  }
+    pre {
+      background: #f0f0f0;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 0.5rem;
+      white-space: pre;
+      overflow-x: auto;
+      min-width: max-content;
+    }
+    .function-card {
+      min-height: 280px;
+      transition: transform 0.2s ease, min-height 0.2s ease;
+    }
+    code {
+      display: inline-block;
+      min-width: 100%;
+    }
+  </style>
+  <style>
+    .section-title {
+      grid-column: 1 / -1;
+      font-size: 1.5rem;
+      margin-top: 2rem;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 0.5rem;
+    }
+    #searchBox {
+      margin: 1rem auto;
+      display: block;
+      padding: 0.75rem;
+      width: 80%;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .tag {
+      padding: 0.2em 0.5em;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: white;
+    }
+    .tag.void { background: #666; }
+    .tag.bool { background: #007acc; }
+    .tag.float { background: #00b894; }
+    .tag.centity { background: #d63031; }
+    .allow-hover-scale .function-card:hover {
+        transform: scale(1.3);
+        z-index: 2;
+        position: relative;
+    }
+
+    .predefined-section {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 1rem 2rem;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .predefined-section h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 0.5rem;
+    }
+
+    .predefined-func {
+    margin-bottom: 1.5rem;
+    }
+
+    .predefined-func h3 {
+    color: #2b4b80;
+    margin-bottom: 0.4rem;
+    }
+
+    .predefined-func p {
+    margin-left: 1rem;
+    color: #333;
+    }
+
+    .note-section {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  background-color: #fef9e7;
+  border: 1px solid #f5c518;
+  border-radius: 8px;
+  color: #4d3c00;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.note-section h2 {
+  color: #8a6d1d;
+  margin-bottom: 1rem;
+}
+
+.note-section code {
+  background: #fff6cc;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+.note-section pre {
+  background: #fff8e1;
+  padding: 0.75rem;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+  </style>
 </head>
 <body>
-    <header>
-        <h1>Flawed Engine Scripting Guide</h1>
-    </header>
-    <main>
-        <section id="functions">
-            <h2>Scripting Functions</h2>
-            <ul>
-                <li>
-                    <strong>Move(float x, float y, float z)</strong>
-                    <p class="function-description">Moves the object by the specified amount.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">Move(10.0, 0.0, 5.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>SetPos(float x, float y, float z)</strong>
-                    <p class="function-description">Sets the position of the object to the specified coordinates.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">SetPos(5.0, 3.0, 2.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>Rotate(float x, float y, float z)</strong>
-                    <p class="function-description">Rotates the object by the specified angle around the specified axis.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">Rotate(0.0, 90.0, 0.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>Scale(float x, float y, float z)</strong>
-                    <p class="function-description">Sets the scale of the object by the specified factors along each axis.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">Scale(2.0, 2.0, 2.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>ApplyForce(float x, float y, float z)</strong>
-                    <p class="function-description">Applies a force to the object along the specified world direction.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">ApplyForce(0.0, 10.0, 0.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>ApplyRelativeForce(float x, float y, float z)</strong>
-                    <p class="function-description">Applies a force to the object relative to its orientation.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">ApplyRelativeForce(0.0, 5.0, -5.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>SetPhysics(bool state)</strong>
-                    <p class="function-description">Set state of physics on object.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">SetPhysics(true)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>SetDynamic(bool state)</strong>
-                    <p class="function-description">Set the dynamic phyxs state of the object.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">SetDynamic(true)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>ChangeColor(float r, float g, float b)</strong>
-                    <p class="function-description">Changes the color of the object to the specified RGB values.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">ChangeColor(1.0, 0.5, 0.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>MoveCamera(float x, float y, float z)</strong>
-                    <p class="function-description">Moves the camera by the specified amount.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">MoveCamera(0.0, 5.0, -10.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>SetCameraPos(float x, float y, float z)</strong>
-                    <p class="function-description">Sets the position of the camera to the specified coordinates.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">SetCameraPos(0.0, 0.0, 20.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>RotateCamera(float pitch, float yaw, float roll)</strong>
-                    <p class="function-description">Rotate the camera by the specified amount.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">RotateCamera(0.0, -1.0, 0.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>CamPitch() - returns float</strong>
-                    <p class="function-description">Returns the pitch of the camera.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">pitch = CamPitch()</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>CamYaw() - returns float</strong>
-                    <p class="function-description">Returns the yaw of the camera.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">yaw = CamYaw()</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>SetCameraRot(float pitch, float yaw, float roll)</strong>
-                    <p class="function-description">Sets the rotation of the camera to the specified orientation.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">RotateCamera(10.0, 60.0, 0.0)</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>ChangeAnimation(string)</strong>
-                    <p class="function-description">Changes the animation of the object to the specified animation path.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">ChangeAnimation("Assets/Anims/myAnimation.dae")</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>AddScript(string)</strong>
-                    <p class="function-description">Adds a lua script to object from path.<br>Calls the create function on script.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">AddScript("Assets/Scripts/myScript.lua")</p>
-                    </div>
-                </li>
-                <li>
-                    <strong>GetEntity(string) - returns entity object</strong>
-                    <p class="function-description">Returns the entity object with the specified name.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">
-                            player = GetEntity("Player") <br>
-                            player:SetPos(10, 2, 1)
-                        </p>
-                    </div>
-                </li>
-                <li>
-                    <strong>SpawnObject(string name, int) - returns entity object</strong>
-                    <p class="function-description">Spawns an object of the specified type and returns the entity object.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">
-                            cubeObj = SpawnObject("Cube", 0) <br>
-                            myEntity = SpawnObject("CustomEntity", 7)
-                            <br>
-                            <br>
-                            myEntity:ChangeAnimation("Assets/Anims/myAnimation.dae")
-                        </p>
-                    </div>
-                </li>
-                <li>
-                    <strong>LoadObject(string filepath, string name) - returns entity object</strong>
-                    <p class="function-description">Spawns an object of from the path and returns the entity object.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">
-                            myModel = LoadObject("Assets/Models/myModel.obj", "myModelName")
-                            <br>
-                            . <br>
-                            . <br>
-                            . <br>
-                            <br>
-                            myModel:ChangeColor(0, 0, 0)
-                        </p>
-                    </div>
-                </li>
-                <li>
-                    <strong>IsKeyDown(int) - return bool</strong>
-                    <p class="function-description">Returns true if the specified key is currently pressed; otherwise, returns false. <br>
-                        Uses the Ascii table for now.
-                    </p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">
-                            if IsKeyDown(75) then<br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;print("K was pressed!") <br>
-                            end
-                        </p>
-                    </div>
-                </li>
-                <li>
-                    <strong>Get Position - return float</strong>
-                    <p class="function-description">
-                        Sets of function to retrive the location of an Entity.
-                    </p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">
-                            x = Pos:getX()  <br>
-                            y = Pos:getY()  <br>
-                            z = Pos:getZ()  <br>
-                            SetPos(x, y, z) <br>
-                            <br>
-                            someEntity = GetEntity("someEntity") <br>
-                            eX = someEntity:pgetX() <br>
-                            eY = someEntity:pgetY() <br>
-                            eZ = someEntity:pgetY() <br>
-                            someEntity:SetPos(eX, eY, eZ)
-                        </p>
-                    </div>
-                </li>
-        </section>
-        <hr>
-        <section id="Engine Functions">
-            <h2>Predfined functions</h2>
-            <ul>
-                <li>
-                    <strong>OnCreate()</strong>
-                    <p class="function-description">This function is called once when the script is loaded.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">
-                            function OnCreate() <br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;ChangeColor(1, 0, 0) <br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;SetPhysics(true) <br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;SetDynamic(true) <br>
-                            end
-                        </p>
-                    </div>
-                </li>
-                <li>
-                    <strong>Update()</strong>
-                    <p class="function-description">This function is called once every frame.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">
-                            function Update() <br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;Move(1, 0, 0) <br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;Rotate(0, 1, 0) <br>
-                            end
-                        </p>
-                    </div>
-                </li>
-                <li>
-                    <strong>OnCollision(otherEntityName)</strong>
-                    <p class="function-description">This function is called when an object collieds with current object.</p>
-                    <div class="example-box">
-                        <div class="example-label">Example</div>
-                        <p class="example-text">
-                            function OnCollision(otherEntityName) <br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;entity = GetEntity(otherEntityName) <br>
-                            &nbsp;&nbsp;&nbsp;&nbsp;entity:ChangeColor(0, 1, 0) <br>
-                            end
-                        </p>
-                    </div>
-                </li>
-            </ul>
-        </section>
-        <hr>
-        <section id="object-numbers">
-            <h2>Object IDs</h2>
-            <p class="function-description">Used when spawning objects.</p>
-            <ul>
-                <li>0. Cube</li>
-                <li>1. Sphere</li>
-                <li>2. Cone</li>
-                <li>3. Torus</li>
-                <li>4. Triangle</li>
-                <li>5. PointLight</li>
-                <li>6. SpotLight</li>
-                <li>7. Custom</li>
-            </ul>
-        </section>
-        <br>
-        <br>
-        <br>
-    </main>
-    <footer>
-        <p>
-            &copy; 2024 Flawed Engine <br>
-            Debreky&trade; 
-        </p>
-    </footer>
+  <header>
+    <h1>Scripting API Documentation</h1>
+  </header>
+
+  <input type="text" id="searchBox" placeholder="Search functions..." />
+  
+  <main class="grid-container">
+    <section class="function-card">
+      <h2>Move</h2>
+      <p class="desc">Moves the entity in 3D space.</p>
+      <p><strong>Parameters:</strong> float x, float y, float z</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:Move(1.0, 0.0, 0.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>SetPos</h2>
+      <p class="desc">Sets the absolute position of the entity.</p>
+      <p><strong>Parameters:</strong> float x, float y, float z</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:SetPos(0.0, 0.0, 0.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>Rotate</h2>
+      <p class="desc">Rotates the entity around its local axes.</p>
+      <p><strong>Parameters:</strong> float x, float y, float z</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:Rotate(0.0, 90.0, 0.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>Scale</h2>
+      <p class="desc">Scales the entity in 3D space.</p>
+      <p><strong>Parameters:</strong> float x, float y, float z</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:Scale(2.0, 2.0, 2.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>ApplyForce</h2>
+      <p class="desc">Applies a world-space force to the entity.</p>
+      <p><strong>Parameters:</strong> float x, float y, float z</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:ApplyForce(0.0, 10.0, 0.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>ApplyRelativeForce</h2>
+      <p class="desc">Applies a local-space force to the entity.</p>
+      <p><strong>Parameters:</strong> float x, float y, float z</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:ApplyRelativeForce(0.0, 0.0, 5.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>ChangeColor</h2>
+      <p class="desc">Changes the color of the entity.</p>
+      <p><strong>Parameters:</strong> float r, float g, float b</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:ChangeColor(1.0, 0.0, 0.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>RotateCamera</h2>
+      <p class="desc">Rotates the camera around its axis.</p>
+      <p><strong>Parameters:</strong> float pitch, float yaw, float roll</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:RotateCamera(0.0, 45.0, 0.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>SetCameraRot</h2>
+      <p class="desc">Sets the absolute camera rotation.</p>
+      <p><strong>Parameters:</strong> float pitch, float yaw, float roll</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:SetCameraRot(0.0, 90.0, 0.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>MoveCamera</h2>
+      <p class="desc">Moves the camera by an offset.</p>
+      <p><strong>Parameters:</strong> float x, float y, float z</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:MoveCamera(0.0, 5.0, -10.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>SetCameraPos</h2>
+      <p class="desc">Sets the camera's world position.</p>
+      <p><strong>Parameters:</strong> float x, float y, float z</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:SetCameraPos(10.0, 20.0, 30.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>ChangeAnimation</h2>
+      <p class="desc">Changes the current animation of the entity.</p>
+      <p><strong>Parameters:</strong> const char* animName</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:ChangeAnimation("Run")</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>AddScript</h2>
+      <p class="desc">Adds a script to the entity.</p>
+      <p><strong>Parameters:</strong> const char* scriptName</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:AddScript("enemy_ai")</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>GetEntity</h2>
+      <p class="desc">Returns a reference to another entity by name.</p>
+      <p><strong>Parameters:</strong> const char* name</p>
+      <p><strong>Returns:</strong> <span class="tag centity">Entity Object</span></p>
+      <pre><code>local player = GetEntity("Player")</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>SpawnObject</h2>
+      <p class="desc">Spawns a new object in the scene.</p>
+      <p><strong>Parameters:</strong> const char* name, uint8_t type</p>
+      <p><strong>Returns:</strong> <span class="tag centity">Entity Object</span></p>
+      <pre><code>local obj = SpawnObject("Crate", 1)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>LoadObject</h2>
+      <p class="desc">Loads a new object from file or prefab.</p>
+      <p><strong>Parameters:</strong> const char* path, const char* type</p>
+      <p><strong>Returns:</strong> <span class="tag centity">Entity Object</span></p>
+      <pre><code>local tree = LoadObject("tree.obj",
+    "model")</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>IsKeyDown</h2>
+      <p class="desc">Checks if a key is currently pressed.</p>
+      <p><strong>Parameters:</strong> string key</p>
+      <p><strong>Returns:</strong> <span class="tag bool">bool</span></p>
+      <pre><code>if IsKeyDown(87) then
+  entity:Move(0, 0, 1)
+end</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>Pos.getX / getY / getZ</h2>
+      <p class="desc">Gets entity position along specified axis.</p>
+      <p><strong>Parameters:</strong> none</p>
+      <p><strong>Returns:</strong> <span class="tag float">float</span></p>
+      <pre><code>local x = Pos:getX()</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>Rot.getX / getY / getZ</h2>
+      <p class="desc">Gets entity rotation along specified axis.</p>
+      <p><strong>Parameters:</strong> none</p>
+      <p><strong>Returns:</strong> <span class="tag float">float</span></p>
+      <pre><code>local yRot = Rot:getY()</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>CamPitch / CamYaw</h2>
+      <p class="desc">Gets current pitch or yaw of the camera.</p>
+      <p><strong>Parameters:</strong> none</p>
+      <p><strong>Returns:</strong> <span class="tag float">float</span></p>
+      <pre><code>local pitch = CamPitch()</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>GetDeltaTime</h2>
+      <p class="desc">Returns time passed since last frame.</p>
+      <p><strong>Parameters:</strong> none</p>
+      <p><strong>Returns:</strong> <span class="tag float">float</span></p>
+      <pre><code>local dt = GetDeltaTime()</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>SetPhysics</h2>
+      <p class="desc">Enables or disables physics for the entity.</p>
+      <p><strong>Parameters:</strong> bool state</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:SetPhysics(true)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>SetDynamic</h2>
+      <p class="desc">Sets the entity to be dynamic or static.</p>
+      <p><strong>Parameters:</strong> bool dynamic</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:SetDynamic(false)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>Remove</h2>
+      <p class="desc">Removes the entity from the scene.</p>
+      <p><strong>Parameters:</strong> none</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>entity:Remove()</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>Log</h2>
+      <p class="desc">Logs message console and engine.</p>
+      <p><strong>Parameters</strong> string message</p>
+      <p><strong>Returns:</strong><span class="tag void">void</span></p>
+      <pre><code>Log("Hello World!")</code></pre>
+    </section>
+
+  </main>
+
+  <section class="note-section">
+    <h2>Accessing Position and Rotation</h2>
+    <p>
+      There are two ways to access position and rotation data in scripts:
+    </p>
+    <ul>
+      <li><strong>Global Access</strong>: For the current entity the script is attached to:
+        <pre><code>local x = Pos:getX()
+local rotY = Rot:getY()</code></pre>
+      </li>
+      <li><strong>Object-Based Access</strong>: For other entities retrieved via GetEntity():
+        <pre><code>local other = GetEntity("Enemy")
+local x = other:pgetX()
+local rotY = other:rgetY()</code></pre>
+      </li>
+    </ul>
+    <p>
+      Global functions like <code>Pos:getX()</code> only work on the attached entity. If you're working with another entity object, use the <code>pgetX() / rgetY()</code> methods provided through the Entity Object.
+    </p>
+  </section>
+  
+
+  <section class="predefined-section">
+    <h2>Predefined Scripting Functions</h2>
+    <div class="predefined-func">
+      <h3>Create()</h3>
+      <p>Called once when the entity is created or the script is first loaded. Use this to initialize variables or set up components.</p>
+    </div>
+  
+    <div class="predefined-func">
+      <h3>Update()</h3>
+      <p>Called every frame. Use this for continuous logic such as movement, animations, or checks.</p>
+    </div>
+  
+    <div class="predefined-func">
+      <h3>OnCollision(otherEntity)</h3>
+      <p>Triggered when the entity collides with another. The <code>otherEntity</code> parameter provides a reference to what was hit.</p>
+    </div>
+  </section>
+  
+
+  <script>
+    const searchBox = document.getElementById('searchBox');
+    const cards = document.querySelectorAll('.function-card');
+    const main = document.querySelector('main');
+  
+    function updateHoverState() {
+      if (searchBox.value.trim() === '') {
+        main.classList.add('allow-hover-scale');
+      } else {
+        main.classList.remove('allow-hover-scale');
+      }
+    }
+  
+    searchBox.addEventListener('input', function () {
+      const query = this.value.toLowerCase();
+      cards.forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(query) ? 'block' : 'none';
+      });
+      updateHoverState();
+    });
+  
+    // initialize on load
+    updateHoverState();
+  </script>
+  
 </body>
 </html>

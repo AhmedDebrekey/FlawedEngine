@@ -48,7 +48,7 @@ namespace FlawedEngine
         void SetModelTransform(sTransform& Trans);
         virtual void Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject) override;
         virtual void ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap) override;
-        virtual void Update(/*Should be taking in the timestep*/) override;
+        virtual void Update(float deltaTime) override;
 
         virtual void AddAnimation(const char*) override;
         virtual void ChangeAnimation(const char*) override;
@@ -98,7 +98,5 @@ namespace FlawedEngine
 
         std::shared_ptr<Animator> mAnimator;
         std::shared_ptr<Animation> mCurrentAnimation;
-
-        float mDeltaTime = 0, mLastFrame = 0;
     };
 }

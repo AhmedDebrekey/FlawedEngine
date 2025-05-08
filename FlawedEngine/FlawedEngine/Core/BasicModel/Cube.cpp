@@ -72,7 +72,7 @@ namespace FlawedEngine
 	{
 	}
 
-	void cCube::Update()
+	void cCube::Update(float deltaTime)
 	{
 
 	}

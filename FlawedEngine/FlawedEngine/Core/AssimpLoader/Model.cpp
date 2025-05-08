@@ -94,12 +94,11 @@ namespace FlawedEngine
 		}
 	}
 
-	void cModel::Update()
+	void cModel::Update(float deltaTime)
 	{
 		ScriptingManager.RunFunction(mScriptingId, "Update");
-		float currentFrame = glfwGetTime();
-		mDeltaTime = currentFrame - mLastFrame;
-		mLastFrame = currentFrame;
+
+		mDeltaTime = deltaTime;
 
 		mShouldRender = isModelInFrustum();
 

@@ -15,7 +15,7 @@ namespace FlawedEngine
 	public:
 		virtual void Render(sTransform&, std::unordered_map<std::string, sLight>&, uint32_t*, sGBufferObjects*) = 0;
 		virtual void ShadowRender(sTransform&, glm::mat4&, uint32_t) = 0;
-		virtual void Update(/*Should be taking in the timestep*/) = 0;
+		virtual void Update(float deltaTime) = 0;
 		virtual void AddAnimation(const char*) = 0;
 		virtual void ChangeAnimation(const char*) = 0;
 		virtual void SetAABB(glm::vec3&) = 0;
@@ -51,6 +51,7 @@ namespace FlawedEngine
 		float LCamPitch();
 		float LCamYaw();
 		float LCamRoll();
+		float LGetDeltaTime();
 		std::string LGetName();
 		void LChangeAnim(const char* Path);
 		void LMoveCamera(float x, float y, float z);
@@ -59,6 +60,7 @@ namespace FlawedEngine
 		void LSetCameraRot(float pitch, float yaw, float roll);
 		void LSetScript(const char* Path);
 		void LRemoveObject();
+		void LLog(const char*);
 		int mScriptingId;
 		lua_State* mLuaState = nullptr;
 		cEntity* GetEntityByName(const char* name);
@@ -113,6 +115,7 @@ namespace FlawedEngine
 		std::vector<sTexture> mTextureCoords;
 		bool mShouldRender = true;
 		sModel mTransformation;
+		float mDeltaTime = 0;
 
 		cInput& Input = cInput::get();
 		cScriptingManager& ScriptingManager = cScriptingManager::get();
@@ -368,13 +371,16 @@ namespace FlawedEngine
 		std::function<cEntity* (const char*)> entityfunc = std::bind(&cEntity::GetEntityByName, this, std::placeholders::_1);
 		ScriptingManager.RegisterFunction(mScriptingId, "GetEntity", entityfunc);
 
-		std::function < cEntity* (const char*, uint8_t)> spawnEntityfunc = std::bind(&cEntity::LSpawnObject, this, std::placeholders::_1, std::placeholders::_2);
+		std::function<cEntity* (const char*, uint8_t)> spawnEntityfunc = std::bind(&cEntity::LSpawnObject, this, std::placeholders::_1, std::placeholders::_2);
 		ScriptingManager.RegisterFunction(mScriptingId, "SpawnObject", spawnEntityfunc);
 
-		std::function <cEntity* (const char*, const char*)> loadEntityfunc = std::bind(&cEntity::LLoadObject, this, std::placeholders::_1, std::placeholders::_2);
+		std::function<cEntity* (const char*, const char*)> loadEntityfunc = std::bind(&cEntity::LLoadObject, this, std::placeholders::_1, std::placeholders::_2);
 		ScriptingManager.RegisterFunction(mScriptingId, "LoadObject", loadEntityfunc);
 
 		ScriptingManager.RegisterFunction(mScriptingId, "IsKeyDown", InputFunc);
+
+		std::function<void(const char*)> logFunc = std::bind(&cEntity::LLog, this, std::placeholders::_1);
+		ScriptingManager.RegisterFunction(mScriptingId, "Log", logFunc);
 
 		std::function<float()> posFunc = std::bind(&cEntity::LGetX, this);
 		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Pos", "getX", posFunc);
@@ -399,6 +405,9 @@ namespace FlawedEngine
 		
 		posFunc = std::bind(&cEntity::LCamYaw, this);
 		ScriptingManager.RegisterFunction(mScriptingId, "CamYaw", posFunc);
+
+		posFunc = std::bind(&cEntity::LGetDeltaTime, this);
+		ScriptingManager.RegisterFunction(mScriptingId, "GetDeltaTime", posFunc);
 
 		std::function<void(bool)> phxsState = std::bind(&cEntity::LSetPhysicsState, this, std::placeholders::_1);
 		ScriptingManager.RegisterFunction(mScriptingId, "SetPhysics", phxsState);
@@ -453,8 +462,18 @@ namespace FlawedEngine
 
 	inline cEntity* cEntity::GetEntityByName(const char* name)
 	{
-		cEntity* ptr = (cEntity*)GetEntity(name);			
-		return ptr;
+		if (name == nullptr || name[0] == '\0') {
+			EngineLog("Get Entity Failed", Error);
+			return nullptr;
+		}
+
+		void* entity = GetEntity(name);
+		if (!entity) {
+			EngineLog("Get Entity Failed", Error);
+			return nullptr;
+		}
+
+		return static_cast<cEntity*>(entity);
 	}
 
 	inline void cEntity::CallOnCollision(cEntity* entity)
@@ -658,6 +677,11 @@ namespace FlawedEngine
 		return GetCamYaw();
 	}
 
+	inline float cEntity::LGetDeltaTime()
+	{
+		return mDeltaTime;
+	}
+
 	inline std::string cEntity::LGetName()
 	{
 		return mName;
@@ -696,5 +720,10 @@ namespace FlawedEngine
 	inline void cEntity::LRemoveObject()
 	{
 		RemoveEntity(mName.c_str());
+	}
+
+	inline void cEntity::LLog(const char* msg)
+	{
+		EngineLog(msg, Debug);
 	}
 }

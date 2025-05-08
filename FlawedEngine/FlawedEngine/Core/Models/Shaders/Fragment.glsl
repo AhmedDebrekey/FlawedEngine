@@ -33,7 +33,7 @@ void main()
     { 
         vec3 norm = texture(texture_normal1, TexCoords).rgb;
         norm = norm * 2.0 - 1.0;   
-        norm = normalize(TBN * norm);
+        norm = -normalize(TBN * norm);
         gNormal = norm;
 
         gAlbedoSpec.rgb = texture(texture_diffuse1, TexCoords).rgb;

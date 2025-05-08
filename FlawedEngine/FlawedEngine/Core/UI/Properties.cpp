@@ -55,24 +55,23 @@ void FlawedEngine::cUIManager::RenderProperties()
 				btTransform trans;
 				Entity->mRigidBody->getMotionState()->getWorldTransform(trans);
 
-				btVector3 position = trans.getOrigin();
-				glm::vec3 Translation = glm::vec3(position.x(), position.y(), position.z());
-				DrawVec3("Translation", Translation);
+				glm::vec3 Translation, rotationDegrees, Scale;
+				ImGuizmo::DecomposeMatrixToComponents(mTmpMatrix, glm::value_ptr(Translation), glm::value_ptr(rotationDegrees), glm::value_ptr(Scale));
+
+ 				DrawVec3("Translation", Translation);
 				trans.setOrigin(btVector3(Translation.x, Translation.y, Translation.z));
 
-				btQuaternion pxsRotation = trans.getRotation();
-				glm::quat rotationQuat = glm::quat(pxsRotation.w(), pxsRotation.x(), pxsRotation.y(), pxsRotation.z());
-				glm::vec3 rotationEuler = glm::eulerAngles(rotationQuat);
-				glm::vec3 rotationDegrees = glm::degrees(rotationEuler);
+
 				DrawVec3("Rotation", rotationDegrees);
 				glm::vec3 radians = glm::radians(rotationDegrees);
-				rotationQuat = glm::quat(radians);
+				glm::quat rotationQuat = glm::quat(radians);
 				trans.setRotation(btQuaternion(rotationQuat.x, rotationQuat.y, rotationQuat.z, rotationQuat.w));
 
-				btVector3 pxsScale = Entity->mRigidBody->getCollisionShape()->getLocalScaling();
-				glm::vec3 Scale = glm::vec3(pxsScale.x(), pxsScale.y(), pxsScale.z());
+
 				DrawVec3("Scale", Scale, 1.0f);
 				Entity->mRigidBody->getCollisionShape()->setLocalScaling(btVector3(Scale.x, Scale.y, Scale.z));
+
+				ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(Translation), glm::value_ptr(rotationDegrees), glm::value_ptr(Scale), mTmpMatrix);
 
 				if (!Entity->mDynamic)
 				{

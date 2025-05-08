@@ -27,7 +27,7 @@ namespace FlawedEngine
 	void cTriangle::ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
 	{
 	}
-	void cTriangle::Update()
+	void cTriangle::Update(float deltaTime)
 	{
 		//TODO: Should have an Input System here
 	}

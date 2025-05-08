@@ -145,8 +145,9 @@ namespace FlawedEngine
 			Renderer.ShadowDraw(Trans, ShadowShader, LightSpaceMatrix, DepthMap);
 	}
 
-	void cOBJModel::Update()
+	void cOBJModel::Update(float deltaTime)
 	{
 		ScriptingManager.RunFunction(mScriptingId, "Update");
+		mDeltaTime = deltaTime;
 	}
 }

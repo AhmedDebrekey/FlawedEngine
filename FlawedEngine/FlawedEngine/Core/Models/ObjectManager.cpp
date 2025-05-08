@@ -85,9 +85,13 @@ namespace FlawedEngine
 		gfx->ClearColorBuffer(sColor(0.365f, 0.506f, 0.635f, 1.0f));
 		gfx->ClearDepthBuffer();
 
+		float currentFrame = glfwGetTime();
+		mDeltaTime = currentFrame - mLastFrame;
+		mLastFrame = currentFrame;
+
 		for (auto& Object : SceneObjects)
 		{
-			Object.second->Update();
+			Object.second->Update(mDeltaTime);
 			Object.second->Render(tCamera, PointLights, nullptr, GeometryObject);
 		}
 
