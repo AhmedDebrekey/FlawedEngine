@@ -44,4 +44,7 @@ namespace FlawedEngine
 	{
 		return true;
 	}
+	void cTriangle::RemoveScripts()
+	{
+	}
 }

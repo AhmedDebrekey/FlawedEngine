@@ -157,6 +157,7 @@ void FlawedEngine::cUIManager::RenderProperties()
 					if (ext == ".lua")
 					{
 						std::function<bool(int)> InputFunc = std::bind(&cUIManager::isKeyDown, this, std::placeholders::_1);
+						Entity->RemoveScripts();
 						Entity->SetupScripting(dataPath.string().c_str(), InputFunc);
 					}
 				}

@@ -20,6 +20,7 @@ namespace FlawedEngine
 		virtual void ChangeAnimation(const char*) override;
 		virtual void SetAABB(glm::vec3& Scale) override;
 		virtual bool isModelInFrustum() override;
+		virtual void RemoveScripts() override;
 
 	private:
 		cModelRenderer Renderer;

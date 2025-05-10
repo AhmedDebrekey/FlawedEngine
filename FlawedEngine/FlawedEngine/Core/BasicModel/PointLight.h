@@ -19,7 +19,7 @@ namespace FlawedEngine
 		virtual void AddAnimation(const char*) override;
 		virtual void ChangeAnimation(const char*) override;
 		virtual bool isModelInFrustum() override;
-
+		virtual void RemoveScripts() override;
 
 		glm::vec3 mPosition;
 

@@ -65,6 +65,7 @@ namespace FlawedEngine
 		lua_State* mLuaState = nullptr;
 		cEntity* GetEntityByName(const char* name);
 		void CallOnCollision(cEntity* entity);
+		virtual void RemoveScripts() = 0;
 
 		//Serlizalizations
 		bool mIsCostume = false;

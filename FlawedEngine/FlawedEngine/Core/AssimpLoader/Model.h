@@ -43,12 +43,7 @@ namespace FlawedEngine
             
             mAnimationsMap.clear();
 
-            if (mHasScripting && mScriptingId >= 0)
-            {
-                cScriptingManager::get().DestroyState(mScriptingId);
-                mScriptingId = -1;
-            }
-
+            RemoveScripts();
         }
 
         void SetModelTransform(sTransform& Trans);
@@ -59,6 +54,8 @@ namespace FlawedEngine
         virtual void AddAnimation(const char*) override;
         virtual void ChangeAnimation(const char*) override;
         virtual bool isModelInFrustum() override;
+
+        virtual void RemoveScripts() override;
 
         
 

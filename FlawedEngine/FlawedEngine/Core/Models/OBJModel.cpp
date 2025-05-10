@@ -78,6 +78,15 @@ namespace FlawedEngine
 		return true;
 	}
 
+	void cOBJModel::RemoveScripts()
+	{
+		if (mHasScripting && mScriptingId >= 0)
+		{
+			cScriptingManager::get().DestroyState(mScriptingId);
+			mScriptingId = -1;
+		}
+	}
+
 	float Matrix[16];
 	void cOBJModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject)
 	{

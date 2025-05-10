@@ -240,6 +240,16 @@ namespace FlawedEngine
 				globalAABB.isOnOrForwardPlane(mCamFrustum->farFace));
 	}
 
+	void cModel::RemoveScripts()
+	{
+
+		if (mHasScripting && mScriptingId >= 0)
+		{
+			cScriptingManager::get().DestroyState(mScriptingId);
+			mScriptingId = -1;
+		}
+	}
+
 	void cModel::SetAABB(glm::vec3& Scale)
 	{
 		//To be implemented

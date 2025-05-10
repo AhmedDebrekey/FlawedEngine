@@ -91,5 +91,9 @@ namespace FlawedEngine
 	{
 		return true;
 	}
+
+	void cPointLight::RemoveScripts()
+	{
+	}
 	
 }

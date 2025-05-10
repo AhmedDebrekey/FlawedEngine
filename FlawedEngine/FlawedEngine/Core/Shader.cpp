@@ -138,7 +138,8 @@ namespace FlawedEngine
         int location = glGetUniformLocation(m_ShaderObject, name.c_str());
 
         if (location == -1)
-            EngineLog("Uniform '" + name + "' does not exist! Shader ID: " + std::to_string(m_ShaderObject) + " Name: " + m_Name, Warning);
+            std::cout << "Uniform " << name << " does not exist! Shader ID: " << m_ShaderObject << " Name: " << m_Name << std::endl;
+            //EngineLog("Uniform '" + name + "' does not exist! Shader ID: " + std::to_string(m_ShaderObject) + " Name: " + m_Name, Warning);
 
         m_UniformCache[name] = location;
         return location;

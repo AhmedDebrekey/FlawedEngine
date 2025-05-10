@@ -1,0 +1,207 @@
+Scripting API Documentation
+
+Functions List:
+
+Function Name: Move
+Description: Moves the entity in 3D space.
+Parameters: float x, float y, float z
+Returns: void
+Example Usage:
+entity:Move(1.0, 0.0, 0.0)
+
+--------------------------------------------------
+Function Name: SetPos
+Description: Sets the absolute position of the entity.
+Parameters: float x, float y, float z
+Returns: void
+Example Usage:
+entity:SetPos(0.0, 0.0, 0.0)
+
+--------------------------------------------------
+Function Name: Rotate
+Description: Rotates the entity around its local axes.
+Parameters: float x, float y, float z
+Returns: void
+Example Usage:
+entity:Rotate(0.0, 90.0, 0.0)
+
+--------------------------------------------------
+Function Name: Scale
+Description: Scales the entity in 3D space.
+Parameters: float x, float y, float z
+Returns: void
+Example Usage:
+entity:Scale(2.0, 2.0, 2.0)
+
+--------------------------------------------------
+Function Name: ApplyForce
+Description: Applies a world-space force to the entity.
+Parameters: float x, float y, float z
+Returns: void
+Example Usage:
+entity:ApplyForce(0.0, 10.0, 0.0)
+
+--------------------------------------------------
+Function Name: ApplyRelativeForce
+Description: Applies a local-space force to the entity.
+Parameters: float x, float y, float z
+Returns: void
+Example Usage:
+entity:ApplyRelativeForce(0.0, 0.0, 5.0)
+
+--------------------------------------------------
+Function Name: ChangeColor
+Description: Changes the color of the entity.
+Parameters: float r, float g, float b
+Returns: void
+Example Usage:
+entity:ChangeColor(1.0, 0.0, 0.0)
+
+--------------------------------------------------
+Function Name: RotateCamera
+Description: Rotates the camera around its axis.
+Parameters: float pitch, float yaw, float roll
+Returns: void
+Example Usage:
+entity:RotateCamera(0.0, 45.0, 0.0)
+
+--------------------------------------------------
+Function Name: SetCameraRot
+Description: Sets the absolute camera rotation.
+Parameters: float pitch, float yaw, float roll
+Returns: void
+Example Usage:
+entity:SetCameraRot(0.0, 90.0, 0.0)
+
+--------------------------------------------------
+Function Name: MoveCamera
+Description: Moves the camera by an offset.
+Parameters: float x, float y, float z
+Returns: void
+Example Usage:
+entity:MoveCamera(0.0, 5.0, -10.0)
+
+--------------------------------------------------
+Function Name: SetCameraPos
+Description: Sets the camera's world position.
+Parameters: float x, float y, float z
+Returns: void
+Example Usage:
+entity:SetCameraPos(10.0, 20.0, 30.0)
+
+--------------------------------------------------
+Function Name: ChangeAnimation
+Description: Changes the current animation of the entity.
+Parameters: const char* animName
+Returns: void
+Example Usage:
+entity:ChangeAnimation("Run")
+
+--------------------------------------------------
+Function Name: AddScript
+Description: Adds a script to the entity.
+Parameters: const char* scriptName
+Returns: void
+Example Usage:
+entity:AddScript("enemy_ai")
+
+--------------------------------------------------
+Function Name: GetEntity
+Description: Returns a reference to another entity by name.
+Parameters: const char* name
+Returns: Entity Object
+Example Usage:
+local player = GetEntity("Player")
+
+--------------------------------------------------
+Function Name: SpawnObject
+Description: Spawns a new object in the scene.
+Parameters: const char* name, uint8_t type
+Returns: Entity Object
+Example Usage:
+local obj = SpawnObject("Crate", 1)
+
+--------------------------------------------------
+Function Name: LoadObject
+Description: Loads a new object from file or prefab.
+Parameters: const char* path, const char* type
+Returns: Entity Object
+Example Usage:
+local tree = LoadObject("tree.obj",
+    "model")
+
+--------------------------------------------------
+Function Name: IsKeyDown
+Description: Checks if a key is currently pressed.
+Parameters: string key
+Returns: bool
+Example Usage:
+if IsKeyDown(87) then
+  entity:Move(0, 0, 1)
+end
+
+--------------------------------------------------
+Function Name: Pos.getX / getY / getZ
+Description: Gets entity position along specified axis.
+Parameters: none
+Returns: float
+Example Usage:
+local x = Pos:getX()
+
+--------------------------------------------------
+Function Name: Rot.getX / getY / getZ
+Description: Gets entity rotation along specified axis.
+Parameters: none
+Returns: float
+Example Usage:
+local yRot = Rot:getY()
+
+--------------------------------------------------
+Function Name: CamPitch / CamYaw
+Description: Gets current pitch or yaw of the camera.
+Parameters: none
+Returns: float
+Example Usage:
+local pitch = CamPitch()
+
+--------------------------------------------------
+Function Name: GetDeltaTime
+Description: Returns time passed since last frame.
+Parameters: none
+Returns: float
+Example Usage:
+local dt = GetDeltaTime()
+
+--------------------------------------------------
+Function Name: SetPhysics
+Description: Enables or disables physics for the entity.
+Parameters: bool state
+Returns: void
+Example Usage:
+entity:SetPhysics(true)
+
+--------------------------------------------------
+Function Name: SetDynamic
+Description: Sets the entity to be dynamic or static.
+Parameters: bool dynamic
+Returns: void
+Example Usage:
+entity:SetDynamic(false)
+
+--------------------------------------------------
+Function Name: Remove
+Description: Removes the entity from the scene.
+Parameters: none
+Returns: void
+Example Usage:
+entity:Remove()
+
+--------------------------------------------------
+Function Name: Log
+Description: Logs message console and engine.
+Parameters: Parameters string message
+Returns: void
+Example Usage:
+Log("Hello World!")
+
+--------------------------------------------------
