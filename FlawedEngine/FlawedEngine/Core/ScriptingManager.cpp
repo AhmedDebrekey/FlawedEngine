@@ -120,6 +120,14 @@ namespace FlawedEngine
 		lua_pcall(L, 1, 0, 0);
 	}
 
+	void cScriptingManager::ReloadScripts()
+	{
+		for (const auto& [id, luaState] : mStates)
+		{
+			RunFunction(id, "Create");
+		}
+	}
+
 	void cScriptingManager::SpawnObject(const char* Name, int Type)
 	{
 		cObjectManager& ObjectMan = cObjectManager::get();

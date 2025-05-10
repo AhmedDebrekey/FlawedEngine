@@ -11,7 +11,8 @@ namespace FlawedEngine {
         Info,
         Warning,
         Error,
-        Debug
+        Debug,
+        Script
     };
 
     struct LogEntry

@@ -134,6 +134,14 @@ namespace FlawedEngine
 	float		cpCamera::FoV()								{ return mFOV;}
 	void		cpCamera::SetAspectRatio(float ratio)		{ mAspectRatio = ratio; }
 
+	void cpCamera::SetOrientation(sTransform cameraTransform)
+	{
+		mPostion = cameraTransform.Position;
+		mDirection = cameraTransform.Front;
+		mProjectionMatrix = cameraTransform.Projection;
+		mViewMatrix = cameraTransform.View;
+	}
+
 	void cpCamera::MoveCamera(float dx, float dy, float dz)
 	{
 		glm::vec3 forwardVector = glm::normalize(mDirection);

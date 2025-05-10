@@ -16,6 +16,7 @@ namespace FlawedEngine
 		glm::mat4 Projection();
 		glm::mat4 View();
 		glm::vec3 Postion();
+		void SetOrientation(sTransform cameraTransform);
 		void MoveCamera(float dx, float dy, float dz);
 		void SetPosition(float x, float y, float z);
 		void RotateCamera(float pitch, float yaw, float roll);
@@ -28,6 +29,7 @@ namespace FlawedEngine
 		float FoV();
 		void SetAspectRatio(float ratio);
 		void ToggleAllowInput() { isInputEnabled = !isInputEnabled; }
+		void SetAllowInput(bool state) { isInputEnabled = state; }
 		void ToggleShadowPerspective() { DirLightPerspective = !DirLightPerspective; } // UI to change the perspective
 		Frustum CreateFrustum();
 		Frustum mCamFrustum;

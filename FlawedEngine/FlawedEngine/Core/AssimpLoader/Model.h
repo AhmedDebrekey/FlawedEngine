@@ -40,8 +40,14 @@ namespace FlawedEngine
             mLoadedTextures.shrink_to_fit();
             mMeshes.clear();
             mMeshes.shrink_to_fit();
-
+            
             mAnimationsMap.clear();
+
+            if (mHasScripting && mScriptingId >= 0)
+            {
+                cScriptingManager::get().DestroyState(mScriptingId);
+                mScriptingId = -1;
+            }
 
         }
 

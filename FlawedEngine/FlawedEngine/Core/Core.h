@@ -47,7 +47,7 @@ namespace FlawedEngine
         EngineLog("Vec4: " + line, level);                                     \
     } while (0)
 
-
+	extern bool mIsPlaying;
 
 	struct sMaterial
 	{
@@ -309,6 +309,7 @@ namespace FlawedEngine
 		uint32_t RenderBuffer;
 	};
 
+
 	//ObjectManager
 	void* GetEntity(const char* name);
 	void* SpawnEntity(const char* name, eBasicObject type);
@@ -323,6 +324,8 @@ namespace FlawedEngine
 	void SetCameraRotation(float pitch, float yaw, float roll);
 	float GetCamYaw();
 	float GetCamPitch();
+	void StartPlayMode();
+	void StopPlayMode();
 
 	//Physics
 	void* GetPhxsWorld();

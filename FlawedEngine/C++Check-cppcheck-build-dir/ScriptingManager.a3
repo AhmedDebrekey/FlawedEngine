@@ -1,6 +1,0 @@
-<?xml version="1.0"?>
-<analyzerinfo hash="13107617972532162364">
-        <error id="syntaxError" severity="error" msg="syntax error" verbose="syntax error" file0="C:/Dev/FlawedEngine/FlawedEngine/FlawedEngine/Core/ScriptingManager.cpp">
-            <location file="C:\Dev\FlawedEngine\FlawedEngine\FlawedEngine\Libraries\include\Bullet\BulletCollision\CollisionShapes\btTriangleIndexVertexArray.h" line="25" column="27"/>
-        </error>
-</analyzerinfo>

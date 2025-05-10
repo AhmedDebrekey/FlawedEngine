@@ -447,7 +447,7 @@ namespace FlawedEngine
 
 		lua_pcall(mLuaState, 0, 0, 0);
 
-		ScriptingManager.RunFunction(mScriptingId, "Create");
+		//ScriptingManager.RunFunction(mScriptingId, "Create");
 	}
 
 	inline void cEntity::ReloadScript()
@@ -456,7 +456,7 @@ namespace FlawedEngine
 		{
 			ScriptingManager.LoadFile(mScriptingId, mScriptPath);
 			lua_pcall(mLuaState, 0, 0, 0);
-			ScriptingManager.RunFunction(mScriptingId, "Create");
+			//ScriptingManager.RunFunction(mScriptingId, "Create");
 		}
 	}
 
@@ -724,6 +724,6 @@ namespace FlawedEngine
 
 	inline void cEntity::LLog(const char* msg)
 	{
-		EngineLog(msg, Debug);
+		EngineLog(msg, Script);
 	}
 }

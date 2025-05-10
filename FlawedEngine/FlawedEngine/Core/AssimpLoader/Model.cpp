@@ -96,15 +96,17 @@ namespace FlawedEngine
 
 	void cModel::Update(float deltaTime)
 	{
-		ScriptingManager.RunFunction(mScriptingId, "Update");
-
-		mDeltaTime = deltaTime;
-
 		mShouldRender = isModelInFrustum();
+		if (mIsPlaying)
+		{
+			ScriptingManager.RunFunction(mScriptingId, "Update");
 
-		if (mAnimator && mShouldRender)
-			mAnimator->UpdateAnimation(mDeltaTime);
+			mDeltaTime = deltaTime;
 
+
+			if (mAnimator && mShouldRender)
+				mAnimator->UpdateAnimation(mDeltaTime);
+		}
 	}
 
 	void cModel::AddAnimation(const char* Path)
@@ -151,7 +153,7 @@ namespace FlawedEngine
 
 	void cModel::loadModel(std::string path)
 	{
-		importer.SetPropertyFloat(AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY, 0.1f);
+		//importer.SetPropertyFloat(AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY, 0.1f);
 
 		scene = importer.ReadFile(path, 
 			aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals |

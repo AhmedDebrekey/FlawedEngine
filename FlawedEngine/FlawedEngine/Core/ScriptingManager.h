@@ -30,6 +30,8 @@ namespace FlawedEngine
 		void RunFunction(int ID, const std::string& FuncName);
 		void RunFunctionWithArgs(int ID, const std::string& FuncName, const std::string& args);
 
+		void ReloadScripts();
+
 		template<typename Function>
 		void RegisterFunctionInNamespace(int ID, const std::string& Namespace, const std::string& FuncName, Function funcptr)
 		{

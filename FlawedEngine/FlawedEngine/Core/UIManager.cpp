@@ -1,4 +1,4 @@
-#include "UIManager.h"
+﻿#include "UIManager.h"
 
 
 static bool opt_fullscreen = true;
@@ -152,6 +152,7 @@ namespace FlawedEngine
 			ImGui::SliderFloat("##FontScale", &io.FontGlobalScale, 0.3, 2.0, "%.2f");
 
 
+
 			{
 				static char Path[20] = "";
 				bool Save = ImGui::Button("Save");
@@ -166,6 +167,24 @@ namespace FlawedEngine
 					}
 				}
 			}
+
+
+			ImVec2 buttonSize = ImVec2(40, 40);
+			if (mIsPlaying)
+			{
+				if (ImGui::Button("Stop", buttonSize)) 
+				{
+					StopPlayMode();
+				}
+			}
+			else
+			{
+				if (ImGui::Button("Play", buttonSize)) 
+				{
+					StartPlayMode();
+				}
+			}
+
 			ImGui::End();
 
 			RenderViewport(); 

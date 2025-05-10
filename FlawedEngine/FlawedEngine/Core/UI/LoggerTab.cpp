@@ -18,6 +18,11 @@ void FlawedEngine::cUIManager::RenderLogger()
 
     static bool autoScroll = true;
     ImGui::Checkbox("Auto-scroll", &autoScroll);
+    ImGui::SameLine();
+    if (ImGui::Button("Clear Logs", ImVec2{ 100, 30 }))
+    {
+        Logger::Clear();
+    }
     ImGui::Separator();
 
     const auto& logs = Logger::GetLogs();
@@ -35,7 +40,7 @@ void FlawedEngine::cUIManager::RenderLogger()
         {
         case LogLevel::Info:
             color = ImVec4(0.5f, 0.5f, 1.0f, 1.0f);  // Light blue
-            levelTag = "[INFO]   ";
+            levelTag = "[INFO]";
             break;
         case LogLevel::Warning:
             color = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);  // Yellow
@@ -43,7 +48,11 @@ void FlawedEngine::cUIManager::RenderLogger()
             break;
         case LogLevel::Error:
             color = ImVec4(1.0f, 0.3f, 0.3f, 1.0f);  // Red
-            levelTag = "[ERROR]  ";
+            levelTag = "[ERROR]";
+            break;
+        case LogLevel::Script:
+            color = ImVec4(0.5f, 1.0f, 0.5f, 1.0f);
+            levelTag = "[Script]";
             break;
         }
 

@@ -7,6 +7,9 @@ namespace FlawedEngine
 	
 	cObjectManager& manager = cObjectManager::get();
 	cpCamera& camera = cpCamera::get();
+	cScriptingManager& scripts = cScriptingManager::get();
+	bool mIsPlaying = false;
+
 
 	void SetDirectionalLightPos(const glm::vec3& Position)
 	{
@@ -84,4 +87,31 @@ namespace FlawedEngine
 	{
 		return DirectionalLightPos;
 	}
+
+	static sTransform cameraTransform;
+
+	void StartPlayMode()
+	{
+		mIsPlaying = true; 
+
+		manager.Save("game_config.json");
+
+		cameraTransform = { camera.Postion(), camera.Front(), camera.Projection(), camera.View() };
+		camera.SetAllowInput(false);
+
+		scripts.ReloadScripts();
+		EngineLog("PlayMode ON", Info);
+	}
+
+	void StopPlayMode()
+	{
+		mIsPlaying = false;
+
+		manager.LoadSave("game_config.json");
+		camera.SetOrientation(cameraTransform);
+		camera.SetAllowInput(true);
+
+		EngineLog("PlayMode OFF", Info);
+	}
+
 }

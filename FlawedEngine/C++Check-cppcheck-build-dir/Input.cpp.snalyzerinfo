@@ -1,6 +1,0 @@
-cInput
-cInput
-get call:[cInput] noreturn:[cInput]
-Poll call:[SetKeyPressed,glfwGetKey] noreturn:[SetKeyPressed]
-SetKeyPressed
-GetKeyPressed

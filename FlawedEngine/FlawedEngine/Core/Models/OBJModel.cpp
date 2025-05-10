@@ -147,7 +147,8 @@ namespace FlawedEngine
 
 	void cOBJModel::Update(float deltaTime)
 	{
-		ScriptingManager.RunFunction(mScriptingId, "Update");
+		if(mIsPlaying)
+			ScriptingManager.RunFunction(mScriptingId, "Update");
 		mDeltaTime = deltaTime;
 	}
 }
