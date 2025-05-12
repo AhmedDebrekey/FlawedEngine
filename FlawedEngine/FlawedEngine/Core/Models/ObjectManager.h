@@ -20,6 +20,7 @@ namespace FlawedEngine
 		void AddObject(eBasicObject ObjectType, const char* Name);
 		void LoadObject(const char* FilePath, const char* Name);
 		void RemoveObject(const char* Name);
+		void RemoveRuntimeObjects();
 
 		void ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps);
 
@@ -55,6 +56,7 @@ namespace FlawedEngine
 	private:
 		std::unordered_map<std::string, std::shared_ptr<cEntity>> SceneObjects;
 		std::unordered_map<std::string, sLight> PointLights;
+		std::vector<std::string> mRuntimeObjects;
 		std::vector<std::string> mRemoveList;
 
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;

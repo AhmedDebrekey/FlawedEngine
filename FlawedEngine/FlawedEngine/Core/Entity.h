@@ -464,13 +464,13 @@ namespace FlawedEngine
 	inline cEntity* cEntity::GetEntityByName(const char* name)
 	{
 		if (name == nullptr || name[0] == '\0') {
-			EngineLog("Get Entity Failed", Error);
+			//EngineLog("Get Entity Failed", Error);
 			return nullptr;
 		}
 
 		void* entity = GetEntity(name);
 		if (!entity) {
-			EngineLog("Get Entity Failed", Error);
+			//EngineLog("Get Entity Failed", Error);
 			return nullptr;
 		}
 
@@ -716,6 +716,8 @@ namespace FlawedEngine
 	inline void cEntity::LSetScript(const char* Path)
 	{
 		SetupScripting(Path, GetInputFunc());
+		ScriptingManager.RunFunction(mScriptingId, "Create");
+		
 	}
 	
 	inline void cEntity::LRemoveObject()

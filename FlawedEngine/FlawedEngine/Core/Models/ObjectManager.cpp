@@ -241,6 +241,9 @@ namespace FlawedEngine
 		sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
 		SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
 		SceneObjects[Name]->Type = Custom;
+
+		if (mIsPlaying)
+			mRuntimeObjects.push_back(Name);
 	}
 
 	void cObjectManager::RemoveObject(const char* Name)
@@ -248,6 +251,14 @@ namespace FlawedEngine
 		if (SceneObjects[Name]->Type == PointLight)
 			PointLights.erase(Name);
 		SceneObjects.erase(Name);
+	}
+
+	void cObjectManager::RemoveRuntimeObjects()
+	{
+		for (auto& entityName: mRuntimeObjects)
+		{
+			addToRemoveList(entityName.c_str());
+		}
 	}
 
 	void cObjectManager::ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps)

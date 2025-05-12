@@ -106,7 +106,7 @@ namespace FlawedEngine
 	void StopPlayMode()
 	{
 		mIsPlaying = false;
-
+		manager.RemoveRuntimeObjects();
 		manager.LoadSave("game_config.json");
 		camera.SetOrientation(cameraTransform);
 		camera.SetAllowInput(true);
