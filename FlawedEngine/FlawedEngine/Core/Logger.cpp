@@ -53,7 +53,12 @@ namespace FlawedEngine {
         case LogLevel::Debug:
             std::cout << "\033[36m[DEBUG]\033[0m " << message << std::endl; // Cyan
             break;
+        case LogLevel::Console:
+            std::cout << "\033[35m[CONSOLE]\033[0m " << message << std::endl; // Magenta
+            break;
         }
+        if (s_Logs.size() > 100)
+            s_Logs.clear();
         s_Logs.push_back({ message, level, std::chrono::system_clock::now()});
     }
 

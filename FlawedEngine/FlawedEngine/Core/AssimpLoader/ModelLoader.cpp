@@ -136,35 +136,6 @@ namespace FlawedEngine
 		return MeshCPUData(Vertecies, Indecides, Textures);
 	}
 
-	unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma, cGraphicsAPI* Graphics_API)
-	{
-		std::string filename = std::string(path);
-		filename = directory + '\\' + filename;
-
-		int width = 0, height = 0, nrComponents = 0;
-		unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-		unsigned int textureID;
-		if (data)
-		{
-			sTextureProps props;
-			props.Wrap_s = eTextureProperties::Repeat;
-			props.Wrap_t = eTextureProperties::Repeat;
-			props.Min_Filter = eTextureProperties::MIPMAP_Linear;
-			props.Mag_Filter = eTextureProperties::Linear;
-
-			textureID = Graphics_API->CreateTexture(width, height, nrComponents, data, props);
-
-			stbi_image_free(data);
-		}
-		else
-		{
-			EngineLog("Texture failed to load at path: " + std::string(path), Error);
-			stbi_image_free(data);
-		}
-
-		return textureID;
-	}
-
 	std::vector<sTexture> cModel::loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName)
 	{
 		std::vector<sTexture> Textures;
@@ -186,7 +157,7 @@ namespace FlawedEngine
 			if (!skip)
 			{
 				sTexture Texture;
-				Texture.ID = TextureFromFile(str.C_Str(), mDirectory, false, mGfxAPI);
+				Texture.ID = -1;//TextureFromFile(str.C_Str(), mDirectory, false, mGfxAPI);
 				Texture.Type = typeName;
 				Texture.Path = str.C_Str();
 				Textures.push_back(Texture);

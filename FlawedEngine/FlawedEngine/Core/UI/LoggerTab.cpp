@@ -26,6 +26,7 @@ void FlawedEngine::cUIManager::RenderLogger()
     ImGui::Separator();
 
     const auto& logs = Logger::GetLogs();
+    bool skip = false;
 
     for (const auto& entry : logs)
     {
@@ -54,10 +55,14 @@ void FlawedEngine::cUIManager::RenderLogger()
             color = ImVec4(0.5f, 1.0f, 0.5f, 1.0f);
             levelTag = "[Script]";
             break;
+        case LogLevel::Console:
+            skip = true;
+            break;
         }
 
         // Compose full message
-
+        if (skip)
+            continue;
         ImGui::TextUnformatted(timeStr.c_str());
         ImGui::SameLine();
         ImGui::PushStyleColor(ImGuiCol_Text, color);

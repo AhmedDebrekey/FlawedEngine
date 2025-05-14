@@ -34,9 +34,9 @@ namespace FlawedEngine
 		mGeometryShader.Bind();
 		mGeometryShader.Unbind();
 		std::thread loader([this]() {
+			EngineLog("Loading Model: " + mName, Console);
 			loadModel(mFilePath);
 			mIsLoaded = true;
-			EngineLog("Model finished loading: " + mName, Info);
 			});
 		loader.detach();
 		//loadModel(FilePath);
@@ -168,12 +168,46 @@ namespace FlawedEngine
 		}
 	}
 
+	unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma, cGraphicsAPI* Graphics_API)
+	{
+		std::string filename = std::string(path);
+		filename = directory + '\\' + filename;
+
+		int width = 0, height = 0, nrComponents = 0;
+		unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+		unsigned int textureID;
+		if (data)
+		{
+			sTextureProps props;
+			props.Wrap_s = eTextureProperties::Repeat;
+			props.Wrap_t = eTextureProperties::Repeat;
+			props.Min_Filter = eTextureProperties::MIPMAP_Linear;
+			props.Mag_Filter = eTextureProperties::Linear;
+
+			textureID = Graphics_API->CreateTexture(width, height, nrComponents, data, props);
+
+			stbi_image_free(data);
+		}
+		else
+		{
+			EngineLog("Texture failed to load at path: " + std::string(path), Error);
+			stbi_image_free(data);
+		}
+
+		return textureID;
+	}
+
+
 	void cModel::FinalizeLoadOnMainThread() {
 		if (!mIsLoaded || mIsUploaded)
 			return;
 
-		for (const auto& cpu : mCPUMeshes) {
-			mMeshes.push_back(cMesh(cpu.vertices, cpu.indices, cpu.textures, mGfxAPI)); // OpenGL-safe now
+		for (auto& cpu : mCPUMeshes) {
+			for (auto& tex : cpu.textures)
+			{
+				tex.ID = TextureFromFile(tex.Path.c_str(), mDirectory, false, mGfxAPI);
+			}
+			mMeshes.push_back(cMesh(cpu.vertices, cpu.indices, cpu.textures, mGfxAPI));
 		}
 
 		mCPUMeshes.clear();
