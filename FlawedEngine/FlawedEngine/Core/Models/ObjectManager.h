@@ -21,6 +21,7 @@ namespace FlawedEngine
 		void LoadObject(const char* FilePath, const char* Name);
 		void RemoveObject(const char* Name);
 		void RemoveRuntimeObjects();
+		void RemoveFromRuntimeObjects(const std::string& Name);
 
 		void ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps);
 

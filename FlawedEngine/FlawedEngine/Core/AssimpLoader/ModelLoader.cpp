@@ -8,7 +8,7 @@ namespace FlawedEngine
 		for (uint32_t i = 0; i < node->mNumMeshes; i++)
 		{
 			aiMesh* Mesh = scene->mMeshes[node->mMeshes[i]];
-			mMeshes.push_back(processMesh(Mesh, scene));
+			mCPUMeshes.push_back(processMesh(Mesh, scene));
 		}
 
 		for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -49,7 +49,7 @@ namespace FlawedEngine
 		std::cout << std::endl;
 	}
 
-	cMesh cModel::processMesh(aiMesh* mesh, const aiScene* scene)
+	MeshCPUData cModel::processMesh(aiMesh* mesh, const aiScene* scene)
 	{
 		std::vector<sVertex> Vertecies;
 		std::vector<uint32_t> Indecides;
@@ -133,7 +133,7 @@ namespace FlawedEngine
 		ExtractBoneWeightForVertices(Vertecies, mesh, scene);
 
 
-		return cMesh(Vertecies, Indecides, Textures, mGfxAPI);
+		return MeshCPUData(Vertecies, Indecides, Textures);
 	}
 
 	unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma, cGraphicsAPI* Graphics_API)

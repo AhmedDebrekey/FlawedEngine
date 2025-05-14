@@ -24,6 +24,12 @@ namespace FlawedEngine
         std::vector<AssimpNodeData> children;
     };
 
+    struct MeshCPUData {
+        std::vector<sVertex> vertices;
+        std::vector<unsigned int> indices;
+        std::vector<sTexture> textures;
+    };
+
     class cModel : public cEntity
     {
     public:
@@ -68,13 +74,14 @@ namespace FlawedEngine
         Frustum* mCamFrustum = nullptr; // Add Another one for the shadow camera
 
     private:
+        void FinalizeLoadOnMainThread();
         void loadModel(std::string path);
         void CalculateAABB(const aiScene* scene);
         virtual void SetAABB(glm::vec3& Scale) override;
         btCollisionShape* CalculateMeshCollision(const aiScene* scene);
 
         void processNode(aiNode* node, const aiScene* scene);
-        cMesh processMesh(aiMesh* mesh, const aiScene* scene);
+        MeshCPUData processMesh(aiMesh* mesh, const aiScene* scene);
         std::vector<sTexture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::string& typeName);
 
 
@@ -86,9 +93,12 @@ namespace FlawedEngine
         // model data 
         std::vector<sTexture> mLoadedTextures;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
         std::vector<cMesh>    mMeshes;
+        std::vector<MeshCPUData> mCPUMeshes;
         std::map<std::string, sBoneInfo> m_BoneInfoMap; 
         std::string mDirectory;
         int m_BoneCounter = 0;
+        std::atomic<bool> mIsLoaded = false;
+        bool mIsUploaded = false;
         
         bool gammaCorrection;
         cShader mGeometryShader;

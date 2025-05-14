@@ -261,6 +261,11 @@ namespace FlawedEngine
 		}
 	}
 
+	void cObjectManager::RemoveFromRuntimeObjects(const std::string& Name)
+	{
+		mRuntimeObjects.erase(std::remove(mRuntimeObjects.begin(), mRuntimeObjects.end(), Name), mRuntimeObjects.end());
+	}
+
 	void cObjectManager::ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps)
 	{
 		auto Object = GetObjectByName(Name);

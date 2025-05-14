@@ -12,6 +12,8 @@
 #include "Animations/Animator.h"
 #include "../Models/ObjectManager.h"
 
+#include <thread>
+
 
 namespace FlawedEngine
 {
@@ -22,16 +24,28 @@ namespace FlawedEngine
 		mName = Name;
 		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
 		mAABBOffset = glm::vec3(0.0f);
-		loadModel(FilePath);
 		mFilePath = FilePath;
 		mIsCostume = true;
 		mCamFrustum = CamFrustum;
+
+		mGeometryShader.Create("Core/Models/Shaders/Vertex.glsl", "Core/Models/Shaders/Fragment.glsl", mName.c_str());
+		mLightShader.Create("Core/Models/Shaders/LightVertex.glsl", "Core/Models/Shaders/LightFragment.glsl", mName.c_str());
+		mShadowShader.Create("Core/Models/Shaders/ShadowVertex.glsl", "Core/Models/Shaders/ShadowFragment.glsl", mName.c_str());
+		mGeometryShader.Bind();
+		mGeometryShader.Unbind();
+		std::thread loader([this]() {
+			loadModel(mFilePath);
+			mIsLoaded = true;
+			EngineLog("Model finished loading: " + mName, Info);
+			});
+		loader.detach();
+		//loadModel(FilePath);
 	}
 	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject)
 	{
 		SetModelTransform(Trans);
 
-		if (mShouldRender)
+		if (mShouldRender && mIsLoaded)
 		{
 			for (uint32_t i = 0; i < mMeshes.size(); i++)
 			{
@@ -50,6 +64,9 @@ namespace FlawedEngine
 
 	void cModel::SetModelTransform(sTransform& Trans)
 	{
+
+		FinalizeLoadOnMainThread();
+
 		if (mRigidBody != nullptr && mRigidBody->getMotionState() && isPhysicsSet)
 		{
 			btTransform btTrans;
@@ -151,34 +168,43 @@ namespace FlawedEngine
 		}
 	}
 
+	void cModel::FinalizeLoadOnMainThread() {
+		if (!mIsLoaded || mIsUploaded)
+			return;
+
+		for (const auto& cpu : mCPUMeshes) {
+			mMeshes.push_back(cMesh(cpu.vertices, cpu.indices, cpu.textures, mGfxAPI)); // OpenGL-safe now
+		}
+
+		mCPUMeshes.clear();
+		mIsUploaded = true;
+	}
+
 	void cModel::loadModel(std::string path)
 	{
 		//importer.SetPropertyFloat(AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY, 0.1f);
+		Assimp::Importer localImporter;
 
-		scene = importer.ReadFile(path, 
+		const aiScene* localscene;
+
+		localscene = localImporter.ReadFile(path,
 			aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals |
 			aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph | aiProcess_GlobalScale |
 			aiProcess_ValidateDataStructure);
 
 
-		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+		if (!localscene || localscene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !localscene->mRootNode)
 		{
-			EngineLog("ASSIMP: " + std::string(importer.GetErrorString()), Error);
+			EngineLog("ASSIMP: " + std::string(localImporter.GetErrorString()), Error);
 			return;
 		}
 
-		CalculateAABB(scene);
+		CalculateAABB(localscene);
 
 		mDirectory = path.substr(0, path.find_last_of('\\'));
 
-		processNode(scene->mRootNode, scene);
+		processNode(localscene->mRootNode, localscene);
 
-
-		mGeometryShader.Create("Core/Models/Shaders/Vertex.glsl", "Core/Models/Shaders/Fragment.glsl", mName.c_str());
-		mLightShader.Create("Core/Models/Shaders/LightVertex.glsl", "Core/Models/Shaders/LightFragment.glsl", mName.c_str());
-		mShadowShader.Create("Core/Models/Shaders/ShadowVertex.glsl", "Core/Models/Shaders/ShadowFragment.glsl", mName.c_str());
-		mGeometryShader.Bind();
-		mGeometryShader.Unbind();
 	}
 
 	void cModel::CalculateAABB(const aiScene* scene)
