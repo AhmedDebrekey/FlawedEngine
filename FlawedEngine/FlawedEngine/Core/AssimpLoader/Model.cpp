@@ -43,8 +43,8 @@ namespace FlawedEngine
 	}
 	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject)
 	{
-		SetModelTransform(Trans);
 
+		SetModelTransform(Trans);
 		if (mShouldRender && mIsLoaded)
 		{
 			for (uint32_t i = 0; i < mMeshes.size(); i++)
@@ -100,10 +100,10 @@ namespace FlawedEngine
 
 	void cModel::ShadowRender(sTransform& Trans, glm::mat4& LightSpaceMatrix, uint32_t DepthMap)
 	{
-		SetModelTransform(Trans);
 
-		if (mShouldRender)
+		if (mShouldRender && mIsLoaded)
 		{
+			SetModelTransform(Trans);
 			for (uint32_t i = 0; i < mMeshes.size(); i++)
 			{
 				mMeshes[i].ShadowDraw(Trans, mShadowShader, LightSpaceMatrix, DepthMap);
@@ -152,11 +152,11 @@ namespace FlawedEngine
 				if (mCurrentAnimation == mAnimationsMap[Path])
 					return;
 
-
 				mAnimator->ChangeAnim(mAnimationsMap[Path]);
 				mCurrentAnimation = mAnimationsMap[Path];
 				return;
 			}
+
 
 			mAnimationsMap[Path] = std::make_shared<Animation>();
 			mAnimationsMap[Path]->Setup(Path, this, &importer);
@@ -175,7 +175,7 @@ namespace FlawedEngine
 
 		int width = 0, height = 0, nrComponents = 0;
 		unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-		unsigned int textureID;
+		unsigned int textureID = -1;
 		if (data)
 		{
 			sTextureProps props;
@@ -209,6 +209,12 @@ namespace FlawedEngine
 			}
 			mMeshes.push_back(cMesh(cpu.vertices, cpu.indices, cpu.textures, mGfxAPI));
 		}
+
+		for (auto& callback : mOnLoadedCalledBacks)
+		{
+			callback();
+		}
+		mOnLoadedCalledBacks.clear();
 
 		mCPUMeshes.clear();
 		mIsUploaded = true;

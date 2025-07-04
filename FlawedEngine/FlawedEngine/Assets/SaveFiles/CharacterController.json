@@ -15,10 +15,10 @@
                 1.0
             ],
             "filepath": [
-                ""
+                "Core\\Models\\OBJ\\Cube\\Cube.obj"
             ],
             "isCostume": [
-                false
+                true
             ],
             "physics": [
                 true
@@ -43,16 +43,16 @@
                     0.0
                 ],
                 "scale": [
-                    9.869999885559082,
+                    20.0,
                     1.0,
-                    9.869999885559082
+                    20.0
                 ]
             },
             "type": [
-                0
+                7
             ]
         },
-        "Cube(1)": {
+        "Light(0)": {
             "animation": {
                 "animationPath": [
                     ""
@@ -77,31 +77,83 @@
             ],
             "scripting": {
                 "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    5.324868202209473,
+                    6.3025922775268555,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ]
+            },
+            "type": [
+                5
+            ]
+        },
+        "Soldier": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\GameTest\\TowerDefence\\Soldier\\Soldier.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
                     true
                 ],
                 "scriptPath": [
-                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\GameTest\\Impulse.lua"
+                    "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\GameTest\\TowerDefence\\Soldier\\Controller.lua"
                 ]
             },
             "transform": {
                 "position": [
                     0.0,
-                    10.6885986328125,
+                    6.984541416168213,
                     0.0
                 ],
                 "rotation": [
-                    -141.3658447265625,
-                    54.030452728271484,
-                    141.18719482421875
+                    0.0,
+                    -0.0,
+                    0.0
                 ],
                 "scale": [
-                    0.999989926815033,
-                    1.0,
-                    0.9999999403953552
+                    5.0,
+                    5.0,
+                    5.0
                 ]
             },
             "type": [
-                0
+                7
             ]
         }
     }

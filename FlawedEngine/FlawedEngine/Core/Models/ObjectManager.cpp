@@ -248,9 +248,16 @@ namespace FlawedEngine
 
 	void cObjectManager::RemoveObject(const char* Name)
 	{
-		if (SceneObjects[Name]->Type == PointLight)
+		auto it = SceneObjects.find(Name);
+		if (it == SceneObjects.end()) 
+		{
+			EngineLog(std::string(Name) + " is not valid", Error);
+			return;
+		}
+		if (it->second->Type == PointLight) {
 			PointLights.erase(Name);
-		SceneObjects.erase(Name);
+		}
+			SceneObjects.erase(it);
 	}
 
 	void cObjectManager::RemoveRuntimeObjects()
@@ -259,6 +266,7 @@ namespace FlawedEngine
 		{
 			addToRemoveList(entityName.c_str());
 		}
+		mRuntimeObjects.clear();
 	}
 
 	void cObjectManager::RemoveFromRuntimeObjects(const std::string& Name)
@@ -468,9 +476,13 @@ namespace FlawedEngine
 
 			if (object["physics"][0] == true)
 			{
-				Entity->SetPhysics(object["type"][0], GetPhysicsWorld());
-				Entity->mPhysics = object["physics"][0];
-				Entity->setDynamic(false);
+				std::function<void()> setPhysics = [=]() {
+					Entity->SetPhysics(object["type"][0], GetPhysicsWorld());
+					Entity->mPhysics = object["physics"][0];
+					Entity->setDynamic(false); 
+				};
+
+				Entity->mOnLoadedCalledBacks.push_back(setPhysics);
 			}
 
 			if (object["scripting"]["hasScript"][0] == true)

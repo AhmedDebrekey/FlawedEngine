@@ -38,6 +38,8 @@ namespace FlawedEngine
 		void LScale(float x, float y, float z);
 		void LApplyForce(float x, float y, float z);
 		void LApplyRelativeForce(float x, float y, float z);
+		void LSetAngularFactor(float x, float y, float z);
+		void LSetLinearFactor(float x, float y, float z);
 		void LSetPhysicsState(bool state);
 		void LSetDynamic(bool state);
 		cEntity* LSpawnObject(const char* name, uint8_t type);
@@ -82,7 +84,8 @@ namespace FlawedEngine
 		float mMass = 0.0f;
 		float mFricton = 0.5f;
 		float mRestitution = 0.0f;
-		glm::vec3 mAngularForce;
+		glm::vec3 mAngularFactor;
+		glm::vec3 mLinearFactor;
 		glm::vec3 mAABBOffset;
 		bool mDead = false;
 		eBasicObject Type = Cube;
@@ -117,6 +120,9 @@ namespace FlawedEngine
 		bool mShouldRender = true;
 		sModel mTransformation;
 		float mDeltaTime = 0;
+		std::atomic<bool> mIsLoaded = false;
+		std::vector<std::function<void()>> mOnLoadedCalledBacks;
+		bool mIsUploaded = false;
 
 		cInput& Input = cInput::get();
 		cScriptingManager& ScriptingManager = cScriptingManager::get();
@@ -177,7 +183,7 @@ namespace FlawedEngine
 		btVector3 RelativeTransform = relativeForce;
 		btVector3 correctedForce = (boxTrans * relativeForce) - boxTrans.getOrigin();
 		relativeForce = (boxTrans * RelativeTransform) - boxTrans.getOrigin();
-		mRigidBody->applyCentralForce(relativeForce);
+		mRigidBody->applyCentralImpulse(relativeForce);
 	}
 
 
@@ -189,7 +195,7 @@ namespace FlawedEngine
 			mRigidBody->activate(true);
 		}
 		btVector3 worldForce = btVector3(Force.x, Force.y, Force.z);
-		mRigidBody->applyCentralForce(worldForce);
+		mRigidBody->applyCentralImpulse(worldForce);
 	}
 
 	inline void cEntity::SetCollisionShape(eBasicObject Object)
@@ -293,24 +299,25 @@ namespace FlawedEngine
 		glm::quat rotationQuat = glm::quat(rotationEuler);
 		ObjectTransform.setRotation(btQuaternion(rotationQuat.x, rotationQuat.y, rotationQuat.z, rotationQuat.w));
 
-		btScalar mass(1.0);
+		mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
 
 		mInertia = btVector3(0, 0, 0);
-		if (mass != 0.f) mCollisionShape->calculateLocalInertia(mass, mInertia);
+		if (mMass != 0.f) mCollisionShape->calculateLocalInertia(mMass, mInertia);
 
 
 		btDefaultMotionState* MotionState = new btDefaultMotionState(ObjectTransform);
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, MotionState, mCollisionShape, mInertia);
+		btRigidBody::btRigidBodyConstructionInfo rbInfo(mMass, MotionState, mCollisionShape, mInertia);
 		mRigidBody = new btRigidBody(rbInfo);
 
-		mCollisionShape->setLocalScaling(btVector3(btScalar(Scale.x), btScalar(Scale.y), btScalar(Scale.z)));
 		mRigidBody->setActivationState(DISABLE_DEACTIVATION);
 		//mRidigBody->setSleepingThresholds(0.2, 0.2);
 		mRigidBody->setRestitution(mRestitution);
 		mRigidBody->setFriction(mFricton);
 		mRigidBody->setDamping(0.5, 0.5);
-		mAngularForce = glm::vec3(1.0f);
-		mRigidBody->setAngularFactor(btVector3(mAngularForce.x, mAngularForce.y, mAngularForce.z)); // Stop rotation around 0's
+		mAngularFactor = glm::vec3(1.0f);
+		mLinearFactor = glm::vec3(1.0f);
+		mRigidBody->setLinearFactor(btVector3(mLinearFactor.x, mLinearFactor.y, mLinearFactor.z)); // Stop Movement around 0's
+		mRigidBody->setAngularFactor(btVector3(mAngularFactor.x, mAngularFactor.y, mAngularFactor.z)); // Stop rotation around 0's
 
 		mPhysicsDynamicWorld->addRigidBody(mRigidBody);
 		mPhysicsDynamicWorld->updateSingleAabb(mRigidBody);
@@ -347,6 +354,12 @@ namespace FlawedEngine
 
 		funcptr = std::bind(&cEntity::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		ScriptingManager.RegisterFunction(mScriptingId, "ApplyRelativeForce", funcptr);
+
+		funcptr = std::bind(&cEntity::LSetAngularFactor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(mScriptingId, "SetAngularFactor", funcptr);
+
+		funcptr = std::bind(&cEntity::LSetLinearFactor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(mScriptingId, "SetLinearFactor", funcptr);
 
 		funcptr = std::bind(&cEntity::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		ScriptingManager.RegisterFunction(mScriptingId, "ChangeColor", funcptr);
@@ -595,6 +608,24 @@ namespace FlawedEngine
 	{
 		if (mPhysics)
 			ApplyRelativeForce(glm::vec3(x, y, z));
+	}
+
+	inline void cEntity::LSetAngularFactor(float x, float y, float z)
+	{
+		if (mPhysics)
+		{
+			mRigidBody->setAngularFactor(btVector3(x, y, z));
+			mAngularFactor = glm::vec3(x, y, z);
+		}
+	}
+
+	inline void cEntity::LSetLinearFactor(float x, float y, float z)
+	{
+		if (mPhysics)
+		{
+			mRigidBody->setLinearFactor(btVector3(x, y, z));
+			mLinearFactor = glm::vec3(x, y, z);
+		}
 	}
 
 	inline void cEntity::LSetPhysicsState(bool state)

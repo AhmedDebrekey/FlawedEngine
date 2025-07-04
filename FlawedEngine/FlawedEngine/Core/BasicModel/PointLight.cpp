@@ -52,7 +52,7 @@ namespace FlawedEngine
 		   20,21,22,22,23,20        // Bottom
 		};
 
-
+		mIsLoaded = true;
 		Renderer.Init(mVertexBuffer, mTextureCoords, mIndices);
 	}
 

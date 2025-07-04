@@ -20,9 +20,15 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 		{
 			textcolor = glm::vec3(200, 100, 100);
 		}
+		
+		std::string isLoading = "";
+		if (!Entity->mIsLoaded)
+		{
+			isLoading = " (LOADING...)";
+		}
 
 		ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(textcolor.r, textcolor.g, textcolor.b, 255));
-		if (ImGui::Selectable(Object.first.c_str(), (Object.first == mSelectedEntity) ? true : false))
+		if (ImGui::Selectable(std::string(Object.first + isLoading).c_str(), (Object.first == mSelectedEntity) ? true : false))
 			mSelectedEntity = Object.first;
 		ImGui::PopStyleColor();
 

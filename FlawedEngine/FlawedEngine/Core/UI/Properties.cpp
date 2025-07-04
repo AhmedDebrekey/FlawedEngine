@@ -40,10 +40,10 @@ void FlawedEngine::cUIManager::RenderProperties()
 		}
 		else
 		{
+			sModel EntityModel = Entity->GetModel();
 			if (!Entity->mPhysics)
 			{
 				Entity->UnSetPhysics();
-				sModel EntityModel = Entity->GetModel();
 				DrawVec3("Translation", EntityModel.Translation, 0.0f);
 				DrawVec3("Rotation", EntityModel.Rotation, 0.0f);
 				DrawVec3("Scale", EntityModel.Scale, 1.0f);
@@ -51,6 +51,9 @@ void FlawedEngine::cUIManager::RenderProperties()
 			}
 			else
 			{
+
+				ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(EntityModel.Translation), glm::value_ptr(EntityModel.Rotation),
+					glm::value_ptr(EntityModel.Scale), mTmpMatrix);
 
 				btTransform trans;
 				Entity->mRigidBody->getMotionState()->getWorldTransform(trans);
@@ -80,10 +83,16 @@ void FlawedEngine::cUIManager::RenderProperties()
 				}
 
 				//AngularFactor..........
-				static glm::vec3 AngularForce = Entity->mAngularForce;
+				static glm::vec3 AngularForce = Entity->mAngularFactor;
 				DrawVec3("AngularForce", AngularForce, 1.0f);
-				Entity->mAngularForce = AngularForce;
+				Entity->mAngularFactor = AngularForce;
 				Entity->mRigidBody->setAngularFactor(btVector3(AngularForce.x, AngularForce.y, AngularForce.z));
+
+				////LinearFactor..........
+				//static glm::vec3 LinearFactor = Entity->mLinearFactor;
+				//DrawVec3("LinearFactor", LinearFactor, 1.0f);
+				//Entity->mLinearFactor = LinearFactor;
+				//Entity->mRigidBody->setLinearFactor(btVector3(LinearFactor.x, LinearFactor.y, LinearFactor.z));
 
 				glm::vec3 AABBOffset = Entity->mAABBOffset;
 				DrawVec3("AABBOffset", AABBOffset);
@@ -195,6 +204,7 @@ void FlawedEngine::cUIManager::RenderProperties()
 
 					if (ext == ".fbx" || ext == ".gltf" || ext == ".dae")
 					{
+						EngineLog("Drag and drop: " + dataPath.string(), Debug);
 						Entity->AddAnimation(dataPath.string().c_str());
 
 					}

@@ -26,7 +26,7 @@ void FlawedEngine::cUIManager::RenderLogger()
     ImGui::Separator();
 
     const auto& logs = Logger::GetLogs();
-    bool skip = false;
+    static bool skip = false;
 
     for (const auto& entry : logs)
     {
@@ -42,18 +42,22 @@ void FlawedEngine::cUIManager::RenderLogger()
         case LogLevel::Info:
             color = ImVec4(0.5f, 0.5f, 1.0f, 1.0f);  // Light blue
             levelTag = "[INFO]";
+            skip = false;
             break;
         case LogLevel::Warning:
             color = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);  // Yellow
             levelTag = "[WARNING]";
+            skip = false;
             break;
         case LogLevel::Error:
             color = ImVec4(1.0f, 0.3f, 0.3f, 1.0f);  // Red
             levelTag = "[ERROR]";
+            skip = false;
             break;
         case LogLevel::Script:
             color = ImVec4(0.5f, 1.0f, 0.5f, 1.0f);
             levelTag = "[Script]";
+            skip = false;
             break;
         case LogLevel::Console:
             skip = true;

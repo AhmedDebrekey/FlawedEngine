@@ -97,8 +97,6 @@ namespace FlawedEngine
         std::map<std::string, sBoneInfo> m_BoneInfoMap; 
         std::string mDirectory;
         int m_BoneCounter = 0;
-        std::atomic<bool> mIsLoaded = false;
-        bool mIsUploaded = false;
         
         bool gammaCorrection;
         cShader mGeometryShader;
