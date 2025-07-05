@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      line-height: 1.6;
+      padding: 0;
+      margin: 0;
+    }
+
+    header {
+      background-color: #1e1e2f;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .nav-boxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .nav-box {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px 20px;
+      flex: 1 1 calc(33% - 20px);
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: #222;
+      font-weight: bold;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    .nav-box:hover {
+      background-color: #e6e6ff;
+    }
+
+    h1, h2, h3 {
+      color: #222;
+    }
+
+    figure {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    figure img {
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    figcaption {
+      font-size: 0.9em;
+      color: #555;
+      margin-top: 5px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    img.screenshot {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      object-fit: cover;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    img.screenshot.compact {
+      max-width: 300px;
+      display: block;
+      margin: 10px auto;
+    }
+
+    .section {
+      margin-bottom: 40px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 6px;
+    }
+
+    .section:nth-child(even) {
+      background-color: #f1f1f1;
+    }
+
+    .section:not(:last-child)::after {
+      content: "";
+      display: block;
+      border-top: 1px solid #ccc;
+      margin: 40px 0;
+    }
+
+    code {
+      background-color: #f4f4f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    FlawedEngine - Getting Started
+  </header>
+
+  <main>
+    <p>Welcome to the FlawedEngine Editor! This guide introduces the key components of the editor and how to use them effectively.</p>
+
+    <figure>
+      <img src="FlawedEngine/FlawedEngine/Resources/Guide/Editor.png" alt="Editor Overview Screenshot" class="screenshot">
+      <figcaption>Overview of the FlawedEngine Editor</figcaption>
+    </figure>
+
+    <div class="nav-boxes">
+      <a href="#viewport" class="nav-box">Viewport</a>
+      <a href="#content-browser" class="nav-box">Content Browser</a>
+      <a href="#scene-hierarchy" class="nav-box">Scene Hierarchy</a>
+      <a href="#properties-panel" class="nav-box">Properties Panel</a>
+      <a href="#settings" class="nav-box">Settings</a>
+      <a href="#log-tab" class="nav-box">Logging Tab</a>
+    </div>
+
+    <div class="section" id="viewport">
+      <h2>🎮 Viewport</h2>
+      <p>The viewport is where you interact with the 3D world:</p>
+      <figure>
+        <img src="FlawedEngine/FlawedEngine/Resources/Guide/Viewport.png" alt="Viewport Screenshot" class="screenshot">
+        <figcaption>Viewport panel where you navigate and edit the scene</figcaption>
+      </figure>
+      <ul>
+        <li>Use <code>W</code>, <code>A</code>, <code>S</code>, <code>D</code>, <code>E</code>, <code>Q</code> to navigate</li>
+        <li>Right-click to rotate the camera</li>
+        <li>Left-click to select objects (if mouse picking is enabled)</li>
+        <li>Use transformation gizmos with keys: <code>T</code> (Translate), <code>R</code> (Rotate), <code>G</code> (Scale)</li>
+      </ul>
+    </div>
+
+    <div class="section" id="content-browser">
+      <h2>📂 Content Browser</h2>
+      <figure>
+        <img src="FlawedEngine/FlawedEngine/Resources/Guide/Content Browser.png" alt="Content Browser Screenshot" class="screenshot">
+        <figcaption>Manage and organize project assets from here</figcaption>
+      </figure>
+      <ul>
+        <li>Opens to the project’s <code>Assets</code> folder</li>
+        <li>Supports drag-and-drop for <code>.gltf</code>, <code>.obj</code>, and save files</li>
+        <li>Right-click for file operations or to add new items</li>
+        <li>External file opening supported (e.g., VS Code for Lua)</li>
+        <li>Trash icon to delete items, refresh button to sync</li>
+      </ul>
+    </div>
+
+    <div class="section" id="scene-hierarchy">
+      <h2>🧩 Scene Hierarchy</h2>
+      <figure>
+        <img src="FlawedEngine/FlawedEngine/Resources/Guide/Scene Hierarchy.png" alt="Scene Hierarchy Screenshot" class="screenshot compact">
+        <figcaption>Shows all entities in your scene</figcaption>
+      </figure>
+      <ul>
+        <li>Displays all entities in the scene</li>
+        <li>Right-click to add shapes or point lights</li>
+        <li>Click empty space to deselect all</li>
+        <li>Entities highlighted in red are outside the camera's view frustum.</li>
+      </ul>
+    </div>
+
+    <div class="section" id="properties-panel">
+      <h2>⚙️ Properties Panel</h2>
+      <figure>
+        <img src="FlawedEngine/FlawedEngine/Resources/Guide/PropertiesPanel.png" alt="Properties Panel Screenshot" class="screenshot compact">
+        <figcaption>Edit entity properties and components</figcaption>
+      </figure>
+      <p>Visible only when an entity is selected:</p>
+      <ul>
+        <li>Edit Position, Rotation, and Scale</li>
+        <li>Set base color if no texture is applied</li>
+        <li>Configure physics options (dynamic, forces, AABB)</li>
+        <li>Drag-and-drop Lua scripts or animations</li>
+      </ul>
+    </div>
+
+    <div class="section" id="settings">
+      <h2>🛠️ Settings</h2>
+      <ul>
+        <li>Play button: Runs animations and scripts</li>
+        <li>Save button: Saves the scene to <code>SaveFiles</code> folder</li>
+      </ul>
+    </div>
+
+    <div class="section" id="log-tab">
+      <h2>📜 Log Tab</h2>
+      <figure>
+        <img src="FlawedEngine/FlawedEngine/Resources/Guide/Logging Tab.png" alt="Log Tab Screenshot" class="screenshot compact">
+        <figcaption>View logs from the engine and scripts</figcaption>
+      </figure>
+      <p>Displays all engine and script-generated logs.</p>
+    </div>
+
+    <div class="section">
+      <h2>🧠 Tips</h2>
+      <ul>
+        <li>Use example assets for a quick start</li>
+        <li><a href="ScriptingGuide.html" target="_blank">Refer to the Scripting Guide for advanced logic</a></li>
+        <li>Future updates will add automatic script reloading and more</li>
+      </ul>
+    </div>
+  </main>
+</body>
+</html>

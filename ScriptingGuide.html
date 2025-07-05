@@ -223,6 +223,38 @@
     </section>
 
     <section class="function-card">
+      <h2>SetAngularFactor</h2>
+      <p class="desc">Locks or unlocks rotation on each axis.</p>
+      <p><strong>Parameters:</strong> float x, float y, float z</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>SetAngularFactor(0.0, 1.0, 0.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>SetLinearFactor</h2>
+      <p class="desc">Locks or unlocks movement on each axis.</p>
+      <p><strong>Parameters:</strong> float x, float y, float z</p>
+      <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+      <pre><code>SetLinearFactor(1.0, 0.0, 1.0)</code></pre>
+    </section>
+
+    <section class="function-card">
+    <h2>ClampVelocity</h2>
+    <p class="desc">Limits the entity's velocity to the specified maximum speed.</p>
+    <p><strong>Parameters:</strong> float maxSpeed</p>
+    <p><strong>Returns:</strong> <span class="tag void">void</span></p>
+    <pre><code>entity:ClampVelocity(10.0)</code></pre>
+  </section>
+
+  <section class="function-card">
+    <h2>GetVelocity</h2>
+    <p class="desc">Returns the current velocity magnitude of the entity.</p>
+    <p><strong>Parameters:</strong> None</p>
+    <p><strong>Returns:</strong> <span class="tag float">float</span></p>
+    <pre><code>local speed = entity:GetVelocity()</code></pre>
+  </section>
+
+    <section class="function-card">
       <h2>ChangeColor</h2>
       <p class="desc">Changes the color of the entity.</p>
       <p><strong>Parameters:</strong> float r, float g, float b</p>

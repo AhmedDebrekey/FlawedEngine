@@ -40,6 +40,8 @@ namespace FlawedEngine
 		void LApplyRelativeForce(float x, float y, float z);
 		void LSetAngularFactor(float x, float y, float z);
 		void LSetLinearFactor(float x, float y, float z);
+		void LClampVelocity(float x);
+		float LGetVelocity();
 		void LSetPhysicsState(bool state);
 		void LSetDynamic(bool state);
 		cEntity* LSpawnObject(const char* name, uint8_t type);
@@ -84,6 +86,7 @@ namespace FlawedEngine
 		float mMass = 0.0f;
 		float mFricton = 0.5f;
 		float mRestitution = 0.0f;
+		float mMaxVelocity = 100.0f;
 		glm::vec3 mAngularFactor;
 		glm::vec3 mLinearFactor;
 		glm::vec3 mAABBOffset;
@@ -355,10 +358,10 @@ namespace FlawedEngine
 		funcptr = std::bind(&cEntity::LApplyRelativeForce, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		ScriptingManager.RegisterFunction(mScriptingId, "ApplyRelativeForce", funcptr);
 
-		funcptr = std::bind(&cEntity::LSetAngularFactor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		funcptr = std::bind(&cEntity::LSetAngularFactor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3); // Rotation
 		ScriptingManager.RegisterFunction(mScriptingId, "SetAngularFactor", funcptr);
 
-		funcptr = std::bind(&cEntity::LSetLinearFactor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		funcptr = std::bind(&cEntity::LSetLinearFactor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3); // Translation
 		ScriptingManager.RegisterFunction(mScriptingId, "SetLinearFactor", funcptr);
 
 		funcptr = std::bind(&cEntity::LSetColor, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
@@ -431,6 +434,12 @@ namespace FlawedEngine
 
 		std::function<void()> removeFunc = std::bind(&cEntity::LRemoveObject, this);
 		ScriptingManager.RegisterFunction(mScriptingId, "Remove", removeFunc);
+
+		std::function<void(float)> clampVelocityFunc = std::bind(&cEntity::LClampVelocity, this, std::placeholders::_1);
+		ScriptingManager.RegisterFunction(mScriptingId, "ClampVelocity", clampVelocityFunc);
+
+		std::function<float()> getVelocityFunc = std::bind(&cEntity::LGetVelocity, this);
+		ScriptingManager.RegisterFunction(mScriptingId, "GetVelocity", getVelocityFunc);
 
 		ScriptingManager.LoadFile(mScriptingId, Path);
 
@@ -626,6 +635,30 @@ namespace FlawedEngine
 			mRigidBody->setLinearFactor(btVector3(x, y, z));
 			mLinearFactor = glm::vec3(x, y, z);
 		}
+	}
+
+	inline void cEntity::LClampVelocity(float x)
+	{
+		if (mPhysics)
+		{
+			mMaxVelocity = x;
+			btVector3 velocity = mRigidBody->getLinearVelocity();
+			if (velocity.length() > mMaxVelocity)
+			{
+				velocity.normalize();
+				velocity *= mMaxVelocity;
+				mRigidBody->setLinearVelocity(velocity);
+			}
+		}
+		else
+		{
+			mMaxVelocity = x;
+		}
+	}
+
+	inline float cEntity::LGetVelocity()
+	{
+		return mMaxVelocity;
 	}
 
 	inline void cEntity::LSetPhysicsState(bool state)
