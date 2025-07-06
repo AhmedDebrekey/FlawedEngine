@@ -22,6 +22,7 @@ namespace FlawedEngine
 		void RemoveObject(const char* Name);
 		void RemoveRuntimeObjects();
 		void RemoveFromRuntimeObjects(const std::string& Name);
+		void RecompileScripts();
 
 		void ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps);
 
@@ -42,6 +43,8 @@ namespace FlawedEngine
 		void ToggleSkyBox() { mSkybox.ToggleSkyBox(); };
 		void addToRemoveList(const char*);
 		void eraseRemoveList();
+
+		bool areEntitiesLoaded() const;
 
 		void Save(const std::string& FileName);
 		void LoadSave(const std::string& FileName);

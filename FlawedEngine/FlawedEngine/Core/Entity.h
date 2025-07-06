@@ -40,6 +40,7 @@ namespace FlawedEngine
 		void LApplyRelativeForce(float x, float y, float z);
 		void LSetAngularFactor(float x, float y, float z);
 		void LSetLinearFactor(float x, float y, float z);
+		void LSetAABBOffset(float x, float y, float z);
 		void LClampVelocity(float x);
 		float LGetVelocity();
 		void LSetPhysicsState(bool state);
@@ -57,6 +58,7 @@ namespace FlawedEngine
 		float LCamRoll();
 		float LGetDeltaTime();
 		std::string LGetName();
+		void LAddAnimation(const char* Path);
 		void LChangeAnim(const char* Path);
 		void LMoveCamera(float x, float y, float z);
 		void LSetCameraPos(float x, float y, float z);
@@ -379,7 +381,13 @@ namespace FlawedEngine
 		funcptr = std::bind(&cEntity::LSetCameraPos, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 		ScriptingManager.RegisterFunction(mScriptingId, "SetCameraPos", funcptr);
 
-		std::function<void(const char*)> charInputfunc = std::bind(&cEntity::LChangeAnim, this, std::placeholders::_1);
+		funcptr = std::bind(&cEntity::LSetAABBOffset, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+		ScriptingManager.RegisterFunction(mScriptingId, "SetAABBOffset", funcptr);
+
+		std::function<void(const char*)> charInputfunc = std::bind(&cEntity::LAddAnimation, this, std::placeholders::_1);
+		ScriptingManager.RegisterFunction(mScriptingId, "AddAnimation", charInputfunc);
+
+		charInputfunc = std::bind(&cEntity::LChangeAnim, this, std::placeholders::_1);
 		ScriptingManager.RegisterFunction(mScriptingId, "ChangeAnimation", charInputfunc);
 
 		charInputfunc = std::bind(&cEntity::LSetScript, this, std::placeholders::_1);
@@ -625,6 +633,7 @@ namespace FlawedEngine
 		{
 			mRigidBody->setAngularFactor(btVector3(x, y, z));
 			mAngularFactor = glm::vec3(x, y, z);
+			EngineLog("Angular Factor Set" + std::to_string(x) + ',' + std::to_string(y) + ',' + std::to_string(z), Info);
 		}
 	}
 
@@ -634,6 +643,15 @@ namespace FlawedEngine
 		{
 			mRigidBody->setLinearFactor(btVector3(x, y, z));
 			mLinearFactor = glm::vec3(x, y, z);
+		}
+	}
+
+	inline void cEntity::LSetAABBOffset(float x, float y, float z)
+	{
+		if (mPhysics)
+		{
+			mAABBOffset = glm::vec3(x, y, z);
+			ApplyAABBOffest(mAABBOffset);
 		}
 	}
 
@@ -750,6 +768,11 @@ namespace FlawedEngine
 	inline std::string cEntity::LGetName()
 	{
 		return mName;
+	}
+
+	inline void cEntity::LAddAnimation(const char* Path)
+	{
+		AddAnimation(Path);
 	}
 
 	inline void cEntity::LChangeAnim(const char* Path)

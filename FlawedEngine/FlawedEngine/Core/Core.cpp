@@ -93,6 +93,11 @@ namespace FlawedEngine
 
 	void StartPlayMode()
 	{
+		if (!manager.areEntitiesLoaded())
+		{
+			EngineLog("Wait until all entities are loaded", Error);
+			return;
+		}
 		mIsPlaying = true; 
 
 		manager.Save("game_config.json");
@@ -100,7 +105,9 @@ namespace FlawedEngine
 		cameraTransform = { camera.Postion(), camera.Front(), camera.Projection(), camera.View() };
 		camera.SetAllowInput(false);
 
+		manager.RecompileScripts();
 		scripts.ReloadScripts();
+
 		EngineLog("PlayMode ON", Info);
 	}
 

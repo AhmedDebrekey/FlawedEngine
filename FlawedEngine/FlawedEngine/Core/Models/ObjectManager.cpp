@@ -231,6 +231,9 @@ namespace FlawedEngine
 		default:
 			break;
 		}
+
+		if (mIsPlaying)
+			mRuntimeObjects.push_back(Name);
 	}
 
 	void cObjectManager::LoadObject(const char* FilePath, const char* Name)
@@ -272,6 +275,17 @@ namespace FlawedEngine
 	void cObjectManager::RemoveFromRuntimeObjects(const std::string& Name)
 	{
 		mRuntimeObjects.erase(std::remove(mRuntimeObjects.begin(), mRuntimeObjects.end(), Name), mRuntimeObjects.end());
+	}
+
+	void cObjectManager::RecompileScripts()
+	{
+		for (auto& Object : SceneObjects)
+		{
+			if (Object.second->mHasScripting)
+			{
+				Object.second->ReloadScript();
+			}
+		}
 	}
 
 	void cObjectManager::ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps)
@@ -397,6 +411,17 @@ namespace FlawedEngine
 		}
 
 		mRemoveList.clear();
+	}
+
+	bool cObjectManager::areEntitiesLoaded() const
+	{
+		for (const auto& [name, entity] : SceneObjects)
+		{
+			if (!entity->mIsLoaded)
+			{
+				return false;
+			}
+		}
 	}
 
 	void cObjectManager::Save(const std::string& FileName)
