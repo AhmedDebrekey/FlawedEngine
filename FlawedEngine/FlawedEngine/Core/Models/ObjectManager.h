@@ -19,9 +19,10 @@ namespace FlawedEngine
 
 		void AddObject(eBasicObject ObjectType, const char* Name);
 		void LoadObject(const char* FilePath, const char* Name);
-		void RemoveObject(const char* Name);
+		void RemoveObject(std::shared_ptr<cEntity>);
+		void RemoveAllObjects();
 		void RemoveRuntimeObjects();
-		void RemoveFromRuntimeObjects(const std::string& Name);
+		void RemoveFromRuntimeObjects(std::shared_ptr<cEntity>);
 		void RecompileScripts();
 
 		void ModifyObject(const char* Name, sModel& Model, sMaterial Material, bool setPhysics, sPhysicsProps PhysicsProps);
@@ -41,7 +42,7 @@ namespace FlawedEngine
 		void ChangeName(const char* OldName, const char* NewName);
 		std::shared_ptr<cEntity> GetObjectByName(const char* Name);
 		void ToggleSkyBox() { mSkybox.ToggleSkyBox(); };
-		void addToRemoveList(const char*);
+		void addToRemoveList(std::shared_ptr<cEntity>);
 		void eraseRemoveList();
 
 		bool areEntitiesLoaded() const;
@@ -60,8 +61,8 @@ namespace FlawedEngine
 	private:
 		std::unordered_map<std::string, std::shared_ptr<cEntity>> SceneObjects;
 		std::unordered_map<std::string, sLight> PointLights;
-		std::vector<std::string> mRuntimeObjects;
-		std::vector<std::string> mRemoveList;
+		std::vector<std::shared_ptr<cEntity>> mRuntimeObjects;
+		std::vector<std::shared_ptr<cEntity>> mRemoveList;
 
 		btAlignedObjectArray<btCollisionShape*>* mCollisionShapesArray = nullptr;
 

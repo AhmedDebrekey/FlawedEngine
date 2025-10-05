@@ -222,8 +222,9 @@ namespace FlawedEngine
 			glm::vec3 DefaultColor = glm::vec3(1.0f);
 			SceneObjects[Name]->SetColor(DefaultColor);
 			sLight DefualtLightProps = { DefaultModel.Translation, 1.0f, 0.09f, 0.032f, glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f) };
-			AddLight(Name, DefualtLightProps);
+			SceneObjects[Name]->mName = Name;
 			SceneObjects[Name]->Type = PointLight;
+			AddLight(Name, DefualtLightProps);
 		}
 		break;
 		case FlawedEngine::SpotLight:
@@ -233,7 +234,7 @@ namespace FlawedEngine
 		}
 
 		if (mIsPlaying)
-			mRuntimeObjects.push_back(Name);
+			mRuntimeObjects.push_back(SceneObjects[Name]);
 	}
 
 	void cObjectManager::LoadObject(const char* FilePath, const char* Name)
@@ -246,35 +247,43 @@ namespace FlawedEngine
 		SceneObjects[Name]->Type = Custom;
 
 		if (mIsPlaying)
-			mRuntimeObjects.push_back(Name);
+			mRuntimeObjects.push_back(SceneObjects[Name]);
 	}
 
-	void cObjectManager::RemoveObject(const char* Name)
+	void cObjectManager::RemoveObject(std::shared_ptr<cEntity> object)
 	{
-		auto it = SceneObjects.find(Name);
-		if (it == SceneObjects.end()) 
+		if (!object) 
 		{
-			EngineLog(std::string(Name) + " is not valid", Error);
+			EngineLog("Object trying to delete is not valid", Error);
 			return;
 		}
-		if (it->second->Type == PointLight) {
-			PointLights.erase(Name);
+		if (object->Type == PointLight) {
+			PointLights.erase(object->mName);
 		}
-			SceneObjects.erase(it);
+		SceneObjects.erase(object->mName);
+	}
+
+	void cObjectManager::RemoveAllObjects()
+	{
+		RemoveRuntimeObjects();
+		for (auto& Object : SceneObjects)
+		{
+			addToRemoveList(Object.second);
+		}
 	}
 
 	void cObjectManager::RemoveRuntimeObjects()
 	{
 		for (auto& entityName: mRuntimeObjects)
 		{
-			addToRemoveList(entityName.c_str());
+			addToRemoveList(entityName);
 		}
 		mRuntimeObjects.clear();
 	}
 
-	void cObjectManager::RemoveFromRuntimeObjects(const std::string& Name)
+	void cObjectManager::RemoveFromRuntimeObjects(std::shared_ptr<cEntity> object)
 	{
-		mRuntimeObjects.erase(std::remove(mRuntimeObjects.begin(), mRuntimeObjects.end(), Name), mRuntimeObjects.end());
+		mRuntimeObjects.erase(std::remove(mRuntimeObjects.begin(), mRuntimeObjects.end(), object), mRuntimeObjects.end());
 	}
 
 	void cObjectManager::RecompileScripts()
@@ -299,7 +308,7 @@ namespace FlawedEngine
 
 			Object->SetPhysicsProps(PhysicsProps);
 
-			Object->SetPhysics(Cube, mPhysicsWorld); //Get Type from Entity
+			Object->SetPhysics(Object->Type, mPhysicsWorld); //Get Type from Entity
 			Object->setDynamic(setPhysics);
 		}
 	}
@@ -398,16 +407,16 @@ namespace FlawedEngine
 		return Object->second;
 	}
 
-	void cObjectManager::addToRemoveList(const char* entityName)
+	void cObjectManager::addToRemoveList(std::shared_ptr<cEntity> entity)
 	{
-		mRemoveList.push_back(entityName);
+		mRemoveList.push_back(entity);
 	}
 
 	void cObjectManager::eraseRemoveList()
 	{
 		for (auto& entity : mRemoveList)
 		{
-			RemoveObject(entity.c_str());
+			RemoveObject(entity);
 		}
 
 		mRemoveList.clear();

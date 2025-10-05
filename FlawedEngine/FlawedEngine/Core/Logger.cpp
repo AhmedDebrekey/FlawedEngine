@@ -61,5 +61,4 @@ namespace FlawedEngine {
             s_Logs.clear();
         s_Logs.push_back({ message, level, std::chrono::system_clock::now()});
     }
-
 }

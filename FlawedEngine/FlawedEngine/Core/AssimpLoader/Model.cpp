@@ -14,6 +14,7 @@
 
 #include <thread>
 
+#include <chrono>
 
 namespace FlawedEngine
 {
@@ -223,11 +224,11 @@ namespace FlawedEngine
 	void cModel::loadModel(std::string path)
 	{
 		//importer.SetPropertyFloat(AI_CONFIG_GLOBAL_SCALE_FACTOR_KEY, 0.1f);
-		Assimp::Importer localImporter;
+		//Assimp::Importer localImporter;
 
 		const aiScene* localscene;
-
-		localscene = localImporter.ReadFile(path,
+		
+		localscene = importer.ReadFile(path,
 			aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals |
 			aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph | aiProcess_GlobalScale |
 			aiProcess_ValidateDataStructure);
@@ -235,7 +236,7 @@ namespace FlawedEngine
 
 		if (!localscene || localscene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !localscene->mRootNode)
 		{
-			EngineLog("ASSIMP: " + std::string(localImporter.GetErrorString()), Error);
+			EngineLog("ASSIMP: " + std::string(importer.GetErrorString()), Error);
 			return;
 		}
 

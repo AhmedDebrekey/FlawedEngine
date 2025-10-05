@@ -25,6 +25,7 @@ namespace FlawedEngine
 
         void Setup(const std::string& animationPath, cModel* model, Assimp::Importer* importer)
         {
+
             const aiScene* scene = importer->ReadFile(animationPath, aiProcess_Triangulate | aiProcess_GlobalScale);
             ApplyGlobalScale(scene->mRootNode, 1);
             assert(scene && scene->mRootNode);

@@ -144,10 +144,10 @@ void FlawedEngine::cUIManager::RenderProperties()
 
 		if (ImGui::Button("Remove"))
 		{
-			mObjectMan.RemoveObject(mSelectedEntity.c_str());
+			mObjectMan.RemoveObject(mObjectMan.GetObjectByName(mSelectedEntity.c_str()));
 		}
 
-		if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_Delete)) { mObjectMan.RemoveObject(mSelectedEntity.c_str()); }
+		if (ImGui::IsKeyPressed(ImGuiKey::ImGuiKey_Delete)) { mObjectMan.RemoveObject(mObjectMan.GetObjectByName(mSelectedEntity.c_str())); }
 
 		static ImGui::FileBrowser ScriptDialog;
 

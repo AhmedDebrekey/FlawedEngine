@@ -11,6 +11,11 @@ void FlawedEngine::cUIManager::RenderSceneHierarchy()
 	static int Triangles = 0;
 	static int Lights = 0;
 
+	if (ImGui::Button("Delete All"))
+	{
+		mObjectMan.RemoveAllObjects();
+	}
+
 	for (auto& Object : *mObjectMan.GetObjectsPointer())
 	{
 		auto Entity = Object.second;

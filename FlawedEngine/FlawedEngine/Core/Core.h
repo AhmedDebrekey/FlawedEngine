@@ -46,6 +46,15 @@ namespace FlawedEngine
             std::to_string((vec).w) + " ]";                                    \
         EngineLog("Vec4: " + line, level);                                     \
     } while (0)
+#define EngineLogTime(timer, level)											   \
+	do {                                                                       \
+        std::string timer = "[ " +                                             \
+            std::to_string((vec).x) + ", " +                                   \
+            std::to_string((vec).y) + ", " +                                   \
+            std::to_string((vec).z) + ", " +                                   \
+            std::to_string((vec).w) + " ]";                                    \
+        EngineLog("Vec4: " + line, level);                                     \
+    } while (0)
 
 	extern bool mIsPlaying;
 
