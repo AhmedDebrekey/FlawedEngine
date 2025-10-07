@@ -18,7 +18,10 @@ local AnimTimer = ANIM_COOLDOWN
 
 package.path = package.path .. ";./Assets/GameTest/TowerDefence/Soldier/?.lua"
 local utils = require("utils")
+local Keys = require("Keys")
 
+-- State
+local playerYRotation = 0
 
 -- Called once when entity is created
 function Create()
@@ -48,25 +51,29 @@ function Update()
     local dirZ = 0.0
     local isMoving = false
 
-    if IsKeyDown(87) then -- W 
+    if IsKeyDown(Keys.W) then -- W 
         dirZ = dirZ + 1.0
         CurrentAnim = "Jog Forward.fbx"
         isMoving = true
     end
-    if IsKeyDown(83) then -- S
+    if IsKeyDown(Keys.S) then -- S
         dirZ = dirZ - 1.0 
         CurrentAnim = "Jog Backward.fbx"
         isMoving = true
     end 
-    if IsKeyDown(65) then -- A
+    if IsKeyDown(Keys.A) then -- A
         dirX = dirX + 1.0 
         CurrentAnim = "Jog Strafe Left.fbx"
         isMoving = true
     end 
-    if IsKeyDown(68) then -- D
+    if IsKeyDown(Keys.D) then -- D
         dirX = dirX - 1.0
         CurrentAnim = "Jog Strafe Right.fbx"
         isMoving = true
+    end
+    if IsKeyDown(Keys.Q) then
+        playerYRotation = playerYRotation + 10
+        Rotate(0, playerYRotation, 0)
     end
     
     if isMoving then
@@ -81,7 +88,7 @@ function Update()
     end
     
     
-    if IsKeyDown(69) then -- E
+    if IsKeyDown(Keys.E) then -- E
         local obj = SpawnObject("Crate", 1)
         obj:ChangeColor(1.0, 0.0, 0.0)
         obj:SetPos(cameraPos.x, cameraPos.y, cameraPos.z + 10)
