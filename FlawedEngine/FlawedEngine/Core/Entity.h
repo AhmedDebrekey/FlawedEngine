@@ -57,7 +57,7 @@ namespace FlawedEngine
 		float LCamYaw();
 		float LCamRoll();
 		float LGetDeltaTime();
-		std::string LGetName();
+		const char* LGetName();
 		void LAddAnimation(const char* Path);
 		void LChangeAnim(const char* Path);
 		void LMoveCamera(float x, float y, float z);
@@ -67,6 +67,7 @@ namespace FlawedEngine
 		void LSetScript(const char* Path);
 		void LRemoveObject();
 		void LLog(const char*);
+		cEntity* LRayCast(float fX, float fY, float fZ, float tX, float tY, float tZ);
 		int mScriptingId;
 		lua_State* mLuaState = nullptr;
 		cEntity* GetEntityByName(const char* name);
@@ -407,6 +408,18 @@ namespace FlawedEngine
 		std::function<void(const char*)> logFunc = std::bind(&cEntity::LLog, this, std::placeholders::_1);
 		ScriptingManager.RegisterFunction(mScriptingId, "Log", logFunc);
 
+		std::function<cEntity* (float, float, float, float, float, float)> rayFunc = std::bind(&cEntity::LRayCast, this,
+			std::placeholders::_1,
+			std::placeholders::_2,
+			std::placeholders::_3,
+			std::placeholders::_4,
+			std::placeholders::_5,
+			std::placeholders::_6);
+		ScriptingManager.RegisterFunction(mScriptingId, "Raycast", rayFunc);
+
+		std::function<const char*(void)> nameFunc = std::bind(&cEntity::LGetName, this);
+		ScriptingManager.RegisterFunction(mScriptingId, "GetName", nameFunc);
+
 		std::function<float()> posFunc = std::bind(&cEntity::LGetX, this);
 		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Pos", "getX", posFunc);
 
@@ -471,6 +484,7 @@ namespace FlawedEngine
 			.addFunction("rgetX", &cEntity::LRotGetX)
 			.addFunction("rgetY", &cEntity::LRotGetY)
 			.addFunction("rgetZ", &cEntity::LRotGetZ)
+			.addFunction("GetName", &cEntity::LGetName)
 			.endClass();
 
 		mScriptPath = Path;
@@ -765,9 +779,9 @@ namespace FlawedEngine
 		return mDeltaTime;
 	}
 
-	inline std::string cEntity::LGetName()
+	inline const char* cEntity::LGetName()
 	{
-		return mName;
+		return mName.c_str();
 	}
 
 	inline void cEntity::LAddAnimation(const char* Path)
@@ -815,5 +829,20 @@ namespace FlawedEngine
 	inline void cEntity::LLog(const char* msg)
 	{
 		EngineLog(msg, Script);
+	}
+
+	inline cEntity* cEntity::LRayCast(float fX, float fY, float fZ, float tX, float tY, float tZ)
+	{
+		EngineLog("Casting Ray...", Info);
+		btVector3 pFrom = btVector3(fX, fY, fZ);
+		btVector3 pTo = btVector3(tX, tY, tZ);
+		btCollisionWorld::ClosestRayResultCallback res(pFrom, pTo);
+		mPhysicsDynamicWorld->rayTest(pFrom, pTo, res);
+		if (res.hasHit())
+		{
+			auto entity = (cEntity*)res.m_collisionObject->getCollisionShape()->getUserPointer();
+			//EngineLog("Hit " + entity->mName, Info);
+			return entity;
+		}
 	}
 }

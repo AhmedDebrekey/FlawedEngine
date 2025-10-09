@@ -100,6 +100,7 @@
     .tag.bool { background: #007acc; }
     .tag.float { background: #00b894; }
     .tag.centity { background: #d63031; }
+    .tag.string { background: #09e727}
     .allow-hover-scale .function-card:hover {
         transform: scale(1.3);
         z-index: 2;
@@ -423,6 +424,22 @@ end</code></pre>
       <p><strong>Parameters</strong> string message</p>
       <p><strong>Returns:</strong><span class="tag void">void</span></p>
       <pre><code>Log("Hello World!")</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>Raycast</h2>
+      <p class="desc">Shoots a ray and returns first entity hit.</p>
+      <p><strong>Parameters:</strong>float fromX, float fromY, float fromZ, float toX, float toY, float toZ</p>
+      <p><strong>Returns:</strong> <span class="tag centity">Entity Object</span></p>
+      <pre><code>local px, py, pz = Pos:getX(), Pos:getY(), Pos:getZ()<br>hitObject = Raycast(px, py, pz, px, py - 1, pz)</code></pre>
+    </section>
+
+     <section class="function-card">
+      <h2>GetName</h2>
+      <p class="desc">Gets entity's name.</p>
+      <p><strong>Parameters:</strong> none </p>
+      <p><strong>Returns:</strong> <span class="tag string">String</span></p>
+      <pre><code>local name = entity:GetName()</code></pre>
     </section>
 
   </main>
