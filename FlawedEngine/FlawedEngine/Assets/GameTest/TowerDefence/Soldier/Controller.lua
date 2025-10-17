@@ -1,4 +1,4 @@
--- Controller.lua (refactored to use SpringArm)
+-- Controller.lua (refactored to use SpringArm) + spawn cooldown
 
 -- ======================
 -- Constants
@@ -9,12 +9,15 @@ local JUMP_FORCE       = 8.0
 local CAMERA_OFFSET    = { x = 0.0, y = 10.0, z = -7.0 } -- height + default distance (|z|)
 local CAMERA_SMOOTHING = 0.1
 local ANIM_COOLDOWN    = 0.5
+local SPAWN_COOLDOWN   = 0.75 -- seconds between crate spawns
 
 package.path = package.path .. ";./Assets/GameTest/TowerDefence/Soldier/?.lua"
 
 local utils     = require("utils")
 local Keys      = require("Keys")
 local SpringArm = require("SpringArm")
+
+local CrateCount = 0
 
 -- ======================
 -- Animation
@@ -27,6 +30,10 @@ local AnimTimer   = ANIM_COOLDOWN
 -- Player state
 -- ======================
 local playerYRotation = 0.0
+
+-- Spawn state
+local spawnTimer = 0.0
+local spawnHeld  = false
 
 -- ======================
 -- Camera (via SpringArm)
@@ -42,7 +49,8 @@ local arm = SpringArm.new({
 })
 
 -- Smoothed camera state (we'll smooth the arm's solved camera pose)
-local smoothPos   = { x = 0.0, y = 0.0, z = 0.0 }
+local smoothPos = { x = 0.0, y = 0.0, z = 0.0 }
+local smoothYaw = 0.0
 
 -- ======================
 -- Lifecycle
@@ -56,12 +64,12 @@ function Create()
     AddAnimation(AnimPath .. CurrentAnim)
     SetAngularFactor(0.0, 0.0, 0.0)   -- Lock Rotations
     SetLinearFactor(1.0, 1.0, 1.0)    -- Can Lock vertical movement
-
+    
     -- Initialize from current transform
     playerYRotation = Rot:getY()
 
     arm.yaw = playerYRotation    -- start camera aligned to player
-    smoothYaw   = arm.yaw
+    smoothYaw = arm.yaw
 
     -- Seed smooth position with the initial computed camera
     local px, py, pz = Pos:getX(), Pos:getY(), Pos:getZ()
@@ -77,6 +85,9 @@ end
 -- ======================
 function Update()
     local dt = GetDeltaTime()
+
+    -- Tick down spawn cooldown
+    spawnTimer = math.max(0.0, spawnTimer - dt)
 
     -- =======================
     -- Camera Input (orbit)
@@ -117,7 +128,6 @@ function Update()
         hitObject = Raycast(px, py, pz, px, py - 1, pz)
         hitObject:ChangeColor(math.random(0, 1), math.random(0, 1), math.random(0, 1))
         Log(hitObject:GetName())
-
     end
 
     if isMoving then
@@ -135,17 +145,25 @@ function Update()
         end
     end
 
-    -- Spawn a crate in front of the camera
+    -- =======================
+    -- Spawn a crate (cooldown + edge detection)
+    -- =======================
     if IsKeyDown(Keys.E) then
-        local obj = SpawnObject("Crate", 1)
-        if obj then
-            obj:ChangeColor(1.0, 0.0, 0.0)
-            obj:SetPos(smoothPos.x, smoothPos.y + 5, smoothPos.z)
-            obj:Rotate(0, playerYRotation, 0)
-            obj:SetPhysics(true)
-            obj:SetDynamic(true)
-            obj:ApplyRelativeForce(0, 0, 50)
+        if not spawnHeld and spawnTimer <= 0.0 then
+            local crateName = "Crate_" .. CrateCount
+            CrateCount = CrateCount + 1
+            local obj = SpawnObject(crateName, 0)
+            if obj then
+                obj:SetPos(smoothPos.x, smoothPos.y + 5, smoothPos.z)
+                obj:Rotate(0, smoothYaw, 0)
+                obj:AddScript("Assets\\GameTest\\TowerDefence\\Soldier\\Crate.lua")
+            end
+            spawnTimer = SPAWN_COOLDOWN
+            spawnHeld  = true
         end
+    else
+        -- key released -> arm next spawn after cooldown
+        spawnHeld = false
     end
 
     -- Normalize input and apply force in player local space

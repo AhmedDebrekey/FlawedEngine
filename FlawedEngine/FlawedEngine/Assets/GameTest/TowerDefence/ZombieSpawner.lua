@@ -21,8 +21,11 @@ function Update()
             local y = Pos:getY()
             local z = Pos:getZ()
 
-            zombieObj:SetPos(x, y, z)
-            zombieObj:AddScript("Assets\\GameTest\\TowerDefence\\Zombie_ai.lua")
+            zombieObj:OnLoaded(function(self)
+                zombieObj:SetPos(x, y, z)
+                zombieObj:AddScript("Assets\\GameTest\\TowerDefence\\Zombie_ai.lua")
+            end)    
+            
         else
             Log("Failed to load zombie object: " .. zombieName)
         end

@@ -57,6 +57,7 @@ namespace FlawedEngine
 		float LCamYaw();
 		float LCamRoll();
 		float LGetDeltaTime();
+		bool LIsLoaded();
 		const char* LGetName();
 		void LAddAnimation(const char* Path);
 		void LChangeAnim(const char* Path);
@@ -67,6 +68,7 @@ namespace FlawedEngine
 		void LSetScript(const char* Path);
 		void LRemoveObject();
 		void LLog(const char*);
+		void LOnLoaded(luabridge::LuaRef func);
 		cEntity* LRayCast(float fX, float fY, float fZ, float tX, float tY, float tZ);
 		int mScriptingId;
 		lua_State* mLuaState = nullptr;
@@ -420,6 +422,9 @@ namespace FlawedEngine
 		std::function<const char*(void)> nameFunc = std::bind(&cEntity::LGetName, this);
 		ScriptingManager.RegisterFunction(mScriptingId, "GetName", nameFunc);
 
+		std::function<bool()> isLoadedFunc = std::bind(&cEntity::LIsLoaded, this);
+		ScriptingManager.RegisterFunction(mScriptingId, "IsLoaded", isLoadedFunc);
+
 		std::function<float()> posFunc = std::bind(&cEntity::LGetX, this);
 		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Pos", "getX", posFunc);
 
@@ -485,6 +490,8 @@ namespace FlawedEngine
 			.addFunction("rgetY", &cEntity::LRotGetY)
 			.addFunction("rgetZ", &cEntity::LRotGetZ)
 			.addFunction("GetName", &cEntity::LGetName)
+			.addFunction("IsLoaded", &cEntity::LIsLoaded)
+			.addFunction("OnLoaded", &cEntity::LOnLoaded)
 			.endClass();
 
 		mScriptPath = Path;
@@ -779,6 +786,11 @@ namespace FlawedEngine
 		return mDeltaTime;
 	}
 
+	inline bool cEntity::LIsLoaded()
+	{
+		return mIsLoaded.load();
+	}
+
 	inline const char* cEntity::LGetName()
 	{
 		return mName.c_str();
@@ -830,6 +842,30 @@ namespace FlawedEngine
 	{
 		EngineLog(msg, Script);
 	}
+
+	inline void cEntity::LOnLoaded(luabridge::LuaRef func)
+	{
+		if (!func.isFunction())
+			return;
+
+		if (mIsLoaded.load())
+		{
+			try { func(this); }
+			catch (...) {}
+			return;
+		}
+
+
+		luabridge::LuaRef f = func;
+		mOnLoadedCalledBacks.push_back([this, f]() mutable {
+			if (f.isFunction())
+			{
+				try { f(this); }
+				catch (...) {}
+			}
+			});
+	}
+
 
 	inline cEntity* cEntity::LRayCast(float fX, float fY, float fZ, float tX, float tY, float tZ)
 	{

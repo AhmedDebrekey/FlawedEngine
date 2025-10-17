@@ -114,8 +114,8 @@ namespace FlawedEngine
 
 		aiMaterial* Material = scene->mMaterials[mesh->mMaterialIndex];
 		
-		std::cout << scene->mMaterials[mesh->mMaterialIndex]->GetName().C_Str() << std::endl;
-		PrintMaterialTextures(scene->mMaterials[mesh->mMaterialIndex]);
+		//std::cout << scene->mMaterials[mesh->mMaterialIndex]->GetName().C_Str() << std::endl;
+		//PrintMaterialTextures(scene->mMaterials[mesh->mMaterialIndex]);
 
 
 		std::vector<sTexture> diffuseMaps = loadMaterialTextures(Material, aiTextureType_DIFFUSE, "texture_diffuse");

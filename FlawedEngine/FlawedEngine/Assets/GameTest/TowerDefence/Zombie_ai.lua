@@ -7,6 +7,10 @@ local rotationSpeed = 180.0 -- degrees per second
 
 
 function Create()
+    Scale(5, 5, 5)
+    SetPhysics(true)
+    SetDynamic(false)
+    SetAABBOffset(0.0, 10.0, 0.0)
     -- Load all waypoints in order
     local i = 1
     while true do
@@ -15,13 +19,13 @@ function Create()
         table.insert(waypoints, wp)
         i = i + 1
     end
-
+    
     if #waypoints > 0 then
         currentTarget = waypoints[1]
     else
         Log("No waypoints found!")
     end
-
+    
 end
 
 function Update()
@@ -70,7 +74,7 @@ function Update()
         -- Move scaled by speed and delta time
         Move(dx * moveSpeed * dt, dy * moveSpeed * dt, dz * moveSpeed * dt)
     end
-
+    
 end
 
 function ReachGoal()
@@ -87,5 +91,7 @@ function lerp_angle(a, b, t)
 end
 
 function OnCollision(otherEntity)
-
+    if otherEntity:find("Crate") then
+        Log("I Got hit")
+    end
 end

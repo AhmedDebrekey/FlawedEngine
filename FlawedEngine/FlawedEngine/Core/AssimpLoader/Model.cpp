@@ -230,8 +230,12 @@ namespace FlawedEngine
 		
 		localscene = importer.ReadFile(path,
 			aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals |
+			aiProcess_GlobalScale | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph);
+
+		/*localscene = importer.ReadFile(path,
+			aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_CalcTangentSpace | aiProcess_GenSmoothNormals |
 			aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph | aiProcess_GlobalScale |
-			aiProcess_ValidateDataStructure);
+			aiProcess_ValidateDataStructure);*/
 
 
 		if (!localscene || localscene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !localscene->mRootNode)
