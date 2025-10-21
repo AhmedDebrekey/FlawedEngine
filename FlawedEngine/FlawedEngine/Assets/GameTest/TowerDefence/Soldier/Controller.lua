@@ -1,4 +1,4 @@
--- Controller.lua (refactored to use SpringArm) + spawn cooldown
+-- Controller.lua (refactored to use SpringArm + RMB mouse-look)
 
 -- ======================
 -- Constants
@@ -6,10 +6,16 @@
 local MOVE_FORCE       = 5.0
 local MAX_SPEED        = 5.0
 local JUMP_FORCE       = 8.0
-local CAMERA_OFFSET    = { x = 0.0, y = 10.0, z = -7.0 } -- height + default distance (|z|)
-local CAMERA_SMOOTHING = 0.1
+local CAMERA_OFFSET    = { x = 0.0, y = 10.0, z = -14.0 } -- height + default distance (|z|)
+local CAMERA_SMOOTHING = 0.005
 local ANIM_COOLDOWN    = 0.5
-local SPAWN_COOLDOWN   = 0.75 -- seconds between crate spawns
+local SPAWN_COOLDOWN   = 0.2 -- seconds between crate spawns
+
+-- Mouse-look tuning (adjust to taste)
+local MOUSE_YAW_SENS   = 0.15  -- degrees per pixel (horizontal)
+local MOUSE_PITCH_SENS = 0.15  -- degrees per pixel (vertical)
+local PITCH_MIN        = -80.0
+local PITCH_MAX        =  10.0
 
 package.path = package.path .. ";./Assets/GameTest/TowerDefence/Soldier/?.lua"
 
@@ -35,17 +41,22 @@ local playerYRotation = 0.0
 local spawnTimer = 0.0
 local spawnHeld  = false
 
+-- RMB state (to swallow first delta when pressed)
+local rmbWasDown = false
+
 -- ======================
 -- Camera (via SpringArm)
 -- ======================
-local CAM_YAW_SPEED   = 180.0    -- deg/sec with keys
+local CAM_YAW_SPEED   = 15.0    -- (kept for reference; no longer using Z/C)
 
 -- Spring arm instance (owns yaw/pitch/distance & vertical offset)
 local arm = SpringArm.new({
-    offsetY  = CAMERA_OFFSET.y,
-    distance = math.abs(CAMERA_OFFSET.z),
-    pitch    = -20.0,
-    yaw      = 0.0
+    offsetY   = CAMERA_OFFSET.y,
+    distance  = math.abs(CAMERA_OFFSET.z),
+    pitch     = -20.0,
+    yaw       = 0.0,
+    pitchMin  = PITCH_MIN,
+    pitchMax  = PITCH_MAX
 })
 
 -- Smoothed camera state (we'll smooth the arm's solved camera pose)
@@ -78,6 +89,8 @@ function Create()
 
     SetCameraPos(smoothPos.x, smoothPos.y, smoothPos.z)
     SetCameraRot(arm.pitch, smoothYaw, 0.0)
+
+    rmbWasDown = false
 end
 
 -- ======================
@@ -90,11 +103,28 @@ function Update()
     spawnTimer = math.max(0.0, spawnTimer - dt)
 
     -- =======================
-    -- Camera Input (orbit)
-    -- Keys: Z/C yaw, X/V pitch, R/F zoom
+    -- Camera Input (RMB mouse-look)
     -- =======================
-    if IsKeyDown(Keys.C) then arm:addYaw(-CAM_YAW_SPEED * dt) end
-    if IsKeyDown(Keys.Z) then arm:addYaw( CAM_YAW_SPEED * dt) end
+    local rmbDown = IsMouseDown(1)  -- 0=left, 1=right, 2=middle
+
+    if rmbDown then
+        -- swallow the first frame of deltas when RMB is newly pressed to avoid a jump
+        if not rmbWasDown then
+            -- read once and ignore to clear any accumulated delta
+            local _ = Mouse:getDeltaX()
+            _ = Mouse:getDeltaY()
+            rmbWasDown = true
+        else
+            local dx = Mouse:getDeltaX() -- +right / -left (engine-defined)
+            local dy = Mouse:getDeltaY() -- +down  / -up
+
+            -- Note signs: invert if it feels backwards in your engine
+            arm:addYaw(-dx * MOUSE_YAW_SENS)
+            arm:addPitch(-dy * MOUSE_PITCH_SENS)
+        end
+    else
+        rmbWasDown = false
+    end
 
     -- =======================
     -- Movement & Animation
@@ -148,13 +178,14 @@ function Update()
     -- =======================
     -- Spawn a crate (cooldown + edge detection)
     -- =======================
-    if IsKeyDown(Keys.E) then
+    if IsMouseDown(0) then
         if not spawnHeld and spawnTimer <= 0.0 then
             local crateName = "Crate_" .. CrateCount
             CrateCount = CrateCount + 1
-            local obj = SpawnObject(crateName, 0)
+            local obj = SpawnObject(crateName, 1)
             if obj then
-                obj:SetPos(smoothPos.x, smoothPos.y + 5, smoothPos.z)
+                local px, py, pz = Pos:getX(), Pos:getY(), Pos:getZ()
+                obj:SetPos(px, py + 10, pz)
                 obj:Rotate(0, smoothYaw, 0)
                 obj:AddScript("Assets\\GameTest\\TowerDefence\\Soldier\\Crate.lua")
             end
@@ -175,12 +206,18 @@ function Update()
         playerYRotation = arm.yaw
         Rotate(0, playerYRotation, 0)
 
-        ApplyRelativeForce(dirX * MOVE_FORCE, 0, dirZ * MOVE_FORCE)
+        ApplyRelativeForce(dirX * MOVE_FORCE, -1, dirZ * MOVE_FORCE)
     end
 
     -- Jumping (simple grounded-ish check using vertical velocity)
     if IsKeyDown(32) then
-        ApplyRelativeForce(0.0, JUMP_FORCE * 10, 0.0)
+        local px, py, pz = Pos:getX(), Pos:getY(), Pos:getZ()
+        hitObject = Raycast(px, py, pz, px, py - 1, pz)
+        if hitObject and hitObject:GetName():find("Cube") then
+            ApplyRelativeForce(0.0, JUMP_FORCE * 10, 0.0)
+        else
+            Log("Needs to be grounded to jump")
+        end
     end
 
     ClampVelocity(MAX_SPEED)
@@ -205,7 +242,6 @@ end
 -- Helpers
 -- ======================
 function GetVelocityY()
-    -- Replace with engine call if GetVelocity().y is accessible
     if GetVelocity then
         local v = GetVelocity()
         if v and v.getY then

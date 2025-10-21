@@ -70,7 +70,6 @@ void FlawedEngine::cUIManager::RenderProperties()
 				glm::quat rotationQuat = glm::quat(radians);
 				trans.setRotation(btQuaternion(rotationQuat.x, rotationQuat.y, rotationQuat.z, rotationQuat.w));
 
-
 				DrawVec3("Scale", Scale, 1.0f);
 				Entity->mRigidBody->getCollisionShape()->setLocalScaling(btVector3(Scale.x, Scale.y, Scale.z));
 

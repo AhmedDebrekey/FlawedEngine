@@ -394,6 +394,25 @@ end</code></pre>
       <pre><code>local dt = GetDeltaTime()</code></pre>
     </section>
 
+        <section class="function-card">
+      <h2>IsMouseDown</h2>
+      <p class="desc">Queries the state of a mouse button (0 = left, 1 = right, 2 = middle).</p>
+      <p><strong>Parameters:</strong> int button</p>
+      <p><strong>Returns:</strong> <span class="tag bool">bool</span></p>
+      <pre><code>if IsMouseDown(0) then
+  Log("Left mouse pressed")
+end</code></pre>
+    </section>
+
+    <section class="function-card">
+      <h2>Mouse.getX / getY / getDeltaX / getDeltaY</h2>
+      <p class="desc">Retrieves current mouse position and per-frame delta values.</p>
+      <p><strong>Parameters:</strong> none</p>
+      <p><strong>Returns:</strong> <span class="tag float">float</span></p>
+      <pre><code>local mouseX = Mouse:getX()
+local deltaY = Mouse:getDeltaY()</code></pre>
+    </section>
+
     <section class="function-card">
       <h2>SetPhysics</h2>
       <p class="desc">Enables or disables physics for the entity.</p>

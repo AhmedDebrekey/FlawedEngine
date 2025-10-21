@@ -336,6 +336,13 @@ namespace FlawedEngine
 	void StartPlayMode();
 	void StopPlayMode();
 
+	//Mouse Functions
+	bool IsMouseDown(int button);
+	float MouseXFunction();
+	float MouseYFunction();
+	float MouseDXFunction();
+	float MouseDYFunction();
+
 	//Physics
 	void* GetPhxsWorld();
 

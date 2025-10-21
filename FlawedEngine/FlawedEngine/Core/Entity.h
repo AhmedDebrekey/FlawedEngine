@@ -8,6 +8,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <functional>
 #include "ScriptingManager.h"
+#include <ImGui/imgui.h>
+
 namespace FlawedEngine
 {
 	class cEntity
@@ -56,6 +58,11 @@ namespace FlawedEngine
 		float LCamPitch();
 		float LCamYaw();
 		float LCamRoll();
+		bool LIsMouseDown(int button);
+		float LMouseX();
+		float LMouseY();
+		float LMouseDeltaX();
+		float LMouseDeltaY();
 		float LGetDeltaTime();
 		bool LIsLoaded();
 		const char* LGetName();
@@ -449,6 +456,21 @@ namespace FlawedEngine
 		posFunc = std::bind(&cEntity::LCamYaw, this);
 		ScriptingManager.RegisterFunction(mScriptingId, "CamYaw", posFunc);
 
+		std::function<bool(int)> isMouseDownFunc = std::bind(&cEntity::LIsMouseDown, this, std::placeholders::_1);
+		ScriptingManager.RegisterFunction(mScriptingId, "IsMouseDown", isMouseDownFunc);
+		
+		std::function<float()> mouseFunc = std::bind(&cEntity::LMouseX, this);
+		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Mouse", "getX", mouseFunc);
+
+		mouseFunc = std::bind(&cEntity::LMouseY, this);
+		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Mouse", "getY", mouseFunc);
+
+		mouseFunc = std::bind(&cEntity::LMouseDeltaX, this);
+		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Mouse", "getDeltaX", mouseFunc);
+
+		mouseFunc = std::bind(&cEntity::LMouseDeltaY, this);
+		ScriptingManager.RegisterFunctionInNamespace(mScriptingId, "Mouse", "getDeltaY", mouseFunc);
+
 		posFunc = std::bind(&cEntity::LGetDeltaTime, this);
 		ScriptingManager.RegisterFunction(mScriptingId, "GetDeltaTime", posFunc);
 
@@ -610,8 +632,11 @@ namespace FlawedEngine
 			btTransform Trans;
 			mRigidBody->getMotionState()->getWorldTransform(Trans);
 
+			glm::vec3 radians = glm::radians(mTransformation.Rotation);
+			glm::quat rotationQuat = glm::quat(radians);
+
 			// Create a quaternion for rotation
-			btQuaternion quat = btQuaternion(glm::radians(mTransformation.Rotation.y), glm::radians(mTransformation.Rotation.x), glm::radians(mTransformation.Rotation.z));
+			btQuaternion quat = btQuaternion(rotationQuat.x, rotationQuat.y, rotationQuat.z, rotationQuat.w);
 
 			// Set the rotation of the transformation
 			Trans.setRotation(quat);
@@ -654,7 +679,6 @@ namespace FlawedEngine
 		{
 			mRigidBody->setAngularFactor(btVector3(x, y, z));
 			mAngularFactor = glm::vec3(x, y, z);
-			EngineLog("Angular Factor Set" + std::to_string(x) + ',' + std::to_string(y) + ',' + std::to_string(z), Info);
 		}
 	}
 
@@ -781,6 +805,31 @@ namespace FlawedEngine
 		return GetCamYaw();
 	}
 
+	inline bool cEntity::LIsMouseDown(int button)
+	{
+		return IsMouseDown(button);
+	}
+
+	inline float cEntity::LMouseX()
+	{
+		return MouseXFunction();
+	}
+
+	inline float cEntity::LMouseY()
+	{
+		return MouseYFunction();
+	}
+
+	inline float cEntity::LMouseDeltaX()
+	{
+		return MouseDXFunction();
+	}
+
+	inline float cEntity::LMouseDeltaY()
+	{
+		return MouseDYFunction();
+	}
+
 	inline float cEntity::LGetDeltaTime()
 	{
 		return mDeltaTime;
@@ -869,7 +918,6 @@ namespace FlawedEngine
 
 	inline cEntity* cEntity::LRayCast(float fX, float fY, float fZ, float tX, float tY, float tZ)
 	{
-		EngineLog("Casting Ray...", Info);
 		btVector3 pFrom = btVector3(fX, fY, fZ);
 		btVector3 pTo = btVector3(tX, tY, tZ);
 		btCollisionWorld::ClosestRayResultCallback res(pFrom, pTo);

@@ -1,5 +1,8 @@
+local bounce = 1
+
 function Create()
     ChangeColor(math.random(0, 1), math.random(0, 1), math.random(0, 1))
+    Scale(0.5, 0.5, 0.5)
     SetPhysics(true)
     SetDynamic(true)
     ApplyRelativeForce(0, 0, 25)
@@ -14,8 +17,6 @@ function OnCollision(otherEntity)
         Remove()
     elseif otherEntity:find("Crate") then
         Remove()
-    elseif otherEntity:find("Zombie") then
-        Log("Zombie Got hit [Crate.lua]")
     end
     
 end

@@ -1,6 +1,7 @@
 #include "Core.h"
 #include "Models/ObjectManager.h"
 #include "PerspectiveCamera.h"
+
 namespace FlawedEngine
 {
 	glm::vec3 DirectionalLightPos = glm::vec3(-2.0f, 10.0f, -1.0f);
@@ -41,6 +42,17 @@ namespace FlawedEngine
 		manager.addToRemoveList(manager.GetObjectByName(name));
 	}
 
+	bool IsMouseDown(int button)	{	return ImGui::IsMouseDown(button);	}
+
+	float MouseXFunction()	{	return ImGui::GetIO().MousePos.x;	}
+
+	float MouseYFunction()	{	return ImGui::GetIO().MousePos.y;	}
+
+	float MouseDXFunction()	{	return ImGui::GetIO().MouseDelta.x;	}
+
+	float MouseDYFunction()	{	return ImGui::GetIO().MouseDelta.y;	}
+
+
 	std::function<bool(int)>& GetInputFunc()
 	{
 		return manager.mInputFunc;
@@ -48,7 +60,6 @@ namespace FlawedEngine
 
 	void* GetPhxsWorld()
 	{
-
 		return manager.GetPhysicsWorld();
 	}
 
@@ -108,7 +119,7 @@ namespace FlawedEngine
 		manager.RecompileScripts();
 		scripts.ReloadScripts();
 
-		EngineLog("PlayMode ON", Info);
+		EngineLog("Play Mode ON", Info);
 	}
 
 	void StopPlayMode()
@@ -119,7 +130,8 @@ namespace FlawedEngine
 		camera.SetOrientation(cameraTransform);
 		camera.SetAllowInput(true);
 
-		EngineLog("PlayMode OFF", Info);
+		EngineLog("Play Mode OFF", Info);
 	}
+
 
 }

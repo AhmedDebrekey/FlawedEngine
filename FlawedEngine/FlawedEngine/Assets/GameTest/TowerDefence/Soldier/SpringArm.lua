@@ -6,24 +6,38 @@ local SpringArm = {}
 SpringArm.__index = SpringArm
 
 -- new({
---   offsetY  = number (vertical offset above target, default 10)
---   distance = number (camera distance, default 7)
---   pitch    = number (deg, default -20)
---   yaw      = number (deg, default 0)
+--   offsetY   = number (vertical offset above target, default 10)
+--   distance  = number (camera distance, default 7)
+--   pitch     = number (deg, default -20)
+--   yaw       = number (deg, default 0)
+--   pitchMin  = number (deg, default -89)
+--   pitchMax  = number (deg, default  89)
 -- })
 function SpringArm.new(opts)
     opts = opts or {}
     local self = setmetatable({}, SpringArm)
-    self.offsetY  = opts.offsetY  or 10.0
-    self.distance = opts.distance or 7.0
-    self.pitch    = opts.pitch    or -20.0
-    self.yaw      = opts.yaw      or 0.0
+    self.offsetY   = opts.offsetY   or 10.0
+    self.distance  = opts.distance  or 7.0
+    self.pitch     = opts.pitch     or -20.0
+    self.yaw       = opts.yaw       or 0.0
+    self.pitchMin  = opts.pitchMin  or -89.0
+    self.pitchMax  = opts.pitchMax  or  89.0
     return self
 end
 
--- Set or adjust yaw (useful if your script wants Z/C to rotate)
-function SpringArm:setYaw(y)   self.yaw = y or self.yaw end
+local function clamp(v, a, b)
+    if v < a then return a end
+    if v > b then return b end
+    return v
+end
+
+-- Set or adjust yaw
+function SpringArm:setYaw(y)   self.yaw = (y or self.yaw) % 360 end
 function SpringArm:addYaw(dy)  self.yaw = (self.yaw + (dy or 0)) % 360 end
+
+-- Set or adjust pitch (clamped)
+function SpringArm:setPitch(p) self.pitch = clamp(p or self.pitch, self.pitchMin, self.pitchMax) end
+function SpringArm:addPitch(dp) self.pitch = clamp(self.pitch + (dp or 0), self.pitchMin, self.pitchMax) end
 
 -- Compute camera pos/rot from a target position.
 -- Returns: cx, cy, cz, rx, ry, rz  (use directly with SetCameraPos/Rot)

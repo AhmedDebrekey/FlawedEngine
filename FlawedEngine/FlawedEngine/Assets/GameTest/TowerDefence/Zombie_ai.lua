@@ -1,16 +1,17 @@
 local waypoints = {}
 local currentTarget = nil
 local currentIndex = 1
-local moveSpeed = 2.0 -- units per second
+local moveSpeed = 5.0 -- units per second
 local reachThreshold = 0.5
 local rotationSpeed = 180.0 -- degrees per second
+local HitPoints = 2
 
 
 function Create()
-    Scale(5, 5, 5)
+    Scale(2, 2, 2)
     SetPhysics(true)
     SetDynamic(false)
-    SetAABBOffset(0.0, 10.0, 0.0)
+    SetAABBOffset(0.0, 5.0, 0.0)
     -- Load all waypoints in order
     local i = 1
     while true do
@@ -63,11 +64,10 @@ function Update()
         dz = dz / len
 
         -- Calculate desired yaw and current yaw
-        local desiredYaw = math.atan2(dx, dz) * (180.0 / math.pi)
+        local desiredYaw = math.deg(math.atan(dx, dz))
         local currentYaw = Rot:getY()
 
-        -- Smooth yaw interpolation
-        local newYaw = lerp_angle(currentYaw, desiredYaw, dt * 5.0)
+        local newYaw = Lerp(currentYaw, desiredYaw, dt * 5.0)
 
         Rotate(0.0, newYaw, 0.0)
 
@@ -75,6 +75,10 @@ function Update()
         Move(dx * moveSpeed * dt, dy * moveSpeed * dt, dz * moveSpeed * dt)
     end
     
+end
+
+function Lerp(a, b, t)
+    return a + (b - a) * t
 end
 
 function ReachGoal()
@@ -85,13 +89,14 @@ function ReachGoal()
     Remove() -- Remove the zombie
 end
 
-function lerp_angle(a, b, t)
-    local diff = (b - a + 180) % 360 - 180
-    return a + diff * t
-end
-
 function OnCollision(otherEntity)
     if otherEntity:find("Crate") then
-        Log("I Got hit")
+        local crate = GetEntity(otherEntity)
+        crate:Remove()
+        if HitPoints == 1 then
+            Remove()
+        end
+        HitPoints = HitPoints - 1
+        Log("I got hit. HP: " .. HitPoints)
     end
 end
