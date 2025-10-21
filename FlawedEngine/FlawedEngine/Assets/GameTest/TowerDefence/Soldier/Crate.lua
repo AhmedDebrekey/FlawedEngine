@@ -13,9 +13,11 @@ function Update()
 end
 
 function OnCollision(otherEntity)
-    if otherEntity == "Cube(0)" then
+    if otherEntity:find("Cube") then
         Remove()
     elseif otherEntity:find("Crate") then
+        Remove()
+    elseif otherEntity:find("Barrier") then
         Remove()
     end
     

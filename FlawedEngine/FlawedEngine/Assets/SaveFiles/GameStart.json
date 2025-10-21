@@ -1,6 +1,58 @@
 {
     "objects": {
-        "Cube(0)": {
+        "Background": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\3D Models\\iceland_landscape\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    0.0,
+                    -42.601112365722656,
+                    1.8621606159285875e-06
+                ],
+                "rotation": [
+                    -90.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    1199.19091796875,
+                    1200.3704833984375,
+                    1200.3704833984375
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "Barrier": {
             "animation": {
                 "animationPath": [
                     ""
@@ -34,7 +86,7 @@
             "transform": {
                 "position": [
                     0.0,
-                    -0.8860387802124023,
+                    -34.72442626953125,
                     0.0
                 ],
                 "rotation": [
@@ -43,9 +95,61 @@
                     0.0
                 ],
                 "scale": [
-                    30.0,
+                    100.0,
                     1.0,
-                    30.0
+                    100.0
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "Cube": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\3D Models\\rocky_ground_with_moss\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                true
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    4.947222350892844e-06,
+                    0.31062108278274536,
+                    1.1078582441616941e-13
+                ],
+                "rotation": [
+                    108.41899108886719,
+                    89.95154571533203,
+                    -161.5893096923828
+                ],
+                "scale": [
+                    2.9993104934692383,
+                    3.0,
+                    0.9998273849487305
                 ]
             },
             "type": [
@@ -63,8 +167,8 @@
             },
             "color": [
                 1.0,
-                1.0,
-                1.0
+                0.7876448035240173,
+                0.0
             ],
             "filepath": [
                 ""
@@ -85,9 +189,9 @@
             },
             "transform": {
                 "position": [
-                    17.095447540283203,
-                    8.682558059692383,
-                    0.0
+                    20.16294288635254,
+                    8.68248176574707,
+                    19.636842727661133
                 ],
                 "rotation": [
                     0.0,
@@ -115,8 +219,8 @@
             },
             "color": [
                 1.0,
-                1.0,
-                1.0
+                0.7876448035240173,
+                0.0
             ],
             "filepath": [
                 ""
@@ -137,9 +241,9 @@
             },
             "transform": {
                 "position": [
-                    2.356448173522949,
-                    7.537906169891357,
-                    0.0
+                    -16.073341369628906,
+                    7.537912845611572,
+                    -20.50402069091797
                 ],
                 "rotation": [
                     0.0,
@@ -208,6 +312,214 @@
                 7
             ]
         },
+        "Wall": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\3D Models\\mossy_stone_wall\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -6.503558158874512,
+                    0.0,
+                    -24.686767578125
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.058791909366846085,
+                    0.05000000074505806,
+                    0.05000000074505806
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "Wall2": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\3D Models\\mossy_stone_wall\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -6.503558158874512,
+                    0.0,
+                    28.651744842529297
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scale": [
+                    0.058791909366846085,
+                    0.05000000074505806,
+                    0.05000000074505806
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "Wall3": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\3D Models\\mossy_stone_wall\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    -22.437664031982422,
+                    0.0,
+                    7.576691627502441
+                ],
+                "rotation": [
+                    -179.99989318847656,
+                    89.99994659423828,
+                    -179.99989318847656
+                ],
+                "scale": [
+                    0.058791909366846085,
+                    0.04999999701976776,
+                    0.05000000074505806
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
+        "Wall4": {
+            "animation": {
+                "animationPath": [
+                    ""
+                ],
+                "hasAnimation": [
+                    false
+                ]
+            },
+            "color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "filepath": [
+                "C:\\Dev\\FlawedEngine\\FlawedEngine\\FlawedEngine\\Assets\\3D Models\\mossy_stone_wall\\scene.gltf"
+            ],
+            "isCostume": [
+                true
+            ],
+            "physics": [
+                false
+            ],
+            "scripting": {
+                "hasScript": [
+                    false
+                ],
+                "scriptPath": [
+                    "Empty"
+                ]
+            },
+            "transform": {
+                "position": [
+                    25.851490020751953,
+                    0.0,
+                    7.576672554016113
+                ],
+                "rotation": [
+                    -179.99989318847656,
+                    89.99994659423828,
+                    -179.99989318847656
+                ],
+                "scale": [
+                    0.058791909366846085,
+                    0.04999999701976776,
+                    0.05000000074505806
+                ]
+            },
+            "type": [
+                7
+            ]
+        },
         "Waypoint1": {
             "animation": {
                 "animationPath": [
@@ -241,9 +553,9 @@
             },
             "transform": {
                 "position": [
-                    7.238960266113281,
-                    -0.000244140625,
-                    22.73073959350586
+                    -4.473203182220459,
+                    -0.0003321482799947262,
+                    20.524391174316406
                 ],
                 "rotation": [
                     0.0,
@@ -293,9 +605,9 @@
             },
             "transform": {
                 "position": [
-                    -14.98655891418457,
+                    18.168169021606445,
                     0.0,
-                    -1.4313373565673828
+                    8.400009155273438
                 ],
                 "rotation": [
                     0.0,
@@ -345,9 +657,9 @@
             },
             "transform": {
                 "position": [
-                    -22.790889739990234,
+                    9.295839309692383,
                     -0.0009765625,
-                    -14.230048179626465
+                    -16.16645622253418
                 ],
                 "rotation": [
                     0.0,
@@ -397,9 +709,9 @@
             },
             "transform": {
                 "position": [
-                    -0.4897024631500244,
-                    0.00032039251527749,
-                    -14.180058479309082
+                    -13.706914901733398,
+                    0.0004162626573815942,
+                    -17.70759391784668
                 ],
                 "rotation": [
                     0.0,
@@ -449,9 +761,9 @@
             },
             "transform": {
                 "position": [
-                    -26.98511505126953,
-                    -0.000244140625,
-                    25.328140258789063
+                    -18.946727752685547,
+                    0.00021601059415843338,
+                    22.384183883666992
                 ],
                 "rotation": [
                     0.0,

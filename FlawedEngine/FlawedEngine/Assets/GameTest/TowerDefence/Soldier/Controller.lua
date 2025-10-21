@@ -3,13 +3,13 @@
 -- ======================
 -- Constants
 -- ======================
-local MOVE_FORCE       = 5.0
-local MAX_SPEED        = 5.0
+local MOVE_FORCE       = 10.0
+local MAX_SPEED        = 10.0
 local JUMP_FORCE       = 8.0
 local CAMERA_OFFSET    = { x = 0.0, y = 10.0, z = -14.0 } -- height + default distance (|z|)
 local CAMERA_SMOOTHING = 0.005
 local ANIM_COOLDOWN    = 0.5
-local SPAWN_COOLDOWN   = 0.2 -- seconds between crate spawns
+local SPAWN_COOLDOWN   = 0.4 -- seconds between crate spawns
 
 -- Mouse-look tuning (adjust to taste)
 local MOUSE_YAW_SENS   = 0.15  -- degrees per pixel (horizontal)
@@ -186,7 +186,7 @@ function Update()
             if obj then
                 local px, py, pz = Pos:getX(), Pos:getY(), Pos:getZ()
                 obj:SetPos(px, py + 10, pz)
-                obj:Rotate(0, smoothYaw, 0)
+                obj:Rotate(-arm.pitch - 10, smoothYaw, 0)
                 obj:AddScript("Assets\\GameTest\\TowerDefence\\Soldier\\Crate.lua")
             end
             spawnTimer = SPAWN_COOLDOWN

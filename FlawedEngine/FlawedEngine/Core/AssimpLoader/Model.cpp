@@ -46,7 +46,7 @@ namespace FlawedEngine
 	{
 
 		SetModelTransform(Trans);
-		if (mShouldRender && mIsLoaded)
+		if (mShouldRender && mIsLoaded && !mStopRendering)
 		{
 			for (uint32_t i = 0; i < mMeshes.size(); i++)
 			{

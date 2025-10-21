@@ -133,6 +133,7 @@ namespace FlawedEngine
 		std::vector<uint32_t> mIndices;
 		std::vector<sTexture> mTextureCoords;
 		bool mShouldRender = true;
+		bool mStopRendering = false;
 		sModel mTransformation;
 		float mDeltaTime = 0;
 		std::atomic<bool> mIsLoaded = false;

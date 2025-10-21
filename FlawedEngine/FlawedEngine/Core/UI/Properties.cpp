@@ -135,11 +135,8 @@ void FlawedEngine::cUIManager::RenderProperties()
 			else
 				Entity->mDynamic = false;
 		}
-		
-		if (ImGui::Button("Render"))
-		{
-			Entity->isInvisible();
-		}
+
+		ImGui::Checkbox(std::string("Stop Rendering:##" + mSelectedEntity).c_str(), &Entity->mStopRendering);
 
 		if (ImGui::Button("Remove"))
 		{
