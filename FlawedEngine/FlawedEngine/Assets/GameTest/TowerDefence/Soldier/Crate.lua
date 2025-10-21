@@ -5,7 +5,7 @@ function Create()
     Scale(0.5, 0.5, 0.5)
     SetPhysics(true)
     SetDynamic(true)
-    ApplyRelativeForce(0, 0, 25)
+    ApplyRelativeForce(0, 0, 50)
 end
 
 function Update()

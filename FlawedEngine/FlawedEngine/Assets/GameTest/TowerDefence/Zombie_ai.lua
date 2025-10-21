@@ -5,7 +5,7 @@ local moveSpeed = 5.0 -- units per second
 local reachThreshold = 0.5
 local rotationSpeed = 180.0 -- degrees per second
 local HitPoints = 2
-
+local yawState = nil
 
 function Create()
     Scale(2, 2, 2)
@@ -26,7 +26,7 @@ function Create()
     else
         Log("No waypoints found!")
     end
-    
+    yawState = Rot:getY()
 end
 
 function Update()
@@ -62,14 +62,11 @@ function Update()
         dx = dx / len
         dy = dy / len
         dz = dz / len
-
         -- Calculate desired yaw and current yaw
         local desiredYaw = math.deg(math.atan(dx, dz))
-        local currentYaw = Rot:getY()
+        yawState = MoveTowardsAngle(yawState, desiredYaw, dt * rotationSpeed)
 
-        local newYaw = Lerp(currentYaw, desiredYaw, dt * 5.0)
-
-        Rotate(0.0, newYaw, 0.0)
+        Rotate(0.0, yawState, 0.0)
 
         -- Move scaled by speed and delta time
         Move(dx * moveSpeed * dt, dy * moveSpeed * dt, dz * moveSpeed * dt)
@@ -77,8 +74,14 @@ function Update()
     
 end
 
-function Lerp(a, b, t)
-    return a + (b - a) * t
+function MoveTowardsAngle(current, target, maxDelta)
+    current = (current % 360 + 360) % 360
+    target  = (target  % 360 + 360) % 360
+    local delta = ((target - current + 540) % 360) - 180  -- [-180,180]
+    if math.abs(delta) <= maxDelta then
+        return target
+    end
+    return (current + (delta > 0 and maxDelta or -maxDelta) + 360) % 360
 end
 
 function ReachGoal()

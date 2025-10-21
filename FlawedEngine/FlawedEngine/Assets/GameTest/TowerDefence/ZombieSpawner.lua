@@ -3,7 +3,7 @@ function Create()
 end
 
 local spawnTimer = 0.0
-local spawnInterval = 5.0
+local spawnInterval = 2.0
 local zombieCount = 0
 
 function Update()

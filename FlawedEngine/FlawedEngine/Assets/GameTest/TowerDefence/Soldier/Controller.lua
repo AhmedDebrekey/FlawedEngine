@@ -206,17 +206,16 @@ function Update()
         playerYRotation = arm.yaw
         Rotate(0, playerYRotation, 0)
 
-        ApplyRelativeForce(dirX * MOVE_FORCE, -1, dirZ * MOVE_FORCE)
+        if not IsFalling() then
+            ApplyRelativeForce(dirX * MOVE_FORCE, -1, dirZ * MOVE_FORCE)
+        end
+
     end
 
     -- Jumping (simple grounded-ish check using vertical velocity)
     if IsKeyDown(32) then
-        local px, py, pz = Pos:getX(), Pos:getY(), Pos:getZ()
-        hitObject = Raycast(px, py, pz, px, py - 1, pz)
-        if hitObject and hitObject:GetName():find("Cube") then
+        if not IsFalling() then
             ApplyRelativeForce(0.0, JUMP_FORCE * 10, 0.0)
-        else
-            Log("Needs to be grounded to jump")
         end
     end
 
@@ -249,6 +248,12 @@ function GetVelocityY()
         end
     end
     return 0.0
+end
+
+function IsFalling()
+    local px, py, pz = Pos:getX(), Pos:getY(), Pos:getZ()
+    local res = Raycast(px, py, pz, px, py - 1, pz)
+    if res then return false else return true end
 end
 
 function OnCollision(otherEntity)
