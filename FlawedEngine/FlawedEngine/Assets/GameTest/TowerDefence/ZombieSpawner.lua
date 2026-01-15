@@ -3,7 +3,7 @@ function Create()
 end
 
 local spawnTimer = 0.0
-local spawnInterval = 2.0
+local spawnInterval = 5.0
 local zombieCount = 0
 
 function Update()
@@ -13,7 +13,7 @@ function Update()
     if spawnTimer >= spawnInterval then
         spawnTimer = 0.0
         zombieCount = zombieCount + 1
-        local zombieName = "Zombie_" .. zombieCount
+        local zombieName = GetName() .. "_Zombie_" .. zombieCount
 
         local zombieObj = LoadObject("Assets\\GameTest\\TowerDefence\\Zombie\\Zombie.gltf", zombieName)
         if zombieObj then

@@ -134,6 +134,16 @@ namespace FlawedEngine
 		uint32_t ID;
 		std::string Type;
 		std::string Path;
+		uint32_t width = 0;
+		uint32_t height = 0;
+		uint32_t components = 0;
+		std::vector<std::uint8_t> pixels;
+	};
+
+	struct MeshCPUData {
+		std::vector<sVertex> vertices;
+		std::vector<unsigned int> indices;
+		std::vector<sTexture> textures;
 	};
 
 	enum eBasicObject

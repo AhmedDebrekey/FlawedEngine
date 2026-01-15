@@ -243,7 +243,7 @@ end
 function GetVelocityY()
     if GetVelocity then
         local v = GetVelocity()
-        if v and v.getY then
+        if v then
             return v:getY()
         end
     end

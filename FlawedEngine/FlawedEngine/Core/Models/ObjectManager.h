@@ -19,6 +19,7 @@ namespace FlawedEngine
 
 		void AddObject(eBasicObject ObjectType, const char* Name);
 		void LoadObject(const char* FilePath, const char* Name);
+		void LoadBinaryObject(const char* FilePath, const char* Name);
 		void RemoveObject(std::shared_ptr<cEntity>);
 		void RemoveAllObjects();
 		void RemoveRuntimeObjects();

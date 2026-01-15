@@ -50,6 +50,11 @@ void FlawedEngine::cUIManager::RenderViewport()
 				mObjectMan.LoadObject(dataPath.string().c_str(), dataPath.stem().string().c_str());
 				mSelectedEntity = dataPath.stem().string();
 			}
+			else if (ext == ".feb")
+			{
+				mObjectMan.LoadBinaryObject(dataPath.string().c_str(), dataPath.stem().string().c_str());
+				mSelectedEntity = dataPath.stem().string();
+			}
 
 		}
 		ImGui::EndDragDropTarget();

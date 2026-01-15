@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core\AssimpLoader\MeshSerialize.cpp" />
     <ClCompile Include="Core\AssimpLoader\ModelLoader.cpp" />
     <ClCompile Include="Core\Core.cpp" />
     <ClCompile Include="Core\Engine.cpp" />
@@ -205,6 +206,7 @@
     <ClCompile Include="Core\AssimpLoader\Model.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\AssimpLoader\MeshSerialize.h" />
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\AssimpLoader\Animations\Animation.h" />
     <ClInclude Include="Core\AssimpLoader\Animations\Animator.h" />

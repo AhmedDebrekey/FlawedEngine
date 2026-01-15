@@ -7,6 +7,7 @@
 #include <nlohmann/json.hpp>
 
 #include "../UIManager.h"
+#include "../AssimpLoader/MeshSerialize.h"
 
 namespace FlawedEngine
 {
@@ -248,6 +249,23 @@ namespace FlawedEngine
 
 		if (mIsPlaying)
 			mRuntimeObjects.push_back(SceneObjects[Name]);
+
+
+	}
+
+	void cObjectManager::LoadBinaryObject(const char* FilePath, const char* Name)
+	{
+		std::vector<MeshCPUData> MeshData;
+		LoadMeshesBinary(FilePath, MeshData);
+		SceneObjects[Name] = std::make_shared<cModel>(MeshData, Name, mPhysicsWorld, mCollisionShapesArray, (Frustum*)mCamFrustum, mGfxAPI);
+		sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
+		SceneObjects[Name]->ModelTransform(DefaultModel);
+		sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
+		SceneObjects[Name]->SetPhysicsProps(DefaultPhysics);
+		SceneObjects[Name]->Type = Custom;
+
+		if (mIsPlaying)
+			mRuntimeObjects.push_back(SceneObjects[Name]);
 	}
 
 	void cObjectManager::RemoveObject(std::shared_ptr<cEntity> object)
@@ -260,6 +278,8 @@ namespace FlawedEngine
 		if (object->Type == PointLight) {
 			PointLights.erase(object->mName);
 		}
+		if (!object->mIsLoaded)
+			return;
 		SceneObjects.erase(object->mName);
 	}
 

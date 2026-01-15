@@ -21,6 +21,8 @@ namespace FlawedEngine
 		virtual void SetAABB(glm::vec3& Scale) override;
 		virtual bool isModelInFrustum() override;
 		virtual void RemoveScripts() override;
+		virtual void* GetMeshDate() override;
+
 
 	private:
 		cModelRenderer Renderer;

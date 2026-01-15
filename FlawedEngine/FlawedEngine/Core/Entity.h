@@ -22,6 +22,7 @@ namespace FlawedEngine
 		virtual void ChangeAnimation(const char*) = 0;
 		virtual void SetAABB(glm::vec3&) = 0;
 		virtual bool isModelInFrustum() = 0;
+		virtual void* GetMeshDate() = 0;
 		virtual ~cEntity() = 0;
 
 		void ModelTransform(sModel& model);

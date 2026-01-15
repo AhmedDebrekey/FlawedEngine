@@ -157,6 +157,25 @@ namespace FlawedEngine
 			if (!skip)
 			{
 				sTexture Texture;
+				std::string filename = mDirectory + '\\' + str.C_Str();
+				int width = 0, height = 0, nrComponents = 0;
+				unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
+
+				if (data)
+				{
+					Texture.width = static_cast<uint32_t>(width);
+					Texture.height = static_cast<uint32_t>(height);
+					Texture.components = static_cast<uint32_t>(nrComponents);
+					Texture.pixels.resize(Texture.width * Texture.height * Texture.components);
+					std::memcpy(Texture.pixels.data(), data, Texture.width * Texture.height * Texture.components);
+					stbi_image_free(data);
+				}
+				else
+				{
+					EngineLog("Texture failed to load at path: " + std::string(filename), Error);
+					stbi_image_free(data);
+				}
+
 				Texture.ID = -1;//TextureFromFile(str.C_Str(), mDirectory, false, mGfxAPI);
 				Texture.Type = typeName;
 				Texture.Path = str.C_Str();

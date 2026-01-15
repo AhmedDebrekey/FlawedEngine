@@ -25,8 +25,12 @@ namespace FlawedEngine
 
         void Setup(const std::string& animationPath, cModel* model, Assimp::Importer* importer)
         {
-
             const aiScene* scene = importer->ReadFile(animationPath, aiProcess_Triangulate | aiProcess_GlobalScale);
+            if (!scene || !scene->mRootNode)
+            {
+                EngineLog("Can not load animation: " + animationPath + " Error: " + importer->GetErrorString(), Error);
+                return;
+            }
             ApplyGlobalScale(scene->mRootNode, 1);
             assert(scene && scene->mRootNode);
             auto animation = scene->mAnimations[0];

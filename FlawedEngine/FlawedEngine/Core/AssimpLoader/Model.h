@@ -24,16 +24,11 @@ namespace FlawedEngine
         std::vector<AssimpNodeData> children;
     };
 
-    struct MeshCPUData {
-        std::vector<sVertex> vertices;
-        std::vector<unsigned int> indices;
-        std::vector<sTexture> textures;
-    };
-
     class cModel : public cEntity
     {
     public:
         cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API);
+		cModel(const std::vector<MeshCPUData>& CPUdata, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API);
             
         ~cModel()
         {
@@ -62,12 +57,13 @@ namespace FlawedEngine
         virtual bool isModelInFrustum() override;
 
         virtual void RemoveScripts() override;
+        virtual void* GetMeshDate() override;
 
-        
 
         std::map<std::string, sBoneInfo>& GetBoneInfoMap() { return m_BoneInfoMap; }
         int& GetBoneCount() { return m_BoneCounter; }
-    
+
+
     private:
         cGraphicsAPI* mGfxAPI = nullptr;
     private:
@@ -76,7 +72,7 @@ namespace FlawedEngine
     private:
         void FinalizeLoadOnMainThread();
         void loadModel(std::string path);
-        void CalculateAABB(const aiScene* scene);
+        void CalculateAABB();
         virtual void SetAABB(glm::vec3& Scale) override;
         btCollisionShape* CalculateMeshCollision(const aiScene* scene);
 
@@ -88,6 +84,7 @@ namespace FlawedEngine
         void ExtractBoneWeightForVertices(std::vector<sVertex>& vertices, aiMesh* mesh, const aiScene* scene);
         void SetVertexBoneDataToDefault(sVertex& vertex);
         void SetVertexBoneData(sVertex& vertex, int boneID, float weight);
+
 
 
         // model data 

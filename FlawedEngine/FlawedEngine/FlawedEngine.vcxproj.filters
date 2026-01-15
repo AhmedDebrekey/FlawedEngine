@@ -147,6 +147,9 @@
     <ClCompile Include="Core\UI\LoggerTab.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Core\AssimpLoader\MeshSerialize.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Window.h">
@@ -279,6 +282,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Core\Core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\AssimpLoader\MeshSerialize.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

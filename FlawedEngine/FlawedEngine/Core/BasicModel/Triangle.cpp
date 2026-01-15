@@ -47,4 +47,8 @@ namespace FlawedEngine
 	void cTriangle::RemoveScripts()
 	{
 	}
+	void* cTriangle::GetMeshDate()
+	{
+		return nullptr;
+	}
 }

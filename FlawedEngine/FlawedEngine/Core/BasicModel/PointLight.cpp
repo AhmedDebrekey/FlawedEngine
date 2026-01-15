@@ -95,5 +95,10 @@ namespace FlawedEngine
 	void cPointLight::RemoveScripts()
 	{
 	}
+
+	void* cPointLight::GetMeshDate()
+	{
+		return nullptr;
+	}
 	
 }

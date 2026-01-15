@@ -20,6 +20,7 @@ namespace FlawedEngine
 		virtual void ChangeAnimation(const char*) override;
 		virtual bool isModelInFrustum() override;
 		virtual void RemoveScripts() override;
+		virtual void* GetMeshDate() override;
 
 		glm::vec3 mPosition;
 

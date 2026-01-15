@@ -11,10 +11,13 @@
 #include "Animations/Animation.h"
 #include "Animations/Animator.h"
 #include "../Models/ObjectManager.h"
+#include "MeshSerialize.h"
 
 #include <thread>
 
 #include <chrono>
+
+#include <fstream>
 
 namespace FlawedEngine
 {
@@ -40,7 +43,28 @@ namespace FlawedEngine
 			mIsLoaded = true;
 			});
 		loader.detach();
+		mOnLoadedCalledBacks.push_back([this]() {
+			SaveMeshesBinary(mName.c_str(), mCPUMeshes);
+			});
 		//loadModel(FilePath);
+	}
+	cModel::cModel(const std::vector<MeshCPUData>& CPUdata, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API)
+		:mGfxAPI((cGraphicsAPI*)Graphics_API)
+	{
+		mCollisionShapesArray = CollisionShapes;
+		mName = Name;
+		mPhysicsDynamicWorld = (btDiscreteDynamicsWorld*)PhysicsWorld;
+		mAABBOffset = glm::vec3(0.0f);
+		mIsCostume = true;
+		mCamFrustum = CamFrustum;
+		mGeometryShader.Create("Core/Models/Shaders/Vertex.glsl", "Core/Models/Shaders/Fragment.glsl", mName.c_str());
+		mLightShader.Create("Core/Models/Shaders/LightVertex.glsl", "Core/Models/Shaders/LightFragment.glsl", mName.c_str());
+		mShadowShader.Create("Core/Models/Shaders/ShadowVertex.glsl", "Core/Models/Shaders/ShadowFragment.glsl", mName.c_str());
+		mGeometryShader.Bind();
+		mGeometryShader.Unbind();
+		mIsLoaded = true;
+		mCPUMeshes = CPUdata;
+		
 	}
 	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject)
 	{
@@ -77,8 +101,13 @@ namespace FlawedEngine
 			btVector3 scl = mRigidBody->getCollisionShape()->getLocalScaling();
 			btQuaternion quat = mRigidBody->getCenterOfMassTransform().getRotation();
 
+
+
 			glm::quat glmQuat(quat.w(), quat.x(), quat.y(), quat.z());
-			glm::vec3 eulerDegrees = glm::degrees(glm::eulerAngles(glmQuat));
+			glm::vec3 eulerDegrees(
+				glm::degrees(glm::pitch(glmQuat)),
+				glm::degrees(glm::yaw(glmQuat)),
+				glm::degrees(glm::roll(glmQuat)));
 
 			glm::mat4 Model = glm::translate(glm::mat4(1.0f), glm::vec3(pos.x(), pos.y(), pos.z()));
 			Model *= glm::mat4_cast(glmQuat);
@@ -88,7 +117,7 @@ namespace FlawedEngine
 			mModel = Model;
 
 			mTransformation.Translation = glm::vec3(pos.x(), pos.y(), pos.z());
-			mTransformation.Rotation = glm::vec4(eulerDegrees, 0.0f); // W unused in this case
+			mTransformation.Rotation = eulerDegrees; // W unused in this case
 			mTransformation.Scale = glm::vec3(scl.x(), scl.y(), scl.z());
 
 		}
@@ -206,9 +235,24 @@ namespace FlawedEngine
 		for (auto& cpu : mCPUMeshes) {
 			for (auto& tex : cpu.textures)
 			{
-				tex.ID = TextureFromFile(tex.Path.c_str(), mDirectory, false, mGfxAPI);
+				if (tex.pixels.size() > 0)
+				{
+					sTextureProps props;
+					props.Wrap_s = eTextureProperties::Repeat;
+					props.Wrap_t = eTextureProperties::Repeat;
+					props.Min_Filter = eTextureProperties::MIPMAP_Linear;
+					props.Mag_Filter = eTextureProperties::Linear;
+					tex.ID = mGfxAPI->CreateTexture(tex.width, tex.height, tex.components, tex.pixels.data(), props);
+				}
+				else
+				{
+					EngineLog("Finalizing texture from file: " + tex.Path +' ' + mName, Console);
+					tex.ID = TextureFromFile(tex.Path.c_str(), mDirectory, false, mGfxAPI);
+				}
+
 			}
 			mMeshes.push_back(cMesh(cpu.vertices, cpu.indices, cpu.textures, mGfxAPI));
+			CalculateAABB();
 		}
 
 		for (auto& callback : mOnLoadedCalledBacks)
@@ -244,7 +288,6 @@ namespace FlawedEngine
 			return;
 		}
 
-		CalculateAABB(localscene);
 
 		mDirectory = path.substr(0, path.find_last_of('\\'));
 
@@ -252,21 +295,21 @@ namespace FlawedEngine
 
 	}
 
-	void cModel::CalculateAABB(const aiScene* scene)
+	void cModel::CalculateAABB()
 	{
 		// Calculate overall bounding box dimensions
 		glm::vec3 overallMin(FLT_MAX, FLT_MAX, FLT_MAX), overallMax(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-		for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
-			aiMesh* mesh = scene->mMeshes[i];
+		for (unsigned int i = 0; i < mCPUMeshes.size(); i++) {
+			MeshCPUData& mesh = mCPUMeshes[i];
 			btVector3 min(FLT_MAX, FLT_MAX, FLT_MAX), max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
-			for (unsigned int j = 0; j < mesh->mNumVertices; j++) {
-				aiVector3D v = mesh->mVertices[j];
-				if (v.x < min.x()) min.setX(v.x);
-				if (v.y < min.y()) min.setY(v.y);
-				if (v.z < min.z()) min.setZ(v.z);
-				if (v.x > max.x()) max.setX(v.x);
-				if (v.y > max.y()) max.setY(v.y);
-				if (v.z > max.z()) max.setZ(v.z);
+			for (unsigned int j = 0; j < mesh.vertices.size(); j++) {
+				sVertex v = mesh.vertices[j];
+				if (v.Postion.x < min.x()) min.setX(v.Postion.x);
+				if (v.Postion.y < min.y()) min.setY(v.Postion.y);
+				if (v.Postion.z < min.z()) min.setZ(v.Postion.z);
+				if (v.Postion.x > max.x()) max.setX(v.Postion.x);
+				if (v.Postion.y > max.y()) max.setY(v.Postion.y);
+				if (v.Postion.z > max.z()) max.setZ(v.Postion.z);
 			}
 			if (min.x() < overallMin.x) overallMin.x = (min.x());
 			if (min.y() < overallMin.y) overallMin.y = (min.y());
@@ -319,6 +362,11 @@ namespace FlawedEngine
 			cScriptingManager::get().DestroyState(mScriptingId);
 			mScriptingId = -1;
 		}
+	}
+
+	void* cModel::GetMeshDate()
+	{
+		return mCPUMeshes.data();
 	}
 
 	void cModel::SetAABB(glm::vec3& Scale)
