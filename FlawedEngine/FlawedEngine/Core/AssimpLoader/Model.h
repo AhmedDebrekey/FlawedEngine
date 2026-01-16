@@ -28,7 +28,7 @@ namespace FlawedEngine
     {
     public:
         cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API);
-		cModel(const std::vector<MeshCPUData>& CPUdata, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API);
+		cModel(const char* FilePath, const std::vector<MeshCPUData>& CPUdata, std::map<std::string, sBoneInfo>& boneMap, int boneCounter, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API);
             
         ~cModel()
         {

@@ -88,7 +88,9 @@ namespace FlawedEngine
 		bool mIsCostume = false;
 		bool mHasScripting = false;
 		bool mHasAnimation = false;
+		bool mHasBinaryPath = false;
 		std::string mFilePath;
+		std::string mBinaryMeshPath;
 		std::string mScriptPath = "Empty";
 		std::string mAnimationPath;
 

@@ -96,9 +96,46 @@ namespace FlawedEngine {
 		return read_bytes(in, str.data(), length);
 	}
 
-	bool SaveMeshesBinary(const std::string& path, const std::vector<MeshCPUData>& meshes)
+	static void write_i32(std::ofstream& out, std::int32_t v)
 	{
-		std::ofstream out("Assets/EngineMeshes/" + path + ".FEB", std::ios::binary | std::ios::trunc);
+		out.write(reinterpret_cast<const char*>(&v), sizeof(v));
+	}
+
+	static bool read_i32(std::ifstream& in, std::int32_t& v)
+	{
+		return static_cast<bool>(in.read(reinterpret_cast<char*>(&v), sizeof(v)));
+	}
+
+	static void write_f32(std::ofstream& out, float v)
+	{
+		out.write(reinterpret_cast<const char*>(&v), sizeof(v));
+	}
+
+	static bool read_f32(std::ifstream& in, float& v)
+	{
+		return static_cast<bool>(in.read(reinterpret_cast<char*>(&v), sizeof(v)));
+	}
+
+	static void write_mat4(std::ofstream& out, const glm::mat4& m)
+	{
+		// glm is column-major: m[col][row]
+		for (int c = 0; c < 4; ++c)
+			for (int r = 0; r < 4; ++r)
+				write_f32(out, m[c][r]);
+	}
+
+	static bool read_mat4(std::ifstream& in, glm::mat4& m)
+	{
+		for (int c = 0; c < 4; ++c)
+			for (int r = 0; r < 4; ++r)
+				if (!read_f32(in, m[c][r])) return false;
+		return true;
+	}
+
+
+	bool SaveMeshesBinary(const std::string& path, const std::vector<MeshCPUData>& meshes, const std::map<std::string, sBoneInfo>& boneInfoMap, int boneCounter)
+	{
+		std::ofstream out(path + ".FEB", std::ios::binary | std::ios::trunc);
 		if (!out) return false;
 		// Flawed Engine Mesh Save
 		const char magic[4] = { 'F', 'E', 'M', 'S'};
@@ -138,12 +175,23 @@ namespace FlawedEngine {
 
 			}
 
+			write_u32(out, static_cast<std::uint32_t>(boneCounter));
+			write_u32(out, static_cast<std::uint32_t>(boneInfoMap.size()));
+
+			for (const auto& [name, info] : boneInfoMap)
+			{
+				write_string(out, name);
+				write_i32(out, static_cast<std::int32_t>(info.id));
+				write_mat4(out, info.offset);
+			}
+
+
 		}
 
 		return static_cast<bool>(out);
 	}
 
-	bool LoadMeshesBinary(const std::string& path, std::vector<MeshCPUData>& outMeshes)
+	bool LoadMeshesBinary(const std::string& path, std::vector<MeshCPUData>& outMeshes, std::map<std::string, sBoneInfo>& outBoneInfoMap, int& outBoneCounter)
 	{
 		std::ifstream in(path, std::ios::binary);
 		if (!in) return false;
@@ -205,6 +253,32 @@ namespace FlawedEngine {
 				tex.pixels.resize(byteCount);
 				if (byteCount > 0 && !read_bytes(in, tex.pixels.data(), byteCount)) return false;
 			}
+
+			std::uint32_t boneCounterU32 = 0;
+			std::uint32_t mapSize = 0;
+
+			if (!read_u32(in, boneCounterU32)) return false;
+			if (!read_u32(in, mapSize)) return false;
+
+			outBoneCounter = static_cast<int>(boneCounterU32);
+			outBoneInfoMap.clear();
+
+			for (std::uint32_t i = 0; i < mapSize; ++i)
+			{
+				std::string name;
+				std::int32_t id = 0;
+				glm::mat4 offset(1.0f);
+
+				if (!read_string(in, name)) return false;
+				if (!read_i32(in, id)) return false;
+				if (!read_mat4(in, offset)) return false;
+
+				sBoneInfo bi;
+				bi.id = static_cast<int>(id);
+				bi.offset = offset;
+				outBoneInfoMap[name] = bi;
+			}
+
 		}
 
 		return static_cast<bool>(in);

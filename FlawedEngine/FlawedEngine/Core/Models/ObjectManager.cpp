@@ -249,15 +249,15 @@ namespace FlawedEngine
 
 		if (mIsPlaying)
 			mRuntimeObjects.push_back(SceneObjects[Name]);
-
-
 	}
 
 	void cObjectManager::LoadBinaryObject(const char* FilePath, const char* Name)
 	{
 		std::vector<MeshCPUData> MeshData;
-		LoadMeshesBinary(FilePath, MeshData);
-		SceneObjects[Name] = std::make_shared<cModel>(MeshData, Name, mPhysicsWorld, mCollisionShapesArray, (Frustum*)mCamFrustum, mGfxAPI);
+		std::map<std::string, sBoneInfo> BoneInfoMap;
+		int BoneCounter = 0;
+		LoadMeshesBinary(std::string(FilePath)+".FEB", MeshData, BoneInfoMap, BoneCounter);
+		SceneObjects[Name] = std::make_shared<cModel>(FilePath, MeshData, BoneInfoMap, BoneCounter, Name, mPhysicsWorld, mCollisionShapesArray, (Frustum*)mCamFrustum, mGfxAPI);
 		sModel DefaultModel = { glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f) };
 		SceneObjects[Name]->ModelTransform(DefaultModel);
 		sPhysicsProps DefaultPhysics = { 1.f, 1.0f, 0.5f };
@@ -471,6 +471,8 @@ namespace FlawedEngine
 			object["isCostume"] = { entity->mIsCostume };
 			object["type"] = { entity->Type };
 			object["filepath"] = { entity->mFilePath };
+			object["hasBinaryMesh"] = { entity->mHasBinaryPath };
+			object["binaryMeshPath"] = { entity->mBinaryMeshPath };
 			object["scripting"]["hasScript"] = { entity->mHasScripting };
 			object["scripting"]["scriptPath"] = { entity->mScriptPath };
 			object["physics"] = { entity->mPhysics };
@@ -514,7 +516,15 @@ namespace FlawedEngine
 			else
 			{
 				std::string Filepath = object["filepath"][0];
-				LoadObject(Filepath.c_str(), name.c_str());
+
+				if (object.contains("hasBinaryMesh") && object["hasBinaryMesh"][0] == true)
+				{
+					std::string BinaryMeshPath = object["binaryMeshPath"][0];
+					LoadBinaryObject(BinaryMeshPath.c_str(), name.c_str());
+				}
+				else
+					LoadObject(Filepath.c_str(),  name.c_str());
+				//LoadObject(Filepath.c_str(), name.c_str());
 			}
 
 			auto Entity = GetObjectByName(name.c_str());

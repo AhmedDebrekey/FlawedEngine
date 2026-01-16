@@ -18,7 +18,7 @@
 #include <chrono>
 
 #include <fstream>
-
+#include <filesystem>
 namespace FlawedEngine
 {
 	cModel::cModel(const char* FilePath, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API)
@@ -44,11 +44,19 @@ namespace FlawedEngine
 			});
 		loader.detach();
 		mOnLoadedCalledBacks.push_back([this]() {
-			SaveMeshesBinary(mName.c_str(), mCPUMeshes);
+
+			std::filesystem::path sourcePath(mFilePath);                 
+			std::filesystem::path directory = sourcePath.parent_path();  
+			std::filesystem::path binaryPath = directory / (mName);
+			SaveMeshesBinary(binaryPath.string(), mCPUMeshes, m_BoneInfoMap, m_BoneCounter);
+
+			mBinaryMeshPath = binaryPath.string();
+			mHasBinaryPath = true;
 			});
 		//loadModel(FilePath);
 	}
-	cModel::cModel(const std::vector<MeshCPUData>& CPUdata, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API)
+
+	cModel::cModel(const char* FilePath, const std::vector<MeshCPUData>& CPUdata, std::map<std::string, sBoneInfo>& boneMap, int boneCounter, std::string Name, void* PhysicsWorld, btAlignedObjectArray<btCollisionShape*>* CollisionShapes, Frustum* CamFrustum, void* Graphics_API)
 		:mGfxAPI((cGraphicsAPI*)Graphics_API)
 	{
 		mCollisionShapesArray = CollisionShapes;
@@ -64,7 +72,10 @@ namespace FlawedEngine
 		mGeometryShader.Unbind();
 		mIsLoaded = true;
 		mCPUMeshes = CPUdata;
-		
+		mBinaryMeshPath = FilePath;
+		m_BoneInfoMap = boneMap;
+		m_BoneCounter = boneCounter;
+		mHasBinaryPath = true;
 	}
 	void cModel::Render(sTransform& Trans, std::unordered_map<std::string, sLight>& LightPositions, uint32_t* SkyBox, sGBufferObjects* GeometryObject)
 	{

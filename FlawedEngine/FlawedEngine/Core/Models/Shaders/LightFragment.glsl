@@ -83,5 +83,8 @@ void main()
         specular *= attenuation;
         lighting += diffuse + specular + ambient;        
     }
+    vec3 color = lighting;
+    color = color / (color + vec3(1.0));      // Reinhard
+    color = pow(color, vec3(1.0/2.2));        // gamma
     FragColor = vec4(lighting, 1.0);
 }
